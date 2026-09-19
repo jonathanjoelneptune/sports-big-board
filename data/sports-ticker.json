@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-19T20:30:49Z",
+  "generatedAt": "2026-09-19T21:00:49Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "7fdff600ecf866a21db7c888445da58385db5438ba7b45d337d106d7d6752e57",
+  "sourceCandidateHash": "a63a38bf76daca049777145c30923dfc2851deee9a4f380b5524329eee9c3ece",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-ebbaa84f1203c458"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Orioles activated reliever Félix Bautista after a 14-month absence following shoulder surgery. In addition, Trey Mancini signed a one-day deal and has retired.",
+          "text": "The Orioles activated reliever Félix Bautista after a 14-month absence following shoulder surgery. In addition, Trey Mancini signed a one-day deal and has retired.",
+          "entities": [],
+          "occurredAt": "2026-09-19T20:59:25Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "The Orioles activated reliever Félix Bautista after a 14-month absence following shoulder surgery. In addition, Trey Mancini signed a one-day deal and has retired.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49982125/orioles-activate-ex-closer-felix-bautista-trey-mancini-retires"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49982125/orioles-activate-ex-closer-felix-bautista-trey-mancini-retires"
+            }
+          ],
+          "id": "a415-1432daaab5a2ff4a",
+          "feedRank": 1,
+          "compactHeadline": "Orioles activate ex-closer Félix Bautista; Trey Mancini retires"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-3db7090a179f5190"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T19:42:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.81,
+          "ageHours": 1.31,
           "freshnessBasis": "Prosecutors identified 18 pitches, including one from a 2024 playoff game, that will be the focus of their case against Guardians closer Emmanuel Clase that is set for trial in November, according to court documents.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,40 @@
             }
           ],
           "id": "a415-bba2f46a71f388e5",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Prosecutors identify 18 alleged rigged pitches for Clase trial"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-c7bc8fd1d606930a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Sean Burke pitched six effective innings, Miguel Vargas homered and the Chicago White Sox topped the Detroit Tigers 3-1 on Saturday for a sorely needed victory.",
+          "text": "Sean Burke pitched six effective innings, Miguel Vargas homered and the Chicago White Sox topped the Detroit Tigers 3-1 on Saturday for a sorely needed victory.",
+          "entities": [],
+          "occurredAt": "2026-09-19T20:56:29Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "— Sean Burke pitched six effective innings, Miguel Vargas homered and the Chicago White Sox topped the Detroit Tigers 3-1 on Saturday for a sorely needed victory.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817004"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817004"
+            }
+          ],
+          "id": "a415-bc1c6707c63158b5",
+          "feedRank": 3,
+          "compactHeadline": "Sean Burke and Miguel Vargas help the White Sox beat the Tigers 3-1"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-79c3c27286e75e59"
           ],
@@ -52,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T13:28:33Z",
           "timePrecision": "exact",
-          "ageHours": 7.04,
+          "ageHours": 7.54,
           "freshnessBasis": "The Braves are back in the playoffs after missing out last season.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +124,11 @@
             }
           ],
           "id": "a415-8dc31b9de3968f3a",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Braves head to playoffs for 8th time in 9 years"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
@@ -81,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T12:29:51Z",
           "timePrecision": "exact",
-          "ageHours": 8.02,
+          "ageHours": 8.52,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +153,11 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-8010b99f2f971041"
           ],
@@ -110,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T13:18:49Z",
           "timePrecision": "exact",
-          "ageHours": 7.2,
+          "ageHours": 7.7,
           "freshnessBasis": "With a homer in the sixth inning of the Guardians' 5-3 win over the Athletics, Jose Ramirez reached 1,000 RBIs and joined Earl Averill as the only players in club history to reach that milestone.",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +182,8 @@
             }
           ],
           "id": "a415-434c305c37736fbd",
-          "feedRank": 4,
-          "compactHeadline": "Jose Ramirez reaches 1,000 career RBIs in Guardians' victory"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-bd34be6b3616752e"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Athletics (61-93, fourth in the AL West) vs. Cleveland Guardians (79-75, first in the AL Central)",
-          "text": "Athletics (61-93, fourth in the AL West) vs. Cleveland Guardians (79-75, first in the AL Central)",
-          "entities": [],
-          "occurredAt": "2026-09-19T08:02:53Z",
-          "timePrecision": "exact",
-          "ageHours": 12.47,
-          "freshnessBasis": "Athletics (61-93, fourth in the AL West) vs. Cleveland Guardians (79-75, first in the AL Central)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/preview?gameId=401816997"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401816997"
-            }
-          ],
-          "id": "a415-8ef8c283a73067a8",
-          "feedRank": 5,
-          "compactHeadline": "Guardians look to keep home win streak alive, host the Athletics"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-43e5b87280084385"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Washington Nationals (72-82, fourth in the NL East) vs. St. Louis Cardinals (75-79, fourth in the NL Central)",
-          "text": "Washington Nationals (72-82, fourth in the NL East) vs. St. Louis Cardinals (75-79, fourth in the NL Central)",
-          "entities": [],
-          "occurredAt": "2026-09-19T08:02:49Z",
-          "timePrecision": "exact",
-          "ageHours": 12.47,
-          "freshnessBasis": "Washington Nationals (72-82, fourth in the NL East) vs. St. Louis Cardinals (75-79, fourth in the NL Central)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/preview?gameId=401817006"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401817006"
-            }
-          ],
-          "id": "a415-41e6bb6ad9bdfd90",
           "feedRank": 6,
-          "compactHeadline": "Cardinals aim to end losing streak in game against the Nationals"
+          "compactHeadline": "Jose Ramirez reaches 1,000 career RBIs in Guardians' victory"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T17:46:25Z",
           "timePrecision": "exact",
-          "ageHours": 2.74,
+          "ageHours": 3.24,
           "freshnessBasis": "Jets rookie wide receiver Omar Cooper Jr., one of the team's three first-round picks, has been placed on injured reserve with a sprained ankle, a source told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -223,6 +223,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-c3c550fe0a0a53e7"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The NFL has modified what can be shown on videoboards during field goal and extra point attempts, an alteration coming in the wake of a viral social media post from a former analytics coach.",
+          "text": "The NFL has modified what can be shown on videoboards during field goal and extra point attempts, an alteration coming in the wake of a viral social media post from a former analytics coach.",
+          "entities": [],
+          "occurredAt": "2026-09-19T20:56:01Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "The NFL has modified what can be shown on videoboards during field goal and extra point attempts, an alteration coming in the wake of a viral social media post from a former analytics coach.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49979831/nfl-changes-rules-governing-video-board-displays-kicks"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49979831/nfl-changes-rules-governing-video-board-displays-kicks"
+            }
+          ],
+          "id": "a415-57d7a1d13a034949",
+          "feedRank": 8,
+          "compactHeadline": "NFL changes rules governing videoboard displays during kicks"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-c3bc310027350270"
           ],
           "type": "NEWS",
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T20:27:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.55,
           "freshnessBasis": "Rams receiver Puka Nacua will not practice for the second day in a row and will be listed as questionable for Monday night's game against the Giants.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-4a76c9466a31a236",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Rams' Puka Nacua again misses practice, questionable for MNF"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-9b9d7cca53ee9117"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:11:10Z",
           "timePrecision": "exact",
-          "ageHours": 22.33,
+          "ageHours": 22.83,
           "freshnessBasis": "The Texans have ruled star wide receiver Nico Collins out for Sunday's matchup against the Bengals due to a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-c0e4a25c8138b290",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Texans rule WR Nico Collins out vs. Bengals with hamstring injury"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-33548f1c750c163d"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:19:26Z",
           "timePrecision": "exact",
-          "ageHours": 23.19,
+          "ageHours": 23.69,
           "freshnessBasis": "Ravens receiver Zay Flowers is doubtful for Sunday's game vs. the Saints after he aggravated a left hamstring injury and missed the majority of practices this week.",
           "status": "active",
           "sourceUrls": [
@@ -304,11 +333,11 @@
             }
           ],
           "id": "a415-e736254eac663cfd",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Ravens' Zay Flowers doubtful vs. Saints; Nnamdi Madubuike out"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-75c1d0bc8807fee1"
           ],
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:13:51Z",
           "timePrecision": "exact",
-          "ageHours": 23.28,
+          "ageHours": 23.78,
           "freshnessBasis": "Stephon Gilmore, a two-time All-Pro cornerback and the NFL's 2019 Defensive Player of the Year, signed a one-day contract in New England on Friday to retire as a member of the Patriots,",
           "status": "active",
           "sourceUrls": [
@@ -333,37 +362,8 @@
             }
           ],
           "id": "a415-3d689699d4bd0b04",
-          "feedRank": 11,
-          "compactHeadline": "Stephon Gilmore, '19 NFL DPOY, retires as member of the Patriots"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-46abc6301b60051c"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "On their 16-hour flight home from Australia, the 49ers chose sleep over celebration. That kick-started a long week of getting back into routine.",
-          "text": "On their 16-hour flight home from Australia, the 49ers chose sleep over celebration. That kick-started a long week of getting back into routine.",
-          "entities": [],
-          "occurredAt": "2026-09-19T10:00:31Z",
-          "timePrecision": "exact",
-          "ageHours": 10.51,
-          "freshnessBasis": "On their 16-hour flight home from Australia, the 49ers chose sleep over celebration. That kick-started a long week of getting back into routine.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49964673/san-francisco-49ers-melbourne-australia-trip-recovery"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49964673/san-francisco-49ers-melbourne-australia-trip-recovery"
-            }
-          ],
-          "id": "a415-1ef79cf49bd416c1",
           "feedRank": 12,
-          "compactHeadline": "How the 49ers are readjusting after weeklong Australia trip"
+          "compactHeadline": "Stephon Gilmore, '19 NFL DPOY, retires as member of the Patriots"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T12:16:10Z",
           "timePrecision": "exact",
-          "ageHours": 8.24,
+          "ageHours": 8.74,
           "freshnessBasis": "Pistons All-Defensive forward Ausar Thompson has agreed to a five-year, $155 million rookie-scale contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T04:36:32Z",
           "timePrecision": "exact",
-          "ageHours": 15.9,
+          "ageHours": 16.4,
           "freshnessBasis": "The Heat and guard Pelle Larsson have reached agreement on a four-year, $60 million extension, his agents told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:32:33Z",
           "timePrecision": "exact",
-          "ageHours": 20.97,
+          "ageHours": 21.47,
           "freshnessBasis": "Guard Keyonte George has signed a contract extension with the Utah Jazz, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T11:44:31Z",
           "timePrecision": "exact",
-          "ageHours": 8.77,
+          "ageHours": 9.27,
           "freshnessBasis": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "status": "active",
           "sourceUrls": [
@@ -510,7 +510,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T18:38:26Z",
           "timePrecision": "exact",
-          "ageHours": 1.87,
+          "ageHours": 2.37,
           "freshnessBasis": "Jay DaSilva fired Coventry to their first Premier League win in 25 years as they beat Nottingham Forest 1-0 in another game mired by VAR controversy.",
           "status": "active",
           "sourceUrls": [
@@ -539,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T18:25:22Z",
           "timePrecision": "exact",
-          "ageHours": 2.09,
+          "ageHours": 2.59,
           "freshnessBasis": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
           "status": "active",
           "sourceUrls": [
@@ -568,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T17:48:14Z",
           "timePrecision": "exact",
-          "ageHours": 2.71,
+          "ageHours": 3.21,
           "freshnessBasis": "Premier League champions Arsenal lost their 100% record for the season in dramatic fashion as they were routed 3-0 at Brighton and Hove Albion.",
           "status": "active",
           "sourceUrls": [
@@ -597,7 +597,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T17:13:08Z",
           "timePrecision": "exact",
-          "ageHours": 3.29,
+          "ageHours": 3.79,
           "freshnessBasis": "The strengths that won Arsenal the title deserted them at Brighton, which celebrated their 125th anniversary with a thumping victory over the champions.",
           "status": "active",
           "sourceUrls": [
@@ -626,7 +626,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T16:21:57Z",
           "timePrecision": "exact",
-          "ageHours": 4.15,
+          "ageHours": 4.65,
           "freshnessBasis": "Hull's unbeaten start to life in the Premier League came to an end with a 2-1 defeat to Newcastle at St James' Park.",
           "status": "active",
           "sourceUrls": [
@@ -655,7 +655,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T16:11:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.33,
+          "ageHours": 4.83,
           "freshnessBasis": "Abdul Fatawu's dismissal after being shown a second yellow card for diving capped a frustrating afternoon for Ipswich in their 1-0 defeat at Everton.",
           "status": "active",
           "sourceUrls": [
@@ -690,7 +690,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T02:41:23Z",
           "timePrecision": "exact",
-          "ageHours": 17.82,
+          "ageHours": 18.32,
           "freshnessBasis": "Julian Hall scored early in the second half and keeper Ethan Horvath was never tested for the New York Red Bulls in a 1-0 victory over New York City FC on Friday night at Yankee Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -719,7 +719,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:01:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.5,
+          "ageHours": 23.0,
           "freshnessBasis": "Former United States defender Matt Miazga is set to join New York City FC, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -754,7 +754,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T20:24:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.6,
           "freshnessBasis": "Ohio State wide receiver Jeremiah Smith caught five passes for 85 yards against Kent State to set a new Buckeyes' career receiving yardage record with 2,958 yards.",
           "status": "active",
           "sourceUrls": [
@@ -783,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T20:01:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.49,
+          "ageHours": 0.99,
           "freshnessBasis": "— Tyrell Henry caught 14 passes to set a Wisconsin single-game record and Colton Joseph threw for 362 yards and accounted for four touchdowns as the Badgers trounced Eastern Michigan 54-10 on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -803,16 +803,16 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-605ef3f8903fc68d"
+            "cand-36ff4b4cbe280122"
           ],
           "type": "INJURY",
           "priority": 78,
           "headline": "Rutgers QB Dylan Lonergan, who sat out last week due to injury, started vs. USC, while tailback Antwan Raymond also played after being listed as questionable.",
           "text": "Rutgers QB Dylan Lonergan, who sat out last week due to injury, started vs. USC, while tailback Antwan Raymond also played after being listed as questionable.",
           "entities": [],
-          "occurredAt": "2026-09-19T20:03:28Z",
+          "occurredAt": "2026-09-19T20:48:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
+          "ageHours": 0.2,
           "freshnessBasis": "Rutgers QB Dylan Lonergan, who sat out last week due to injury, started vs. USC, while tailback Antwan Raymond also played after being listed as questionable.",
           "status": "active",
           "sourceUrls": [
@@ -825,9 +825,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49981366/rutgers-qb-dylan-lonergan-start-rb-antwan-raymond-play"
             }
           ],
-          "id": "a415-556471208987cbb1",
+          "id": "a415-9a04d2e05787a30a",
           "feedRank": 27,
-          "compactHeadline": "Rutgers QB Dylan Lonergan to start; RB Antwan Raymond to play"
+          "compactHeadline": "Rutgers QB Dylan Lonergan starts; RB Antwan Raymond plays"
         },
         {
           "rank": 4,
@@ -841,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T19:02:40Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
+          "ageHours": 1.97,
           "freshnessBasis": "Baylor quarterback DJ Lagway has again been ruled out with an ankle injury, clearing the way for Nate Bennett to make his second straight start.",
           "status": "active",
           "sourceUrls": [
@@ -870,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T16:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
+          "ageHours": 4.75,
           "freshnessBasis": "North Carolina will be without star defender Melkart Abou Jaoude on Saturday. Clemson will start Tait Reyolds at QB in place of injured Christopher Vizzina.",
           "status": "active",
           "sourceUrls": [
@@ -897,9 +897,9 @@
           "headline": "Jeremiah Smith became Ohio State's career receiving yardage leader, Ja’Kobi Jackson scored twice and the sixth-ranked Buckeyes rolled to a 59-3 victory over Kent State on Saturday.",
           "text": "Jeremiah Smith became Ohio State's career receiving yardage leader, Ja’Kobi Jackson scored twice and the sixth-ranked Buckeyes rolled to a 59-3 victory over Kent State on Saturday.",
           "entities": [],
-          "occurredAt": "2026-09-19T19:51:30Z",
+          "occurredAt": "2026-09-19T20:41:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.66,
+          "ageHours": 0.32,
           "freshnessBasis": "— Jeremiah Smith became Ohio State's career receiving yardage leader, Ja’Kobi Jackson scored twice and the sixth-ranked Buckeyes rolled to a 59-3 victory over Kent State on Saturday.",
           "status": "active",
           "sourceUrls": [
