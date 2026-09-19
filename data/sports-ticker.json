@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-19T02:01:04Z",
+  "generatedAt": "2026-09-19T02:30:52Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "251753cd56e26839a3835b48a8be266757a6cf9bba728c3da98351684c30ca48",
+  "sourceCandidateHash": "43a930e1e8f5a05f6b7e490d82f00a09017728f1bbd58347bfa3fd7f7f760e89",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-22aa9a0445149ebb"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Juan Soto hit a three-run homer and the New York Mets kept the Philadelphia Phillies from gaining ground in the National League wild-card race with a 6-3 victory Friday night.",
+          "text": "Juan Soto hit a three-run homer and the New York Mets kept the Philadelphia Phillies from gaining ground in the National League wild-card race with a 6-3 victory Friday night.",
+          "entities": [],
+          "occurredAt": "2026-09-18T23:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, New York Mets 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816987"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-18",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816987"
+            }
+          ],
+          "id": "a415-48c4f0333f8432c0",
+          "feedRank": 1,
+          "compactHeadline": "Juan Soto's homer leads Mets to 6-3 win that keeps Phillies from taking over top NL wild-card spot"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-e7ff17a2ba52411e"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.85,
+          "ageHours": 3.35,
           "freshnessBasis": "Highlightly final: Oakland Athletics 3, Cleveland Guardians 5.",
           "status": "active",
           "sourceUrls": [
@@ -43,11 +78,11 @@
             }
           ],
           "id": "a415-7def7716c66ee0a7",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "José Ramírez homers, reaches 1,000 RBIs as Guardians down A's 5-3 to stay atop AL Central"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-837158a9e92a8ba5"
           ],
@@ -58,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.35,
+          "ageHours": 3.85,
           "freshnessBasis": "Highlightly final: Chicago Cubs 4, Cincinnati Reds 6.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +113,52 @@
             }
           ],
           "id": "a415-ed248ff47bf3fd72",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Trevino's 2-run single with bases loaded in 6th propels Reds to 6-4 win over Cubs"
         },
         {
-          "rank": 3,
+          "rank": 4,
+          "candidateIds": [
+            "cand-eeab83903c1ed6bd"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Roman Anthony homered and drove in three runs and the Boston Red Sox took a big step toward clinching an American League playoff spot with a 4-2 victory over the Tampa Bay Rays on Friday night.",
+          "text": "Roman Anthony homered and drove in three runs and the Boston Red Sox took a big step toward clinching an American League playoff spot with a 4-2 victory over the Tampa Bay Rays on Friday night.",
+          "entities": [],
+          "occurredAt": "2026-09-18T23:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Highlightly final: Boston Red Sox 4, Tampa Bay Rays 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816983",
+            "http://www.espn.com/mlb/preview?gameId=401816983"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-18",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816983"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401816983"
+            }
+          ],
+          "id": "a415-fe8dc6b12c158d32",
+          "feedRank": 4,
+          "compactHeadline": "Boston Red Sox beat Tampa Bay Rays 4-2"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-4ac0ee0faa36b6bd"
           ],
@@ -93,7 +169,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T01:49:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.2,
+          "ageHours": 0.7,
           "freshnessBasis": "Shohei Ohtani is progressing with his swing while on the injured list, but he hasn't faced pitching yet.",
           "status": "active",
           "sourceUrls": [
@@ -107,11 +183,11 @@
             }
           ],
           "id": "a415-b83a40c27f089671",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Ohtani makes 'productive' swing progression, but no live pitching yet"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-d27028ab9bf95f3c"
           ],
@@ -122,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T01:05:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.92,
+          "ageHours": 1.42,
           "freshnessBasis": "New York Mets first baseman Jared Young, 31, who was at home resting and recovering Friday, will miss the rest of the season because of a concussion sustained when he collided with pitcher Nolan McLean while trying to field a ground ball Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -136,66 +212,8 @@
             }
           ],
           "id": "a415-1cf6ee0e2f07b05c",
-          "feedRank": 4,
-          "compactHeadline": "Jared Young to miss rest of Mets' season with concussion"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-9859d47ec5b82f1e"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Three-time AL MVP Aaron Judge is returning to the injured list -- this time because of a right calf strain -- and Yankees manager Aaron Boone isn't sure whether the slugger will be able to return for the postseason.",
-          "text": "Three-time AL MVP Aaron Judge is returning to the injured list -- this time because of a right calf strain -- and Yankees manager Aaron Boone isn't sure whether the slugger will be able to return for the postseason.",
-          "entities": [],
-          "occurredAt": "2026-09-19T00:56:03Z",
-          "timePrecision": "exact",
-          "ageHours": 1.08,
-          "freshnessBasis": "Three-time AL MVP Aaron Judge is returning to the injured list -- this time because of a right calf strain -- and Yankees manager Aaron Boone isn't sure whether the slugger will be able to return for the postseason.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49975146/yankees-aaron-judge-returns-injured-list-calf-strain"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49975146/yankees-aaron-judge-returns-injured-list-calf-strain"
-            }
-          ],
-          "id": "a415-d20a484671de6033",
-          "feedRank": 5,
-          "compactHeadline": "Yankees' Aaron Judge returning to injured list with calf strain"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-828fedd4051f470a"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Los Angeles Dodgers closer Edwin Diaz has returned from a monthlong absence due to a neck injury, making him available for Friday's series opener against San Francisco.",
-          "text": "Los Angeles Dodgers closer Edwin Diaz has returned from a monthlong absence due to a neck injury, making him available for Friday's series opener against San Francisco.",
-          "entities": [],
-          "occurredAt": "2026-09-19T00:49:58Z",
-          "timePrecision": "exact",
-          "ageHours": 1.19,
-          "freshnessBasis": "Los Angeles Dodgers closer Edwin Diaz has returned from a monthlong absence due to a neck injury, making him available for Friday's series opener against San Francisco.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49975861/dodgers-closer-diaz-returns-injured-list-il-available-giants-series-opener"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49975861/dodgers-closer-diaz-returns-injured-list-il-available-giants-series-opener"
-            }
-          ],
-          "id": "a415-29adf6828f370d54",
           "feedRank": 6,
-          "compactHeadline": "Dodgers closer Diaz returns from IL, available for Giants series opener"
+          "compactHeadline": "Jared Young to miss rest of Mets' season with concussion"
         }
       ]
     },
@@ -215,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:11:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.83,
+          "ageHours": 4.33,
           "freshnessBasis": "The Texans have ruled star wide receiver Nico Collins out for Sunday's matchup against the Bengals due to a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -244,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:19:26Z",
           "timePrecision": "exact",
-          "ageHours": 4.69,
+          "ageHours": 5.19,
           "freshnessBasis": "Ravens receiver Zay Flowers is doubtful for Sunday's game vs. the Saints after he aggravated a left hamstring injury and missed the majority of practices this week.",
           "status": "active",
           "sourceUrls": [
@@ -273,7 +291,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T20:06:43Z",
           "timePrecision": "exact",
-          "ageHours": 5.91,
+          "ageHours": 6.4,
           "freshnessBasis": "Carson Wentz will be the Vikings' starting quarterback Sunday against the Bears while Kyler Murray continues to work his way back after suffering a concussion in the season opener.",
           "status": "active",
           "sourceUrls": [
@@ -302,7 +320,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T19:47:27Z",
           "timePrecision": "exact",
-          "ageHours": 6.23,
+          "ageHours": 6.72,
           "freshnessBasis": "Dolphins defensive end Chop Robinson will not play Sunday against the 49ers after suffering a concussion during Wednesday's practice, coach Jeff Hafley said.",
           "status": "active",
           "sourceUrls": [
@@ -331,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:13:51Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
+          "ageHours": 5.28,
           "freshnessBasis": "Stephon Gilmore, a two-time All-Pro cornerback and the NFL's 2019 Defensive Player of the Year, signed a one-day contract in New England on Friday to retire as a member of the Patriots,",
           "status": "active",
           "sourceUrls": [
@@ -360,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T20:26:04Z",
           "timePrecision": "exact",
-          "ageHours": 5.58,
+          "ageHours": 6.08,
           "freshnessBasis": "The Steelers will be without top cornerback Joey Porter Jr. again amid their contentious contract negotiation. Wide receiver Michael Pittman Jr. (foot) and offensive tackle Troy Fautanu (ankle) are questionable to play.",
           "status": "active",
           "sourceUrls": [
@@ -395,7 +413,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 3.01,
           "freshnessBasis": "Highlightly final: New York Liberty Women 93, Minnesota Lynx Women 81.",
           "status": "active",
           "sourceUrls": [
@@ -424,7 +442,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 3.01,
           "freshnessBasis": "Highlightly final: Indiana Fever Women 103, Toronto Tempo Women 85.",
           "status": "active",
           "sourceUrls": [
@@ -453,7 +471,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:32:33Z",
           "timePrecision": "exact",
-          "ageHours": 2.48,
+          "ageHours": 2.97,
           "freshnessBasis": "Guard Keyonte George has signed a contract extension with the Utah Jazz, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -482,7 +500,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:15:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.76,
+          "ageHours": 3.26,
           "freshnessBasis": "Pistons All-Defensive forward Ausar Thompson has agreed to a five-year, $155 million rookie-scale contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -511,7 +529,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:35:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.43,
+          "ageHours": 3.93,
           "freshnessBasis": "The Heat and guard Pelle Larsson have reached agreement on a four-year, $60 million extension, his agents told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -527,35 +545,6 @@
           "id": "a415-00063e37c87764e0",
           "feedRank": 17,
           "compactHeadline": "Heat, Pelle Larsson agree to 4-year, $60M extension"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-10af553773d944fa"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Cavaliers are promoting Brandon Weems, who has been with the team for the past decade, to serve as general manager.",
-          "text": "The Cavaliers are promoting Brandon Weems, who has been with the team for the past decade, to serve as general manager.",
-          "entities": [],
-          "occurredAt": "2026-09-18T15:30:02Z",
-          "timePrecision": "exact",
-          "ageHours": 10.52,
-          "freshnessBasis": "The Cavaliers are promoting Brandon Weems, who has been with the team for the past decade, to serve as general manager.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49972620/cavaliers-promote-brandon-weems-general-manager-sources-say"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49972620/cavaliers-promote-brandon-weems-general-manager-sources-say"
-            }
-          ],
-          "id": "a415-64efcf55a01b23b4",
-          "feedRank": 18,
-          "compactHeadline": "Cavaliers promote Brandon Weems to general manager"
         }
       ]
     },
@@ -575,7 +564,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T18:34:30Z",
           "timePrecision": "exact",
-          "ageHours": 7.44,
+          "ageHours": 7.94,
           "freshnessBasis": "Evgeni Malkin remains as passionate as ever about hockey as his 21st season with the Penguins begins. Whether it's his last, be it in Pittsburgh or anywhere else, only his body knows.",
           "status": "active",
           "sourceUrls": [
@@ -589,7 +578,7 @@
             }
           ],
           "id": "a415-3c6043e6ae924755",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Evgeni Malkin, in 21st season, will let health decide on future"
         },
         {
@@ -604,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T13:05:24Z",
           "timePrecision": "exact",
-          "ageHours": 12.93,
+          "ageHours": 13.42,
           "freshnessBasis": "The Carolina Hurricanes, Florida Panthers and Colorado Avalanche are favorites to win the 2027 Stanley Cup.",
           "status": "active",
           "sourceUrls": [
@@ -618,7 +607,7 @@
             }
           ],
           "id": "a415-998487a8a1e850a9",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Stanley Cup odds: Hurricanes, Panthers top 2027 favorites, Avalanche sit third"
         }
       ]
@@ -639,7 +628,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
+          "ageHours": 7.51,
           "freshnessBasis": "Highlightly final: Chelsea 0, Brentford 3.",
           "status": "active",
           "sourceUrls": [
@@ -665,11 +654,40 @@
             }
           ],
           "id": "a415-05130f3215424131",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Xabi Alonso says Chelsea were 'out of control' in Brentford loss"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-8b9b1f9124bd84f0"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Norwich City U21 1, Sunderland U21 3.",
+          "text": "Highlightly final: Norwich City U21 1, Sunderland U21 3.",
+          "entities": [],
+          "occurredAt": "2026-09-18T18:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 8.51,
+          "freshnessBasis": "Highlightly final: Norwich City U21 1, Sunderland U21 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-18",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-8dcfe8dde0febb05",
+          "feedRank": 21,
+          "compactHeadline": "Sunderland U21 beat Norwich City U21 3-1"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-a8590673f0a284b4"
           ],
@@ -680,7 +698,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T10:10:25Z",
           "timePrecision": "exact",
-          "ageHours": 15.84,
+          "ageHours": 16.34,
           "freshnessBasis": "Alexander Isak has said he didn't regret his move from Newcastle United to Liverpool at any point of a tumultuous first season with the club.",
           "status": "active",
           "sourceUrls": [
@@ -698,7 +716,7 @@
           "compactHeadline": "Alexander Isak 'never' regretted Liverpool move even amid 'tough' injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-6edb77a16dd31647"
           ],
@@ -709,7 +727,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:45:49Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
+          "ageHours": 4.75,
           "freshnessBasis": "Brentford's 3-0 thrashing of Chelsea served as a humbling reminder of what a well-run club can accomplish.",
           "status": "active",
           "sourceUrls": [
@@ -727,7 +745,7 @@
           "compactHeadline": "How can erratic Chelsea find stability? For starters: Look to Brentford"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-442d7911ed36f666"
           ],
@@ -738,7 +756,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:00:24Z",
           "timePrecision": "exact",
-          "ageHours": 3.01,
+          "ageHours": 3.51,
           "freshnessBasis": "Arsenal are \"open\" to allowing teen sensation Max Dowman to leave the club on loan if he does not play enough matches.",
           "status": "active",
           "sourceUrls": [
@@ -756,7 +774,7 @@
           "compactHeadline": "Arsenal, Mikel Arteta open to Max Dowman loan move"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-e5203e93cbca4650"
           ],
@@ -767,7 +785,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:12:33Z",
           "timePrecision": "exact",
-          "ageHours": 4.81,
+          "ageHours": 5.31,
           "freshnessBasis": "Chelsea's winless run in the Premier League stretched to three matches as Brentford ran out deserved 3-0 winners at the Gtech Community Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +820,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 3.01,
           "freshnessBasis": "Highlightly final: New York Red Bulls 1, New York City FC 0.",
           "status": "active",
           "sourceUrls": [
@@ -831,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:01:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.0,
+          "ageHours": 4.5,
           "freshnessBasis": "Former United States defender Matt Miazga is set to join New York City FC, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -860,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T18:33:21Z",
           "timePrecision": "exact",
-          "ageHours": 7.46,
+          "ageHours": 7.96,
           "freshnessBasis": "New Inter Miami manager Cristian 'Kily' González has said the club takes the opinions of Lionel Messi into consideration when making sporting decisions, insisting one should always listen to players of that level.",
           "status": "active",
           "sourceUrls": [
@@ -889,7 +907,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T19:11:31Z",
           "timePrecision": "exact",
-          "ageHours": 6.83,
+          "ageHours": 7.32,
           "freshnessBasis": "Real Madrid and Barcelona could make a future move for USMNT youngster Cavan Sullivan. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -915,17 +933,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-f63fba7a5db37a9d"
+            "cand-725224885502ed3d"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "After 48 hours of tracking the health and availability of LSU's Sam Leavitt, the star quarterback was ultimately not listed on the SEC availability report for Saturday's game at Ole Miss, indicating he is expected to participate for the Tigers in Oxford.",
-          "text": "After 48 hours of tracking the health and availability of LSU's Sam Leavitt, the star quarterback was ultimately not listed on the SEC availability report for Saturday's game at Ole Miss, indicating he is expected to participate for the Tigers in Oxford.",
+          "headline": "A unique 48 hours of tracking the health of LSU's Sam Leavitt ended Friday, when he was not listed on the SEC availability report for Saturday's game at Ole Miss, and a source later told ESPN's Heather Dinich that the quarterback is \"available\" to start.",
+          "text": "A unique 48 hours of tracking the health of LSU's Sam Leavitt ended Friday, when he was not listed on the SEC availability report for Saturday's game at Ole Miss, and a source later told ESPN's Heather Dinich that the quarterback is \"available\" to start.",
           "entities": [],
-          "occurredAt": "2026-09-19T01:27:09Z",
+          "occurredAt": "2026-09-19T02:28:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
-          "freshnessBasis": "After 48 hours of tracking the health and availability of LSU's Sam Leavitt, the star quarterback was ultimately not listed on the SEC availability report for Saturday's game at Ole Miss, indicating he is expected to participate for the Tigers in Oxford.",
+          "ageHours": 0.03,
+          "freshnessBasis": "A unique 48 hours of tracking the health of LSU's Sam Leavitt ended Friday, when he was not listed on the SEC availability report for Saturday's game at Ole Miss, and a source later told ESPN's Heather Dinich that the quarterback is \"available\" to start.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49976012/lsu-qb-sam-leavitt-not-listed-sec-availability-report"
@@ -937,9 +955,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49976012/lsu-qb-sam-leavitt-not-listed-sec-availability-report"
             }
           ],
-          "id": "a415-4317f6a9cbe398cf",
+          "id": "a415-cfe888d9dc8748b4",
           "feedRank": 30,
-          "compactHeadline": "LSU QB Sam Leavitt not listed on SEC availability report"
+          "compactHeadline": "Off SEC report, LSU's Sam Leavitt 'available', source says"
         },
         {
           "rank": 2,
@@ -953,7 +971,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:42:06Z",
           "timePrecision": "exact",
-          "ageHours": 4.32,
+          "ageHours": 4.81,
           "freshnessBasis": "A Pennsylvania judge ruled Friday to allow a criminal case related to the 2024 death of a freshman player to proceed against a former Bucknell football coach.",
           "status": "active",
           "sourceUrls": [
@@ -982,7 +1000,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T18:21:32Z",
           "timePrecision": "exact",
-          "ageHours": 7.66,
+          "ageHours": 8.16,
           "freshnessBasis": "Defensive linemen Stephen Daley and Kellan Wyatt are not expected to be eligible for No. 4 Indiana's game against Western Kentucky after their temporary restraining order expired.",
           "status": "active",
           "sourceUrls": [
@@ -1011,7 +1029,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T17:55:16Z",
           "timePrecision": "exact",
-          "ageHours": 8.1,
+          "ageHours": 8.59,
           "freshnessBasis": "The LSU-Ole Miss rivalry is long, with two fanbases deeply intertwined. The line between love and hate is thin, and Lane Kiffin's return brings those memories to the surface.",
           "status": "active",
           "sourceUrls": [
@@ -1040,7 +1058,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T04:17:29Z",
           "timePrecision": "exact",
-          "ageHours": 21.73,
+          "ageHours": 22.22,
           "freshnessBasis": "— Damon Ferguson Jr., La'Vell Wright and Mason Heintschel ran for touchdowns, and Pittsburgh continued its perfect start with a 27-13 win over Syracuse on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -1069,7 +1087,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T16:29:25Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.02,
           "freshnessBasis": "In his second season with the Lobos, Eck has the university thinking about a bright future.",
           "status": "active",
           "sourceUrls": [
