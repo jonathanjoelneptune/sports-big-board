@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-19T01:30:52Z",
+  "generatedAt": "2026-09-19T02:01:04Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "05e8812b274ddea8e323a185eab9c56cdc321bbd9a0c6327ed8a0a238102a7de",
+  "sourceCandidateHash": "251753cd56e26839a3835b48a8be266757a6cf9bba728c3da98351684c30ca48",
   "leagues": [
     {
       "league": "MLB",
@@ -14,17 +14,87 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e7ff17a2ba52411e"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "José Ramírez and rookie Travis Bazzana homered and Joey Cantillo pitched six scoreless innings as the Cleveland Guardians rallied to beat the Athletics 5-3 on Friday night and stay atop the AL Central.",
+          "text": "José Ramírez and rookie Travis Bazzana homered and Joey Cantillo pitched six scoreless innings as the Cleveland Guardians rallied to beat the Athletics 5-3 on Friday night and stay atop the AL Central.",
+          "entities": [],
+          "occurredAt": "2026-09-18T23:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: Oakland Athletics 3, Cleveland Guardians 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816982"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-18",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816982"
+            }
+          ],
+          "id": "a415-7def7716c66ee0a7",
+          "feedRank": 1,
+          "compactHeadline": "José Ramírez homers, reaches 1,000 RBIs as Guardians down A's 5-3 to stay atop AL Central"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-837158a9e92a8ba5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jose Trevino lined a two-run single to right field with the bases loaded in the seventh inning and the Cincinnati Reds rallied for a 6-4 victory over the Chicago Cubs on Friday night.",
+          "text": "Jose Trevino lined a two-run single to right field with the bases loaded in the seventh inning and the Cincinnati Reds rallied for a 6-4 victory over the Chicago Cubs on Friday night.",
+          "entities": [],
+          "occurredAt": "2026-09-18T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Highlightly final: Chicago Cubs 4, Cincinnati Reds 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816984"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-18",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816984"
+            }
+          ],
+          "id": "a415-ed248ff47bf3fd72",
+          "feedRank": 2,
+          "compactHeadline": "Trevino's 2-run single with bases loaded in 6th propels Reds to 6-4 win over Cubs"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-4ac0ee0faa36b6bd"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Shohei Ohtani is progressing with his swing while on the injured list, although the Los Angeles Dodgers' designated hitter has yet to face pitching or...",
-          "text": "Shohei Ohtani is progressing with his swing while on the injured list, although the Los Angeles Dodgers' designated hitter has yet to face pitching or...",
+          "headline": "Shohei Ohtani is progressing with his swing while on the injured list, but he hasn't faced pitching yet.",
+          "text": "Shohei Ohtani is progressing with his swing while on the injured list, but he hasn't faced pitching yet.",
           "entities": [],
-          "occurredAt": "2026-09-19T01:27:11Z",
+          "occurredAt": "2026-09-19T01:49:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
-          "freshnessBasis": "- Shohei Ohtani is progressing with his swing while on the injured list, although the Los Angeles Dodgers' designated hitter has yet to face pitching or...",
+          "ageHours": 0.2,
+          "freshnessBasis": "Shohei Ohtani is progressing with his swing while on the injured list, but he hasn't faced pitching yet.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49975999/ohtani-makes-productive-swing-progress-il-no-live-pitching-yet"
@@ -37,11 +107,11 @@
             }
           ],
           "id": "a415-b83a40c27f089671",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "Ohtani makes 'productive' swing progression, but no live pitching yet"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-d27028ab9bf95f3c"
           ],
@@ -52,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T01:05:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.92,
           "freshnessBasis": "New York Mets first baseman Jared Young, 31, who was at home resting and recovering Friday, will miss the rest of the season because of a concussion sustained when he collided with pitcher Nolan McLean while trying to field a ground ball Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +136,11 @@
             }
           ],
           "id": "a415-1cf6ee0e2f07b05c",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Jared Young to miss rest of Mets' season with concussion"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-9859d47ec5b82f1e"
           ],
@@ -81,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T00:56:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.58,
+          "ageHours": 1.08,
           "freshnessBasis": "Three-time AL MVP Aaron Judge is returning to the injured list -- this time because of a right calf strain -- and Yankees manager Aaron Boone isn't sure whether the slugger will be able to return for the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +165,11 @@
             }
           ],
           "id": "a415-d20a484671de6033",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Yankees' Aaron Judge returning to injured list with calf strain"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-828fedd4051f470a"
           ],
@@ -110,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T00:49:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.68,
+          "ageHours": 1.19,
           "freshnessBasis": "Los Angeles Dodgers closer Edwin Diaz has returned from a monthlong absence due to a neck injury, making him available for Friday's series opener against San Francisco.",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +194,8 @@
             }
           ],
           "id": "a415-29adf6828f370d54",
-          "feedRank": 4,
-          "compactHeadline": "Dodgers closer Diaz returns from IL, available for Giants series opener"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-837158a9e92a8ba5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Chicago Cubs 4, Cincinnati Reds 6.",
-          "text": "Highlightly final: Chicago Cubs 4, Cincinnati Reds 6.",
-          "entities": [],
-          "occurredAt": "2026-09-18T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.85,
-          "freshnessBasis": "Highlightly final: Chicago Cubs 4, Cincinnati Reds 6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-18",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-ed248ff47bf3fd72",
-          "feedRank": 5,
-          "compactHeadline": "Cincinnati Reds beat Chicago Cubs 6-4"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-c57d2154d6f05471"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Kansas City Royals 5, Pittsburgh Pirates 8.",
-          "text": "Highlightly final: Kansas City Royals 5, Pittsburgh Pirates 8.",
-          "entities": [],
-          "occurredAt": "2026-09-18T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.85,
-          "freshnessBasis": "Highlightly final: Kansas City Royals 5, Pittsburgh Pirates 8.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-18",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-19b47e0e52813d7e",
           "feedRank": 6,
-          "compactHeadline": "Pittsburgh Pirates beat Kansas City Royals 8-5"
+          "compactHeadline": "Dodgers closer Diaz returns from IL, available for Giants series opener"
         }
       ]
     },
@@ -203,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:11:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.33,
+          "ageHours": 3.83,
           "freshnessBasis": "The Texans have ruled star wide receiver Nico Collins out for Sunday's matchup against the Bengals due to a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:19:26Z",
           "timePrecision": "exact",
-          "ageHours": 4.19,
+          "ageHours": 4.69,
           "freshnessBasis": "Ravens receiver Zay Flowers is doubtful for Sunday's game vs. the Saints after he aggravated a left hamstring injury and missed the majority of practices this week.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T20:06:43Z",
           "timePrecision": "exact",
-          "ageHours": 5.4,
+          "ageHours": 5.91,
           "freshnessBasis": "Carson Wentz will be the Vikings' starting quarterback Sunday against the Bears while Kyler Murray continues to work his way back after suffering a concussion in the season opener.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T19:47:27Z",
           "timePrecision": "exact",
-          "ageHours": 5.72,
+          "ageHours": 6.23,
           "freshnessBasis": "Dolphins defensive end Chop Robinson will not play Sunday against the 49ers after suffering a concussion during Wednesday's practice, coach Jeff Hafley said.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:13:51Z",
           "timePrecision": "exact",
-          "ageHours": 4.28,
+          "ageHours": 4.79,
           "freshnessBasis": "Stephon Gilmore, a two-time All-Pro cornerback and the NFL's 2019 Defensive Player of the Year, signed a one-day contract in New England on Friday to retire as a member of the Patriots,",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T20:26:04Z",
           "timePrecision": "exact",
-          "ageHours": 5.08,
+          "ageHours": 5.58,
           "freshnessBasis": "The Steelers will be without top cornerback Joey Porter Jr. again amid their contentious contract negotiation. Wide receiver Michael Pittman Jr. (foot) and offensive tackle Troy Fautanu (ankle) are questionable to play.",
           "status": "active",
           "sourceUrls": [
@@ -374,6 +386,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-b5925283dd97c76d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Liberty Women 93, Minnesota Lynx Women 81.",
+          "text": "Highlightly final: New York Liberty Women 93, Minnesota Lynx Women 81.",
+          "entities": [],
+          "occurredAt": "2026-09-18T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.52,
+          "freshnessBasis": "Highlightly final: New York Liberty Women 93, Minnesota Lynx Women 81.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-18",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-797497626ec13631",
+          "feedRank": 13,
+          "compactHeadline": "New York Liberty Women beat Minnesota Lynx Women 93-81"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-5e75eafb297382c5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Indiana Fever Women 103, Toronto Tempo Women 85.",
+          "text": "Highlightly final: Indiana Fever Women 103, Toronto Tempo Women 85.",
+          "entities": [],
+          "occurredAt": "2026-09-18T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.52,
+          "freshnessBasis": "Highlightly final: Indiana Fever Women 103, Toronto Tempo Women 85.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-18",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-ef76199478b666ac",
+          "feedRank": 14,
+          "compactHeadline": "Indiana Fever Women beat Toronto Tempo Women 103-85"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-cbb8fc9f54897e8c"
           ],
           "type": "SIGNING",
@@ -383,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:32:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.97,
+          "ageHours": 2.48,
           "freshnessBasis": "Guard Keyonte George has signed a contract extension with the Utah Jazz, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +467,11 @@
             }
           ],
           "id": "a415-63640dc7b17faa92",
-          "feedRank": 13,
+          "feedRank": 15,
           "compactHeadline": "Jazz, Keyonte George agree on extension; 5 years, $157.5M, sources say"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-0eb77d6fc544939e"
           ],
@@ -412,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:15:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.26,
+          "ageHours": 2.76,
           "freshnessBasis": "Pistons All-Defensive forward Ausar Thompson has agreed to a five-year, $155 million rookie-scale contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +496,11 @@
             }
           ],
           "id": "a415-0982ce217b4e0497",
-          "feedRank": 14,
+          "feedRank": 16,
           "compactHeadline": "Sources: Pistons, Ausar Thompson reach 5-year, $155M extension"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-687fa25e6e40714a"
           ],
@@ -441,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:35:19Z",
           "timePrecision": "exact",
-          "ageHours": 2.93,
+          "ageHours": 3.43,
           "freshnessBasis": "The Heat and guard Pelle Larsson have reached agreement on a four-year, $60 million extension, his agents told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -455,66 +525,8 @@
             }
           ],
           "id": "a415-00063e37c87764e0",
-          "feedRank": 15,
-          "compactHeadline": "Heat, Pelle Larsson agree to 4-year, $60M extension"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-dadfbd887221f244"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Las Vegas Aces Women 114, Seattle Storm Women 77.",
-          "text": "Highlightly final: Las Vegas Aces Women 114, Seattle Storm Women 77.",
-          "entities": [],
-          "occurredAt": "2026-09-18T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.51,
-          "freshnessBasis": "Highlightly final: Las Vegas Aces Women 114, Seattle Storm Women 77.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-17",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-5464bb8b462b22a7",
-          "feedRank": 16,
-          "compactHeadline": "Las Vegas Aces Women beat Seattle Storm Women 114-77"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-93b010568e56a6b5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
-          "text": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
-          "entities": [],
-          "occurredAt": "2026-09-18T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.51,
-          "freshnessBasis": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-17",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-927db6418e1726a2",
           "feedRank": 17,
-          "compactHeadline": "Phoenix Mercury Women beat Portland Women 94-91"
+          "compactHeadline": "Heat, Pelle Larsson agree to 4-year, $60M extension"
         },
         {
           "rank": 6,
@@ -528,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T15:30:02Z",
           "timePrecision": "exact",
-          "ageHours": 10.01,
+          "ageHours": 10.52,
           "freshnessBasis": "The Cavaliers are promoting Brandon Weems, who has been with the team for the past decade, to serve as general manager.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T18:34:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.94,
+          "ageHours": 7.44,
           "freshnessBasis": "Evgeni Malkin remains as passionate as ever about hockey as his 21st season with the Penguins begins. Whether it's his last, be it in Pittsburgh or anywhere else, only his body knows.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T13:05:24Z",
           "timePrecision": "exact",
-          "ageHours": 12.42,
+          "ageHours": 12.93,
           "freshnessBasis": "The Carolina Hurricanes, Florida Panthers and Colorado Avalanche are favorites to win the 2027 Stanley Cup.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.51,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Chelsea 0, Brentford 3.",
           "status": "active",
           "sourceUrls": [
@@ -668,7 +680,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T10:10:25Z",
           "timePrecision": "exact",
-          "ageHours": 15.34,
+          "ageHours": 15.84,
           "freshnessBasis": "Alexander Isak has said he didn't regret his move from Newcastle United to Liverpool at any point of a tumultuous first season with the club.",
           "status": "active",
           "sourceUrls": [
@@ -697,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:45:49Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 4.25,
           "freshnessBasis": "Brentford's 3-0 thrashing of Chelsea served as a humbling reminder of what a well-run club can accomplish.",
           "status": "active",
           "sourceUrls": [
@@ -726,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T23:00:24Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
+          "ageHours": 3.01,
           "freshnessBasis": "Arsenal are \"open\" to allowing teen sensation Max Dowman to leave the club on loan if he does not play enough matches.",
           "status": "active",
           "sourceUrls": [
@@ -755,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:12:33Z",
           "timePrecision": "exact",
-          "ageHours": 4.31,
+          "ageHours": 4.81,
           "freshnessBasis": "Chelsea's winless run in the Premier League stretched to three matches as Brentford ran out deserved 3-0 winners at the Gtech Community Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -771,35 +783,6 @@
           "id": "a415-78e64060d010ecec",
           "feedRank": 25,
           "compactHeadline": "High-flying Brentford hammer struggling Chelsea"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-866e1758dc395a06"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Daniel Farke said Dominic Calvert-Lewin is \"like a good wine\" following the in-form striker's call-up into Thomas Tuchel's England squad.",
-          "text": "Daniel Farke said Dominic Calvert-Lewin is \"like a good wine\" following the in-form striker's call-up into Thomas Tuchel's England squad.",
-          "entities": [],
-          "occurredAt": "2026-09-18T14:33:55Z",
-          "timePrecision": "exact",
-          "ageHours": 10.95,
-          "freshnessBasis": "Daniel Farke said Dominic Calvert-Lewin is \"like a good wine\" following the in-form striker's call-up into Thomas Tuchel's England squad.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49973247/dominic-calvert-lewin-good-wine-leeds-boss-daniel-farke"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49973247/dominic-calvert-lewin-good-wine-leeds-boss-daniel-farke"
-            }
-          ],
-          "id": "a415-8bf884ff435cb546",
-          "feedRank": 26,
-          "compactHeadline": "Dominic Calvert-Lewin is 'like a good wine,' says Leeds boss Daniel Farke"
         }
       ]
     },
@@ -810,6 +793,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e7757d09b8bb1bcd"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Red Bulls 1, New York City FC 0.",
+          "text": "Highlightly final: New York Red Bulls 1, New York City FC 0.",
+          "entities": [],
+          "occurredAt": "2026-09-18T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.52,
+          "freshnessBasis": "Highlightly final: New York Red Bulls 1, New York City FC 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-18",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-9a744bbf39db697b",
+          "feedRank": 26,
+          "compactHeadline": "New York Red Bulls beat New York City FC 1-0"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-7f9af0193d82ef8a"
           ],
           "type": "NEWS",
@@ -819,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T22:01:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.5,
+          "ageHours": 4.0,
           "freshnessBasis": "Former United States defender Matt Miazga is set to join New York City FC, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -837,7 +849,7 @@
           "compactHeadline": "Source: Ex-U.S. defender Miazga set for NYCFC after Cincy exit"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-819d1f6c176250d7"
           ],
@@ -848,7 +860,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T18:33:21Z",
           "timePrecision": "exact",
-          "ageHours": 6.96,
+          "ageHours": 7.46,
           "freshnessBasis": "New Inter Miami manager Cristian 'Kily' González has said the club takes the opinions of Lionel Messi into consideration when making sporting decisions, insisting one should always listen to players of that level.",
           "status": "active",
           "sourceUrls": [
@@ -866,7 +878,7 @@
           "compactHeadline": "'Kily' González on Inter Miami sporting decisions: 'You have to listen' to Lionel Messi"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-2aca21797966159e"
           ],
@@ -877,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T19:11:31Z",
           "timePrecision": "exact",
-          "ageHours": 6.32,
+          "ageHours": 6.83,
           "freshnessBasis": "Real Madrid and Barcelona could make a future move for USMNT youngster Cavan Sullivan. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -912,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T01:27:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.57,
           "freshnessBasis": "After 48 hours of tracking the health and availability of LSU's Sam Leavitt, the star quarterback was ultimately not listed on the SEC availability report for Saturday's game at Ole Miss, indicating he is expected to participate for the Tigers in Oxford.",
           "status": "active",
           "sourceUrls": [
@@ -941,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T21:42:06Z",
           "timePrecision": "exact",
-          "ageHours": 3.81,
+          "ageHours": 4.32,
           "freshnessBasis": "A Pennsylvania judge ruled Friday to allow a criminal case related to the 2024 death of a freshman player to proceed against a former Bucknell football coach.",
           "status": "active",
           "sourceUrls": [
@@ -970,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T18:21:32Z",
           "timePrecision": "exact",
-          "ageHours": 7.16,
+          "ageHours": 7.66,
           "freshnessBasis": "Defensive linemen Stephen Daley and Kellan Wyatt are not expected to be eligible for No. 4 Indiana's game against Western Kentucky after their temporary restraining order expired.",
           "status": "active",
           "sourceUrls": [
@@ -999,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T17:55:16Z",
           "timePrecision": "exact",
-          "ageHours": 7.59,
+          "ageHours": 8.1,
           "freshnessBasis": "The LSU-Ole Miss rivalry is long, with two fanbases deeply intertwined. The line between love and hate is thin, and Lane Kiffin's return brings those memories to the surface.",
           "status": "active",
           "sourceUrls": [
@@ -1028,7 +1040,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T04:17:29Z",
           "timePrecision": "exact",
-          "ageHours": 21.22,
+          "ageHours": 21.73,
           "freshnessBasis": "— Damon Ferguson Jr., La'Vell Wright and Mason Heintschel ran for touchdowns, and Pittsburgh continued its perfect start with a 27-13 win over Syracuse on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -1057,7 +1069,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T16:29:25Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 9.53,
           "freshnessBasis": "In his second season with the Lobos, Eck has the university thinking about a bright future.",
           "status": "active",
           "sourceUrls": [
@@ -1097,7 +1109,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 97,
+    "freshCandidateCount": 100,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
