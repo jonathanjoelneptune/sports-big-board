@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-20T03:30:50Z",
+  "generatedAt": "2026-09-20T04:00:55Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "0bc25c0bfa6fb18068adb16964fe6aa1f2fad038079a165da83655a81ced5ee5",
+  "sourceCandidateHash": "576a231ec96f940cd21ae6ed68ee423cadf81529d002d6467cd5052607cb376b",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-807c752b40760249"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Pavin Smith hit a two-run homer in the ninth inning to lift the Arizona Diamondbacks over the New York Yankees 5-3 on Saturday night, giving the D-backs' slim playoff hopes a boost.",
+          "text": "Pavin Smith hit a two-run homer in the ninth inning to lift the Arizona Diamondbacks over the New York Yankees 5-3 on Saturday night, giving the D-backs' slim playoff hopes a boost.",
+          "entities": [],
+          "occurredAt": "2026-09-20T03:42:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.31,
+          "freshnessBasis": "— Pavin Smith hit a two-run homer in the ninth inning to lift the Arizona Diamondbacks over the New York Yankees 5-3 on Saturday night, giving the D-backs' slim playoff hopes a boost.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817010"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817010"
+            }
+          ],
+          "id": "a415-76c0bd3978eb4753",
+          "feedRank": 1,
+          "compactHeadline": "Pavin Smith's 2-run, game-winning homer lifts D-backs over Yankees 5-3, helps slim playoff hopes"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-0c3176092a4d3ed2"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T23:31:40Z",
           "timePrecision": "exact",
-          "ageHours": 3.99,
+          "ageHours": 4.49,
           "freshnessBasis": "New York Yankees slugger Aaron Judge hopes to be back in time for the playoffs next month but is unsure on a definitive timeline.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-6db7aa05be362140",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Judge hopes to be back for October; no timeline for return"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-ebbaa84f1203c458"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T21:04:48Z",
           "timePrecision": "exact",
-          "ageHours": 6.43,
+          "ageHours": 6.94,
           "freshnessBasis": "The Orioles activated reliever Félix Bautista after a 14-month absence following shoulder surgery. In addition, Trey Mancini signed a one-day deal and has retired.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-1432daaab5a2ff4a",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Orioles activate ex-closer Félix Bautista; Trey Mancini retires"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-4be888930da462ad"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T03:27:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.56,
           "freshnessBasis": "— Cole Carrigg hit a go-ahead two-run single during a four-run seventh inning, lifting the Colorado Rockies to a 5-3 win over Seattle on Saturday night and moving the Mariners to the brink of elimination.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-cc5e582f25866adb",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Carrigg's 2-run single in 7th lifts Rockies to 5-3 win, moving Mariners to verge of elimination"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-c7bc8fd1d606930a"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T02:28:31Z",
           "timePrecision": "exact",
-          "ageHours": 1.04,
+          "ageHours": 1.54,
           "freshnessBasis": "— Sean Burke pitched six effective innings, Miguel Vargas homered and the Chicago White Sox topped the Detroit Tigers 3-1 on Saturday for a sorely needed victory.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-bc1c6707c63158b5",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Sean Burke and Miguel Vargas help the White Sox beat the Tigers 3-1"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-9adcefd513890ece"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T02:26:31Z",
           "timePrecision": "exact",
-          "ageHours": 1.07,
+          "ageHours": 1.57,
           "freshnessBasis": "— Ronald Acuña Jr. hit a go-ahead grand slam in the seventh inning, and the Atlanta Braves beat Houston 6-3 Saturday night to drop the Astros out of the AL West lead.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-cca05306724681d8",
-          "feedRank": 5,
-          "compactHeadline": "Acuña grand slam leads Braves to 6-3 win, dropping Astros from AL West lead"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4ba0e9f3167b16a9"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Five relievers held Toronto to six hits after Cal Quantrill left 12 pitches in because of right lat tightness, and the Rangers moved into sole possession of the AL West lead for the first time since late August with a 6-2 win over the Blue Jays on...",
-          "text": "Five relievers held Toronto to six hits after Cal Quantrill left 12 pitches in because of right lat tightness, and the Rangers moved into sole possession of the AL West lead for the first time since late August with a 6-2 win over the Blue Jays on...",
-          "entities": [],
-          "occurredAt": "2026-09-20T02:19:29Z",
-          "timePrecision": "exact",
-          "ageHours": 1.19,
-          "freshnessBasis": "— Five relievers held Toronto to six hits after Cal Quantrill left 12 pitches in because of right lat tightness, and the Rangers moved into sole possession of the AL West lead for the first time since late August with a 6-2 win over the Blue Jays on...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817005"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817005"
-            }
-          ],
-          "id": "a415-72e61eac5d80ca64",
           "feedRank": 6,
-          "compactHeadline": "Rangers take sole possession of AL West lead, Quantrill leaves with injury in 6-3 win over Blue Jays"
+          "compactHeadline": "Acuña grand slam leads Braves to 6-3 win, dropping Astros from AL West lead"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T21:53:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.62,
+          "ageHours": 6.12,
           "freshnessBasis": "The Baltimore Ravens downgraded Pro Bowl wide receiver Zay Flowers to out for Sunday's game against the New Orleans Saints.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T21:27:54Z",
           "timePrecision": "exact",
-          "ageHours": 6.05,
+          "ageHours": 6.55,
           "freshnessBasis": "Jets rookie wide receiver Omar Cooper Jr., one of the team's three first-round picks, has been placed on injured reserve with a sprained ankle.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T21:35:07Z",
           "timePrecision": "exact",
-          "ageHours": 5.93,
+          "ageHours": 6.43,
           "freshnessBasis": "The NFL has modified what can be shown on videoboards during field goal and extra point attempts, an alteration coming in the wake of a viral social media post from a former analytics coach.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T20:27:40Z",
           "timePrecision": "exact",
-          "ageHours": 7.05,
+          "ageHours": 7.55,
           "freshnessBasis": "Rams receiver Puka Nacua will not practice for the second day in a row and will be listed as questionable for Monday night's game against the Giants.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T10:00:31Z",
           "timePrecision": "exact",
-          "ageHours": 17.51,
+          "ageHours": 18.01,
           "freshnessBasis": "On their 16-hour flight home from Australia, the 49ers chose sleep over celebration. That kick-started a long week of getting back into routine.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T10:00:28Z",
           "timePrecision": "exact",
-          "ageHours": 17.51,
+          "ageHours": 18.01,
           "freshnessBasis": "The Week 1 loss to the Giants was an inauspicious start for new coordinator Christian Parker's defense.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T12:16:10Z",
           "timePrecision": "exact",
-          "ageHours": 15.24,
+          "ageHours": 15.75,
           "freshnessBasis": "Pistons All-Defensive forward Ausar Thompson has agreed to a five-year, $155 million rookie-scale contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T04:36:32Z",
           "timePrecision": "exact",
-          "ageHours": 22.91,
+          "ageHours": 23.41,
           "freshnessBasis": "The Heat and guard Pelle Larsson have reached agreement on a four-year, $60 million extension, his agents told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T11:44:31Z",
           "timePrecision": "exact",
-          "ageHours": 15.77,
+          "ageHours": 16.27,
           "freshnessBasis": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "status": "active",
           "sourceUrls": [
@@ -510,7 +510,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T21:48:17Z",
           "timePrecision": "exact",
-          "ageHours": 5.71,
+          "ageHours": 6.21,
           "freshnessBasis": "Frank Lampard said he was grateful for his team's work ethic after Coventry ended a four-game losing streak to claim their first Premier League win for 25 years.",
           "status": "active",
           "sourceUrls": [
@@ -539,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T18:38:26Z",
           "timePrecision": "exact",
-          "ageHours": 8.87,
+          "ageHours": 9.37,
           "freshnessBasis": "Jay DaSilva fired Coventry to their first Premier League win in 25 years as they beat Nottingham Forest 1-0 in another game mired by VAR controversy.",
           "status": "active",
           "sourceUrls": [
@@ -568,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T18:25:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.09,
+          "ageHours": 9.59,
           "freshnessBasis": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
           "status": "active",
           "sourceUrls": [
@@ -597,7 +597,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T17:48:14Z",
           "timePrecision": "exact",
-          "ageHours": 9.71,
+          "ageHours": 10.21,
           "freshnessBasis": "Premier League champions Arsenal lost their 100% record for the season in dramatic fashion as they were routed 3-0 at Brighton and Hove Albion.",
           "status": "active",
           "sourceUrls": [
@@ -626,7 +626,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T17:13:08Z",
           "timePrecision": "exact",
-          "ageHours": 10.3,
+          "ageHours": 10.8,
           "freshnessBasis": "The strengths that won Arsenal the title deserted them at Brighton, which celebrated their 125th anniversary with a thumping victory over the champions.",
           "status": "active",
           "sourceUrls": [
@@ -655,7 +655,7 @@
           "entities": [],
           "occurredAt": "2026-09-19T16:21:57Z",
           "timePrecision": "exact",
-          "ageHours": 11.15,
+          "ageHours": 11.65,
           "freshnessBasis": "Hull's unbeaten start to life in the Premier League came to an end with a 2-1 defeat to Newcastle at St James' Park.",
           "status": "active",
           "sourceUrls": [
@@ -686,6 +686,122 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-0321cdedbd2f0455"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Trinidad Chambliss passed for 363 yards and two touchdowns and ran for a tiebreaking score in the fourth quarter, and No. 8 Ole Miss beat seventh-ranked LSU on Saturday night in Lane Kiffin's return to Oxford.",
+          "text": "Trinidad Chambliss passed for 363 yards and two touchdowns and ran for a tiebreaking score in the fourth quarter, and No. 8 Ole Miss beat seventh-ranked LSU on Saturday night in Lane Kiffin's return to Oxford.",
+          "entities": [],
+          "occurredAt": "2026-09-20T03:52:12Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "Trinidad Chambliss passed for 363 yards and two touchdowns and ran for a tiebreaking score in the fourth quarter, and No. 8 Ole Miss beat seventh-ranked LSU on Saturday night in Lane Kiffin's return to Oxford.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49985998/ole-miss-chambliss-spoil-kiffin-return-oxford-upset-lsu"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49985998/ole-miss-chambliss-spoil-kiffin-return-oxford-upset-lsu"
+            }
+          ],
+          "id": "a415-0cd7523becb1e4c2",
+          "feedRank": 22,
+          "compactHeadline": "Ole Miss, Chambliss spoil Kiffin's return to Oxford, upset LSU"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-37cab46a0dd80f25"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jadan Baugh ran for 162 yards and three touchdowns, and Florida beat Auburn 44-39 Saturday night in the Southeastern Conference opener for both teams and two new coaches.",
+          "text": "Jadan Baugh ran for 162 yards and three touchdowns, and Florida beat Auburn 44-39 Saturday night in the Southeastern Conference opener for both teams and two new coaches.",
+          "entities": [],
+          "occurredAt": "2026-09-20T03:56:29Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "— Jadan Baugh ran for 162 yards and three touchdowns, and Florida beat Auburn 44-39 Saturday night in the Southeastern Conference opener for both teams and two new coaches.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401856687"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401856687"
+            }
+          ],
+          "id": "a415-7c9d52d05665c41b",
+          "feedRank": 23,
+          "compactHeadline": "Jadan Baugh runs for 162 yards and 3 TDs, and Florida beats Auburn 44-39 on the Plains"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6114ee9beb4f523d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Ty Pennington threw a pair of touchdown passes and ran for another; Kenveon Stone had two touchdown runs, and Northern Arizona beat Utah Tech 35-23 on Saturday night.",
+          "text": "Ty Pennington threw a pair of touchdown passes and ran for another; Kenveon Stone had two touchdown runs, and Northern Arizona beat Utah Tech 35-23 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-20T03:50:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "— Ty Pennington threw a pair of touchdown passes and ran for another; Kenveon Stone had two touchdown runs, and Northern Arizona beat Utah Tech 35-23 on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401868124"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401868124"
+            }
+          ],
+          "id": "a415-9a844f2382f4e9ae",
+          "feedRank": 24,
+          "compactHeadline": "Pennington, Stone lead Northern Arizona over Utah Tech 35-23"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-8503797a906cbc98"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "LJ Martin rushed for 176 yards and three touchdowns, including a 56-yard run on the second play of the game, and No. 11 BYU beat Colorado State 41-23 on Saturday night to move to 3-0 for a...",
+          "text": "LJ Martin rushed for 176 yards and three touchdowns, including a 56-yard run on the second play of the game, and No. 11 BYU beat Colorado State 41-23 on Saturday night to move to 3-0 for a...",
+          "entities": [],
+          "occurredAt": "2026-09-20T03:39:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "— LJ Martin rushed for 176 yards and three touchdowns, including a 56-yard run on the second play of the game, and No. 11 BYU beat Colorado State 41-23 on Saturday night to move to 3-0 for a...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401856795"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401856795"
+            }
+          ],
+          "id": "a415-920c2f24b3bcb881",
+          "feedRank": 25,
+          "compactHeadline": "LJ Martin erupts for 176 yards, 3 TDs as No. 11 BYU storms past Colorado State 41-23"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-fe9f959486243aea"
           ],
           "type": "RESULT",
@@ -695,7 +811,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T03:25:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.59,
           "freshnessBasis": "— Ethan Grunkemeyer threw for 314 yards and three touchdowns, and Virginia Tech held off Maryland 35-26 on Saturday night, snapping the Terrapins' 20-game nonconference winning streak.",
           "status": "active",
           "sourceUrls": [
@@ -709,11 +825,11 @@
             }
           ],
           "id": "a415-6dbe964e58bf5e3f",
-          "feedRank": 22,
+          "feedRank": 26,
           "compactHeadline": "Grunkemeyer's sharp start helps Virginia Tech beat Maryland 35-26, snapping Terps' nonconference run"
         },
         {
-          "rank": 2,
+          "rank": 6,
           "candidateIds": [
             "cand-c316c94efbf7a6d2"
           ],
@@ -724,7 +840,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T03:24:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.61,
           "freshnessBasis": "— Arch Manning threw two early touchdown passes to Cam Coleman on a night he mostly struggled, and No. 1 Texas beat UTSA 30-6 in the Longhorns'...",
           "status": "active",
           "sourceUrls": [
@@ -738,124 +854,8 @@
             }
           ],
           "id": "a415-03311853975fee04",
-          "feedRank": 23,
-          "compactHeadline": "Manning throws 2 early TD passes to Coleman to help No. 1 Texas beat UTSA 30-6"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-828f55f69bbc9e50"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Faizon Brandon threw for 178 yards and one touchdown and ran for another to lead No. 15 Tennessee to a 42-9 win over Kennesaw State on Saturday night.",
-          "text": "Faizon Brandon threw for 178 yards and one touchdown and ran for another to lead No. 15 Tennessee to a 42-9 win over Kennesaw State on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-20T03:22:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.14,
-          "freshnessBasis": "— Faizon Brandon threw for 178 yards and one touchdown and ran for another to lead No. 15 Tennessee to a 42-9 win over Kennesaw State on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856692"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856692"
-            }
-          ],
-          "id": "a415-def31d1f5036099d",
-          "feedRank": 24,
-          "compactHeadline": "Brandon throws for a TD, runs for another to lead No. 15 Tennessee over Kennesaw State 42-9"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-d0063d72a78c4dd1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Florida State coach Mike Norvell said the noise around the program after Saturday's 50-36 loss at Alabama won't be anything he hasn't dealt with before.",
-          "text": "Florida State coach Mike Norvell said the noise around the program after Saturday's 50-36 loss at Alabama won't be anything he hasn't dealt with before.",
-          "entities": [],
-          "occurredAt": "2026-09-20T03:20:45Z",
-          "timePrecision": "exact",
-          "ageHours": 0.17,
-          "freshnessBasis": "Florida State coach Mike Norvell said the noise around the program after Saturday's 50-36 loss at Alabama won't be anything he hasn't dealt with before.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49985428/fsu-norvell-1-2-start-believe-team"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49985428/fsu-norvell-1-2-start-believe-team"
-            }
-          ],
-          "id": "a415-7391c0bb472255d4",
-          "feedRank": 25,
-          "compactHeadline": "FSU's Mike Norvell after 1-2 start: 'I believe in this team'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-8443361db3da3cd5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Aidan Chiles passed to Joseph Himon II for three touchdowns and ran in two himself to lead Northwestern to a 41-7 rout of Colorado on Saturday night.",
-          "text": "Aidan Chiles passed to Joseph Himon II for three touchdowns and ran in two himself to lead Northwestern to a 41-7 rout of Colorado on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-20T03:13:35Z",
-          "timePrecision": "exact",
-          "ageHours": 0.29,
-          "freshnessBasis": "— Aidan Chiles passed to Joseph Himon II for three touchdowns and ran in two himself to lead Northwestern to a 41-7 rout of Colorado on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856796"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856796"
-            }
-          ],
-          "id": "a415-3d4dda60208db5e0",
-          "feedRank": 26,
-          "compactHeadline": "Aidan Chiles throws to Joseph Himon II for 3 TDs, runs in 2, Northwestern routs Colorado 41-7"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-3efd1e00ad22ff83"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "A.J. Carr threw for 234 yards and ran for a touchdown, Nolan James Jr. rushed for 121 yards and a score, and No. 3 Notre Dame took control in the second half to beat Michigan State 27-10 on Saturday night.",
-          "text": "A.J. Carr threw for 234 yards and ran for a touchdown, Nolan James Jr. rushed for 121 yards and a score, and No. 3 Notre Dame took control in the second half to beat Michigan State 27-10 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-20T03:11:36Z",
-          "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "— A.J. Carr threw for 234 yards and ran for a touchdown, Nolan James Jr. rushed for 121 yards and a score, and No. 3 Notre Dame took control in the second half to beat Michigan State 27-10 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858453"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858453"
-            }
-          ],
-          "id": "a415-161664933f560b8d",
           "feedRank": 27,
-          "compactHeadline": "No. 3 Notre Dame takes command in second half to beat Michigan State 27-10"
+          "compactHeadline": "Manning throws 2 early TD passes to Coleman to help No. 1 Texas beat UTSA 30-6"
         }
       ]
     }
@@ -880,7 +880,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 92,
+    "freshCandidateCount": 90,
     "publishedItemCount": 28,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
