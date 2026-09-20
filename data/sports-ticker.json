@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-20T20:00:56Z",
+  "generatedAt": "2026-09-20T20:30:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "09532de353d0e05ffdcfc041b7d79c4a5aadd92b05cbd57c956c46064aab7f46",
+  "sourceCandidateHash": "57be3a74adc2b6bc1fbb61caf9d133eb4956a909473a941f0eecdcb35dbee3b9",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T18:50:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.18,
+          "ageHours": 1.68,
           "freshnessBasis": "The Rangers put versatile right-hander Cal Quantrill on the 15-day injured list Sunday, a day after he exited following four batters and 12 pitches because of right lat tightness.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T17:17:52Z",
           "timePrecision": "exact",
-          "ageHours": 2.72,
+          "ageHours": 3.22,
           "freshnessBasis": "The Reds have placed right-hander Chase Burns on the 15-day injured list with a right groin strain. A first-time All-Star this season, the 23-year-old went 15-3 with a 2.86 ERA.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:41:29Z",
           "timePrecision": "exact",
-          "ageHours": 3.32,
+          "ageHours": 3.82,
           "freshnessBasis": "Pavin Smith, a former highly touted prospect who was waived by the Diamondbacks two months ago, may have saved Arizona's season with a walk-off homer against the Yankees to stay alive in the wild card race.",
           "status": "active",
           "sourceUrls": [
@@ -101,6 +101,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-db9c412df47af9fa"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Pete Crow-Armstrong hit his 45th home run as the Chicago Cubs moved closer to clinching a postseason berth with a 9-1 victory over the Cincinnati Reds on Sunday.",
+          "text": "Pete Crow-Armstrong hit his 45th home run as the Chicago Cubs moved closer to clinching a postseason berth with a 9-1 victory over the Cincinnati Reds on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-09-20T20:18:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.2,
+          "freshnessBasis": "— Pete Crow-Armstrong hit his 45th home run as the Chicago Cubs moved closer to clinching a postseason berth with a 9-1 victory over the Cincinnati Reds on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817014"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817014"
+            }
+          ],
+          "id": "a415-fc75311ea5113d93",
+          "feedRank": 4,
+          "compactHeadline": "Crow-Armstrong hits 45th homer as Cubs beat Reds 9-1, edge closer to playoff berth"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
           "type": "PLAYOFF",
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T11:26:06Z",
           "timePrecision": "exact",
-          "ageHours": 8.58,
+          "ageHours": 9.08,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-1cb71e002252f973"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T08:02:32Z",
           "timePrecision": "exact",
-          "ageHours": 11.97,
+          "ageHours": 12.47,
           "freshnessBasis": "Miami Marlins (76-79, third in the NL East) vs. San Diego Padres (86-69, second in the NL West)",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-213af24b26291e40",
-          "feedRank": 5,
-          "compactHeadline": "Padres try to keep home win streak alive, host the Marlins"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-511202b9b6dae9e7"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 64,
-          "headline": "Rangers veteran starter Cal Quantrill, who is 9-5 this season, left Saturday night's game against the Blue Jays after facing just four batters because of right lat tightness.",
-          "text": "Rangers veteran starter Cal Quantrill, who is 9-5 this season, left Saturday night's game against the Blue Jays after facing just four batters because of right lat tightness.",
-          "entities": [],
-          "occurredAt": "2026-09-20T17:46:17Z",
-          "timePrecision": "exact",
-          "ageHours": 2.24,
-          "freshnessBasis": "Rangers veteran starter Cal Quantrill, who is 9-5 this season, left Saturday night's game against the Blue Jays after facing just four batters because of right lat tightness.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49984454/rangers-starter-cal-quantrill-exits-just-12-pitches"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49984454/rangers-starter-cal-quantrill-exits-just-12-pitches"
-            }
-          ],
-          "id": "a415-d1dfa06bbb3fc2d3",
           "feedRank": 6,
-          "compactHeadline": "Cal Quantrill exits Rangers' victory after 12 pitches"
+          "compactHeadline": "Padres try to keep home win streak alive, host the Marlins"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T17:15:40Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 3.25,
           "freshnessBasis": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
@@ -227,13 +227,13 @@
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right leg injury.",
-          "text": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right leg injury.",
+          "headline": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
+          "text": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
           "entities": [],
-          "occurredAt": "2026-09-20T19:52:54Z",
+          "occurredAt": "2026-09-20T20:21:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
-          "freshnessBasis": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right leg injury.",
+          "ageHours": 0.16,
+          "freshnessBasis": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
@@ -259,9 +259,9 @@
           "headline": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
           "text": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
           "entities": [],
-          "occurredAt": "2026-09-20T19:41:26Z",
+          "occurredAt": "2026-09-20T20:12:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.31,
           "freshnessBasis": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
           "status": "active",
           "sourceUrls": [
@@ -288,9 +288,9 @@
           "headline": "Patriots starting right guard Mike Onwenu was carted off the field with an ankle injury late in the first quarter against the Steelers.",
           "text": "Patriots starting right guard Mike Onwenu was carted off the field with an ankle injury late in the first quarter against the Steelers.",
           "entities": [],
-          "occurredAt": "2026-09-20T19:35:38Z",
+          "occurredAt": "2026-09-20T20:08:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.38,
           "freshnessBasis": "Patriots starting right guard Mike Onwenu was carted off the field with an ankle injury late in the first quarter against the Steelers.",
           "status": "active",
           "sourceUrls": [
@@ -310,60 +310,60 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-7ecaa6ee6653f5b7"
+            "cand-e6d4c33095f9973f"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Check out top Week 2 plays, with Jalen Hurts, Drake Maye, Aaron Rodgers, Caleb Williams and more in action.",
-          "text": "Check out top Week 2 plays, with Jalen Hurts, Drake Maye, Aaron Rodgers, Caleb Williams and more in action.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "TreVeyon Henderson ran for a 39-yard touchdown in his season debut, Eli Ponder added a 19-yard fumble recovery for a score and the New England Patriots’ defense smothered Aaron Rodgers on the way to a 20-3 victory over the Pittsburgh Steelers on...",
+          "text": "TreVeyon Henderson ran for a 39-yard touchdown in his season debut, Eli Ponder added a 19-yard fumble recovery for a score and the New England Patriots’ defense smothered Aaron Rodgers on the way to a 20-3 victory over the Pittsburgh Steelers on...",
           "entities": [],
-          "occurredAt": "2026-09-20T19:51:29Z",
+          "occurredAt": "2026-09-20T20:14:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
-          "freshnessBasis": "Check out top Week 2 plays, with Jalen Hurts, Drake Maye, Aaron Rodgers, Caleb Williams and more in action.",
+          "ageHours": 0.27,
+          "freshnessBasis": "— TreVeyon Henderson ran for a 39-yard touchdown in his season debut, Eli Ponder added a 19-yard fumble recovery for a score and the New England Patriots’ defense smothered Aaron Rodgers on the way to a 20-3 victory over the Pittsburgh Steelers on...",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49984903/week-2-highlights-best-plays-touchdowns-2026"
+            "http://www.espn.com/nfl/recap?gameId=401872946"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49984903/week-2-highlights-best-plays-touchdowns-2026"
+              "url": "http://www.espn.com/nfl/recap?gameId=401872946"
             }
           ],
-          "id": "a415-12be92d5d790d9eb",
+          "id": "a415-69d57f604720495b",
           "feedRank": 11,
-          "compactHeadline": "Week 2 NFL highlights: Best plays, moments, touchdowns, more"
+          "compactHeadline": "TreVeyon Henderson runs for a TD and the Patriots pummel Aaron Rodgers in a 20-3 win over Steelers"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-54c1683a8d8a5ca1"
+            "cand-6812786c2c40b6e3"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Baltimore Ravens downgraded Pro Bowl wide receiver Zay Flowers to out for Sunday's game against the New Orleans Saints.",
-          "text": "The Baltimore Ravens downgraded Pro Bowl wide receiver Zay Flowers to out for Sunday's game against the New Orleans Saints.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Tyler Shough scored on a fourth-down sneak with 1:28 remaining, and the New Orleans Saints rallied to a 24-17 win over the Baltimore Ravens on Sunday.",
+          "text": "Tyler Shough scored on a fourth-down sneak with 1:28 remaining, and the New Orleans Saints rallied to a 24-17 win over the Baltimore Ravens on Sunday.",
           "entities": [],
-          "occurredAt": "2026-09-19T21:53:31Z",
+          "occurredAt": "2026-09-20T20:11:30Z",
           "timePrecision": "exact",
-          "ageHours": 22.12,
-          "freshnessBasis": "The Baltimore Ravens downgraded Pro Bowl wide receiver Zay Flowers to out for Sunday's game against the New Orleans Saints.",
+          "ageHours": 0.32,
+          "freshnessBasis": "— Tyler Shough scored on a fourth-down sneak with 1:28 remaining, and the New Orleans Saints rallied to a 24-17 win over the Baltimore Ravens on Sunday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49982377/ravens-zay-flowers-downgraded-hamstring-injury"
+            "http://www.espn.com/nfl/recap?gameId=401872938"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49982377/ravens-zay-flowers-downgraded-hamstring-injury"
+              "url": "http://www.espn.com/nfl/recap?gameId=401872938"
             }
           ],
-          "id": "a415-0a695e37d1592ba1",
+          "id": "a415-913b950a4424abdd",
           "feedRank": 12,
-          "compactHeadline": "Ravens' Zay Flowers downgraded to out because of hamstring injury"
+          "compactHeadline": "Tyler Shough and the Saints produce two big drives at the end to topple the Ravens 24-17"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:59:52Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.52,
           "freshnessBasis": "Lowry also received a key to the city of Toronto and a special dinner to honor his contribution to the franchise.",
           "status": "active",
           "sourceUrls": [
@@ -423,7 +423,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:04:46Z",
           "timePrecision": "exact",
-          "ageHours": 3.94,
+          "ageHours": 4.44,
           "freshnessBasis": "Erling Haaland scored the eighth goal of the game as Manchester City beat Sunderland but it gave him a unique personal record.",
           "status": "active",
           "sourceUrls": [
@@ -452,7 +452,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
+          "ageHours": 4.51,
           "freshnessBasis": "Dominic Calvert-Lewin was denied the chance to make a small piece of Elland Road history in Leeds' goalless home draw with Crystal Palace.",
           "status": "active",
           "sourceUrls": [
@@ -481,7 +481,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T18:52:08Z",
           "timePrecision": "exact",
-          "ageHours": 1.15,
+          "ageHours": 1.65,
           "freshnessBasis": "Enzo Maresca can enjoy a little relaxation over the international break after Manchester City extended their perfect start to the season -- but Sunday's frantic 5-3 win over Sunderland was not good for his blood pressure.",
           "status": "active",
           "sourceUrls": [
@@ -510,7 +510,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T15:49:02Z",
           "timePrecision": "exact",
-          "ageHours": 4.2,
+          "ageHours": 4.7,
           "freshnessBasis": "Brian Brobbey scored a hat trick in a losing cause as Manchester City maintained their 100% Premier League start with a frantic 5-3 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -539,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T09:10:10Z",
           "timePrecision": "exact",
-          "ageHours": 10.85,
+          "ageHours": 11.35,
           "freshnessBasis": "The strengths that won Arsenal the Premier League deserted them as Brighton celebrated their 125th anniversary with a thumping victory over the champions.",
           "status": "active",
           "sourceUrls": [
@@ -568,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T08:12:46Z",
           "timePrecision": "exact",
-          "ageHours": 11.8,
+          "ageHours": 12.3,
           "freshnessBasis": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
           "status": "active",
           "sourceUrls": [
@@ -599,176 +599,176 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a218b59ebd192e28"
+            "cand-f378efbb74bee461"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
-          "text": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "No. 1 Texas (3-0) at No. 14 Tennessee (3-0), Sept. 26 at 12 p.m. EDT.",
+          "text": "No. 1 Texas (3-0) at No. 14 Tennessee (3-0), Sept. 26 at 12 p.m. EDT.",
           "entities": [],
-          "occurredAt": "2026-09-20T18:50:53Z",
+          "occurredAt": "2026-09-20T19:46:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.17,
-          "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
+          "ageHours": 0.73,
+          "freshnessBasis": "No. 1 Texas (3-0) at No. 14 Tennessee (3-0), Sept. 26 at 12 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/college-football-allstate-playoff-bracket-predictor"
+            "http://www.espn.com/ncf/preview?gameId=401856704"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/college-football-allstate-playoff-bracket-predictor"
+              "url": "http://www.espn.com/ncf/preview?gameId=401856704"
             }
           ],
-          "id": "a415-5b2a336fbb3bf915",
+          "id": "a415-f7724b53ba1feb50",
           "feedRank": 20,
-          "compactHeadline": "Allstate Playoff Predictor"
+          "compactHeadline": "Top-25 SEC matchup features Texas visiting Tennessee"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-abbfa45a0334c6e8"
+            "cand-98e3e72b2e05b5ee"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Ole Miss moved into the top five with its win over LSU, the Tigers stayed in the top 10, and Florida and Mississippi State cracked the rankings to give the SEC 10 teams in The Associated Press Top 25.",
-          "text": "Ole Miss moved into the top five with its win over LSU, the Tigers stayed in the top 10, and Florida and Mississippi State cracked the rankings to give the SEC 10 teams in The Associated Press Top 25.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "No. 17 Iowa (3-0) at No. 18 Michigan (3-0), Sept. 26 at 3:30 p.m. EDT.",
+          "text": "No. 17 Iowa (3-0) at No. 18 Michigan (3-0), Sept. 26 at 3:30 p.m. EDT.",
           "entities": [],
-          "occurredAt": "2026-09-20T18:44:11Z",
+          "occurredAt": "2026-09-20T19:44:26Z",
           "timePrecision": "exact",
-          "ageHours": 1.28,
-          "freshnessBasis": "Ole Miss moved into the top five with its win over LSU, the Tigers stayed in the top 10, and Florida and Mississippi State cracked the rankings to give the SEC 10 teams in The Associated Press Top 25.",
+          "ageHours": 0.77,
+          "freshnessBasis": "No. 17 Iowa (3-0) at No. 18 Michigan (3-0), Sept. 26 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49990757/ole-miss-climbs-no-4-joined-9-other-sec-teams-top-25"
+            "http://www.espn.com/ncf/preview?gameId=401858463"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49990757/ole-miss-climbs-no-4-joined-9-other-sec-teams-top-25"
+              "url": "http://www.espn.com/ncf/preview?gameId=401858463"
             }
           ],
-          "id": "a415-5bd3a494410861ca",
+          "id": "a415-7262cbd56fdd50b2",
           "feedRank": 21,
-          "compactHeadline": "Ole Miss climbs to No. 4, joined by 9 other SEC teams in Top 25"
+          "compactHeadline": "Top-25 Big Ten matchup features Michigan hosting Iowa"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-1b72e52e4d316144"
+            "cand-d504825b0adbe060"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "A look at this week's Top 25.",
-          "text": "A look at this week's Top 25.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "No. 20 Oregon (2-1) at No. 12 USC (4-0), Sept. 26 at 7:30 p.m. EDT.",
+          "text": "No. 20 Oregon (2-1) at No. 12 USC (4-0), Sept. 26 at 7:30 p.m. EDT.",
           "entities": [],
-          "occurredAt": "2026-09-20T18:39:11Z",
+          "occurredAt": "2026-09-20T19:44:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.36,
-          "freshnessBasis": "A look at this week's Top 25.",
+          "ageHours": 0.78,
+          "freshnessBasis": "No. 20 Oregon (2-1) at No. 12 USC (4-0), Sept. 26 at 7:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49988859/ap-college-football-2026-week-3-poll-reaction"
+            "http://www.espn.com/ncf/preview?gameId=401858469"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49988859/ap-college-football-2026-week-3-poll-reaction"
+              "url": "http://www.espn.com/ncf/preview?gameId=401858469"
             }
           ],
-          "id": "a415-b3431ed75783262f",
+          "id": "a415-6fc8a0281814f8ec",
           "feedRank": 22,
-          "compactHeadline": "AP college football Week 3 poll reaction: What's next for each Top 25 team"
+          "compactHeadline": "Oregon visits USC in top-25 Big Ten matchup"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-87e81d3fddbbfaf0"
+            "cand-c18fcc19564f1b87"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "We assess how the selection committee could stack the top teams in the country after Week 3.",
-          "text": "We assess how the selection committee could stack the top teams in the country after Week 3.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "No. 23 Texas A&M (2-1) at No. 10 LSU (2-1), Sept. 26 at 7:30 p.m. EDT.",
+          "text": "No. 23 Texas A&M (2-1) at No. 10 LSU (2-1), Sept. 26 at 7:30 p.m. EDT.",
           "entities": [],
-          "occurredAt": "2026-09-20T14:12:09Z",
+          "occurredAt": "2026-09-20T19:43:49Z",
           "timePrecision": "exact",
-          "ageHours": 5.81,
-          "freshnessBasis": "We assess how the selection committee could stack the top teams in the country after Week 3.",
+          "ageHours": 0.78,
+          "freshnessBasis": "No. 23 Texas A&M (2-1) at No. 10 LSU (2-1), Sept. 26 at 7:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49979910/projecting-2026-college-football-playoff-top-12-week-3"
+            "http://www.espn.com/ncf/preview?gameId=401856702"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49979910/projecting-2026-college-football-playoff-top-12-week-3"
+              "url": "http://www.espn.com/ncf/preview?gameId=401856702"
             }
           ],
-          "id": "a415-30025c0634753197",
+          "id": "a415-d704842872fc595c",
           "feedRank": 23,
-          "compactHeadline": "Projecting the College Football Playoff top 12 after Week 3"
+          "compactHeadline": "LSU hosts Texas A&M in top-25 SEC matchup"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-eb30abe3e5d4422d"
+            "cand-a4fa50151bb929c1"
           ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Arizona coach Brent Brennan was not going to let Noah Fifita miss a chance to break the school’s all-time passing mark at home.",
-          "text": "Arizona coach Brent Brennan was not going to let Noah Fifita miss a chance to break the school’s all-time passing mark at home.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
+          "text": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
           "entities": [],
-          "occurredAt": "2026-09-20T06:24:29Z",
+          "occurredAt": "2026-09-20T19:47:23Z",
           "timePrecision": "exact",
-          "ageHours": 13.61,
-          "freshnessBasis": "— Arizona coach Brent Brennan was not going to let Noah Fifita miss a chance to break the school’s all-time passing mark at home.",
+          "ageHours": 0.73,
+          "freshnessBasis": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856793"
+            "http://www.espn.com/ncf/preview?gameId=401862779"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856793"
+              "url": "http://www.espn.com/ncf/preview?gameId=401862779"
             }
           ],
-          "id": "a415-2385b08823e10d49",
+          "id": "a415-6a879da3e767e280",
           "feedRank": 24,
-          "compactHeadline": "Noah Fifita breaks Arizona's all-time passing mark, Wildcats roll over Northern Illinois 42-17"
+          "compactHeadline": "Temple hosts Army in AAC matchup"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-b7edfffe0c1c0d5b"
+            "cand-f55ad75f68fb8ab7"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
-          "text": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "San Diego State (1-2) at Toledo (2-1), Sept. 26 at 12 p.m. EDT.",
+          "text": "San Diego State (1-2) at Toledo (2-1), Sept. 26 at 12 p.m. EDT.",
           "entities": [],
-          "occurredAt": "2026-09-20T13:57:27Z",
+          "occurredAt": "2026-09-20T19:47:19Z",
           "timePrecision": "exact",
-          "ageHours": 6.06,
-          "freshnessBasis": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
+          "ageHours": 0.73,
+          "freshnessBasis": "San Diego State (1-2) at Toledo (2-1), Sept. 26 at 12 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49868647/2026-college-football-sp+-rankings-all-138-fbs-teams"
+            "http://www.espn.com/ncf/preview?gameId=401860893"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49868647/2026-college-football-sp+-rankings-all-138-fbs-teams"
+              "url": "http://www.espn.com/ncf/preview?gameId=401860893"
             }
           ],
-          "id": "a415-aa4d65b5c645b300",
+          "id": "a415-834a75605dfe0d8f",
           "feedRank": 25,
-          "compactHeadline": "2026 college football SP+ rankings for all 138 FBS teams"
+          "compactHeadline": "Toledo takes on San Diego State in Week 4"
         }
       ]
     }
@@ -793,7 +793,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 121,
+    "freshCandidateCount": 140,
     "publishedItemCount": 25,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
