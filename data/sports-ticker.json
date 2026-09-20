@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-20T22:31:02Z",
+  "generatedAt": "2026-09-20T23:00:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e3e5f2ae51f9bfb3709b305664329ad356122a0fe398ba4ab1c1bfa44eee7aab",
+  "sourceCandidateHash": "f6a2d3fc90fca2e4193736c7d72ecb52d6aef4afd0b1fde07879dd5e64e123cc",
   "leagues": [
     {
       "league": "MLB",
@@ -14,6 +14,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-81457d3e40fcec97"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Red Sox are the fourth team to make the playoffs after being 14-or-more games under .500 in a season in the World Series era (since 1903).",
+          "text": "The Red Sox are the fourth team to make the playoffs after being 14-or-more games under .500 in a season in the World Series era (since 1903).",
+          "entities": [],
+          "occurredAt": "2026-09-20T22:55:29Z",
+          "timePrecision": "exact",
+          "ageHours": 0.09,
+          "freshnessBasis": "The Red Sox are the fourth team to make the playoffs after being 14-or-more games under .500 in a season in the World Series era (since 1903).",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49993627/stayin-alive-red-sox-cap-turnaround-clinch-playoff-spot"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49993627/stayin-alive-red-sox-cap-turnaround-clinch-playoff-spot"
+            }
+          ],
+          "id": "a415-403e18571eed68fd",
+          "feedRank": 1,
+          "compactHeadline": "'Stayin Alive' Red Sox cap turnaround, clinch playoff spot"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-18827b840e489b99"
           ],
           "type": "PLAYOFF",
@@ -21,9 +50,9 @@
           "headline": "Under first-year manager Walt Weiss, Atlanta has rebounded after missing the playoffs last season.",
           "text": "Under first-year manager Walt Weiss, Atlanta has rebounded after missing the playoffs last season.",
           "entities": [],
-          "occurredAt": "2026-09-20T22:13:46Z",
+          "occurredAt": "2026-09-20T22:50:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.29,
+          "ageHours": 0.18,
           "freshnessBasis": "Under first-year manager Walt Weiss, Atlanta has rebounded after missing the playoffs last season.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-755a6c66631afa77",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Atlanta Braves clinch 7th NL East title in 9 years"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T21:38:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.88,
+          "ageHours": 1.38,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-d2a2ab70504cd6c9"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T18:50:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.68,
+          "ageHours": 4.18,
           "freshnessBasis": "The Rangers put versatile right-hander Cal Quantrill on the 15-day injured list Sunday, a day after he exited following four batters and 12 pitches because of right lat tightness.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-d87903526b7e538b",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Rangers place pitcher Cal Quantrill on 15-day injured list"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-9a7a75162cf5129a"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T17:17:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.22,
+          "ageHours": 5.72,
           "freshnessBasis": "The Reds have placed right-hander Chase Burns on the 15-day injured list with a right groin strain. A first-time All-Star this season, the 23-year-old went 15-3 with a 2.86 ERA.",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +153,37 @@
             }
           ],
           "id": "a415-cdc87f246228b8c6",
-          "feedRank": 4,
-          "compactHeadline": "Reds place ace Chase Burns on 15-day IL with groin strain"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0bc55e948965e0a5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Rookie Kade Anderson tossed seven shutout innings, Dominic Canzone drove in two runs, and the Seattle Mariners beat the Colorado Rockies 2-1 on Sunday to stave off elimination from playoff contention.",
-          "text": "Rookie Kade Anderson tossed seven shutout innings, Dominic Canzone drove in two runs, and the Seattle Mariners beat the Colorado Rockies 2-1 on Sunday to stave off elimination from playoff contention.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:16:32Z",
-          "timePrecision": "exact",
-          "ageHours": 0.24,
-          "freshnessBasis": "— Rookie Kade Anderson tossed seven shutout innings, Dominic Canzone drove in two runs, and the Seattle Mariners beat the Colorado Rockies 2-1 on Sunday to stave off elimination from playoff contention.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817022"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817022"
-            }
-          ],
-          "id": "a415-8225d67643964bd9",
           "feedRank": 5,
-          "compactHeadline": "Anderson tosses 7 shutout innings, Mariners beat Rockies 2-1 to avoid elimination"
+          "compactHeadline": "Reds place ace Chase Burns on 15-day IL with groin strain"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-0832f8b302849302"
+            "cand-118348ac1765864f"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Gavin Williams threw seven shutout innings, Jo Adell had an RBI infield single and the Cleveland Guardians beat the Athletics 1-0 Sunday to remain atop the AL Central.",
-          "text": "Gavin Williams threw seven shutout innings, Jo Adell had an RBI infield single and the Cleveland Guardians beat the Athletics 1-0 Sunday to remain atop the AL Central.",
+          "headline": "Jake Cronenworth hit a pair of two-run homers and drove in five runs for the San Diego Padres, who beat the Miami Marlins 7-3 on Sunday to move closer to clinching their third straight postseason berth.",
+          "text": "Jake Cronenworth hit a pair of two-run homers and drove in five runs for the San Diego Padres, who beat the Miami Marlins 7-3 on Sunday to move closer to clinching their third straight postseason berth.",
           "entities": [],
-          "occurredAt": "2026-09-20T22:08:36Z",
+          "occurredAt": "2026-09-20T22:44:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
-          "freshnessBasis": "— Gavin Williams threw seven shutout innings, Jo Adell had an RBI infield single and the Cleveland Guardians beat the Athletics 1-0 Sunday to remain atop the AL Central.",
+          "ageHours": 0.27,
+          "freshnessBasis": "Jake Cronenworth hit a pair of two-run homers and drove in five runs for the San Diego Padres, who beat the Miami Marlins 7-3 on Sunday to move closer to clinching their third straight postseason berth.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817012"
+            "http://www.espn.com/mlb/recap?gameId=401817023"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817012"
+              "url": "http://www.espn.com/mlb/recap?gameId=401817023"
             }
           ],
-          "id": "a415-bc95024c4d27e0a0",
+          "id": "a415-448fe04874f00264",
           "feedRank": 6,
-          "compactHeadline": "Gavin Williams dominates with 7 shutout frames as Guardians edge Athletics to stay atop AL Central"
+          "compactHeadline": "Cronenworth homers twice, Padres beat Marlins 7-3 to lower wild-card magic number to 2"
         }
       ]
     },
@@ -194,31 +194,31 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-433883208e46faf3"
+            "cand-b8d0f6fdae358067"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Patriots starting right guard Mike Onwenu was carted off the field with an ankle injury late in the first quarter against the Steelers.",
-          "text": "Patriots starting right guard Mike Onwenu was carted off the field with an ankle injury late in the first quarter against the Steelers.",
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Prescott matched Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
+          "text": "Prescott matched Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
           "entities": [],
-          "occurredAt": "2026-09-20T22:26:29Z",
+          "occurredAt": "2026-09-20T22:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
-          "freshnessBasis": "Patriots starting right guard Mike Onwenu was carted off the field with an ankle injury late in the first quarter against the Steelers.",
+          "ageHours": 0.4,
+          "freshnessBasis": "Prescott matched Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49990760/patriots-starting-rg-mike-onwenu-carted-ankle-injury"
+            "https://www.espn.com/nfl/story/_/id/49940226/nfl-dallas-cowboys-dak-prescott-tony-romo-touchdowns-passes-all-record"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49990760/patriots-starting-rg-mike-onwenu-carted-ankle-injury"
+              "url": "https://www.espn.com/nfl/story/_/id/49940226/nfl-dallas-cowboys-dak-prescott-tony-romo-touchdowns-passes-all-record"
             }
           ],
-          "id": "a415-02e7af964414baff",
+          "id": "a415-7496ca73fa691919",
           "feedRank": 7,
-          "compactHeadline": "Patriots starting RG Mike Onwenu has broken right ankle, source says"
+          "compactHeadline": "Cowboys' TD record: I caught a TD pass from Dak Prescott"
         },
         {
           "rank": 2,
@@ -230,9 +230,9 @@
           "headline": "Commanders quarterback Jayden Daniels was carted off the field in Sunday's game against the Cowboys after suffering an injured left elbow on the final play of the first half.",
           "text": "Commanders quarterback Jayden Daniels was carted off the field in Sunday's game against the Cowboys after suffering an injured left elbow on the final play of the first half.",
           "entities": [],
-          "occurredAt": "2026-09-20T22:23:31Z",
+          "occurredAt": "2026-09-20T22:47:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.22,
           "freshnessBasis": "Commanders quarterback Jayden Daniels was carted off the field in Sunday's game against the Cowboys after suffering an injured left elbow on the final play of the first half.",
           "status": "active",
           "sourceUrls": [
@@ -252,93 +252,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-16387a8bbf642160"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
-          "text": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:09:52Z",
-          "timePrecision": "exact",
-          "ageHours": 0.35,
-          "freshnessBasis": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49993300/qb-kyler-murray-concussion-expected-return-week-3"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49993300/qb-kyler-murray-concussion-expected-return-week-3"
-            }
-          ],
-          "id": "a415-d8c648edb273cfce",
-          "feedRank": 9,
-          "compactHeadline": "QB Kyler Murray (concussion) expected to return for Week 3"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f05f0705f9b41869"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
-          "text": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:06:55Z",
-          "timePrecision": "exact",
-          "ageHours": 0.4,
-          "freshnessBasis": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49991415/saints-lt-kelvin-banks-jr-carted-ankle-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49991415/saints-lt-kelvin-banks-jr-carted-ankle-injury"
-            }
-          ],
-          "id": "a415-32f0396f780935c3",
-          "feedRank": 10,
-          "compactHeadline": "Saints LT Kelvin Banks Jr. carted off with ankle injury"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-06a0d74948d74989"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
-          "text": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
-          "entities": [],
-          "occurredAt": "2026-09-20T21:25:52Z",
-          "timePrecision": "exact",
-          "ageHours": 1.09,
-          "freshnessBasis": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
-            }
-          ],
-          "id": "a415-d2dc03bc869532fe",
-          "feedRank": 11,
-          "compactHeadline": "Bears' Caleb Williams leaves on cart after injuring hamstring"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-79ff1b164f271b19"
           ],
           "type": "INJURY",
@@ -346,9 +259,9 @@
           "headline": "Chargers tight end David Njoku exited Sunday's game against the Raiders in the second quarter on a medical cart with an injury to his right knee.",
           "text": "Chargers tight end David Njoku exited Sunday's game against the Raiders in the second quarter on a medical cart with an injury to his right knee.",
           "entities": [],
-          "occurredAt": "2026-09-20T21:24:15Z",
+          "occurredAt": "2026-09-20T22:31:39Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 0.49,
           "freshnessBasis": "Chargers tight end David Njoku exited Sunday's game against the Raiders in the second quarter on a medical cart with an injury to his right knee.",
           "status": "active",
           "sourceUrls": [
@@ -362,8 +275,95 @@
             }
           ],
           "id": "a415-c8129e3d5e6bc79d",
-          "feedRank": 12,
+          "feedRank": 9,
           "compactHeadline": "Chargers TE David Njoku leaves game with knee injury"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-16387a8bbf642160"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
+          "text": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
+          "entities": [],
+          "occurredAt": "2026-09-20T22:09:52Z",
+          "timePrecision": "exact",
+          "ageHours": 0.85,
+          "freshnessBasis": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49993300/qb-kyler-murray-concussion-expected-return-week-3"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49993300/qb-kyler-murray-concussion-expected-return-week-3"
+            }
+          ],
+          "id": "a415-d8c648edb273cfce",
+          "feedRank": 10,
+          "compactHeadline": "QB Kyler Murray (concussion) expected to return for Week 3"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-f05f0705f9b41869"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
+          "text": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
+          "entities": [],
+          "occurredAt": "2026-09-20T22:06:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.9,
+          "freshnessBasis": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49991415/saints-lt-kelvin-banks-jr-carted-ankle-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49991415/saints-lt-kelvin-banks-jr-carted-ankle-injury"
+            }
+          ],
+          "id": "a415-32f0396f780935c3",
+          "feedRank": 11,
+          "compactHeadline": "Saints LT Kelvin Banks Jr. carted off with ankle injury"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-06a0d74948d74989"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
+          "text": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
+          "entities": [],
+          "occurredAt": "2026-09-20T21:25:52Z",
+          "timePrecision": "exact",
+          "ageHours": 1.58,
+          "freshnessBasis": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings with a right hamstring injury.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
+            }
+          ],
+          "id": "a415-d2dc03bc869532fe",
+          "feedRank": 12,
+          "compactHeadline": "Bears' Caleb Williams leaves on cart after injuring hamstring"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:59:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.52,
+          "ageHours": 6.02,
           "freshnessBasis": "Lowry also received a key to the city of Toronto and a special dinner to honor his contribution to the franchise.",
           "status": "active",
           "sourceUrls": [
@@ -423,7 +423,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:04:46Z",
           "timePrecision": "exact",
-          "ageHours": 6.44,
+          "ageHours": 6.94,
           "freshnessBasis": "Erling Haaland scored the eighth goal of the game as Manchester City beat Sunderland but it gave him a unique personal record.",
           "status": "active",
           "sourceUrls": [
@@ -452,7 +452,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 6.51,
+          "ageHours": 7.01,
           "freshnessBasis": "Dominic Calvert-Lewin was denied the chance to make a small piece of Elland Road history in Leeds' goalless home draw with Crystal Palace.",
           "status": "active",
           "sourceUrls": [
@@ -481,7 +481,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T18:52:08Z",
           "timePrecision": "exact",
-          "ageHours": 3.65,
+          "ageHours": 4.15,
           "freshnessBasis": "Enzo Maresca can enjoy a little relaxation over the international break after Manchester City extended their perfect start to the season -- but Sunday's frantic 5-3 win over Sunderland was not good for his blood pressure.",
           "status": "active",
           "sourceUrls": [
@@ -510,7 +510,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T15:49:02Z",
           "timePrecision": "exact",
-          "ageHours": 6.7,
+          "ageHours": 7.2,
           "freshnessBasis": "Brian Brobbey scored a hat trick in a losing cause as Manchester City maintained their 100% Premier League start with a frantic 5-3 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -539,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T09:10:10Z",
           "timePrecision": "exact",
-          "ageHours": 13.35,
+          "ageHours": 13.85,
           "freshnessBasis": "The strengths that won Arsenal the Premier League deserted them as Brighton celebrated their 125th anniversary with a thumping victory over the champions.",
           "status": "active",
           "sourceUrls": [
@@ -568,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T08:12:46Z",
           "timePrecision": "exact",
-          "ageHours": 14.3,
+          "ageHours": 14.8,
           "freshnessBasis": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
           "status": "active",
           "sourceUrls": [
@@ -601,9 +601,9 @@
           "headline": "The union that represents MLS and USL referees, launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
           "text": "The union that represents MLS and USL referees, launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
           "entities": [],
-          "occurredAt": "2026-09-20T22:23:17Z",
+          "occurredAt": "2026-09-20T22:57:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.05,
           "freshnessBasis": "The union that represents MLS and USL referees, launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
           "status": "active",
           "sourceUrls": [
@@ -638,7 +638,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T20:56:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.57,
+          "ageHours": 2.07,
           "freshnessBasis": "Following Week 3, Bill Connelly takes stock of which undefeated teams he trusts and which are pretenders.",
           "status": "active",
           "sourceUrls": [
@@ -667,7 +667,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:46:49Z",
           "timePrecision": "exact",
-          "ageHours": 2.74,
+          "ageHours": 3.24,
           "freshnessBasis": "No. 1 Texas (3-0) at No. 14 Tennessee (3-0), Sept. 26 at 12 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -696,7 +696,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:44:26Z",
           "timePrecision": "exact",
-          "ageHours": 2.78,
+          "ageHours": 3.28,
           "freshnessBasis": "No. 17 Iowa (3-0) at No. 18 Michigan (3-0), Sept. 26 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -725,7 +725,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:44:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.78,
+          "ageHours": 3.28,
           "freshnessBasis": "No. 20 Oregon (2-1) at No. 12 USC (4-0), Sept. 26 at 7:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -754,7 +754,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:43:49Z",
           "timePrecision": "exact",
-          "ageHours": 2.79,
+          "ageHours": 3.29,
           "freshnessBasis": "No. 23 Texas A&M (2-1) at No. 10 LSU (2-1), Sept. 26 at 7:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -783,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:47:23Z",
           "timePrecision": "exact",
-          "ageHours": 2.73,
+          "ageHours": 3.23,
           "freshnessBasis": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
