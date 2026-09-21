@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-20T23:31:28Z",
+  "generatedAt": "2026-09-21T00:01:13Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "a3d360cb29ea978219c3cb738579f79bd3cf5ca132ce0613d4f5a4a7b3d73f8c",
+  "sourceCandidateHash": "488c7f9b2f66ffd4a1ae5960b952f31a40825e3f6db950c1acd8a863b8a9a303",
   "leagues": [
     {
       "league": "MLB",
@@ -14,176 +14,212 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-81457d3e40fcec97"
+            "cand-fec2ff3d7c4f5085"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "The Red Sox are the fourth team to make the playoffs after being 14-or-more games under .500 in a season in the World Series era (since 1903).",
-          "text": "The Red Sox are the fourth team to make the playoffs after being 14-or-more games under .500 in a season in the World Series era (since 1903).",
+          "type": "RESULT",
+          "priority": 74,
+          "headline": "Jake Cronenworth hit a pair of two-run homers and drove in five runs for the San Diego Padres, who beat the Miami Marlins 7-3 on Sunday to move closer to clinching their third straight postseason berth.",
+          "text": "Jake Cronenworth hit a pair of two-run homers and drove in five runs for the San Diego Padres, who beat the Miami Marlins 7-3 on Sunday to move closer to clinching their third straight postseason berth.",
           "entities": [],
-          "occurredAt": "2026-09-20T22:55:29Z",
+          "occurredAt": "2026-09-20T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.6,
-          "freshnessBasis": "The Red Sox are the fourth team to make the playoffs after being 14-or-more games under .500 in a season in the World Series era (since 1903).",
+          "ageHours": 3.85,
+          "freshnessBasis": "Highlightly final: Miami Marlins 3, San Diego Padres 7.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49993627/stayin-alive-red-sox-cap-turnaround-clinch-playoff-spot"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817023"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49993627/stayin-alive-red-sox-cap-turnaround-clinch-playoff-spot"
+              "url": "http://www.espn.com/mlb/recap?gameId=401817023"
             }
           ],
-          "id": "a415-403e18571eed68fd",
+          "id": "a415-e41d151572558271",
           "feedRank": 1,
-          "compactHeadline": "'Stayin Alive' Red Sox cap turnaround, clinch playoff spot"
+          "compactHeadline": "Cronenworth homers twice, Padres beat Marlins 7-3 to lower wild-card magic number to 2"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-18827b840e489b99"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Under first-year manager Walt Weiss, Atlanta has rebounded after missing the playoffs last season.",
-          "text": "Under first-year manager Walt Weiss, Atlanta has rebounded after missing the playoffs last season.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:50:10Z",
-          "timePrecision": "exact",
-          "ageHours": 0.69,
-          "freshnessBasis": "Under first-year manager Walt Weiss, Atlanta has rebounded after missing the playoffs last season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49992824/atlanta-braves-clinch-7th-nl-east-title-9-years"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49992824/atlanta-braves-clinch-7th-nl-east-title-9-years"
-            }
-          ],
-          "id": "a415-755a6c66631afa77",
-          "feedRank": 2,
-          "compactHeadline": "Atlanta Braves clinch 7th NL East title in 9 years"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-4d677bb0e01caec3"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "entities": [],
-          "occurredAt": "2026-09-20T21:38:18Z",
-          "timePrecision": "exact",
-          "ageHours": 1.89,
-          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
-            }
-          ],
-          "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 3,
-          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-d2a2ab70504cd6c9"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Rangers put versatile right-hander Cal Quantrill on the 15-day injured list Sunday, a day after he exited following four batters and 12 pitches because of right lat tightness.",
-          "text": "The Rangers put versatile right-hander Cal Quantrill on the 15-day injured list Sunday, a day after he exited following four batters and 12 pitches because of right lat tightness.",
-          "entities": [],
-          "occurredAt": "2026-09-20T18:50:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.69,
-          "freshnessBasis": "The Rangers put versatile right-hander Cal Quantrill on the 15-day injured list Sunday, a day after he exited following four batters and 12 pitches because of right lat tightness.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49990766/rangers-place-pitcher-quantrill-15-day-injured-list"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49990766/rangers-place-pitcher-quantrill-15-day-injured-list"
-            }
-          ],
-          "id": "a415-d87903526b7e538b",
-          "feedRank": 4,
-          "compactHeadline": "Rangers place pitcher Cal Quantrill on 15-day injured list"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-9a7a75162cf5129a"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Reds have placed right-hander Chase Burns on the 15-day injured list with a right groin strain. A first-time All-Star this season, the 23-year-old went 15-3 with a 2.86 ERA.",
-          "text": "The Reds have placed right-hander Chase Burns on the 15-day injured list with a right groin strain. A first-time All-Star this season, the 23-year-old went 15-3 with a 2.86 ERA.",
-          "entities": [],
-          "occurredAt": "2026-09-20T17:17:52Z",
-          "timePrecision": "exact",
-          "ageHours": 6.23,
-          "freshnessBasis": "The Reds have placed right-hander Chase Burns on the 15-day injured list with a right groin strain. A first-time All-Star this season, the 23-year-old went 15-3 with a 2.86 ERA.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49990032/reds-place-rhp-chase-burns-15-day-il-groin-strain"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49990032/reds-place-rhp-chase-burns-15-day-il-groin-strain"
-            }
-          ],
-          "id": "a415-cdc87f246228b8c6",
-          "feedRank": 5,
-          "compactHeadline": "Reds place ace Chase Burns on 15-day IL with groin strain"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-2e14ea8f9f9ce983"
+            "cand-aa25d75f2d4e49ed"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Nolan Arenado hit his third grand slam of the season top help the Arizona Diamondbacks beat the New York Yankees 8-4 on Sunday.",
           "text": "Nolan Arenado hit his third grand slam of the season top help the Arizona Diamondbacks beat the New York Yankees 8-4 on Sunday.",
           "entities": [],
-          "occurredAt": "2026-09-20T23:09:31Z",
+          "occurredAt": "2026-09-20T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
-          "freshnessBasis": "— Nolan Arenado hit his third grand slam of the season top help the Arizona Diamondbacks beat the New York Yankees 8-4 on Sunday.",
+          "ageHours": 3.85,
+          "freshnessBasis": "Highlightly final: New York Yankees 4, Arizona Diamondbacks 8.",
           "status": "active",
           "sourceUrls": [
+            "https://highlightly.net",
             "http://www.espn.com/mlb/recap?gameId=401817025"
           ],
           "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-20",
+              "url": "https://highlightly.net"
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401817025"
             }
           ],
-          "id": "a415-ecbcb67a6d15b288",
-          "feedRank": 6,
+          "id": "a415-67ec52b474dbb39f",
+          "feedRank": 2,
           "compactHeadline": "Arenado hits grand slam in the Diamondbacks' 8-4 victory over the Yankees"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-4e0b36b3de60c70e"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Mike Yastrzemski hit a three-run homer during a four-run sixth inning and the Atlanta Braves clinched the NL East title for the seventh time in nine years with a 4-2 win over the Houston Astros on Sunday.",
+          "text": "Mike Yastrzemski hit a three-run homer during a four-run sixth inning and the Atlanta Braves clinched the NL East title for the seventh time in nine years with a 4-2 win over the Houston Astros on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-09-20T18:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.85,
+          "freshnessBasis": "Highlightly final: Atlanta Braves 4, Houston Astros 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817018"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817018"
+            }
+          ],
+          "id": "a415-b845a458b82dcf52",
+          "feedRank": 3,
+          "compactHeadline": "Yastrzemski hits a 3-run homer and the Braves clinch the NL East title with 4-2 win over the Astros"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-e247750fd0f16fe2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Rookie Kade Anderson tossed seven shutout innings, Dominic Canzone drove in two runs, and the Seattle Mariners beat the Colorado Rockies 2-1 on Sunday to stave off elimination from playoff contention.",
+          "text": "Rookie Kade Anderson tossed seven shutout innings, Dominic Canzone drove in two runs, and the Seattle Mariners beat the Colorado Rockies 2-1 on Sunday to stave off elimination from playoff contention.",
+          "entities": [],
+          "occurredAt": "2026-09-20T19:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.85,
+          "freshnessBasis": "Highlightly final: Seattle Mariners 2, Colorado Rockies 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817022"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817022"
+            }
+          ],
+          "id": "a415-bbc184d65d7d3239",
+          "feedRank": 4,
+          "compactHeadline": "Anderson tosses 7 shutout innings, Mariners beat Rockies 2-1 to avoid elimination"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-7178de2b2344df41"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Pete Crow-Armstrong hit his 45th home run as the Chicago Cubs moved closer to clinching a postseason berth with a 9-1 victory over the Cincinnati Reds on Sunday.",
+          "text": "Pete Crow-Armstrong hit his 45th home run as the Chicago Cubs moved closer to clinching a postseason berth with a 9-1 victory over the Cincinnati Reds on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-09-20T17:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 6.35,
+          "freshnessBasis": "Highlightly final: Chicago Cubs 9, Cincinnati Reds 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817014"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817014"
+            }
+          ],
+          "id": "a415-e698ed25886e4d58",
+          "feedRank": 5,
+          "compactHeadline": "Crow-Armstrong hits 45th homer as Cubs beat Reds 9-1, edge closer to playoff berth"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-a1793e0abba1bebf"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Toronto leadoff hitter Brett Bateman reached base and scored three times, twice knocked in by Nathan Lukes, and the Blue Jays beat the AL West-leading Texas Rangers 7-2 on Sunday to avoid a series sweep in the matchup of playoff hopefuls.",
+          "text": "Toronto leadoff hitter Brett Bateman reached base and scored three times, twice knocked in by Nathan Lukes, and the Blue Jays beat the AL West-leading Texas Rangers 7-2 on Sunday to avoid a series sweep in the matchup of playoff hopefuls.",
+          "entities": [],
+          "occurredAt": "2026-09-20T18:35:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.44,
+          "freshnessBasis": "Highlightly final: Toronto Blue Jays 7, Texas Rangers 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817020"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817020"
+            }
+          ],
+          "id": "a415-ee437ebf63c0603d",
+          "feedRank": 6,
+          "compactHeadline": "Playoff hopeful Blue Jays avoid series sweep with 7-2 win over AL West-leading Texas"
         }
       ]
     },
@@ -194,6 +230,175 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-472b52d3a4a8d2b7"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Christian McCaffrey became the fourth-fastest player in the Super Bowl era with 100 career touchdowns, Brock Purdy played a near-perfect game and the San Francisco 49ers overwhelmed the",
+          "text": "Christian McCaffrey became the fourth-fastest player in the Super Bowl era with 100 career touchdowns, Brock Purdy played a near-perfect game and the San Francisco 49ers overwhelmed the",
+          "entities": [],
+          "occurredAt": "2026-09-20T20:25:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.6,
+          "freshnessBasis": "Highlightly final: Miami Dolphins 13, San Francisco 49ers 35.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872942"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872942"
+            }
+          ],
+          "id": "a415-3b196208d9179ff1",
+          "feedRank": 7,
+          "compactHeadline": "49ers score TDs on 1st 5 drives to beat the Dolphins 35-13"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-2267a249de8579b1"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "(Shotgun) J.Hurts pass short middle to D.Cooper for 3 yards, TOUCHDOWN. J.Elliott extra point is GOOD, Center-R.Underwood, Holder-B.Mann.",
+          "text": "(Shotgun) J.Hurts pass short middle to D.Cooper for 3 yards, TOUCHDOWN. J.Elliott extra point is GOOD, Center-R.Underwood, Holder-B.Mann.",
+          "entities": [],
+          "occurredAt": "2026-09-20T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.02,
+          "freshnessBasis": "Highlightly final: Philadelphia Eagles 24, Tennessee Titans 20.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-c4ecdbad736305ed",
+          "feedRank": 8,
+          "compactHeadline": "Late score lifts Philadelphia Eagles past Tennessee Titans 24-20"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-2c933453e0a3684d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Kirk Cousins connected with Cody White for a go-ahead, 13-yard touchdown pass in the third quarter and an 11-yard score in the fourth, and the Las Vegas Raiders defeated the Chargers 26-14 to end a four-game skid against Los Angeles in the teams'...",
+          "text": "Kirk Cousins connected with Cody White for a go-ahead, 13-yard touchdown pass in the third quarter and an 11-yard score in the fourth, and the Las Vegas Raiders defeated the Chargers 26-14 to end a four-game skid against Los Angeles in the teams'...",
+          "entities": [],
+          "occurredAt": "2026-09-20T20:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.94,
+          "freshnessBasis": "Highlightly final: Las Vegas Raiders 26, Los Angeles Chargers 14.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872941"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872941"
+            }
+          ],
+          "id": "a415-9b96e8a1501539cc",
+          "feedRank": 9,
+          "compactHeadline": "Kirk Cousins connects with Cody White for 2 TDs and Raiders beat Chargers 26-14"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-7c114d4a0da39eac"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Dak Prescott became the Cowboys' all-time leader in touchdown passes in Sunday's win over the Commanders, surpassing Tony Romo with 249 in his career.",
+          "text": "Dak Prescott became the Cowboys' all-time leader in touchdown passes in Sunday's win over the Commanders, surpassing Tony Romo with 249 in his career.",
+          "entities": [],
+          "occurredAt": "2026-09-20T20:25:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.6,
+          "freshnessBasis": "Highlightly final: Washington Commanders 20, Dallas Cowboys 37.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/nfl/story/_/id/49994493/dak-prescott-breaks-tony-romo-cowboys-passing-tds-record"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49994493/dak-prescott-breaks-tony-romo-cowboys-passing-tds-record"
+            }
+          ],
+          "id": "a415-b0c8edbff8f2351a",
+          "feedRank": 10,
+          "compactHeadline": "Dallas Cowboys beat Washington Commanders 37-20"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-2909928258494de9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Deshaun Watson outplayed Baker Mayfield and earned at least a few more starts for the Cleveland Browns.",
+          "text": "Deshaun Watson outplayed Baker Mayfield and earned at least a few more starts for the Cleveland Browns.",
+          "entities": [],
+          "occurredAt": "2026-09-20T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.02,
+          "freshnessBasis": "Highlightly final: Cleveland Browns 23, Tampa Bay Buccaneers 19.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872935"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-20",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872935"
+            }
+          ],
+          "id": "a415-987b201c0b64384e",
+          "feedRank": 11,
+          "compactHeadline": "Deshaun Watson outplays Baker Mayfield, leading the Browns to a 23-19 win over the Buccaneers"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-b8d0f6fdae358067"
           ],
           "type": "RECORD",
@@ -203,7 +408,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T23:28:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.55,
           "freshnessBasis": "Prescott passed Tony Romo in the record book, so we bring you the best moments from those who helped him make history.",
           "status": "active",
           "sourceUrls": [
@@ -217,153 +422,8 @@
             }
           ],
           "id": "a415-7496ca73fa691919",
-          "feedRank": 7,
-          "compactHeadline": "Cowboys' TD record: I caught a TD pass from Dak Prescott"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-06a0d74948d74989"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings because of a right hamstring injury.",
-          "text": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings because of a right hamstring injury.",
-          "entities": [],
-          "occurredAt": "2026-09-20T23:29:10Z",
-          "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "Bears quarterback Caleb Williams exited Sunday's game against the Minnesota Vikings because of a right hamstring injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49991729/bears-caleb-williams-leaves-cart-falling-scramble"
-            }
-          ],
-          "id": "a415-d2dc03bc869532fe",
-          "feedRank": 8,
-          "compactHeadline": "Bears' Caleb Williams leaves on cart after injuring hamstring"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-81883f876a8c24ab"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Commanders quarterback Jayden Daniels was carted off the field in Sunday's game against the Cowboys after suffering an injured left elbow on the final play of the first half.",
-          "text": "Commanders quarterback Jayden Daniels was carted off the field in Sunday's game against the Cowboys after suffering an injured left elbow on the final play of the first half.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:47:35Z",
-          "timePrecision": "exact",
-          "ageHours": 0.73,
-          "freshnessBasis": "Commanders quarterback Jayden Daniels was carted off the field in Sunday's game against the Cowboys after suffering an injured left elbow on the final play of the first half.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49993422/commanders-qb-jayden-daniels-suffers-elbow-injury-cowboys"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49993422/commanders-qb-jayden-daniels-suffers-elbow-injury-cowboys"
-            }
-          ],
-          "id": "a415-9a2fa9d9f0eded9d",
-          "feedRank": 9,
-          "compactHeadline": "Commanders QB Jayden Daniels suffers elbow injury against Cowboys"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-79ff1b164f271b19"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Chargers tight end David Njoku exited Sunday's game against the Raiders in the second quarter on a medical cart with an injury to his right knee.",
-          "text": "Chargers tight end David Njoku exited Sunday's game against the Raiders in the second quarter on a medical cart with an injury to his right knee.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:31:39Z",
-          "timePrecision": "exact",
-          "ageHours": 1.0,
-          "freshnessBasis": "Chargers tight end David Njoku exited Sunday's game against the Raiders in the second quarter on a medical cart with an injury to his right knee.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49992624/chargers-te-david-njoku-leaves-game-knee-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49992624/chargers-te-david-njoku-leaves-game-knee-injury"
-            }
-          ],
-          "id": "a415-c8129e3d5e6bc79d",
-          "feedRank": 10,
-          "compactHeadline": "Chargers TE David Njoku leaves game with knee injury"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-16387a8bbf642160"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
-          "text": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:09:52Z",
-          "timePrecision": "exact",
-          "ageHours": 1.36,
-          "freshnessBasis": "The Vikings should have QB Kyler Murray available to them next week. Murray is expected to clear concussion protocol \"pretty early in the week,\" coach Kevin O'Connell said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49993300/qb-kyler-murray-concussion-expected-return-week-3"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49993300/qb-kyler-murray-concussion-expected-return-week-3"
-            }
-          ],
-          "id": "a415-d8c648edb273cfce",
-          "feedRank": 11,
-          "compactHeadline": "QB Kyler Murray (concussion) expected to return for Week 3"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f05f0705f9b41869"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
-          "text": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
-          "entities": [],
-          "occurredAt": "2026-09-20T22:06:55Z",
-          "timePrecision": "exact",
-          "ageHours": 1.41,
-          "freshnessBasis": "Saints left tackle Kelvin Banks Jr. (ankle) was ruled out against the Ravens in the fourth quarter.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49991415/saints-lt-kelvin-banks-jr-carted-ankle-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49991415/saints-lt-kelvin-banks-jr-carted-ankle-injury"
-            }
-          ],
-          "id": "a415-32f0396f780935c3",
           "feedRank": 12,
-          "compactHeadline": "Saints LT Kelvin Banks Jr. carted off with ankle injury"
+          "compactHeadline": "Cowboys' TD record: I caught a TD pass from Dak Prescott"
         }
       ]
     },
@@ -374,38 +434,242 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c8f9504f572f266b"
+            "cand-40e67d31b2d46cb6"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Lowry also received a key to the city of Toronto and a special dinner to honor his contribution to the franchise.",
-          "text": "Lowry also received a key to the city of Toronto and a special dinner to honor his contribution to the franchise.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Washington Mystics Women 93, Indiana Fever Women 77.",
+          "text": "Highlightly final: Washington Mystics Women 93, Indiana Fever Women 77.",
           "entities": [],
-          "occurredAt": "2026-09-20T16:59:52Z",
+          "occurredAt": "2026-09-20T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
-          "freshnessBasis": "Lowry also received a key to the city of Toronto and a special dinner to honor his contribution to the franchise.",
+          "ageHours": 4.02,
+          "freshnessBasis": "Highlightly final: Washington Mystics Women 93, Indiana Fever Women 77.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49983952/kyle-lowry-block-party-toronto-raptors-statue"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49983952/kyle-lowry-block-party-toronto-raptors-statue"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-20",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-e724bdbd91940e7a",
+          "id": "a415-9d6415f08dfff524",
           "feedRank": 13,
-          "compactHeadline": "Raptors honor Kyle Lowry with golden 'GROAT' statue"
+          "compactHeadline": "Washington Mystics Women beat Indiana Fever Women 93-77"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-76e154b3405389c9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Liberty Women 106, Toronto Tempo Women 69.",
+          "text": "Highlightly final: New York Liberty Women 106, Toronto Tempo Women 69.",
+          "entities": [],
+          "occurredAt": "2026-09-20T19:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.02,
+          "freshnessBasis": "Highlightly final: New York Liberty Women 106, Toronto Tempo Women 69.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-dc6d21b8bfb2386e",
+          "feedRank": 14,
+          "compactHeadline": "New York Liberty Women beat Toronto Tempo Women 106-69"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-fac05408429dffe2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Minnesota Lynx Women 101, Connecticut Sun Women 89.",
+          "text": "Highlightly final: Minnesota Lynx Women 101, Connecticut Sun Women 89.",
+          "entities": [],
+          "occurredAt": "2026-09-20T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.02,
+          "freshnessBasis": "Highlightly final: Minnesota Lynx Women 101, Connecticut Sun Women 89.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-8e5f12ccfa53c52f",
+          "feedRank": 15,
+          "compactHeadline": "Minnesota Lynx Women beat Connecticut Sun Women 101-89"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-6261ed517bed23d9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Seattle Storm Women 57, Golden State Valkyries Women 70.",
+          "text": "Highlightly final: Seattle Storm Women 57, Golden State Valkyries Women 70.",
+          "entities": [],
+          "occurredAt": "2026-09-20T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.02,
+          "freshnessBasis": "Highlightly final: Seattle Storm Women 57, Golden State Valkyries Women 70.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-19",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-cd9ec9ea247c55a2",
+          "feedRank": 16,
+          "compactHeadline": "Golden State Valkyries Women beat Seattle Storm Women 70-57"
         }
       ]
     },
     {
       "league": "NHL",
       "seasonState": "offseason",
-      "items": []
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-cba20491a4c60160"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Washington Capitals 2, Boston Bruins 3.",
+          "text": "Highlightly final: Washington Capitals 2, Boston Bruins 3.",
+          "entities": [],
+          "occurredAt": "2026-09-20T21:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.02,
+          "freshnessBasis": "Highlightly final: Washington Capitals 2, Boston Bruins 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-d77d75d47d5cd664",
+          "feedRank": 17,
+          "compactHeadline": "Boston Bruins beat Washington Capitals 3-2"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-38862adb3ca81f3a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Nashville Predators 1, Tampa Bay Lightning 2.",
+          "text": "Highlightly final: Nashville Predators 1, Tampa Bay Lightning 2.",
+          "entities": [],
+          "occurredAt": "2026-09-20T21:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.02,
+          "freshnessBasis": "Highlightly final: Nashville Predators 1, Tampa Bay Lightning 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-d7ec9e4af5f3b6d2",
+          "feedRank": 18,
+          "compactHeadline": "Tampa Bay Lightning beat Nashville Predators 2-1"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-cca92ce09f6d0ccf"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: San Jose Sharks 2, Anaheim Ducks 6.",
+          "text": "Highlightly final: San Jose Sharks 2, Anaheim Ducks 6.",
+          "entities": [],
+          "occurredAt": "2026-09-20T20:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.02,
+          "freshnessBasis": "Highlightly final: San Jose Sharks 2, Anaheim Ducks 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-154598d65b0d8f60",
+          "feedRank": 19,
+          "compactHeadline": "Anaheim Ducks beat San Jose Sharks 6-2"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-6789f0be6df82261"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Islanders 1, New Jersey Devils 2.",
+          "text": "Highlightly final: New York Islanders 1, New Jersey Devils 2.",
+          "entities": [],
+          "occurredAt": "2026-09-20T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.02,
+          "freshnessBasis": "Highlightly final: New York Islanders 1, New Jersey Devils 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-20",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-1d818e4fb2cf7610",
+          "feedRank": 20,
+          "compactHeadline": "New Jersey Devils beat New York Islanders 2-1"
+        }
+      ]
     },
     {
       "league": "EPL",
@@ -423,7 +687,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:04:46Z",
           "timePrecision": "exact",
-          "ageHours": 7.45,
+          "ageHours": 7.94,
           "freshnessBasis": "Erling Haaland scored the eighth goal of the game as Manchester City beat Sunderland but it gave him a unique personal record.",
           "status": "active",
           "sourceUrls": [
@@ -437,7 +701,7 @@
             }
           ],
           "id": "a415-c695d4565a089d9d",
-          "feedRank": 14,
+          "feedRank": 21,
           "compactHeadline": "Erling Haaland sets unique goal milestone as Man City beat Sunderland"
         },
         {
@@ -452,7 +716,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 7.52,
+          "ageHours": 8.02,
           "freshnessBasis": "Dominic Calvert-Lewin was denied the chance to make a small piece of Elland Road history in Leeds' goalless home draw with Crystal Palace.",
           "status": "active",
           "sourceUrls": [
@@ -466,7 +730,7 @@
             }
           ],
           "id": "a415-0ee67d9737fc1895",
-          "feedRank": 15,
+          "feedRank": 22,
           "compactHeadline": "Dominic Calvert-Lewin fails to match 23-year Premier League goal record for Leeds"
         },
         {
@@ -481,7 +745,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T18:52:08Z",
           "timePrecision": "exact",
-          "ageHours": 4.66,
+          "ageHours": 5.15,
           "freshnessBasis": "Enzo Maresca can enjoy a little relaxation over the international break after Manchester City extended their perfect start to the season -- but Sunday's frantic 5-3 win over Sunderland was not good for his blood pressure.",
           "status": "active",
           "sourceUrls": [
@@ -495,7 +759,7 @@
             }
           ],
           "id": "a415-ea35722d19c7da7c",
-          "feedRank": 16,
+          "feedRank": 23,
           "compactHeadline": "Enzo Maresca relieved as Manchester City pass difficult Sunderland test"
         },
         {
@@ -510,7 +774,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T15:49:02Z",
           "timePrecision": "exact",
-          "ageHours": 7.71,
+          "ageHours": 8.2,
           "freshnessBasis": "Brian Brobbey scored a hat trick in a losing cause as Manchester City maintained their 100% Premier League start with a frantic 5-3 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -524,66 +788,37 @@
             }
           ],
           "id": "a415-07b1d2a7ae60777d",
-          "feedRank": 17,
+          "feedRank": 24,
           "compactHeadline": "Man City down Sunderland in eight-goal thriller"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-4025355551e26cbc"
+            "cand-a92ab7b176ca81ac"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "The strengths that won Arsenal the Premier League deserted them as Brighton celebrated their 125th anniversary with a thumping victory over the champions.",
-          "text": "The strengths that won Arsenal the Premier League deserted them as Brighton celebrated their 125th anniversary with a thumping victory over the champions.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "This is Man United's worst start in a Premier League season in 12 years. Is there any reason to believe a turnaround is ahead?",
+          "text": "This is Man United's worst start in a Premier League season in 12 years. Is there any reason to believe a turnaround is ahead?",
           "entities": [],
-          "occurredAt": "2026-09-20T09:10:10Z",
+          "occurredAt": "2026-09-20T23:56:34Z",
           "timePrecision": "exact",
-          "ageHours": 14.36,
-          "freshnessBasis": "The strengths that won Arsenal the Premier League deserted them as Brighton celebrated their 125th anniversary with a thumping victory over the champions.",
+          "ageHours": 0.08,
+          "freshnessBasis": "This is Man United's worst start in a Premier League season in 12 years. Is there any reason to believe a turnaround is ahead?",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49978067/arsenal-aura-premier-league-champions-evaporates-brighton-thrash-3-0"
+            "https://www.espn.com/soccer/story/_/id/49991048/michael-carrick-keen-find-man-united-positives-there-many-right-now"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49978067/arsenal-aura-premier-league-champions-evaporates-brighton-thrash-3-0"
+              "url": "https://www.espn.com/soccer/story/_/id/49991048/michael-carrick-keen-find-man-united-positives-there-many-right-now"
             }
           ],
-          "id": "a415-ac30f58b31c6f50b",
-          "feedRank": 18,
-          "compactHeadline": "Arsenal's aura of champions evaporates after Brighton thrash them 3-0"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b9d618d65a4707ce"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
-          "text": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
-          "entities": [],
-          "occurredAt": "2026-09-20T08:12:46Z",
-          "timePrecision": "exact",
-          "ageHours": 15.31,
-          "freshnessBasis": "Mikel Arteta said he knew Arsenal would be \"in trouble\" from \"the first throw-in\" in a 3-0 defeat at Brighton.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49980636/arsenal-trouble-first-throw-brighton-mikel-arteta"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49980636/arsenal-trouble-first-throw-brighton-mikel-arteta"
-            }
-          ],
-          "id": "a415-a26c08d3eebbfb5c",
-          "feedRank": 19,
-          "compactHeadline": "Arsenal 'in trouble from first throw-in' at Brighton - Mikel Arteta"
+          "id": "a415-2aa1a502d97f26e0",
+          "feedRank": 25,
+          "compactHeadline": "Michael Carrick keen to find Man United positives, but there aren't many right now"
         }
       ]
     },
@@ -601,9 +836,9 @@
           "headline": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
           "text": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
           "entities": [],
-          "occurredAt": "2026-09-20T23:20:34Z",
+          "occurredAt": "2026-09-20T23:51:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.16,
           "freshnessBasis": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
           "status": "active",
           "sourceUrls": [
@@ -617,37 +852,95 @@
             }
           ],
           "id": "a415-2bd4d93280b9818d",
-          "feedRank": 20,
+          "feedRank": 26,
           "compactHeadline": "Sources: Higuain at center of refs' union beef with MLS NEXT Pro"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-f2242435e50cc7d4"
+            "cand-587ff49950da808c"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The union that represents MLS and USL referees, launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
-          "text": "The union that represents MLS and USL referees, launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Atlanta United FC 1, Portland Timbers 0.",
+          "text": "Highlightly final: Atlanta United FC 1, Portland Timbers 0.",
           "entities": [],
-          "occurredAt": "2026-09-20T22:57:44Z",
+          "occurredAt": "2026-09-20T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "The union that represents MLS and USL referees, launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female referee.\"",
+          "ageHours": 21.52,
+          "freshnessBasis": "Highlightly final: Atlanta United FC 1, Portland Timbers 0.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49991564/refs-union-ban-crew-2-coach-higuain"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/49991564/refs-union-ban-crew-2-coach-higuain"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-19",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-44d47ff6bbd1c986",
-          "feedRank": 20,
-          "compactHeadline": "Sources: Higuain at center of refs union beef with MLS NEXT Pro"
+          "id": "a415-fa39850488ba7260",
+          "feedRank": 27,
+          "compactHeadline": "Atlanta United FC beat Portland Timbers 1-0"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-5492acb204985fe0"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Chicago Fire 0, Nashville SC 3.",
+          "text": "Highlightly final: Chicago Fire 0, Nashville SC 3.",
+          "entities": [],
+          "occurredAt": "2026-09-20T01:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.52,
+          "freshnessBasis": "Highlightly final: Chicago Fire 0, Nashville SC 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-19",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-693c68a5ebd8837b",
+          "feedRank": 28,
+          "compactHeadline": "Nashville SC beat Chicago Fire 3-0"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-263577bbb939b0af"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Vancouver Whitecaps 3, Real Salt Lake 0.",
+          "text": "Highlightly final: Vancouver Whitecaps 3, Real Salt Lake 0.",
+          "entities": [],
+          "occurredAt": "2026-09-20T01:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.52,
+          "freshnessBasis": "Highlightly final: Vancouver Whitecaps 3, Real Salt Lake 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-19",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-ae69d4eedcdc8328",
+          "feedRank": 29,
+          "compactHeadline": "Vancouver Whitecaps beat Real Salt Lake 3-0"
         }
       ]
     },
@@ -658,6 +951,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-3264401633c42ac3"
+          ],
+          "type": "UPSET",
+          "priority": 82,
+          "headline": "Highlightly final: Charlotte 49ers 21, App State Mountaineers 26.",
+          "text": "Highlightly final: Charlotte 49ers 21, App State Mountaineers 26.",
+          "entities": [],
+          "occurredAt": "2026-09-20T01:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.52,
+          "freshnessBasis": "Highlightly final: Charlotte 49ers 21, App State Mountaineers 26.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-19",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-23379d764a3ed814",
+          "feedRank": 30,
+          "compactHeadline": "App State Mountaineers beat Charlotte 49ers 26-21"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-9c589d472c7a4c76"
           ],
           "type": "RANKING",
@@ -667,7 +989,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T20:56:56Z",
           "timePrecision": "exact",
-          "ageHours": 2.58,
+          "ageHours": 3.07,
           "freshnessBasis": "Following Week 3, Bill Connelly takes stock of which undefeated teams he trusts and which are pretenders.",
           "status": "active",
           "sourceUrls": [
@@ -681,11 +1003,11 @@
             }
           ],
           "id": "a415-18e2575a5eda8194",
-          "feedRank": 21,
+          "feedRank": 31,
           "compactHeadline": "Ranking college football's 35 unbeaten teams after Week 3"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-f378efbb74bee461"
           ],
@@ -696,7 +1018,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:46:49Z",
           "timePrecision": "exact",
-          "ageHours": 3.74,
+          "ageHours": 4.24,
           "freshnessBasis": "No. 1 Texas (3-0) at No. 14 Tennessee (3-0), Sept. 26 at 12 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -710,11 +1032,11 @@
             }
           ],
           "id": "a415-f7724b53ba1feb50",
-          "feedRank": 22,
+          "feedRank": 32,
           "compactHeadline": "Top-25 SEC matchup features Texas visiting Tennessee"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-98e3e72b2e05b5ee"
           ],
@@ -725,7 +1047,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:44:26Z",
           "timePrecision": "exact",
-          "ageHours": 3.78,
+          "ageHours": 4.28,
           "freshnessBasis": "No. 17 Iowa (3-0) at No. 18 Michigan (3-0), Sept. 26 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -739,11 +1061,11 @@
             }
           ],
           "id": "a415-7262cbd56fdd50b2",
-          "feedRank": 23,
+          "feedRank": 33,
           "compactHeadline": "Top-25 Big Ten matchup features Michigan hosting Iowa"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-d504825b0adbe060"
           ],
@@ -754,7 +1076,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:44:18Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.28,
           "freshnessBasis": "No. 20 Oregon (2-1) at No. 12 USC (4-0), Sept. 26 at 7:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -768,11 +1090,11 @@
             }
           ],
           "id": "a415-6fc8a0281814f8ec",
-          "feedRank": 24,
+          "feedRank": 34,
           "compactHeadline": "Oregon visits USC in top-25 Big Ten matchup"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c18fcc19564f1b87"
           ],
@@ -783,7 +1105,7 @@
           "entities": [],
           "occurredAt": "2026-09-20T19:43:49Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.29,
           "freshnessBasis": "No. 23 Texas A&M (2-1) at No. 10 LSU (2-1), Sept. 26 at 7:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -797,37 +1119,8 @@
             }
           ],
           "id": "a415-d704842872fc595c",
-          "feedRank": 25,
+          "feedRank": 35,
           "compactHeadline": "LSU hosts Texas A&M in top-25 SEC matchup"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a4fa50151bb929c1"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
-          "text": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-09-20T19:47:23Z",
-          "timePrecision": "exact",
-          "ageHours": 3.73,
-          "freshnessBasis": "Army (1-1) at Temple (1-2), Sept. 25 at 4 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401862779"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401862779"
-            }
-          ],
-          "id": "a415-6a879da3e767e280",
-          "feedRank": 26,
-          "compactHeadline": "Temple hosts Army in AAC matchup"
         }
       ]
     }
@@ -853,7 +1146,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 140,
-    "publishedItemCount": 27,
+    "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
