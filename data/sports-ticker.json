@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-22T04:30:49Z",
+  "generatedAt": "2026-09-22T12:00:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "372d16a104a186122a7a4e770068bb67ebf2587343793b90e6478c6e649a45b1",
+  "sourceCandidateHash": "799c0057de42c09563e7c1917a5f68cfd3bed3326d861aefa7853ede9e7dc19c",
   "leagues": [
     {
       "league": "MLB",
@@ -14,34 +14,63 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ecca219b38eb6079"
+            "cand-4d677bb0e01caec3"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The MRI on Toronto Blue Jays pitcher Dylan Cease's right shoulder showed only inflammation and not anything more serious, he told reporters Monday.",
-          "text": "The MRI on Toronto Blue Jays pitcher Dylan Cease's right shoulder showed only inflammation and not anything more serious, he told reporters Monday.",
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "entities": [],
-          "occurredAt": "2026-09-22T03:02:46Z",
+          "occurredAt": "2026-09-22T10:40:23Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
-          "freshnessBasis": "The MRI on Toronto Blue Jays pitcher Dylan Cease's right shoulder showed only inflammation and not anything more serious, he told reporters Monday.",
+          "ageHours": 1.34,
+          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50001495/jays-cease-avoid-serious-injury-mri-need-surgery"
+            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50001495/jays-cease-avoid-serious-injury-mri-need-surgery"
+              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
             }
           ],
-          "id": "a415-0f0cd4a899705103",
+          "id": "a415-dbccbfd4bc1f6041",
           "feedRank": 1,
-          "compactHeadline": "Jays' Dylan Cease avoids serious injury, won't need surgery"
+          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-e4521500549bb136"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
+          "text": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
+          "entities": [],
+          "occurredAt": "2026-09-22T10:38:44Z",
+          "timePrecision": "exact",
+          "ageHours": 1.37,
+          "freshnessBasis": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49974689/mlb-2026-playoffs-postseason-eliminated-teams-bright-side-optimism-silver-linings-2027"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49974689/mlb-2026-playoffs-postseason-eliminated-teams-bright-side-optimism-silver-linings-2027"
+            }
+          ],
+          "id": "a415-e74da20ec45f7e36",
+          "feedRank": 2,
+          "compactHeadline": "Silver linings for MLB's 2026 non-playoff teams"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-6598de20ddd5ba7e"
           ],
@@ -50,9 +79,9 @@
           "headline": "Bryce Eldridge's strong rookie season for San Francisco appears to have come to an end.",
           "text": "Bryce Eldridge's strong rookie season for San Francisco appears to have come to an end.",
           "entities": [],
-          "occurredAt": "2026-09-22T01:48:59Z",
+          "occurredAt": "2026-09-22T05:03:33Z",
           "timePrecision": "exact",
-          "ageHours": 2.7,
+          "ageHours": 6.96,
           "freshnessBasis": "Bryce Eldridge's strong rookie season for San Francisco appears to have come to an end.",
           "status": "active",
           "sourceUrls": [
@@ -66,124 +95,95 @@
             }
           ],
           "id": "a415-38d6e6578da40205",
-          "feedRank": 2,
-          "compactHeadline": "Giants put Eldridge on concussion list after accident at hotel"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-c9a9e266a8e64868"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "River Ryan, acquired from the Dodgers in the Tarik Skubal trade, was outstanding in his Detroit debut Monday night, pitching three scoreless innings in a win against the Nationals.",
-          "text": "River Ryan, acquired from the Dodgers in the Tarik Skubal trade, was outstanding in his Detroit debut Monday night, pitching three scoreless innings in a win against the Nationals.",
-          "entities": [],
-          "occurredAt": "2026-09-22T02:07:12Z",
-          "timePrecision": "exact",
-          "ageHours": 2.39,
-          "freshnessBasis": "River Ryan, acquired from the Dodgers in the Tarik Skubal trade, was outstanding in his Detroit debut Monday night, pitching three scoreless innings in a win against the Nationals.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50002018/river-ryan-key-piece-tarik-skubal-deal-leads-tigers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50002018/river-ryan-key-piece-tarik-skubal-deal-leads-tigers"
-            }
-          ],
-          "id": "a415-024c4d0a283fddaa",
           "feedRank": 3,
-          "compactHeadline": "River Ryan, key piece in Tarik Skubal deal, leads Tigers"
+          "compactHeadline": "Giants put Eldridge on concussion list after accident at hotel"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-6f52f0d85a597393"
+            "cand-e3e509f5e0f9474f"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Pete Alonso homered twice, including a two-run shot in the eighth inning that lifted the Baltimore Orioles to a 4-3 victory over the Toronto Blue Jays on Monday night.",
-          "text": "Pete Alonso homered twice, including a two-run shot in the eighth inning that lifted the Baltimore Orioles to a 4-3 victory over the Toronto Blue Jays on Monday night.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Chicago White Sox (80-76, second in the AL Central) vs. Kansas City Royals (67-89, fifth in the AL Central)",
+          "text": "Chicago White Sox (80-76, second in the AL Central) vs. Kansas City Royals (67-89, fifth in the AL Central)",
           "entities": [],
-          "occurredAt": "2026-09-22T02:01:42Z",
+          "occurredAt": "2026-09-22T08:03:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.49,
-          "freshnessBasis": "— Pete Alonso homered twice, including a two-run shot in the eighth inning that lifted the Baltimore Orioles to a 4-3 victory over the Toronto Blue Jays on Monday night.",
+          "ageHours": 3.96,
+          "freshnessBasis": "Chicago White Sox (80-76, second in the AL Central) vs. Kansas City Royals (67-89, fifth in the AL Central)",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817027"
+            "http://www.espn.com/mlb/preview?gameId=401817037"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817027"
+              "url": "http://www.espn.com/mlb/preview?gameId=401817037"
             }
           ],
-          "id": "a415-4cfdfbcf2a0016e6",
+          "id": "a415-b77f1fd49cfc5f38",
           "feedRank": 4,
-          "compactHeadline": "Pete Alonso homers twice to reach 40 on the season, helps Orioles rally to 4-3 win over Blue Jays"
+          "compactHeadline": "Royals bring 4-game losing streak into matchup against the White Sox"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-29ddbe6a4b357d84"
+            "cand-362f12410ee7c7d7"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "River Ryan was outstanding in his Detroit debut and the Tigers hit three home runs to rout the Washington Nationals 9-2 on Monday night, one day after being eliminated from the American League playoff race.",
-          "text": "River Ryan was outstanding in his Detroit debut and the Tigers hit three home runs to rout the Washington Nationals 9-2 on Monday night, one day after being eliminated from the American League playoff race.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "San Diego Padres (87-69, second in the NL West) vs. Los Angeles Dodgers (96-60, first in the NL West)",
+          "text": "San Diego Padres (87-69, second in the NL West) vs. Los Angeles Dodgers (96-60, first in the NL West)",
           "entities": [],
-          "occurredAt": "2026-09-22T01:37:29Z",
+          "occurredAt": "2026-09-22T08:02:54Z",
           "timePrecision": "exact",
-          "ageHours": 2.89,
-          "freshnessBasis": "— River Ryan was outstanding in his Detroit debut and the Tigers hit three home runs to rout the Washington Nationals 9-2 on Monday night, one day after being eliminated from the American League playoff race.",
+          "ageHours": 3.97,
+          "freshnessBasis": "San Diego Padres (87-69, second in the NL West) vs. Los Angeles Dodgers (96-60, first in the NL West)",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817028"
+            "http://www.espn.com/mlb/preview?gameId=401817044"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817028"
+              "url": "http://www.espn.com/mlb/preview?gameId=401817044"
             }
           ],
-          "id": "a415-6150c00ae96a0f51",
+          "id": "a415-a614793aaaa857fb",
           "feedRank": 5,
-          "compactHeadline": "River Ryan makes strong debut and Tigers hit 3 home runs in 9-2 win over Nationals"
+          "compactHeadline": "Padres seek to continue win streak, take on the Dodgers"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-bc895c7f15893489"
+            "cand-b3ac7333202fb19d"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "A team's magic number represents the combination of wins and losses that would result in that team clinching a playoff spot.",
-          "text": "A team's magic number represents the combination of wins and losses that would result in that team clinching a playoff spot.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "St. Louis Cardinals (76-80, fourth in the NL Central) vs. Pittsburgh Pirates (79-77, third in the NL Central)",
+          "text": "St. Louis Cardinals (76-80, fourth in the NL Central) vs. Pittsburgh Pirates (79-77, third in the NL Central)",
           "entities": [],
-          "occurredAt": "2026-09-21T17:54:59Z",
+          "occurredAt": "2026-09-22T08:02:51Z",
           "timePrecision": "exact",
-          "ageHours": 10.6,
-          "freshnessBasis": "A team's magic number represents the combination of wins and losses that would result in that team clinching a playoff spot.",
+          "ageHours": 3.97,
+          "freshnessBasis": "St. Louis Cardinals (76-80, fourth in the NL Central) vs. Pittsburgh Pirates (79-77, third in the NL Central)",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/41315793/what-mlb-magic-number-how-find-ahead-playoffs"
+            "http://www.espn.com/mlb/preview?gameId=401817033"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/41315793/what-mlb-magic-number-how-find-ahead-playoffs"
+              "url": "http://www.espn.com/mlb/preview?gameId=401817033"
             }
           ],
-          "id": "a415-e497958594574274",
+          "id": "a415-77633c0094bb3832",
           "feedRank": 6,
-          "compactHeadline": "What is an MLB magic number? How to find them ahead of playoffs"
+          "compactHeadline": "Pirates host the Cardinals, aim to extend home win streak"
         }
       ]
     },
@@ -194,46 +194,75 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-572e0f731c8b3aa5"
+            "cand-d028b6d46f95a5d7"
           ],
           "type": "RECORD",
           "priority": 82,
-          "headline": "Rams QB Matthew Stafford moved to sixth all-time in passing touchdowns after throwing his 426th to Davante Adams on Sunday night.",
-          "text": "Rams QB Matthew Stafford moved to sixth all-time in passing touchdowns after throwing his 426th to Davante Adams on Sunday night.",
+          "headline": "The Titans could have a 1-1 record but they're 0-2 because they didn't finish on both sides of the ball down the stretch.",
+          "text": "The Titans could have a 1-1 record but they're 0-2 because they didn't finish on both sides of the ball down the stretch.",
           "entities": [],
-          "occurredAt": "2026-09-22T03:56:22Z",
+          "occurredAt": "2026-09-22T10:00:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
-          "freshnessBasis": "Rams QB Matthew Stafford moved to sixth all-time in passing touchdowns after throwing his 426th to Davante Adams on Sunday night.",
+          "ageHours": 2.01,
+          "freshnessBasis": "The Titans could have a 1-1 record but they're 0-2 because they didn't finish on both sides of the ball down the stretch.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50002173/rams-stafford-passes-rivers-6th-all-passing-tds"
+            "https://www.espn.com/nfl/story/_/id/50001539/tennessee-titans-trust-process-tough-loss-philadelphia-eagles-week-2"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50002173/rams-stafford-passes-rivers-6th-all-passing-tds"
+              "url": "https://www.espn.com/nfl/story/_/id/50001539/tennessee-titans-trust-process-tough-loss-philadelphia-eagles-week-2"
             }
           ],
-          "id": "a415-1dcc463b5247bb52",
+          "id": "a415-ef7910e403a82d11",
           "feedRank": 7,
-          "compactHeadline": "Rams' Stafford passes Rivers for 6th all time in passing TDs"
+          "compactHeadline": "Titans trying to 'trust the process' after tough loss to Eagles"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-db7414897c62d879"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
+          "text": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
+          "entities": [],
+          "occurredAt": "2026-09-22T10:32:05Z",
+          "timePrecision": "exact",
+          "ageHours": 1.48,
+          "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49745176/2026-nfl-playoff-predictions-afc-nfc-odds-super-bowl"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49745176/2026-nfl-playoff-predictions-afc-nfc-odds-super-bowl"
+            }
+          ],
+          "id": "a415-664b31274b6f618d",
+          "feedRank": 8,
+          "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-dad789c503b87596"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Davante Adams made eight catches for 195 yards and hauled in two of Matthew Stafford’s four touchdown passes, and the Los Angeles Rams welcomed Aaron Donald back...",
-          "text": "Davante Adams made eight catches for 195 yards and hauled in two of Matthew Stafford’s four touchdown passes, and the Los Angeles Rams welcomed Aaron Donald back...",
+          "headline": "The Los Angeles Rams' dismal season opener in Australia and their proliferating injury woes were nothing Davante Adams and Matthew Stafford couldn't overcome back home with a vintage performance against the Giants.",
+          "text": "The Los Angeles Rams' dismal season opener in Australia and their proliferating injury woes were nothing Davante Adams and Matthew Stafford couldn't overcome back home with a vintage performance against the Giants.",
           "entities": [],
-          "occurredAt": "2026-09-22T03:16:30Z",
+          "occurredAt": "2026-09-22T04:31:35Z",
           "timePrecision": "exact",
-          "ageHours": 1.24,
-          "freshnessBasis": "— Davante Adams made eight catches for 195 yards and hauled in two of Matthew Stafford’s four touchdown passes, and the Los Angeles Rams welcomed Aaron Donald back...",
+          "ageHours": 7.49,
+          "freshnessBasis": "— The Los Angeles Rams' dismal season opener in Australia and their proliferating injury woes were nothing Davante Adams and Matthew Stafford couldn't overcome back home with a vintage performance against the Giants.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nfl/recap?gameId=401872947"
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-f5463e03a0da9cd8",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Davante Adams, Matthew Stafford lead Rams past Giants 28-6 after Jaxson Dart's injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-fbe30c63aead5432"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T02:21:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.15,
+          "ageHours": 9.65,
           "freshnessBasis": "Colts WR Alec Pierce is expected to miss several weeks because of a heel injury but will attempt to avoid surgery in the hopes of returning midseason.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-3d77f79772dde95e",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Sources: Alec Pierce out weeks; Darius Slayton to join Colts"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-000ef19c8704a5b5"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T02:13:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.3,
+          "ageHours": 9.8,
           "freshnessBasis": "The Eagles are signing tight end Zach Ertz to their practice squad after the injury to starter Dallas Goedert and other injuries at the position.",
           "status": "active",
           "sourceUrls": [
@@ -304,11 +333,11 @@
             }
           ],
           "id": "a415-778621c4c3008298",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Sources: Eagles reuniting with Ertz as Goedert has MCL sprain"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-421ce10ee2c9ab39"
           ],
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T23:35:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.92,
+          "ageHours": 12.42,
           "freshnessBasis": "Experts weigh in on Daniels' latest injury and what it means for him, the Commanders and their collective futures.",
           "status": "active",
           "sourceUrls": [
@@ -333,37 +362,8 @@
             }
           ],
           "id": "a415-616512b7fb938205",
-          "feedRank": 11,
-          "compactHeadline": "What's next for Jayden Daniels, Commanders after elbow injury?"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-213bbfe941b0a790"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Cardinals starting cornerback Will Johnson could miss the rest of the regular season after suffering a neck injury against the Seahawks on Sunday.",
-          "text": "Cardinals starting cornerback Will Johnson could miss the rest of the regular season after suffering a neck injury against the Seahawks on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-09-21T23:17:30Z",
-          "timePrecision": "exact",
-          "ageHours": 5.22,
-          "freshnessBasis": "Cardinals starting cornerback Will Johnson could miss the rest of the regular season after suffering a neck injury against the Seahawks on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50001072/cardinals-cb-johnson-miss-rest-season-neck-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50001072/cardinals-cb-johnson-miss-rest-season-neck-injury"
-            }
-          ],
-          "id": "a415-31707b2be1c6adc7",
           "feedRank": 12,
-          "compactHeadline": "Cardinals CB Will Johnson (neck) could miss rest of season"
+          "compactHeadline": "What's next for Jayden Daniels, Commanders after elbow injury?"
         }
       ]
     },
@@ -374,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-d401e8926794b579"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "There's always next year. Ben Golliver and Zach Kram examine 10 players already on our radar for 2027 NBA Rank.",
+          "text": "There's always next year. Ben Golliver and Zach Kram examine 10 players already on our radar for 2027 NBA Rank.",
+          "entities": [],
+          "occurredAt": "2026-09-22T10:44:49Z",
+          "timePrecision": "exact",
+          "ageHours": 1.27,
+          "freshnessBasis": "There's always next year. Ben Golliver and Zach Kram examine 10 players already on our radar for 2027 NBA Rank.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49966370/nba-rank-2026-10-players-watch-next-season-top-100-camara-sarr-podziemski"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49966370/nba-rank-2026-10-players-watch-next-season-top-100-camara-sarr-podziemski"
+            }
+          ],
+          "id": "a415-c80867d0f9e785cf",
+          "feedRank": 13,
+          "compactHeadline": "NBA Rank 2026: 10 players to watch in <em>next</em> season's top 100"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-cd7e2ce769cb3c17"
           ],
           "type": "SUSPENSION",
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:21:45Z",
           "timePrecision": "exact",
-          "ageHours": 11.15,
+          "ageHours": 18.65,
           "freshnessBasis": "Los Angeles-based trial lawyer John Gibson will serve as the Clippers' interim governor. He will take over for Steve Ballmer, who has been suspended one year following an investigation into salary cap circumvention.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +426,11 @@
             }
           ],
           "id": "a415-de9ab70802d7ecee",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Clippers name lawyer John Gibson interim governor"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-2dd2f00c7a170630"
           ],
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T16:46:33Z",
           "timePrecision": "exact",
-          "ageHours": 11.74,
+          "ageHours": 19.24,
           "freshnessBasis": "Let's dive into the trends, storylines and statistical nuggets that could define the NBA season.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +455,11 @@
             }
           ],
           "id": "a415-0a9a9ec3cdefe5d1",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "The stat that could swing every NBA team's 2026-27 season"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-9c46e176e9dd4c62"
           ],
@@ -441,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T20:44:55Z",
           "timePrecision": "exact",
-          "ageHours": 7.77,
+          "ageHours": 15.27,
           "freshnessBasis": "Hawks rookie 7-footer Henri Veesaar suffered a torn ACL in his right knee during a workout last week and is expected to miss the season.",
           "status": "active",
           "sourceUrls": [
@@ -455,11 +484,11 @@
             }
           ],
           "id": "a415-5eebeda36e653882",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Hawks rookie Henri Veesaar (ACL) expected to miss season"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-f358c6f1a3d8e8d1"
           ],
@@ -470,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:50:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.67,
+          "ageHours": 17.17,
           "freshnessBasis": "Nicolas Batum has announced his retirement after 18 NBA seasons. A mainstay of the French national team, Batum played most of his NBA career with the Clippers, Hornets and Blazers.",
           "status": "active",
           "sourceUrls": [
@@ -484,11 +513,11 @@
             }
           ],
           "id": "a415-aba41f9763f76be3",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Nicolas Batum announces retirement after 18 NBA seasons"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c1a165b89744f8cb"
           ],
@@ -499,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:48:31Z",
           "timePrecision": "exact",
-          "ageHours": 9.71,
+          "ageHours": 17.21,
           "freshnessBasis": "Doc Rivers turned down an offer to become an NBA analyst for NBC after retiring as a player in 1996 because he couldn't promise then-NBC Sports chairman Dick Ebersol that he wouldn't become a coach.",
           "status": "active",
           "sourceUrls": [
@@ -513,7 +542,7 @@
             }
           ],
           "id": "a415-654efc219fb7c868",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "Doc Rivers joins NBC as analyst, says coaching career over"
         }
       ]
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:50:33Z",
           "timePrecision": "exact",
-          "ageHours": 9.67,
+          "ageHours": 17.17,
           "freshnessBasis": "Alex Ovechkin is day to day with a lower-body injury, less than two weeks before the Washington Capitals' season opener.",
           "status": "active",
           "sourceUrls": [
@@ -548,7 +577,7 @@
             }
           ],
           "id": "a415-fbd55cd24be4545f",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Capitals' Alex Ovechkin day-to-day with a lower-body injury"
         },
         {
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T19:06:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.41,
+          "ageHours": 16.91,
           "freshnessBasis": "The Stars have signed forward Sam Steel to a $14.8 million, four-year contract extension that will begin next season and go through 2030-31.",
           "status": "active",
           "sourceUrls": [
@@ -577,7 +606,7 @@
             }
           ],
           "id": "a415-9e056e6601ea0477",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Stars sign forward Sam Steel to $14.8M, 4-year extension"
         },
         {
@@ -592,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T14:03:38Z",
           "timePrecision": "exact",
-          "ageHours": 14.45,
+          "ageHours": 21.95,
           "freshnessBasis": "The Sharks signed coach Ryan Warsofsky to a multiyear contact extension on the first day of training camp Thursday after he helped the rebuilding team get to the brink of the playoffs over his first two seasons.",
           "status": "active",
           "sourceUrls": [
@@ -606,7 +635,7 @@
             }
           ],
           "id": "a415-6d6fac764da10735",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Sharks sign coach Ryan Warsofsky to contract extension"
         },
         {
@@ -621,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T14:50:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.67,
+          "ageHours": 21.17,
           "freshnessBasis": "Quinn Hughes reported to his first training camp with Minnesota without an extension, raising the anxiety level within the fanbase.",
           "status": "active",
           "sourceUrls": [
@@ -635,37 +664,8 @@
             }
           ],
           "id": "a415-29dc4e2fba8fbcb2",
-          "feedRank": 21,
-          "compactHeadline": "Quinn Hughes not worried about getting new Wild deal done"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-6f80fe4d52c16c6c"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Evgeni Malkin remains as passionate as ever about hockey as his 21st season with the Penguins begins. Whether it's his last, be it in Pittsburgh or anywhere else, only his body knows.",
-          "text": "Evgeni Malkin remains as passionate as ever about hockey as his 21st season with the Penguins begins. Whether it's his last, be it in Pittsburgh or anywhere else, only his body knows.",
-          "entities": [],
-          "occurredAt": "2026-09-21T14:29:57Z",
-          "timePrecision": "exact",
-          "ageHours": 14.01,
-          "freshnessBasis": "Evgeni Malkin remains as passionate as ever about hockey as his 21st season with the Penguins begins. Whether it's his last, be it in Pittsburgh or anywhere else, only his body knows.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49974287/evgeni-malkin-21st-season-let-health-decide-future"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49974287/evgeni-malkin-21st-season-let-health-decide-future"
-            }
-          ],
-          "id": "a415-3c6043e6ae924755",
           "feedRank": 22,
-          "compactHeadline": "Evgeni Malkin, in 21st season, will let health decide on future"
+          "compactHeadline": "Quinn Hughes not worried about getting new Wild deal done"
         }
       ]
     },
@@ -676,6 +676,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-11015830250fe8b5"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "Lewis Hall has said it was a \"no-brainer\" to sign a new contract to extend his Newcastle United stay after summer transfer interest from Manchester United.",
+          "text": "Lewis Hall has said it was a \"no-brainer\" to sign a new contract to extend his Newcastle United stay after summer transfer interest from Manchester United.",
+          "entities": [],
+          "occurredAt": "2026-09-22T10:48:58Z",
+          "timePrecision": "exact",
+          "ageHours": 1.2,
+          "freshnessBasis": "Lewis Hall has said it was a \"no-brainer\" to sign a new contract to extend his Newcastle United stay after summer transfer interest from Manchester United.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50004227/man-united-linked-lewis-hall-no-brainer-stay-newcastle-united-transfer"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50004227/man-united-linked-lewis-hall-no-brainer-stay-newcastle-united-transfer"
+            }
+          ],
+          "id": "a415-88a87853b7ab9c1a",
+          "feedRank": 23,
+          "compactHeadline": "Man United-linked Lewis Hall: 'No-brainer' to stay at Newcastle"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-d630ccae44248359"
           ],
           "type": "INJURY",
@@ -685,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:28:08Z",
           "timePrecision": "exact",
-          "ageHours": 11.04,
+          "ageHours": 18.55,
           "freshnessBasis": "Michael Carrick has raised concerns about Benjamin Sesko's latest injury by revealing the problem is connected to the same shin issue which kept the striker sidelined for more than two months over the summer.",
           "status": "active",
           "sourceUrls": [
@@ -699,11 +728,98 @@
             }
           ],
           "id": "a415-c89f6e729d8b233d",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Man United's Michael Carrick concerned about Benjamin Sesko's latest injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-5561c3723a899c7f"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Wayne Rooney has said it would be \"disappointing\" for Manchester United to lose \"special talent\" JJ Gabriel.",
+          "text": "Wayne Rooney has said it would be \"disappointing\" for Manchester United to lose \"special talent\" JJ Gabriel.",
+          "entities": [],
+          "occurredAt": "2026-09-22T10:19:57Z",
+          "timePrecision": "exact",
+          "ageHours": 1.68,
+          "freshnessBasis": "Wayne Rooney has said it would be \"disappointing\" for Manchester United to lose \"special talent\" JJ Gabriel.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50004082/wayne-rooney-disappointing-top-player-jj-gabriel-leaves-man-united"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50004082/wayne-rooney-disappointing-top-player-jj-gabriel-leaves-man-united"
+            }
+          ],
+          "id": "a415-f1617f501b9b4049",
+          "feedRank": 25,
+          "compactHeadline": "Wayne Rooney: 'Disappointing' if 'top player' JJ Gabriel leaves Man United"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-dfd7201795177a07"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Forget home, away and third alternate jerseys -- the prematch warmup kit is where the real fun is to be had. Get a load of this season's best and worst.",
+          "text": "Forget home, away and third alternate jerseys -- the prematch warmup kit is where the real fun is to be had. Get a load of this season's best and worst.",
+          "entities": [],
+          "occurredAt": "2026-09-22T08:01:17Z",
+          "timePrecision": "exact",
+          "ageHours": 3.99,
+          "freshnessBasis": "Forget home, away and third alternate jerseys -- the prematch warmup kit is where the real fun is to be had. Get a load of this season's best and worst.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49953407/soccer-wildest-warmup-kits-2026-27-good-bad-ugly"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49953407/soccer-wildest-warmup-kits-2026-27-good-bad-ugly"
+            }
+          ],
+          "id": "a415-f70b50344adce92a",
+          "feedRank": 26,
+          "compactHeadline": "Soccer's wildest warmup kits of 2026-27: The good, the bad and the ugly"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-4fc508c4ddb38fee"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Given that Thierno Barry essentially finds himself Everton's only centre-forward option after a muddled end to the transfer window, he probably doesn't care too much how the goals come at the moment.",
+          "text": "Given that Thierno Barry essentially finds himself Everton's only centre-forward option after a muddled end to the transfer window, he probably doesn't care too much how the goals come at the moment.",
+          "entities": [],
+          "occurredAt": "2026-09-22T07:29:15Z",
+          "timePrecision": "exact",
+          "ageHours": 4.53,
+          "freshnessBasis": "Given that Thierno Barry essentially finds himself Everton's only centre-forward option after a muddled end to the transfer window, he probably doesn't care too much how the goals come at the moment.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/espn/story/_/id/50003497/thierno-barry-everton-last-striker-standing-begins-silence-doubters"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/espn/story/_/id/50003497/thierno-barry-everton-last-striker-standing-begins-silence-doubters"
+            }
+          ],
+          "id": "a415-f0b9fcf39669c204",
+          "feedRank": 27,
+          "compactHeadline": "Thierno Barry, Everton's last striker standing, begins to silence doubters"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-b661dba02617d232"
           ],
@@ -714,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T14:47:48Z",
           "timePrecision": "exact",
-          "ageHours": 13.72,
+          "ageHours": 21.22,
           "freshnessBasis": "Harry Maguire said Manchester United paid the price for failing to take their chances in Sunday's 1-1 draw against Fulham.",
           "status": "active",
           "sourceUrls": [
@@ -728,124 +844,8 @@
             }
           ],
           "id": "a415-a0714d2fc18aa3c9",
-          "feedRank": 24,
-          "compactHeadline": "Harry Maguire: Man United didn't take chances against Fulham, paid the price"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-ffa07423b90ee151"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Manchester United's players aren't good enough and the club isn't doing enough to rectify that, so where does that leave manager Michael Carrick?",
-          "text": "Manchester United's players aren't good enough and the club isn't doing enough to rectify that, so where does that leave manager Michael Carrick?",
-          "entities": [],
-          "occurredAt": "2026-09-21T12:27:13Z",
-          "timePrecision": "exact",
-          "ageHours": 16.06,
-          "freshnessBasis": "Manchester United's players aren't good enough and the club isn't doing enough to rectify that, so where does that leave manager Michael Carrick?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49997321/michael-carrick-impossible-job-man-united-transfer-failures"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49997321/michael-carrick-impossible-job-man-united-transfer-failures"
-            }
-          ],
-          "id": "a415-901e3ba77b0f7782",
-          "feedRank": 25,
-          "compactHeadline": "Carrick has an impossible job at Man United after transfer failures"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-a9465a40d7a85a79"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Antoine Semenyo is ready to take on the challenge of leading Manchester City's attack if needed.",
-          "text": "Antoine Semenyo is ready to take on the challenge of leading Manchester City's attack if needed.",
-          "entities": [],
-          "occurredAt": "2026-09-21T11:37:56Z",
-          "timePrecision": "exact",
-          "ageHours": 16.88,
-          "freshnessBasis": "Antoine Semenyo is ready to take on the challenge of leading Manchester City's attack if needed.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49997658/antoine-semenyo-man-city-erling-haaland-premier-league-enzo-maresca"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49997658/antoine-semenyo-man-city-erling-haaland-premier-league-enzo-maresca"
-            }
-          ],
-          "id": "a415-5ae0df198dcfbf88",
-          "feedRank": 26,
-          "compactHeadline": "Antoine Semenyo happy to lead Man City's attack if needed"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-22964b77b88bc539"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chelsea transfer target Lamine Camara has been told he is better off where he is by Monaco teammate and former Blues cast-off Denis Zakaria.",
-          "text": "Chelsea transfer target Lamine Camara has been told he is better off where he is by Monaco teammate and former Blues cast-off Denis Zakaria.",
-          "entities": [],
-          "occurredAt": "2026-09-21T11:28:23Z",
-          "timePrecision": "exact",
-          "ageHours": 17.04,
-          "freshnessBasis": "Chelsea transfer target Lamine Camara has been told he is better off where he is by Monaco teammate and former Blues cast-off Denis Zakaria.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49997685/lamine-camara-better-monaco-ex-chelsea-midfielder-says"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49997685/lamine-camara-better-monaco-ex-chelsea-midfielder-says"
-            }
-          ],
-          "id": "a415-41b444a4e85a2371",
-          "feedRank": 27,
-          "compactHeadline": "Lamine Camara better off in Monaco, ex-Chelsea midfielder says"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-35097606eb2479e3"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Ruben Amorim has vowed not to repeat the mistakes of his Manchester United tenure at AC Milan.",
-          "text": "Ruben Amorim has vowed not to repeat the mistakes of his Manchester United tenure at AC Milan.",
-          "entities": [],
-          "occurredAt": "2026-09-21T11:09:04Z",
-          "timePrecision": "exact",
-          "ageHours": 17.36,
-          "freshnessBasis": "Ruben Amorim has vowed not to repeat the mistakes of his Manchester United tenure at AC Milan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49997462/ruben-amorim-cant-repeat-my-mistakes-man-united"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49997462/ruben-amorim-cant-repeat-my-mistakes-man-united"
-            }
-          ],
-          "id": "a415-d07e35a0b3346d3b",
           "feedRank": 28,
-          "compactHeadline": "Ruben Amorim: 'I can't repeat my mistakes' after Man United"
+          "compactHeadline": "Harry Maguire: Man United didn't take chances against Fulham, paid the price"
         }
       ]
     },
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T01:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.41,
+          "ageHours": 10.91,
           "freshnessBasis": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female official.\"",
           "status": "active",
           "sourceUrls": [
@@ -891,6 +891,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9bea1f253b2f329b"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
+          "text": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
+          "entities": [],
+          "occurredAt": "2026-09-22T10:41:50Z",
+          "timePrecision": "exact",
+          "ageHours": 1.32,
+          "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49999992/college-football-playoff-2026-week-3-bubble-watch"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49999992/college-football-playoff-2026-week-3-bubble-watch"
+            }
+          ],
+          "id": "a415-c8177da2bc8cb21e",
+          "feedRank": 30,
+          "compactHeadline": "College Football Playoff 2026: Bubble Watch after Week 3"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-6cb33836d4421d37"
           ],
           "type": "INJURY",
@@ -900,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T20:19:12Z",
           "timePrecision": "exact",
-          "ageHours": 8.19,
+          "ageHours": 15.69,
           "freshnessBasis": "Texas A&M receiver and kick returner Terry Bussey will miss the remainder of the season with a lower-body injury, coach Mike Elko announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +943,11 @@
             }
           ],
           "id": "a415-3a6ce17a5b5e0776",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "Texas A&M WR Terry Bussey out rest of season, coach Mike Elko says"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-9faba45b8446837f"
           ],
@@ -929,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:59:38Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
+          "ageHours": 17.02,
           "freshnessBasis": "LSU defensive back Dashawn Spears will miss the remainder of the season with a knee injury sustained in Saturday's 32-24 loss at Ole Miss, coach Lane Kiffin confirmed Monday.",
           "status": "active",
           "sourceUrls": [
@@ -943,11 +972,11 @@
             }
           ],
           "id": "a415-9556b540dfbef188",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "LSU loses defensive back Spears for season with knee injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-dec37774850cab05"
           ],
@@ -958,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:43:53Z",
           "timePrecision": "exact",
-          "ageHours": 10.78,
+          "ageHours": 18.28,
           "freshnessBasis": "Ole Miss star running back Kewan Lacy will be a game-time decision for Saturday's game vs. Florida due to a shoulder injury, coach Pete Golding said on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1001,11 @@
             }
           ],
           "id": "a415-3b1d96a372185ba7",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "RB Kewan Lacy not expected to be out long term, Golding says"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-feed9e51d1b3f68e"
           ],
@@ -987,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T19:27:37Z",
           "timePrecision": "exact",
-          "ageHours": 9.05,
+          "ageHours": 16.55,
           "freshnessBasis": "With thrilling finishes and some big upsets, here are projections for each postseason game following Week 3.",
           "status": "active",
           "sourceUrls": [
@@ -1001,11 +1030,11 @@
             }
           ],
           "id": "a415-87612249fc35f94c",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "2026-27 Week 3 College Football Playoff, bowl projections"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-9c589d472c7a4c76"
           ],
@@ -1016,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T19:41:35Z",
           "timePrecision": "exact",
-          "ageHours": 8.82,
+          "ageHours": 16.32,
           "freshnessBasis": "Following Week 3, Bill Connelly takes stock of which undefeated teams he trusts and which are pretenders.",
           "status": "active",
           "sourceUrls": [
@@ -1030,37 +1059,8 @@
             }
           ],
           "id": "a415-18e2575a5eda8194",
-          "feedRank": 34,
-          "compactHeadline": "Ranking college football's 35 unbeaten teams after Week 3"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a3ff35ab519d1f85"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "First-year Florida coach Jon Sumrall was surprised to learn his 21st-ranked Gators are 3.5-point favorites when they host fourth-ranked Ole Miss on Saturday.",
-          "text": "First-year Florida coach Jon Sumrall was surprised to learn his 21st-ranked Gators are 3.5-point favorites when they host fourth-ranked Ole Miss on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-21T17:38:17Z",
-          "timePrecision": "exact",
-          "ageHours": 10.88,
-          "freshnessBasis": "First-year Florida coach Jon Sumrall was surprised to learn his 21st-ranked Gators are 3.5-point favorites when they host fourth-ranked Ole Miss on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49999156/gators-coach-surprised-favored-vs-no-4-ole-miss"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49999156/gators-coach-surprised-favored-vs-no-4-ole-miss"
-            }
-          ],
-          "id": "a415-ff27888a16c5eb99",
           "feedRank": 35,
-          "compactHeadline": "Gators coach surprised to be favored vs. No. 4 Ole Miss"
+          "compactHeadline": "Ranking college football's 35 unbeaten teams after Week 3"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 85,
+    "freshCandidateCount": 104,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
