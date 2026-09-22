@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-22T00:01:18Z",
+  "generatedAt": "2026-09-22T00:30:54Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5d0d2d1a16f48c4217401e3d5770d518b457bb8ff8f06d835edd3b621a988ebf",
+  "sourceCandidateHash": "7d56b20d32adc0f775829f5d0290c452beb5df99f5881d146b6e1c749c51f142",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-ba3431426a7f0f9c"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The MRI on Toronto Blue Jays pitcher Dylan Cease's right shoulder showed only inflammation and not anything more serious, he told reporters on Monday.",
+          "text": "The MRI on Toronto Blue Jays pitcher Dylan Cease's right shoulder showed only inflammation and not anything more serious, he told reporters on Monday.",
+          "entities": [],
+          "occurredAt": "2026-09-22T00:24:42Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "The MRI on Toronto Blue Jays pitcher Dylan Cease's right shoulder showed only inflammation and not anything more serious, he told reporters on Monday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50001495/jays-cease-avoid-serious-injury-mri-need-surgery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50001495/jays-cease-avoid-serious-injury-mri-need-surgery"
+            }
+          ],
+          "id": "a415-d528e90c43730372",
+          "feedRank": 1,
+          "compactHeadline": "Jays' Cease avoid serious injury after MRI, won't need surgery"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-bc895c7f15893489"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:54:59Z",
           "timePrecision": "exact",
-          "ageHours": 6.11,
+          "ageHours": 6.6,
           "freshnessBasis": "A team's magic number represents the combination of wins and losses that would result in that team clinching a playoff spot.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-e497958594574274",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "What is an MLB magic number? How to find them ahead of playoffs"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-bed49da0848b1ae7"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T15:36:05Z",
           "timePrecision": "exact",
-          "ageHours": 8.42,
+          "ageHours": 8.91,
           "freshnessBasis": "When Chad Tracy took over the Red Sox, they were in last place. Now, they're playoff-bound.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-f58d01ba7785b07e",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "How the Red Sox went from AL-worst to the AL wild card"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-f6bcf43909c3f23e"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T06:40:01Z",
           "timePrecision": "exact",
-          "ageHours": 17.35,
+          "ageHours": 17.85,
           "freshnessBasis": "Milwaukee broke the single-season wins mark it set last season Sunday night, smothering Baltimore 3-0 to improve to 98-58.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-ef30f3a113ff3067",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Brewers savor franchise-record 98th victory as playoffs loom"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T10:46:04Z",
           "timePrecision": "exact",
-          "ageHours": 13.25,
+          "ageHours": 13.75,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-cecc36db3474d057"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T10:48:52Z",
           "timePrecision": "exact",
-          "ageHours": 13.21,
+          "ageHours": 13.7,
           "freshnessBasis": "Aces matter in the postseason. Which contenders are stocked with them -- and which are lacking quality arms?",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-b551d9bb6e049a22",
-          "feedRank": 5,
-          "compactHeadline": "2026 MLB playoff rotation tiers: Ranking October pitching options"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-5648892fd11333fd"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chicago Cubs star Alex Bregman suffered multiple facial fractures after being struck by a foul ball while standing in the on-deck circle Sunday, sources told ESPN's Jeff Passan.",
-          "text": "Chicago Cubs star Alex Bregman suffered multiple facial fractures after being struck by a foul ball while standing in the on-deck circle Sunday, sources told ESPN's Jeff Passan.",
-          "entities": [],
-          "occurredAt": "2026-09-21T22:04:52Z",
-          "timePrecision": "exact",
-          "ageHours": 1.94,
-          "freshnessBasis": "Chicago Cubs star Alex Bregman suffered multiple facial fractures after being struck by a foul ball while standing in the on-deck circle Sunday, sources told ESPN's Jeff Passan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50000561/sources-cubs-bregman-suffered-facial-fractures-foul-ball"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50000561/sources-cubs-bregman-suffered-facial-fractures-foul-ball"
-            }
-          ],
-          "id": "a415-b101ab37edd2782f",
           "feedRank": 6,
-          "compactHeadline": "Sources: Cubs' Bregman suffered facial fractures from foul ball"
+          "compactHeadline": "2026 MLB playoff rotation tiers: Ranking October pitching options"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T23:43:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 0.79,
           "freshnessBasis": "The Eagles are signing tight end Zach Ertz to their practice squad after the injury to starter Dallas Goedert and other injuries at the position.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T23:35:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.43,
+          "ageHours": 0.92,
           "freshnessBasis": "Experts weigh in on Daniels' latest injury and what it means for him, the Commanders and their collective futures.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T23:17:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.73,
+          "ageHours": 1.22,
           "freshnessBasis": "Cardinals starting cornerback Will Johnson could miss the rest of the regular season after suffering a neck injury against the Seahawks on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T23:15:22Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.26,
           "freshnessBasis": "Colts WR Alec Pierce is seeking a second opinion on his left heel injury, sources told ESPN's Jeremy Fowler on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T22:54:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.12,
+          "ageHours": 1.61,
           "freshnessBasis": "The Chargers are placing tight ends David Njoku and Charlie Kolar on injured reserve, coach Jim Harbaugh announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T21:58:01Z",
           "timePrecision": "exact",
-          "ageHours": 2.05,
+          "ageHours": 2.55,
           "freshnessBasis": "Bears quarterback Caleb Williams is considered \"week-to-week\" with a right hamstring injury he sustained in a 9-3 loss to the Vikings, coach Ben Johnson said Monday afternoon.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:21:45Z",
           "timePrecision": "exact",
-          "ageHours": 6.66,
+          "ageHours": 7.15,
           "freshnessBasis": "Los Angeles-based trial lawyer John Gibson will serve as the Clippers' interim governor. He will take over for Steve Ballmer, who has been suspended one year following an investigation into salary cap circumvention.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T16:46:33Z",
           "timePrecision": "exact",
-          "ageHours": 7.25,
+          "ageHours": 7.74,
           "freshnessBasis": "Let's dive into the trends, storylines and statistical nuggets that could define the NBA season.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.02,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Seattle Storm Women 77, Las Vegas Aces Women 98.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T20:44:55Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.77,
           "freshnessBasis": "Hawks rookie 7-footer Henri Veesaar suffered a torn ACL in his right knee during a workout last week and is expected to miss the season.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:50:30Z",
           "timePrecision": "exact",
-          "ageHours": 5.18,
+          "ageHours": 5.67,
           "freshnessBasis": "Nicolas Batum has announced his retirement after 18 NBA seasons. A mainstay of the French national team, Batum played most of his NBA career with the Clippers, Hornets and Blazers.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:48:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.21,
+          "ageHours": 5.71,
           "freshnessBasis": "Doc Rivers turned down an offer to become an NBA analyst for NBC after retiring as a player in 1996 because he couldn't promise then-NBC Sports chairman Dick Ebersol that he wouldn't become a coach.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:50:33Z",
           "timePrecision": "exact",
-          "ageHours": 5.18,
+          "ageHours": 5.67,
           "freshnessBasis": "Alex Ovechkin is day to day with a lower-body injury, less than two weeks before the Washington Capitals' season opener.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T19:06:22Z",
           "timePrecision": "exact",
-          "ageHours": 4.92,
+          "ageHours": 5.41,
           "freshnessBasis": "The Stars have signed forward Sam Steel to a $14.8 million, four-year contract extension that will begin next season and go through 2030-31.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T14:03:38Z",
           "timePrecision": "exact",
-          "ageHours": 9.96,
+          "ageHours": 10.45,
           "freshnessBasis": "The Sharks signed coach Ryan Warsofsky to a multiyear contact extension on the first day of training camp Thursday after he helped the rebuilding team get to the brink of the playoffs over his first two seasons.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T14:50:35Z",
           "timePrecision": "exact",
-          "ageHours": 9.18,
+          "ageHours": 9.67,
           "freshnessBasis": "Quinn Hughes reported to his first training camp with Minnesota without an extension, raising the anxiety level within the fanbase.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:28:08Z",
           "timePrecision": "exact",
-          "ageHours": 6.55,
+          "ageHours": 7.05,
           "freshnessBasis": "Michael Carrick has raised concerns about Benjamin Sesko's latest injury by revealing the problem is connected to the same shin issue which kept the striker sidelined for more than two months over the summer.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.02,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Stoke City U21 1, AFC Bournemouth U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T14:47:48Z",
           "timePrecision": "exact",
-          "ageHours": 9.23,
+          "ageHours": 9.72,
           "freshnessBasis": "Harry Maguire said Manchester United paid the price for failing to take their chances in Sunday's 1-1 draw against Fulham.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T12:27:13Z",
           "timePrecision": "exact",
-          "ageHours": 11.57,
+          "ageHours": 12.06,
           "freshnessBasis": "Manchester United's players aren't good enough and the club isn't doing enough to rectify that, so where does that leave manager Michael Carrick?",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T02:38:26Z",
           "timePrecision": "exact",
-          "ageHours": 21.38,
+          "ageHours": 21.87,
           "freshnessBasis": "Lionel Messi scored his 101st goal for Inter Miami CF, but Anders Dreyer scored twice for San Diego FC, as the teams played to a 2-2 draw on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T02:08:16Z",
           "timePrecision": "exact",
-          "ageHours": 21.88,
+          "ageHours": 22.38,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T00:43:43Z",
           "timePrecision": "exact",
-          "ageHours": 23.29,
+          "ageHours": 23.79,
           "freshnessBasis": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female official.\"",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T20:19:12Z",
           "timePrecision": "exact",
-          "ageHours": 3.7,
+          "ageHours": 4.2,
           "freshnessBasis": "Texas A&M receiver and kick returner Terry Bussey will miss the remainder of the season with a lower-body injury, coach Mike Elko announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T18:59:38Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.52,
           "freshnessBasis": "LSU defensive back Dashawn Spears will miss the remainder of the season with a knee injury sustained in Saturday's 32-24 loss at Ole Miss, coach Lane Kiffin confirmed Monday.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:43:53Z",
           "timePrecision": "exact",
-          "ageHours": 6.29,
+          "ageHours": 6.78,
           "freshnessBasis": "Ole Miss star running back Kewan Lacy will be a game-time decision for Saturday's game vs. Florida due to a shoulder injury, coach Pete Golding said on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T19:27:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.56,
+          "ageHours": 5.05,
           "freshnessBasis": "With thrilling finishes and some big upsets, here are projections for each postseason game following Week 3.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T19:41:35Z",
           "timePrecision": "exact",
-          "ageHours": 4.33,
+          "ageHours": 4.82,
           "freshnessBasis": "Following Week 3, Bill Connelly takes stock of which undefeated teams he trusts and which are pretenders.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-21T17:38:17Z",
           "timePrecision": "exact",
-          "ageHours": 6.38,
+          "ageHours": 6.88,
           "freshnessBasis": "First-year Florida coach Jon Sumrall was surprised to learn his 21st-ranked Gators are 3.5-point favorites when they host fourth-ranked Ole Miss on Saturday.",
           "status": "active",
           "sourceUrls": [
