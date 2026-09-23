@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-23T01:01:07Z",
+  "generatedAt": "2026-09-23T01:30:59Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "2ff4e1c7c7397c52ee47f84ead8a373b9880cc722ea00020220385d09eecb1e0",
+  "sourceCandidateHash": "974cef2771977e170d1402749c739303ff68f41b044cf295db79c05ee7348378",
   "leagues": [
     {
       "league": "MLB",
@@ -14,6 +14,152 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-97bbaed102f903b4"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Zack Wheeler struck 11, including a franchise-record seven in a row to start the game, Bryson Stott hit a tiebreaking RBI single with two out in the eighth inning and the Philadelphia Phillies inched closer to clinching a playoff spot with a 6-4...",
+          "text": "Zack Wheeler struck 11, including a franchise-record seven in a row to start the game, Bryson Stott hit a tiebreaking RBI single with two out in the eighth inning and the Philadelphia Phillies inched closer to clinching a playoff spot with a 6-4...",
+          "entities": [],
+          "occurredAt": "2026-09-22T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: Milwaukee Brewers 4, Philadelphia Phillies 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817032"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817032"
+            }
+          ],
+          "id": "a415-c838dd26ecd2c180",
+          "feedRank": 1,
+          "compactHeadline": "Wheeler fans 7 straight to open game, Stott hits tiebreaking RBI single as Phillies beat Brewers 6-4"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-339cb96122f8caf4"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Jared Jones allowed one hit over seven dominant innings and the Pittsburgh Pirates inched closer to the franchise's first winning season in eight years with a 2-0 win over St. Louis on Tuesday night.",
+          "text": "Jared Jones allowed one hit over seven dominant innings and the Pittsburgh Pirates inched closer to the franchise's first winning season in eight years with a 2-0 win over St. Louis on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-22T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: St. Louis Cardinals 0, Pittsburgh Pirates 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817033",
+            "http://www.espn.com/mlb/preview?gameId=401817033"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817033"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817033"
+            }
+          ],
+          "id": "a415-e655395e6f3d07f2",
+          "feedRank": 2,
+          "compactHeadline": "Pittsburgh Pirates beat St. Louis Cardinals 2-0"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6caec5a2c9ac6c46"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "CJ Abrams hit a tiebreaking two-run homer and added a solo shot to give the Washington Nationals a 3-1 victory over the Detroit Tigers on Tuesday night.",
+          "text": "CJ Abrams hit a tiebreaking two-run homer and added a solo shot to give the Washington Nationals a 3-1 victory over the Detroit Tigers on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-22T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: Washington Nationals 3, Detroit Tigers 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817036",
+            "http://www.espn.com/mlb/preview?gameId=401817036"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817036"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817036"
+            }
+          ],
+          "id": "a415-0425c2a2a8dfb7dd",
+          "feedRank": 3,
+          "compactHeadline": "Washington Nationals beat Detroit Tigers 3-1"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-c1ddef463ba37bae"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
+          "text": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
+          "entities": [],
+          "occurredAt": "2026-09-23T01:09:22Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
+            }
+          ],
+          "id": "a415-12f89bfc39cd7173",
+          "feedRank": 4,
+          "compactHeadline": "Rangers put Joc Pederson on IL, end Cal Quantrill's season"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-98306c2a8187641c"
           ],
           "type": "INJURY",
@@ -21,9 +167,9 @@
           "headline": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
           "text": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
           "entities": [],
-          "occurredAt": "2026-09-23T00:10:46Z",
+          "occurredAt": "2026-09-23T01:08:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.84,
+          "ageHours": 0.37,
           "freshnessBasis": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +183,11 @@
             }
           ],
           "id": "a415-06d58ec82451b374",
-          "feedRank": 1,
+          "feedRank": 5,
           "compactHeadline": "Cubs expect Alex Bregman back for playoffs after foul ball to face"
         },
         {
-          "rank": 2,
+          "rank": 6,
           "candidateIds": [
             "cand-222b12bded6bb793"
           ],
@@ -52,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:33:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
+          "ageHours": 0.96,
           "freshnessBasis": "The Mets removed the interim tag from manager Andy Green, hiring him to a three-year deal through the 2029 season, it was announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -66,124 +212,8 @@
             }
           ],
           "id": "a415-f34fac51a67407e7",
-          "feedRank": 2,
-          "compactHeadline": "Mets remove interim manager tag, hire Andy Green to 3-year deal"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-f60341dd8291a224"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Aaron Judge is not expected to be available for the Yankees' wild-card series as he continues to recover from a calf strain.",
-          "text": "Aaron Judge is not expected to be available for the Yankees' wild-card series as he continues to recover from a calf strain.",
-          "entities": [],
-          "occurredAt": "2026-09-22T22:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.94,
-          "freshnessBasis": "Aaron Judge is not expected to be available for the Yankees' wild-card series as he continues to recover from a calf strain.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50006335/yankees-expect-aaron-judge-calf-back-wild-card"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50006335/yankees-expect-aaron-judge-calf-back-wild-card"
-            }
-          ],
-          "id": "a415-a17dd0d83a3feab5",
-          "feedRank": 3,
-          "compactHeadline": "Yankees don't expect Aaron Judge (calf) back for wild card"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e3ec124e34f9a978"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The Red Sox signed Chad Tracy to a three-year contract as manager while also exercising the 2029 and 2030 options on chief baseball officer Craig Breslow.",
-          "text": "The Red Sox signed Chad Tracy to a three-year contract as manager while also exercising the 2029 and 2030 options on chief baseball officer Craig Breslow.",
-          "entities": [],
-          "occurredAt": "2026-09-22T20:15:13Z",
-          "timePrecision": "exact",
-          "ageHours": 4.77,
-          "freshnessBasis": "The Red Sox signed Chad Tracy to a three-year contract as manager while also exercising the 2029 and 2030 options on chief baseball officer Craig Breslow.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50006038/red-sox-commit-chad-tracy-craig-breslow-2030-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50006038/red-sox-commit-chad-tracy-craig-breslow-2030-season"
-            }
-          ],
-          "id": "a415-a14ac4264aa3bd8f",
-          "feedRank": 4,
-          "compactHeadline": "Red Sox commit to Chad Tracy, Craig Breslow through 2030"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-1e5ea48da05838f4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Tampa Bay Rays 0, New York Yankees 2.",
-          "text": "Highlightly final: Tampa Bay Rays 0, New York Yankees 2.",
-          "entities": [],
-          "occurredAt": "2026-09-22T17:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 7.94,
-          "freshnessBasis": "Highlightly final: Tampa Bay Rays 0, New York Yankees 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-22",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-04f8bbbc6e14023c",
-          "feedRank": 5,
-          "compactHeadline": "New York Yankees beat Tampa Bay Rays 2-0"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e4521500549bb136"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
-          "text": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
-          "entities": [],
-          "occurredAt": "2026-09-22T13:14:35Z",
-          "timePrecision": "exact",
-          "ageHours": 11.78,
-          "freshnessBasis": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49974689/mlb-2026-playoffs-postseason-eliminated-teams-bright-side-optimism-silver-linings-2027"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49974689/mlb-2026-playoffs-postseason-eliminated-teams-bright-side-optimism-silver-linings-2027"
-            }
-          ],
-          "id": "a415-e74da20ec45f7e36",
           "feedRank": 6,
-          "compactHeadline": "Silver linings for MLB's 2026 non-playoff teams"
+          "compactHeadline": "Mets remove interim manager tag, hire Andy Green to 3-year deal"
         }
       ]
     },
@@ -203,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:39:34Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.86,
           "freshnessBasis": "Jaxson Dart's knee injury is more severe than originally anticipated, and the Giants QB could miss the rest of the season, sources told NFL Network's Ian Rapoport and Mike Garafolo.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T19:55:23Z",
           "timePrecision": "exact",
-          "ageHours": 5.1,
+          "ageHours": 5.59,
           "freshnessBasis": "Bears quarterback Tyson Bagent is in the NFL's concussion protocol, sources told NFL Network's Ian Rapoport on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +291,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:45:34Z",
           "timePrecision": "exact",
-          "ageHours": 4.26,
+          "ageHours": 4.76,
           "freshnessBasis": "The Jets have signed former Titans starting QB Will Levis to their practice squad and have released Bailey Zappe.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +320,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:41:24Z",
           "timePrecision": "exact",
-          "ageHours": 7.33,
+          "ageHours": 7.83,
           "freshnessBasis": "The Falcons placed star cornerback A.J. Terrell on injured reserve Tuesday with a groin injury, the team announced.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:36:31Z",
           "timePrecision": "exact",
-          "ageHours": 4.41,
+          "ageHours": 4.91,
           "freshnessBasis": "Packers RT Zach Bako-Bewele, considered the team's best offensive lineman, is set to undergo knee surgery that will sideline him for 8-10 months.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:24:07Z",
           "timePrecision": "exact",
-          "ageHours": 6.62,
+          "ageHours": 7.11,
           "freshnessBasis": "With a defensive back group dealing with injuries, the Eagles are expected to sign Pro Bowler Kenny Moore II to the practice squad, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +413,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:24:52Z",
           "timePrecision": "exact",
-          "ageHours": 4.6,
+          "ageHours": 5.1,
           "freshnessBasis": "The NBA announced on Tuesday that tickets are sold out for the 2027 NBA Paris and Manchester games set for January, featuring the San Antonio Spurs and the New Orleans Pelicans.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +442,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:14:37Z",
           "timePrecision": "exact",
-          "ageHours": 2.78,
+          "ageHours": 3.27,
           "freshnessBasis": "Toronto Raptors star Kawhi Leonard has agreed on a two-year, $115 million contract extension with the franchise plus a player option for the 2028-29 season, his agent, Harrison Gaines of Slash Sports, told ESPN on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +471,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:03:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.95,
+          "ageHours": 1.45,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -461,35 +491,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-d125e545040a0a63"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
-          "text": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
-          "entities": [],
-          "occurredAt": "2026-09-22T21:16:19Z",
-          "timePrecision": "exact",
-          "ageHours": 3.75,
-          "freshnessBasis": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/48957844/nba-trade-tracker-details-every-deal-2026-offseason-draft-free-agency"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/48957844/nba-trade-tracker-details-every-deal-2026-offseason-draft-free-agency"
-            }
-          ],
-          "id": "a415-d512fbafa41ab8ef",
-          "feedRank": 16,
-          "compactHeadline": "NBA trade tracker: Updates for every deal of the 2026 offseason"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-a1a9cce654f5a4df"
           ],
           "type": "RESULT",
@@ -497,9 +498,9 @@
           "headline": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "text": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "entities": [],
-          "occurredAt": "2026-09-22T22:03:18Z",
+          "occurredAt": "2026-09-23T01:20:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.96,
+          "ageHours": 0.17,
           "freshnessBasis": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "status": "active",
           "sourceUrls": [
@@ -513,8 +514,37 @@
             }
           ],
           "id": "a415-32f1fba64c025627",
-          "feedRank": 17,
+          "feedRank": 16,
           "compactHeadline": "NBA Rank 2026, players Nos. 100-51: Four rookies make their debuts"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-d125e545040a0a63"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
+          "text": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
+          "entities": [],
+          "occurredAt": "2026-09-22T21:16:19Z",
+          "timePrecision": "exact",
+          "ageHours": 4.24,
+          "freshnessBasis": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/48957844/nba-trade-tracker-details-every-deal-2026-offseason-draft-free-agency"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/48957844/nba-trade-tracker-details-every-deal-2026-offseason-draft-free-agency"
+            }
+          ],
+          "id": "a415-d512fbafa41ab8ef",
+          "feedRank": 17,
+          "compactHeadline": "NBA trade tracker: Updates for every deal of the 2026 offseason"
         },
         {
           "rank": 6,
@@ -528,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T23:43:03Z",
           "timePrecision": "exact",
-          "ageHours": 1.3,
+          "ageHours": 1.8,
           "freshnessBasis": "The Rockets hope to make \"some real noise\" this season after heading into the year fully healthy with point guard Fred VanVleet back at the helm.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T21:16:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.74,
+          "ageHours": 4.24,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +622,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:05:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
+          "ageHours": 1.43,
           "freshnessBasis": "NHL commissioner Gary Bettman said the league continues to get pitched by potential owners but is not currently in a formal round of expansion.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:28:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.55,
+          "ageHours": 3.05,
           "freshnessBasis": "Arizona State did not vet the training plan for the workout led by a former Green Beret, during which a hockey player collapsed last month, according to a preliminary report the university released Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +680,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:40:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.35,
+          "ageHours": 4.84,
           "freshnessBasis": "Washington Capitals owner Ted Leonsis has been unanimously approved to be the next chairperson of the NHL board of governors.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:53:46Z",
           "timePrecision": "exact",
-          "ageHours": 6.12,
+          "ageHours": 6.62,
           "freshnessBasis": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:19:05Z",
           "timePrecision": "exact",
-          "ageHours": 6.7,
+          "ageHours": 7.2,
           "freshnessBasis": "The PWHL has named Alison Izzi, an attorney specializing in hockey matters, as general manager of the Vancouver Goldeneyes.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +773,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T13:19:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.7,
+          "ageHours": 12.2,
           "freshnessBasis": "Manchester United striker Benjamin Sesko has vowed to \"fully dedicate\" himself to his recovery from an ongoing shin issue.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T10:48:58Z",
           "timePrecision": "exact",
-          "ageHours": 14.2,
+          "ageHours": 14.7,
           "freshnessBasis": "Lewis Hall has said it was a \"no-brainer\" to sign a new contract to extend his Newcastle United stay after summer transfer interest from Manchester United.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:39:34Z",
           "timePrecision": "exact",
-          "ageHours": 7.36,
+          "ageHours": 7.86,
           "freshnessBasis": "Former Liverpool defender Andy Robertson has said that the death of teammate Diogo Jota was \"horrendous\" and had a major impact on the players that knew him.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +860,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T16:26:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.59,
+          "ageHours": 9.08,
           "freshnessBasis": "Estêvão says he is focused only on what he can control after struggling for game time at Chelsea under new manager Xabi Alonso.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +895,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 4.1,
+          "ageHours": 4.59,
           "freshnessBasis": "The Columbus Crew announced that Crew 2 manager Federico Higuain has been fired for cause, effective immediately, in the wake of his suspension by MLS NEXT Pro following an incident of misconduct towards a female referee.",
           "status": "active",
           "sourceUrls": [
@@ -881,35 +911,6 @@
           "id": "a415-db97f39348ac4f41",
           "feedRank": 29,
           "compactHeadline": "Columbus Crew 2 fires Higuain after fallout from ref abuse"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-8cec5d54410094b9"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female official.\"",
-          "text": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female official.\"",
-          "entities": [],
-          "occurredAt": "2026-09-22T01:06:20Z",
-          "timePrecision": "exact",
-          "ageHours": 23.91,
-          "freshnessBasis": "The union that represents MLS and USL referees launched a scathing critique of MLS NEXT Pro over its handling of an incident in which a coach committed what it described as \"two deliberate acts of physical abuse and sexism towards a female official.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49991564/refs-union-ban-crew-2-coach-higuain"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/49991564/refs-union-ban-crew-2-coach-higuain"
-            }
-          ],
-          "id": "a415-2bd4d93280b9818d",
-          "feedRank": 30,
-          "compactHeadline": "Sources: Higuain at center of refs' union beef with MLS NEXT Pro"
         }
       ]
     },
@@ -929,7 +930,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:03:39Z",
           "timePrecision": "exact",
-          "ageHours": 6.96,
+          "ageHours": 7.46,
           "freshnessBasis": "Oklahoma star defensive tackle David Stone suffered a knee injury at Monday's practice that will be evaluated throughout the week.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +944,7 @@
             }
           ],
           "id": "a415-2b8a23086ca7ceb5",
-          "feedRank": 31,
+          "feedRank": 30,
           "compactHeadline": "David Stone injured in collision with Oklahoma scout team player"
         },
         {
@@ -958,7 +959,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T14:40:44Z",
           "timePrecision": "exact",
-          "ageHours": 10.34,
+          "ageHours": 10.84,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -972,7 +973,7 @@
             }
           ],
           "id": "a415-c8177da2bc8cb21e",
-          "feedRank": 32,
+          "feedRank": 31,
           "compactHeadline": "College Football Playoff 2026: Bubble Watch after Week 3"
         },
         {
@@ -987,7 +988,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:30:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
+          "ageHours": 3.0,
           "freshnessBasis": "Colorado has removed several players for what coach Deion Sanders is calling conduct detrimental to the team.",
           "status": "active",
           "sourceUrls": [
@@ -1001,7 +1002,7 @@
             }
           ],
           "id": "a415-db90226e46554304",
-          "feedRank": 33,
+          "feedRank": 32,
           "compactHeadline": "Sanders: Colorado removes several players for detrimental conduct"
         },
         {
@@ -1016,7 +1017,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:31:55Z",
           "timePrecision": "exact",
-          "ageHours": 4.49,
+          "ageHours": 4.98,
           "freshnessBasis": "South Carolina coach Shane Beamer pushed back on the notion that a change at quarterback is needed after two rocky games by LaNorris Sellers.",
           "status": "active",
           "sourceUrls": [
@@ -1030,7 +1031,7 @@
             }
           ],
           "id": "a415-2a3f46ef091b05fe",
-          "feedRank": 34,
+          "feedRank": 33,
           "compactHeadline": "South Carolina's Shane Beamer defends QB LaNorris Sellers"
         },
         {
@@ -1045,7 +1046,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:46:32Z",
           "timePrecision": "exact",
-          "ageHours": 7.24,
+          "ageHours": 7.74,
           "freshnessBasis": "Nebraska and Miami (OH) have moved their 2027 season opener to Arrowhead Stadium on Aug. 27, after they were forced to reschedule when the NCAA made calendar changes allowing schools to start their season a week earlier.",
           "status": "active",
           "sourceUrls": [
@@ -1059,8 +1060,37 @@
             }
           ],
           "id": "a415-b4989b782a788b6c",
-          "feedRank": 35,
+          "feedRank": 34,
           "compactHeadline": "Nebraska, Miami (OH) '27 season to open at Arrowhead Stadium"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-37b2fe01fae3a698"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Koby Howard, Penn State's leading receiver, is questionable for Saturday's Big Ten opener against Wisconsin, coach Matt Campbell said Tuesday.",
+          "text": "Koby Howard, Penn State's leading receiver, is questionable for Saturday's Big Ten opener against Wisconsin, coach Matt Campbell said Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-22T16:55:25Z",
+          "timePrecision": "exact",
+          "ageHours": 8.59,
+          "freshnessBasis": "Koby Howard, Penn State's leading receiver, is questionable for Saturday's Big Ten opener against Wisconsin, coach Matt Campbell said Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50006494/penn-state-leading-wr-koby-howard-questionable-vs-wisconsin"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50006494/penn-state-leading-wr-koby-howard-questionable-vs-wisconsin"
+            }
+          ],
+          "id": "a415-5279f5f9cc0e965f",
+          "feedRank": 35,
+          "compactHeadline": "Penn State leading WR Koby Howard questionable vs. Wisconsin"
         }
       ]
     }
@@ -1085,7 +1115,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 87,
+    "freshCandidateCount": 88,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
