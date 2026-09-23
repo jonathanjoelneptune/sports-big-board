@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-23T02:30:58Z",
+  "generatedAt": "2026-09-23T03:00:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "26d197f8377d8ec3adf1665b42495cdfbcb13c2a68054e03bbf37b6de7c0a848",
+  "sourceCandidateHash": "af6551517a3a070b1330ec5b13f4bdf13b2a9ab9fceece2c9c3e897ba97e6bac",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,76 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-0e3fc1f9c6e35b3c"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Chase Meidroth hit a three-run homer and had a career-high five RBI, Randal Grichuk added a three-run shot among his four hits, and the Chicago White Sox beat the Kansas City Royals 14-11 on Tuesday night to stay a game behind Cleveland in the AL...",
+          "text": "Chase Meidroth hit a three-run homer and had a career-high five RBI, Randal Grichuk added a three-run shot among his four hits, and the Chicago White Sox beat the Kansas City Royals 14-11 on Tuesday night to stay a game behind Cleveland in the AL...",
+          "entities": [],
+          "occurredAt": "2026-09-22T23:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Highlightly final: Chicago White Sox 14, Kansas City Royals 11.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817037"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817037"
+            }
+          ],
+          "id": "a415-f27679e3a5e97903",
+          "feedRank": 1,
+          "compactHeadline": "Meidroth, Grichuk hit 3-run shots, White Sox beat Royals 14-11 to remain a game back in AL Central"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c76b7338223718cd"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Drew Rasmussen took a no-hit bid into the seventh inning as the Rays beat the Yankees 6-1 on Tuesday to clinch their fifth AL East title.",
+          "text": "Drew Rasmussen took a no-hit bid into the seventh inning as the Rays beat the Yankees 6-1 on Tuesday to clinch their fifth AL East title.",
+          "entities": [],
+          "occurredAt": "2026-09-22T23:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.93,
+          "freshnessBasis": "Highlightly final: Tampa Bay Rays 6, New York Yankees 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50010466/drew-rasmussen-shuts-yankees-help-rays-clinch-al-east"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50010466/drew-rasmussen-shuts-yankees-help-rays-clinch-al-east"
+            }
+          ],
+          "id": "a415-bcb118c3c2a919bb",
+          "feedRank": 2,
+          "compactHeadline": "Drew Rasmussen shuts down Yankees to help Rays clinch AL East"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-4b939fd2896e7e1e"
           ],
@@ -23,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.77,
           "freshnessBasis": "Highlightly final: Cincinnati Reds 4, Atlanta Braves 0.",
           "status": "active",
           "sourceUrls": [
@@ -43,11 +113,11 @@
             }
           ],
           "id": "a415-55d616a331d9f119",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "De La Cruz closes in on 30-30, Williamson throws six sharp innings as Reds blank Braves 4-0"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-97bbaed102f903b4"
           ],
@@ -58,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.35,
           "freshnessBasis": "Highlightly final: Milwaukee Brewers 4, Philadelphia Phillies 6.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +148,11 @@
             }
           ],
           "id": "a415-c838dd26ecd2c180",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Wheeler fans 7 straight to open game, Stott hits tiebreaking RBI single as Phillies beat Brewers 6-4"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-339cb96122f8caf4"
           ],
@@ -93,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.35,
           "freshnessBasis": "Highlightly final: St. Louis Cardinals 0, Pittsburgh Pirates 2.",
           "status": "active",
           "sourceUrls": [
@@ -119,11 +189,11 @@
             }
           ],
           "id": "a415-e655395e6f3d07f2",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Pittsburgh Pirates beat St. Louis Cardinals 2-0"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-6caec5a2c9ac6c46"
           ],
@@ -134,7 +204,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.35,
           "freshnessBasis": "Highlightly final: Washington Nationals 3, Detroit Tigers 1.",
           "status": "active",
           "sourceUrls": [
@@ -160,66 +230,8 @@
             }
           ],
           "id": "a415-0425c2a2a8dfb7dd",
-          "feedRank": 4,
-          "compactHeadline": "Washington Nationals beat Detroit Tigers 3-1"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-c1ddef463ba37bae"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
-          "text": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
-          "entities": [],
-          "occurredAt": "2026-09-23T01:09:22Z",
-          "timePrecision": "exact",
-          "ageHours": 1.36,
-          "freshnessBasis": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
-            }
-          ],
-          "id": "a415-12f89bfc39cd7173",
-          "feedRank": 5,
-          "compactHeadline": "Rangers put Joc Pederson on IL, end Cal Quantrill's season"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-98306c2a8187641c"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
-          "text": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
-          "entities": [],
-          "occurredAt": "2026-09-23T01:08:41Z",
-          "timePrecision": "exact",
-          "ageHours": 1.37,
-          "freshnessBasis": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50009398/cubs-expect-alex-bregman-ready-postseason-facial-fractures-foul-ball"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50009398/cubs-expect-alex-bregman-ready-postseason-facial-fractures-foul-ball"
-            }
-          ],
-          "id": "a415-06d58ec82451b374",
           "feedRank": 6,
-          "compactHeadline": "Cubs expect Alex Bregman back for playoffs after foul ball to face"
+          "compactHeadline": "Washington Nationals beat Detroit Tigers 3-1"
         }
       ]
     },
@@ -239,7 +251,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:39:34Z",
           "timePrecision": "exact",
-          "ageHours": 5.86,
+          "ageHours": 6.36,
           "freshnessBasis": "Jaxson Dart's knee injury is more severe than originally anticipated, and the Giants QB could miss the rest of the season, sources told NFL Network's Ian Rapoport and Mike Garafolo.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +280,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T19:55:23Z",
           "timePrecision": "exact",
-          "ageHours": 6.59,
+          "ageHours": 7.09,
           "freshnessBasis": "Bears quarterback Tyson Bagent is in the NFL's concussion protocol, sources told NFL Network's Ian Rapoport on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -297,7 +309,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:45:34Z",
           "timePrecision": "exact",
-          "ageHours": 5.76,
+          "ageHours": 6.26,
           "freshnessBasis": "The Jets have signed former Titans starting QB Will Levis to their practice squad and have released Bailey Zappe.",
           "status": "active",
           "sourceUrls": [
@@ -326,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:41:24Z",
           "timePrecision": "exact",
-          "ageHours": 8.83,
+          "ageHours": 9.33,
           "freshnessBasis": "The Falcons placed star cornerback A.J. Terrell on injured reserve Tuesday with a groin injury, the team announced.",
           "status": "active",
           "sourceUrls": [
@@ -355,7 +367,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:36:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.91,
+          "ageHours": 6.41,
           "freshnessBasis": "Packers RT Zach Bako-Bewele, considered the team's best offensive lineman, is set to undergo knee surgery that will sideline him for 8-10 months.",
           "status": "active",
           "sourceUrls": [
@@ -384,7 +396,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:24:07Z",
           "timePrecision": "exact",
-          "ageHours": 8.11,
+          "ageHours": 8.61,
           "freshnessBasis": "With a defensive back group dealing with injuries, the Eagles are expected to sign Pro Bowler Kenny Moore II to the practice squad, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -410,35 +422,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c363c070239d337d"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Toronto Tempo Women 85, Chicago Sky Women 97.",
-          "text": "Highlightly final: Toronto Tempo Women 85, Chicago Sky Women 97.",
-          "entities": [],
-          "occurredAt": "2026-09-23T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.52,
-          "freshnessBasis": "Highlightly final: Toronto Tempo Women 85, Chicago Sky Women 97.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-22",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-980dc0eb7fbd4f41",
-          "feedRank": 13,
-          "compactHeadline": "Chicago Sky Women beat Toronto Tempo Women 97-85"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-2b4044411ff59f7c"
           ],
           "type": "RESULT",
@@ -448,7 +431,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 3.02,
           "freshnessBasis": "Highlightly final: Minnesota Lynx Women 77, Indiana Fever Women 96.",
           "status": "active",
           "sourceUrls": [
@@ -462,8 +445,37 @@
             }
           ],
           "id": "a415-c67dd7f5ffd29ad4",
-          "feedRank": 14,
+          "feedRank": 13,
           "compactHeadline": "Indiana Fever Women beat Minnesota Lynx Women 96-77"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c363c070239d337d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Toronto Tempo Women 85, Chicago Sky Women 97.",
+          "text": "Highlightly final: Toronto Tempo Women 85, Chicago Sky Women 97.",
+          "entities": [],
+          "occurredAt": "2026-09-23T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.02,
+          "freshnessBasis": "Highlightly final: Toronto Tempo Women 85, Chicago Sky Women 97.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-22",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-980dc0eb7fbd4f41",
+          "feedRank": 14,
+          "compactHeadline": "Chicago Sky Women beat Toronto Tempo Women 97-85"
         },
         {
           "rank": 3,
@@ -477,7 +489,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.52,
           "freshnessBasis": "Highlightly final: Connecticut Sun Women 69, Washington Mystics Women 79.",
           "status": "active",
           "sourceUrls": [
@@ -506,7 +518,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:24:52Z",
           "timePrecision": "exact",
-          "ageHours": 6.1,
+          "ageHours": 6.6,
           "freshnessBasis": "The NBA announced on Tuesday that tickets are sold out for the 2027 NBA Paris and Manchester games set for January, featuring the San Antonio Spurs and the New Orleans Pelicans.",
           "status": "active",
           "sourceUrls": [
@@ -535,7 +547,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:14:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.77,
           "freshnessBasis": "Toronto Raptors star Kawhi Leonard has agreed on a two-year, $115 million contract extension with the franchise plus a player option for the 2028-29 season, his agent, Harrison Gaines of Slash Sports, told ESPN on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -564,7 +576,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:03:53Z",
           "timePrecision": "exact",
-          "ageHours": 2.45,
+          "ageHours": 2.95,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -590,6 +602,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-8dec38f633a180a9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Tampa Bay Lightning 2, Nashville Predators 3.",
+          "text": "Highlightly final: Tampa Bay Lightning 2, Nashville Predators 3.",
+          "entities": [],
+          "occurredAt": "2026-09-23T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.02,
+          "freshnessBasis": "Highlightly final: Tampa Bay Lightning 2, Nashville Predators 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-22",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-dc85baa3e226686f",
+          "feedRank": 19,
+          "compactHeadline": "Nashville Predators beat Tampa Bay Lightning 3-2"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-9d3cab5648477911"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Edmonton Oilers 2, Winnipeg Jets 1.",
+          "text": "Highlightly final: Edmonton Oilers 2, Winnipeg Jets 1.",
+          "entities": [],
+          "occurredAt": "2026-09-23T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.02,
+          "freshnessBasis": "Highlightly final: Edmonton Oilers 2, Winnipeg Jets 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-22",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-caf6a9352d967adc",
+          "feedRank": 20,
+          "compactHeadline": "Edmonton Oilers beat Winnipeg Jets 2-1"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-f1c1a03c4ec5ed0d"
           ],
           "type": "SIGNING",
@@ -599,7 +669,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T21:16:41Z",
           "timePrecision": "exact",
-          "ageHours": 5.24,
+          "ageHours": 5.74,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -613,11 +683,11 @@
             }
           ],
           "id": "a415-07335bffc057ec08",
-          "feedRank": 19,
+          "feedRank": 21,
           "compactHeadline": "Sources: Wild GM Bill Guerin lands multiyear contract extension"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-51770678b9bdcd48"
           ],
@@ -628,7 +698,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:05:19Z",
           "timePrecision": "exact",
-          "ageHours": 2.43,
+          "ageHours": 2.93,
           "freshnessBasis": "NHL commissioner Gary Bettman said the league continues to get pitched by potential owners but is not currently in a formal round of expansion.",
           "status": "active",
           "sourceUrls": [
@@ -642,11 +712,11 @@
             }
           ],
           "id": "a415-376e4af19d69d1e1",
-          "feedRank": 20,
+          "feedRank": 22,
           "compactHeadline": "Bettman: NHL still in 'wait-and-see' mode on adding two expansion teams"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-67ac692022bae8fe"
           ],
@@ -657,7 +727,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:28:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.05,
+          "ageHours": 4.55,
           "freshnessBasis": "Arizona State did not vet the training plan for the workout led by a former Green Beret, during which a hockey player collapsed last month, according to a preliminary report the university released Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -671,11 +741,11 @@
             }
           ],
           "id": "a415-ccae0ea41de24217",
-          "feedRank": 21,
+          "feedRank": 23,
           "compactHeadline": "ASU report details lapses before hockey player's collapse"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-c089ee36dd1d73c4"
           ],
@@ -686,7 +756,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:40:18Z",
           "timePrecision": "exact",
-          "ageHours": 5.84,
+          "ageHours": 6.34,
           "freshnessBasis": "Washington Capitals owner Ted Leonsis has been unanimously approved to be the next chairperson of the NHL board of governors.",
           "status": "active",
           "sourceUrls": [
@@ -700,66 +770,8 @@
             }
           ],
           "id": "a415-2fb098910dbc10f6",
-          "feedRank": 22,
-          "compactHeadline": "Capitals' Ted Leonsis to be NHL board of governors chair"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-9e5d2dc4c3cf741a"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
-          "text": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
-          "entities": [],
-          "occurredAt": "2026-09-22T18:53:46Z",
-          "timePrecision": "exact",
-          "ageHours": 7.62,
-          "freshnessBasis": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50007243/ducks-choose-mikael-granlund-10th-captain-team-history"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50007243/ducks-choose-mikael-granlund-10th-captain-team-history"
-            }
-          ],
-          "id": "a415-68eb6689d10847d9",
-          "feedRank": 23,
-          "compactHeadline": "Ducks choose Mikael Granlund as 10th captain in team history"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-fe2a0d96d27a73a4"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The PWHL has named Alison Izzi, an attorney specializing in hockey matters, as general manager of the Vancouver Goldeneyes.",
-          "text": "The PWHL has named Alison Izzi, an attorney specializing in hockey matters, as general manager of the Vancouver Goldeneyes.",
-          "entities": [],
-          "occurredAt": "2026-09-22T18:19:05Z",
-          "timePrecision": "exact",
-          "ageHours": 8.2,
-          "freshnessBasis": "The PWHL has named Alison Izzi, an attorney specializing in hockey matters, as general manager of the Vancouver Goldeneyes.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/espn/story/_/id/50006975/pwhl-names-hockey-attorney-alison-izzi-gm-vancouver-goldeneyes"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/espn/story/_/id/50006975/pwhl-names-hockey-attorney-alison-izzi-gm-vancouver-goldeneyes"
-            }
-          ],
-          "id": "a415-592e95081632c1a2",
           "feedRank": 24,
-          "compactHeadline": "PWHL names hockey attorney Alison Izzi GM of Vancouver Goldeneyes"
+          "compactHeadline": "Capitals' Ted Leonsis to be NHL board of governors chair"
         }
       ]
     },
@@ -779,7 +791,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T13:19:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.2,
+          "ageHours": 13.7,
           "freshnessBasis": "Manchester United striker Benjamin Sesko has vowed to \"fully dedicate\" himself to his recovery from an ongoing shin issue.",
           "status": "active",
           "sourceUrls": [
@@ -808,7 +820,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T10:48:58Z",
           "timePrecision": "exact",
-          "ageHours": 15.7,
+          "ageHours": 16.2,
           "freshnessBasis": "Lewis Hall has said it was a \"no-brainer\" to sign a new contract to extend his Newcastle United stay after summer transfer interest from Manchester United.",
           "status": "active",
           "sourceUrls": [
@@ -837,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:39:34Z",
           "timePrecision": "exact",
-          "ageHours": 8.86,
+          "ageHours": 9.36,
           "freshnessBasis": "Former Liverpool defender Andy Robertson has said that the death of teammate Diogo Jota was \"horrendous\" and had a major impact on the players that knew him.",
           "status": "active",
           "sourceUrls": [
@@ -866,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T16:26:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.08,
+          "ageHours": 10.58,
           "freshnessBasis": "Estêvão says he is focused only on what he can control after struggling for game time at Chelsea under new manager Xabi Alonso.",
           "status": "active",
           "sourceUrls": [
@@ -901,7 +913,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 5.59,
+          "ageHours": 6.09,
           "freshnessBasis": "The Columbus Crew announced that Crew 2 manager Federico Higuain has been fired for cause, effective immediately, in the wake of his suspension by MLS NEXT Pro following an incident of misconduct towards a female referee.",
           "status": "active",
           "sourceUrls": [
@@ -936,7 +948,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:03:39Z",
           "timePrecision": "exact",
-          "ageHours": 8.46,
+          "ageHours": 8.95,
           "freshnessBasis": "Oklahoma star defensive tackle David Stone suffered a knee injury at Monday's practice that will be evaluated throughout the week.",
           "status": "active",
           "sourceUrls": [
@@ -965,7 +977,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T14:40:44Z",
           "timePrecision": "exact",
-          "ageHours": 11.84,
+          "ageHours": 12.34,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -994,7 +1006,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:30:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.0,
+          "ageHours": 4.5,
           "freshnessBasis": "Colorado has removed several players for what coach Deion Sanders is calling conduct detrimental to the team.",
           "status": "active",
           "sourceUrls": [
@@ -1023,7 +1035,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:31:55Z",
           "timePrecision": "exact",
-          "ageHours": 5.98,
+          "ageHours": 6.48,
           "freshnessBasis": "South Carolina coach Shane Beamer pushed back on the notion that a change at quarterback is needed after two rocky games by LaNorris Sellers.",
           "status": "active",
           "sourceUrls": [
@@ -1052,7 +1064,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:46:32Z",
           "timePrecision": "exact",
-          "ageHours": 8.74,
+          "ageHours": 9.24,
           "freshnessBasis": "Nebraska and Miami (OH) have moved their 2027 season opener to Arrowhead Stadium on Aug. 27, after they were forced to reschedule when the NCAA made calendar changes allowing schools to start their season a week earlier.",
           "status": "active",
           "sourceUrls": [
@@ -1081,7 +1093,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T16:55:25Z",
           "timePrecision": "exact",
-          "ageHours": 9.59,
+          "ageHours": 10.09,
           "freshnessBasis": "Koby Howard, Penn State's leading receiver, is questionable for Saturday's Big Ten opener against Wisconsin, coach Matt Campbell said Tuesday.",
           "status": "active",
           "sourceUrls": [
