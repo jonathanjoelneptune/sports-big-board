@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-23T04:00:55Z",
+  "generatedAt": "2026-09-23T04:31:23Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "4c02cd4b9777c83ec3b7d7acfaef722362fa6a9080c09c0f7d603659b06d6225",
+  "sourceCandidateHash": "cebec35daec0907b89180154ef74e8ff1cb86397dc0b07c9b29f08a22783302f",
   "leagues": [
     {
       "league": "MLB",
@@ -14,35 +14,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c1ddef463ba37bae"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
-          "text": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
-          "entities": [],
-          "occurredAt": "2026-09-23T01:09:22Z",
-          "timePrecision": "exact",
-          "ageHours": 2.86,
-          "freshnessBasis": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
-            }
-          ],
-          "id": "a415-12f89bfc39cd7173",
-          "feedRank": 1,
-          "compactHeadline": "Rangers put Joc Pederson on IL, end Cal Quantrill's season"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-98306c2a8187641c"
           ],
           "type": "INJURY",
@@ -50,9 +21,9 @@
           "headline": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
           "text": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
           "entities": [],
-          "occurredAt": "2026-09-23T01:08:41Z",
+          "occurredAt": "2026-09-23T04:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.87,
+          "ageHours": 0.43,
           "freshnessBasis": "The Cubs are confident third baseman Alex Bregman will be ready for the postseason after getting hit in the face by a foul ball Sunday -- and are not ruling him out for this weekend's series in Boston.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +37,69 @@
             }
           ],
           "id": "a415-06d58ec82451b374",
-          "feedRank": 2,
+          "feedRank": 1,
           "compactHeadline": "Cubs expect Alex Bregman back for playoffs after foul ball to face"
         },
         {
+          "rank": 2,
+          "candidateIds": [
+            "cand-d7c6ba9fe9b2b8ac"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Griffin Conine drove in Esteury Ruiz with a tiebreaking single in Miami's six-run 12th inning, and the Marlins stymied Chicago's push for an NL wild card with an 8-2 victory over the Cubs on Tuesday night.",
+          "text": "Griffin Conine drove in Esteury Ruiz with a tiebreaking single in Miami's six-run 12th inning, and the Marlins stymied Chicago's push for an NL wild card with an 8-2 victory over the Cubs on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-23T04:06:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.41,
+          "freshnessBasis": "— Griffin Conine drove in Esteury Ruiz with a tiebreaking single in Miami's six-run 12th inning, and the Marlins stymied Chicago's push for an NL wild card with an 8-2 victory over the Cubs on Tuesday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817038"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817038"
+            }
+          ],
+          "id": "a415-079c731208bc2e69",
+          "feedRank": 2,
+          "compactHeadline": "Miami Marlins stymie Chicago's push for NL wild card with 8-2 victory over the Cubs"
+        },
+        {
           "rank": 3,
+          "candidateIds": [
+            "cand-c1ddef463ba37bae"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
+          "text": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
+          "entities": [],
+          "occurredAt": "2026-09-23T01:09:22Z",
+          "timePrecision": "exact",
+          "ageHours": 3.37,
+          "freshnessBasis": "Joc Pederson was placed on the 10-day injured list Tuesday because of a wrist fracture, while Cal Quantrill won't be available for the playoffs after he was transferred to the 60-day IL.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50009779/rangers-put-joc-pederson-il-end-cal-quantrill-season"
+            }
+          ],
+          "id": "a415-12f89bfc39cd7173",
+          "feedRank": 3,
+          "compactHeadline": "Rangers put Joc Pederson on IL, end Cal Quantrill's season"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-f60341dd8291a224"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T03:22:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.63,
+          "ageHours": 1.14,
           "freshnessBasis": "Aaron Judge is not expected to be available for the Yankees' wild-card series as he continues to recover from a calf strain.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-a17dd0d83a3feab5",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Yankees don't expect Aaron Judge (calf) back for wild card"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T02:55:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.09,
+          "ageHours": 1.59,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-222b12bded6bb793"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:33:36Z",
           "timePrecision": "exact",
-          "ageHours": 3.46,
+          "ageHours": 3.96,
           "freshnessBasis": "The Mets removed the interim tag from manager Andy Green, hiring him to a three-year deal through the 2029 season, it was announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-f34fac51a67407e7",
-          "feedRank": 5,
-          "compactHeadline": "Mets remove interim manager tag, hire Andy Green to 3-year deal"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-57bcd9d8a5c91337"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Drew Rasmussen took a no-hit bid into the seventh inning as the Rays beat the Yankees 6-1 on Tuesday to clinch their fifth AL East title.",
-          "text": "Drew Rasmussen took a no-hit bid into the seventh inning as the Rays beat the Yankees 6-1 on Tuesday to clinch their fifth AL East title.",
-          "entities": [],
-          "occurredAt": "2026-09-23T03:34:47Z",
-          "timePrecision": "exact",
-          "ageHours": 0.44,
-          "freshnessBasis": "Drew Rasmussen took a no-hit bid into the seventh inning as the Rays beat the Yankees 6-1 on Tuesday to clinch their fifth AL East title.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50010466/drew-rasmussen-shuts-yankees-help-rays-clinch-al-east"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50010466/drew-rasmussen-shuts-yankees-help-rays-clinch-al-east"
-            }
-          ],
-          "id": "a415-a20a7fd31d9fd516",
           "feedRank": 6,
-          "compactHeadline": "Drew Rasmussen shuts down Yankees to help Rays clinch AL East"
+          "compactHeadline": "Mets remove interim manager tag, hire Andy Green to 3-year deal"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:39:34Z",
           "timePrecision": "exact",
-          "ageHours": 7.36,
+          "ageHours": 7.86,
           "freshnessBasis": "Jaxson Dart's knee injury is more severe than originally anticipated, and the Giants QB could miss the rest of the season, sources told NFL Network's Ian Rapoport and Mike Garafolo.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T19:55:23Z",
           "timePrecision": "exact",
-          "ageHours": 8.09,
+          "ageHours": 8.6,
           "freshnessBasis": "Bears quarterback Tyson Bagent is in the NFL's concussion protocol, sources told NFL Network's Ian Rapoport on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:45:34Z",
           "timePrecision": "exact",
-          "ageHours": 7.26,
+          "ageHours": 7.76,
           "freshnessBasis": "The Jets have signed former Titans starting QB Will Levis to their practice squad and have released Bailey Zappe.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:41:24Z",
           "timePrecision": "exact",
-          "ageHours": 10.33,
+          "ageHours": 10.83,
           "freshnessBasis": "The Falcons placed star cornerback A.J. Terrell on injured reserve Tuesday with a groin injury, the team announced.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:36:31Z",
           "timePrecision": "exact",
-          "ageHours": 7.41,
+          "ageHours": 7.91,
           "freshnessBasis": "Packers RT Zach Bako-Bewele, considered the team's best offensive lineman, is set to undergo knee surgery that will sideline him for 8-10 months.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:24:07Z",
           "timePrecision": "exact",
-          "ageHours": 9.61,
+          "ageHours": 10.12,
           "freshnessBasis": "With a defensive back group dealing with injuries, the Eagles are expected to sign Pro Bowler Kenny Moore II to the practice squad, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:24:52Z",
           "timePrecision": "exact",
-          "ageHours": 7.6,
+          "ageHours": 8.11,
           "freshnessBasis": "The NBA announced on Tuesday that tickets are sold out for the 2027 NBA Paris and Manchester games set for January, featuring the San Antonio Spurs and the New Orleans Pelicans.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:14:37Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.28,
           "freshnessBasis": "Toronto Raptors star Kawhi Leonard has agreed on a two-year, $115 million contract extension with the franchise plus a player option for the 2028-29 season, his agent, Harrison Gaines of Slash Sports, told ESPN on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:03:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.95,
+          "ageHours": 4.46,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T01:20:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.67,
+          "ageHours": 3.18,
           "freshnessBasis": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T21:16:19Z",
           "timePrecision": "exact",
-          "ageHours": 6.74,
+          "ageHours": 7.25,
           "freshnessBasis": "We have the updates, including players and draft picks, for every NBA trade made this summer.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T03:36:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.4,
+          "ageHours": 0.91,
           "freshnessBasis": "The LA Clippers named general manager Trent Redden as the team's interim president of basketball operations while Lawrence Frank serves his six-month suspension.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T21:16:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.74,
+          "ageHours": 7.25,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:05:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.93,
+          "ageHours": 4.43,
           "freshnessBasis": "NHL commissioner Gary Bettman said the league continues to get pitched by potential owners but is not currently in a formal round of expansion.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:28:05Z",
           "timePrecision": "exact",
-          "ageHours": 5.55,
+          "ageHours": 6.06,
           "freshnessBasis": "Arizona State did not vet the training plan for the workout led by a former Green Beret, during which a hockey player collapsed last month, according to a preliminary report the university released Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:40:18Z",
           "timePrecision": "exact",
-          "ageHours": 7.34,
+          "ageHours": 7.85,
           "freshnessBasis": "Washington Capitals owner Ted Leonsis has been unanimously approved to be the next chairperson of the NHL board of governors.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:53:46Z",
           "timePrecision": "exact",
-          "ageHours": 9.12,
+          "ageHours": 9.63,
           "freshnessBasis": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:19:05Z",
           "timePrecision": "exact",
-          "ageHours": 9.7,
+          "ageHours": 10.21,
           "freshnessBasis": "The PWHL has named Alison Izzi, an attorney specializing in hockey matters, as general manager of the Vancouver Goldeneyes.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T13:19:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.7,
+          "ageHours": 15.21,
           "freshnessBasis": "Manchester United striker Benjamin Sesko has vowed to \"fully dedicate\" himself to his recovery from an ongoing shin issue.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T10:48:58Z",
           "timePrecision": "exact",
-          "ageHours": 17.2,
+          "ageHours": 17.71,
           "freshnessBasis": "Lewis Hall has said it was a \"no-brainer\" to sign a new contract to extend his Newcastle United stay after summer transfer interest from Manchester United.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:39:34Z",
           "timePrecision": "exact",
-          "ageHours": 10.36,
+          "ageHours": 10.86,
           "freshnessBasis": "Former Liverpool defender Andy Robertson has said that the death of teammate Diogo Jota was \"horrendous\" and had a major impact on the players that knew him.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T16:26:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.58,
+          "ageHours": 12.09,
           "freshnessBasis": "Estêvão says he is focused only on what he can control after struggling for game time at Chelsea under new manager Xabi Alonso.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 7.09,
+          "ageHours": 7.6,
           "freshnessBasis": "The Columbus Crew announced that Crew 2 manager Federico Higuain has been fired for cause, effective immediately, in the wake of his suspension by MLS NEXT Pro following an incident of misconduct towards a female referee.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T18:03:39Z",
           "timePrecision": "exact",
-          "ageHours": 9.95,
+          "ageHours": 10.46,
           "freshnessBasis": "Oklahoma star defensive tackle David Stone suffered a knee injury at Monday's practice that will be evaluated throughout the week.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T14:40:44Z",
           "timePrecision": "exact",
-          "ageHours": 13.34,
+          "ageHours": 13.84,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T22:30:48Z",
           "timePrecision": "exact",
-          "ageHours": 5.5,
+          "ageHours": 6.01,
           "freshnessBasis": "Colorado has removed several players for what coach Deion Sanders is calling conduct detrimental to the team.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T20:31:55Z",
           "timePrecision": "exact",
-          "ageHours": 7.48,
+          "ageHours": 7.99,
           "freshnessBasis": "South Carolina coach Shane Beamer pushed back on the notion that a change at quarterback is needed after two rocky games by LaNorris Sellers.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T17:46:32Z",
           "timePrecision": "exact",
-          "ageHours": 10.24,
+          "ageHours": 10.75,
           "freshnessBasis": "Nebraska and Miami (OH) have moved their 2027 season opener to Arrowhead Stadium on Aug. 27, after they were forced to reschedule when the NCAA made calendar changes allowing schools to start their season a week earlier.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-22T16:55:25Z",
           "timePrecision": "exact",
-          "ageHours": 11.09,
+          "ageHours": 11.6,
           "freshnessBasis": "Koby Howard, Penn State's leading receiver, is questionable for Saturday's Big Ten opener against Wisconsin, coach Matt Campbell said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 84,
+    "freshCandidateCount": 85,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
