@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-23T22:30:53Z",
+  "generatedAt": "2026-09-23T23:00:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "195cd0f00210e2e3a223fdefddfde8b57e1336055eadc9dfcc7a20111dc3e7a0",
+  "sourceCandidateHash": "818377ff75bbec382bbf5b312b59b0bcc419d93c90a2775042bd45f7479293fa",
   "leagues": [
     {
       "league": "MLB",
@@ -14,6 +14,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-d03032aa14210323"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
+          "text": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
+          "entities": [],
+          "occurredAt": "2026-09-23T22:50:14Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50016112/dodgers-shohei-ohtani-returns-il-stint-starts-vs-padres"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50016112/dodgers-shohei-ohtani-returns-il-stint-starts-vs-padres"
+            }
+          ],
+          "id": "a415-7bb5ecd3edbf6634",
+          "feedRank": 1,
+          "compactHeadline": "Dodgers' Shohei Ohtani returns from IL stint, starts vs. Padres"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-4cc40b36d07f5818"
           ],
           "type": "PLAYOFF",
@@ -21,9 +50,9 @@
           "headline": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
           "text": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
           "entities": [],
-          "occurredAt": "2026-09-23T22:26:01Z",
+          "occurredAt": "2026-09-23T22:36:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
+          "ageHours": 0.41,
           "freshnessBasis": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-c2f6041816f5e569",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Judge says he intends to be available for AL Wild Card Series"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-bd46d42131b46271"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:38:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.87,
+          "ageHours": 1.37,
           "freshnessBasis": "Braves reliever Robert Suarez, who has been sidelined more than three months with right elbow inflammation, was activated with the aim of being used Wednesday night and again Saturday ahead of the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -66,40 +95,40 @@
             }
           ],
           "id": "a415-89a8fadb2f71d1ea",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Braves activate set-up man Suarez, target 2 appearances ahead of playoffs"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
-            "cand-4d677bb0e01caec3"
+            "cand-0761feaa2be5cd0c"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Pinch-hitter Walker Jenkins hit an RBI single in the seventh inning that put Minnesota ahead and the Twins won their second straight over the San Francisco Giants with a 4-2 victory on Wednesday.",
+          "text": "Pinch-hitter Walker Jenkins hit an RBI single in the seventh inning that put Minnesota ahead and the Twins won their second straight over the San Francisco Giants with a 4-2 victory on Wednesday.",
           "entities": [],
-          "occurredAt": "2026-09-23T16:23:27Z",
+          "occurredAt": "2026-09-23T22:46:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.12,
-          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "ageHours": 0.24,
+          "freshnessBasis": "— Pinch-hitter Walker Jenkins hit an RBI single in the seventh inning that put Minnesota ahead and the Twins won their second straight over the San Francisco Giants with a 4-2 victory on Wednesday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+            "http://www.espn.com/mlb/recap?gameId=401817058"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+              "url": "http://www.espn.com/mlb/recap?gameId=401817058"
             }
           ],
-          "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 3,
-          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
+          "id": "a415-79c41e7d6ca6d537",
+          "feedRank": 4,
+          "compactHeadline": "Walker Jenkins' pinch-hit RBI single in the 7th keys Twins' 4-2 victory over Giants"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-0e05542e20ea9ba8"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:25:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.09,
+          "ageHours": 2.59,
           "freshnessBasis": "— Yohandy Morales homered for the second time in three games and the Washington Nationals beat the Detroit Tigers 4-2 on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-22e3bfad3e97d484",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Yohandry Morales homers, Nationals bullpen hangs on for a 4-2 win over the Tigers"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-a0babb9da48decab"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T19:52:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.64,
+          "ageHours": 3.14,
           "freshnessBasis": "Nationals pitcher Cade Cavalli will get a $4 million signing bonus as part of his new deal which will be shielded from losses from a possible lockout.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-65a7f80d18e9b73f",
-          "feedRank": 5,
-          "compactHeadline": "Nats' Cade Cavalli gets $4M lockout-shielded signing bonus"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-edcea55a99b98ed7"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Arizona Diamondbacks (83-74, third in the NL West) vs. Colorado Rockies (57-100, fifth in the NL West)",
-          "text": "Arizona Diamondbacks (83-74, third in the NL West) vs. Colorado Rockies (57-100, fifth in the NL West)",
-          "entities": [],
-          "occurredAt": "2026-09-23T08:02:30Z",
-          "timePrecision": "exact",
-          "ageHours": 14.47,
-          "freshnessBasis": "Arizona Diamondbacks (83-74, third in the NL West) vs. Colorado Rockies (57-100, fifth in the NL West)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/preview?gameId=401817055"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401817055"
-            }
-          ],
-          "id": "a415-5d01077125bf1ca2",
           "feedRank": 6,
-          "compactHeadline": "Diamondbacks aim to keep win streak going against the Rockies"
+          "compactHeadline": "Nats' Cade Cavalli gets $4M lockout-shielded signing bonus"
         }
       ]
     },
@@ -194,31 +194,31 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-547d0b460fce946a"
+            "cand-f709fe44fa67fcee"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
-          "text": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
+          "headline": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
+          "text": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
           "entities": [],
-          "occurredAt": "2026-09-23T22:28:35Z",
+          "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
+          "ageHours": 0.18,
+          "freshnessBasis": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50007961/new-york-giants-jaxson-dart-season-ending-injury-mean-jameis-winston"
+            "https://www.espn.com/nfl/story/_/id/50015866/49ers-place-starting-dt-cj-west-ir-due-knee-injury"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50007961/new-york-giants-jaxson-dart-season-ending-injury-mean-jameis-winston"
+              "url": "https://www.espn.com/nfl/story/_/id/50015866/49ers-place-starting-dt-cj-west-ir-due-knee-injury"
             }
           ],
-          "id": "a415-450ecff558a76d61",
+          "id": "a415-e859213852f56c55",
           "feedRank": 7,
-          "compactHeadline": "With Jaxson Dart out, what's next for Giants, Jameis Winston?"
+          "compactHeadline": "49ers place starting DT C.J. West on IR due to knee injury"
         },
         {
           "rank": 2,
@@ -230,9 +230,9 @@
           "headline": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "text": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "entities": [],
-          "occurredAt": "2026-09-23T22:22:25Z",
+          "occurredAt": "2026-09-23T22:50:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 0.18,
           "freshnessBasis": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "status": "active",
           "sourceUrls": [
@@ -252,6 +252,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-547d0b460fce946a"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
+          "text": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
+          "entities": [],
+          "occurredAt": "2026-09-23T22:28:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.54,
+          "freshnessBasis": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50007961/new-york-giants-jaxson-dart-season-ending-injury-mean-jameis-winston"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50007961/new-york-giants-jaxson-dart-season-ending-injury-mean-jameis-winston"
+            }
+          ],
+          "id": "a415-450ecff558a76d61",
+          "feedRank": 9,
+          "compactHeadline": "With Jaxson Dart out, what's next for Giants, Jameis Winston?"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-5e4b450b9d2dc8e1"
           ],
           "type": "INJURY",
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:21:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
+          "ageHours": 0.66,
           "freshnessBasis": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
           "status": "active",
           "sourceUrls": [
@@ -275,37 +304,8 @@
             }
           ],
           "id": "a415-c5a16eba83c1417b",
-          "feedRank": 9,
-          "compactHeadline": "Commanders say clip didn't reflect team response to Daniels injury"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f709fe44fa67fcee"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
-          "text": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
-          "entities": [],
-          "occurredAt": "2026-09-23T21:42:57Z",
-          "timePrecision": "exact",
-          "ageHours": 0.8,
-          "freshnessBasis": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50015866/49ers-place-starting-dt-cj-west-ir-due-knee-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50015866/49ers-place-starting-dt-cj-west-ir-due-knee-injury"
-            }
-          ],
-          "id": "a415-e859213852f56c55",
           "feedRank": 10,
-          "compactHeadline": "49ers place starting DT C.J. West on IR due to knee injury"
+          "compactHeadline": "Commanders say clip didn't reflect team response to Daniels injury"
         },
         {
           "rank": 5,
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:24:07Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 1.61,
           "freshnessBasis": "Panthers running back Jonathon Brooks is expected to undergo surgery to repair a core muscle injury and is set to miss at least six weeks, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:11:07Z",
           "timePrecision": "exact",
-          "ageHours": 2.33,
+          "ageHours": 2.83,
           "freshnessBasis": "The Vikings' offensive backfield is in flux this week as starter Aaron Jones Sr. works through a knee injury and backup Jordan Mason remains on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 1.2,
+          "ageHours": 1.7,
           "freshnessBasis": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:39:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.86,
+          "ageHours": 7.36,
           "freshnessBasis": "Warriors star Stephen Curry said his unsettled contract extension situation will have zero impact on his play or the team's vibe entering the season.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:46:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.74,
+          "ageHours": 2.24,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:04:07Z",
           "timePrecision": "exact",
-          "ageHours": 2.45,
+          "ageHours": 2.95,
           "freshnessBasis": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:41:08Z",
           "timePrecision": "exact",
-          "ageHours": 1.83,
+          "ageHours": 2.33,
           "freshnessBasis": "In honor of 23 years since \"One Tree Hill\" premiered, James Lafferty & Co. take us inside the basketball heart of the cult classic TV show.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T00:03:53Z",
           "timePrecision": "exact",
-          "ageHours": 22.45,
+          "ageHours": 22.95,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:04:11Z",
           "timePrecision": "exact",
-          "ageHours": 1.45,
+          "ageHours": 1.94,
           "freshnessBasis": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 11.75,
+          "ageHours": 12.24,
           "freshnessBasis": "The Stars have signed forward Sam Steel to a four-year, $14.8 million contract extension that will begin next season and go through 2030-31.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:43:22Z",
           "timePrecision": "exact",
-          "ageHours": 11.79,
+          "ageHours": 12.29,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -648,9 +648,9 @@
           "headline": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he's \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "text": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he's \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "entities": [],
-          "occurredAt": "2026-09-23T21:48:19Z",
+          "occurredAt": "2026-09-23T22:52:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 0.13,
           "freshnessBasis": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he's \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:43:39Z",
           "timePrecision": "exact",
-          "ageHours": 11.79,
+          "ageHours": 12.29,
           "freshnessBasis": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 8.79,
+          "ageHours": 9.29,
           "freshnessBasis": "Arsenal are expected to announce Mikel Arteta has signed a new long-term contract after the 44-year-old agreed terms to stay on as manager, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -741,9 +741,9 @@
           "headline": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "text": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "entities": [],
-          "occurredAt": "2026-09-23T21:41:13Z",
+          "occurredAt": "2026-09-23T22:57:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.83,
+          "ageHours": 0.05,
           "freshnessBasis": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "status": "active",
           "sourceUrls": [
@@ -763,16 +763,16 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-8e13ddd15040a5c5"
+            "cand-5e487971dcfa083d"
           ],
           "type": "NEWS",
           "priority": 64,
           "headline": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "text": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "entities": [],
-          "occurredAt": "2026-09-23T20:35:09Z",
+          "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
+          "ageHours": 0.18,
           "freshnessBasis": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "status": "active",
           "sourceUrls": [
@@ -785,9 +785,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/50015330/eric-cantona-jim-ratcliffe-man-united"
             }
           ],
-          "id": "a415-907497deb52c66aa",
+          "id": "a415-eedb1d69a1f7222c",
           "feedRank": 26,
-          "compactHeadline": "Eric Cantona 'wouldn't have joined' Man United if Jim Ratcliffe had been in charge in 90s"
+          "compactHeadline": "Eric Cantona 'wouldn't have joined' Man United if Jim Ratcliffe had been in charge in the 1990s"
         },
         {
           "rank": 4,
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:35:56Z",
           "timePrecision": "exact",
-          "ageHours": 5.92,
+          "ageHours": 6.42,
           "freshnessBasis": "Old Trafford -- the home of Manchester United -- has seen plenty of history over the years. Now, fans can own a piece of the pitch ...for £125 ($165).",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:57:35Z",
           "timePrecision": "exact",
-          "ageHours": 8.56,
+          "ageHours": 9.05,
           "freshnessBasis": "Manchester United's summer transfer strategy had \"financial sustainability in mind,\" according to CEO Omar Berrada, after reporting a increased financial losses.",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:33:38Z",
           "timePrecision": "exact",
-          "ageHours": 11.95,
+          "ageHours": 12.45,
           "freshnessBasis": "Liverpool are closing in on the appointment of Julian Ward as the club's new sporting director, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:04:23Z",
           "timePrecision": "exact",
-          "ageHours": 4.44,
+          "ageHours": 4.94,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:59:29Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Who takes the No. 1 spot? ESPN's Bill Connelly lists out his top 10 College Football Playoff games.",
           "status": "active",
           "sourceUrls": [
@@ -957,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:15:26Z",
           "timePrecision": "exact",
-          "ageHours": 4.26,
+          "ageHours": 4.76,
           "freshnessBasis": "In his first comments since he fumbled in the end zone with one second left against Vanderbilt, leading to a shocking loss for the Wolfpack, NC State QB CJ Bailey said he \"was trying to get all the clock out. That was my thought. ... I fumbled the ball.\"",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:51:37Z",
           "timePrecision": "exact",
-          "ageHours": 5.65,
+          "ageHours": 6.15,
           "freshnessBasis": "Indiana defensive linemen Stephen Daley and Kellan Wyatt are eligible to play again after a judge granted them a preliminary injunction in their case against the NCAA.",
           "status": "active",
           "sourceUrls": [
@@ -1015,7 +1015,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 8.9,
+          "ageHours": 9.4,
           "freshnessBasis": "The Wolfpack's inexplicable loss resulted in a very predictable appearance on our dubious list.",
           "status": "active",
           "sourceUrls": [
@@ -1044,7 +1044,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 11.72,
+          "ageHours": 12.22,
           "freshnessBasis": "Ryan Grubb apologized for comments he made Monday in which he called out some fans for booing Alabama early during Saturday's win.",
           "status": "active",
           "sourceUrls": [
@@ -1084,7 +1084,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 104,
+    "freshCandidateCount": 105,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
