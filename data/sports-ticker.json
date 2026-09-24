@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-24T01:31:02Z",
+  "generatedAt": "2026-09-24T02:01:01Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "65cd436e49a021f7ecef25ca572453f71c031787242a4da4f3e481a96ca29253",
+  "sourceCandidateHash": "77aeb855101253e479dbe07efea0963f3ab274a1df5a0c969c1aff5a187a13d3",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-9524d5d0974138a3"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Matthew Liberatore ended an 11-start winless stretch and Alec Burleson got his major league-best 112th RBI as the St. Louis Cardinals defeated the Pittsburgh Pirates 5-1 on Wednesday night.",
+          "text": "Matthew Liberatore ended an 11-start winless stretch and Alec Burleson got his major league-best 112th RBI as the St. Louis Cardinals defeated the Pittsburgh Pirates 5-1 on Wednesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-23T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Highlightly final: St. Louis Cardinals 5, Pittsburgh Pirates 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817048"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-23",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817048"
+            }
+          ],
+          "id": "a415-980d260e27d1d844",
+          "feedRank": 1,
+          "compactHeadline": "Matthew Liberatore pitches Cardinals to 5-1 victory that halts Pirates' 5-game winning streak"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-f986e58684ac89b2"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.85,
+          "ageHours": 3.35,
           "freshnessBasis": "Highlightly final: Milwaukee Brewers 4, Philadelphia Phillies 1.",
           "status": "active",
           "sourceUrls": [
@@ -49,11 +84,11 @@
             }
           ],
           "id": "a415-ae73975709fd4194",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Yelich, Turang homer as Brewers win 99th game of season, delay Phillies' possible playoff clinch"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-9434410510bf2b36"
           ],
@@ -64,7 +99,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T19:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.27,
           "freshnessBasis": "Highlightly final: Minnesota Twins 4, San Francisco Giants 2.",
           "status": "active",
           "sourceUrls": [
@@ -90,11 +125,11 @@
             }
           ],
           "id": "a415-b53d8a7c5c3fa068",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Bradley passes 200 strikeouts, pitches Twins to 3-2 win over Giants"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-2908819ea289869f"
           ],
@@ -105,7 +140,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T17:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.35,
+          "ageHours": 8.85,
           "freshnessBasis": "Highlightly final: Washington Nationals 4, Detroit Tigers 2.",
           "status": "active",
           "sourceUrls": [
@@ -125,66 +160,43 @@
             }
           ],
           "id": "a415-97645ccb12caaa3c",
-          "feedRank": 3,
-          "compactHeadline": "Yohandry Morales homers, Nationals bullpen hangs on for a 4-2 win over the Tigers"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-d03032aa14210323"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
-          "text": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
-          "entities": [],
-          "occurredAt": "2026-09-23T22:50:14Z",
-          "timePrecision": "exact",
-          "ageHours": 2.68,
-          "freshnessBasis": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50016112/dodgers-shohei-ohtani-returns-il-stint-starts-vs-padres"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50016112/dodgers-shohei-ohtani-returns-il-stint-starts-vs-padres"
-            }
-          ],
-          "id": "a415-7bb5ecd3edbf6634",
           "feedRank": 4,
-          "compactHeadline": "Dodgers' Shohei Ohtani returns from IL stint, starts vs. Padres"
+          "compactHeadline": "Yohandry Morales homers, Nationals bullpen hangs on for a 4-2 win over the Tigers"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-45bdb922cdcbe40d"
+            "cand-7f957758b5f42cb2"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Yankees slugger Giancarlo Stanton could return for the playoffs after a 5½-month absence due to calf strains.",
-          "text": "Yankees slugger Giancarlo Stanton could return for the playoffs after a 5½-month absence due to calf strains.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Cleveland Guardians (82-75, first in the AL Central) vs. Boston Red Sox (84-73, third in the AL East)",
+          "text": "Cleveland Guardians (82-75, first in the AL Central) vs. Boston Red Sox (84-73, third in the AL East)",
           "entities": [],
-          "occurredAt": "2026-09-24T00:21:12Z",
+          "occurredAt": "2026-09-23T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.16,
-          "freshnessBasis": "Yankees slugger Giancarlo Stanton could return for the playoffs after a 5½-month absence due to calf strains.",
+          "ageHours": 3.02,
+          "freshnessBasis": "Highlightly final: Cleveland Guardians 0, Boston Red Sox 1.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50016509/stanton-grisham-take-steps-rejoining-yankees"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/preview?gameId=401817046"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-23",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50016509/stanton-grisham-take-steps-rejoining-yankees"
+              "url": "http://www.espn.com/mlb/preview?gameId=401817046"
             }
           ],
-          "id": "a415-8aa3b95086ca5d40",
+          "id": "a415-dd84da14c8071503",
           "feedRank": 5,
-          "compactHeadline": "Stanton, Grisham take steps toward rejoining Yankees"
+          "compactHeadline": "Boston Red Sox beat Cleveland Guardians 1-0"
         },
         {
           "rank": 6,
@@ -196,9 +208,9 @@
           "headline": "Blue Jays first baseman Vladimir Guerrero Jr. is standing by comments he made during a recent interview regarding his performance this season after signing a 14-year, $500 million contract last year.",
           "text": "Blue Jays first baseman Vladimir Guerrero Jr. is standing by comments he made during a recent interview regarding his performance this season after signing a 14-year, $500 million contract last year.",
           "entities": [],
-          "occurredAt": "2026-09-24T00:13:09Z",
+          "occurredAt": "2026-09-24T01:57:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.3,
+          "ageHours": 0.06,
           "freshnessBasis": "Blue Jays first baseman Vladimir Guerrero Jr. is standing by comments he made during a recent interview regarding his performance this season after signing a 14-year, $500 million contract last year.",
           "status": "active",
           "sourceUrls": [
@@ -233,7 +245,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:15:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.25,
+          "ageHours": 2.75,
           "freshnessBasis": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
           "status": "active",
           "sourceUrls": [
@@ -262,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T01:17:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.22,
+          "ageHours": 0.72,
           "freshnessBasis": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -291,7 +303,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.68,
+          "ageHours": 3.18,
           "freshnessBasis": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -320,7 +332,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.68,
+          "ageHours": 3.18,
           "freshnessBasis": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "status": "active",
           "sourceUrls": [
@@ -349,7 +361,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:21:30Z",
           "timePrecision": "exact",
-          "ageHours": 3.16,
+          "ageHours": 3.66,
           "freshnessBasis": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +390,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:11:07Z",
           "timePrecision": "exact",
-          "ageHours": 5.33,
+          "ageHours": 5.83,
           "freshnessBasis": "The Vikings' offensive backfield is in flux this week as starter Aaron Jones Sr. works through a knee injury and backup Jordan Mason remains on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -413,7 +425,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 4.2,
+          "ageHours": 4.7,
           "freshnessBasis": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -442,7 +454,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T01:18:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.22,
+          "ageHours": 0.72,
           "freshnessBasis": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -471,7 +483,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:39:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.86,
+          "ageHours": 10.36,
           "freshnessBasis": "Warriors star Stephen Curry said his unsettled contract extension situation will have zero impact on his play or the team's vibe entering the season.",
           "status": "active",
           "sourceUrls": [
@@ -500,7 +512,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:46:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.74,
+          "ageHours": 5.24,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -529,7 +541,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:04:07Z",
           "timePrecision": "exact",
-          "ageHours": 5.45,
+          "ageHours": 5.95,
           "freshnessBasis": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "status": "active",
           "sourceUrls": [
@@ -549,31 +561,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-976cf249fe950f3c"
+            "cand-4ded1442d56a15c9"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Golden State Valkyries Women 90, Portland Women 82.",
-          "text": "Highlightly final: Golden State Valkyries Women 90, Portland Women 82.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "In honor of 23 years since \"One Tree Hill\" premiered, James Lafferty & Co. take us inside the basketball heart of the cult classic TV show.",
+          "text": "In honor of 23 years since \"One Tree Hill\" premiered, James Lafferty & Co. take us inside the basketball heart of the cult classic TV show.",
           "entities": [],
-          "occurredAt": "2026-09-23T02:00:00Z",
+          "occurredAt": "2026-09-23T20:41:08Z",
           "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Golden State Valkyries Women 90, Portland Women 82.",
+          "ageHours": 5.33,
+          "freshnessBasis": "In honor of 23 years since \"One Tree Hill\" premiered, James Lafferty & Co. take us inside the basketball heart of the cult classic TV show.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://www.espn.com/nba/story/_/id/50009423/one-tree-hill-23-anniversary-basketball-michael-jordan-wilmington-north-carolina-james-lafferty"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-22",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50009423/one-tree-hill-23-anniversary-basketball-michael-jordan-wilmington-north-carolina-james-lafferty"
             }
           ],
-          "id": "a415-e28a5443232573c1",
+          "id": "a415-cdadface309f09a8",
           "feedRank": 18,
-          "compactHeadline": "Golden State Valkyries Women beat Portland Women 90-82"
+          "compactHeadline": "Inside the basketball of 'One Tree Hill' 23 years later"
         }
       ]
     },
@@ -593,7 +605,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:04:11Z",
           "timePrecision": "exact",
-          "ageHours": 4.45,
+          "ageHours": 4.95,
           "freshnessBasis": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
           "status": "active",
           "sourceUrls": [
@@ -622,7 +634,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 14.75,
+          "ageHours": 15.25,
           "freshnessBasis": "The Stars have signed forward Sam Steel to a four-year, $14.8 million contract extension that will begin next season and go through 2030-31.",
           "status": "active",
           "sourceUrls": [
@@ -651,7 +663,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:43:22Z",
           "timePrecision": "exact",
-          "ageHours": 14.79,
+          "ageHours": 15.29,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -680,7 +692,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:21:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.17,
+          "ageHours": 1.67,
           "freshnessBasis": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
           "status": "active",
           "sourceUrls": [
@@ -709,7 +721,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:26:46Z",
           "timePrecision": "exact",
-          "ageHours": 2.07,
+          "ageHours": 2.57,
           "freshnessBasis": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he was \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "status": "active",
           "sourceUrls": [
@@ -729,31 +741,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-07db1c70fc1fb7ed"
+            "cand-9e5d2dc4c3cf741a"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Utah Mammoth 6, Los Angeles Kings 3.",
-          "text": "Highlightly final: Utah Mammoth 6, Los Angeles Kings 3.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
+          "text": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
           "entities": [],
-          "occurredAt": "2026-09-23T02:00:00Z",
+          "occurredAt": "2026-09-23T10:43:39Z",
           "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Utah Mammoth 6, Los Angeles Kings 3.",
+          "ageHours": 15.29,
+          "freshnessBasis": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://www.espn.com/nhl/story/_/id/50007243/ducks-choose-mikael-granlund-10th-captain-team-history"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-09-22",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50007243/ducks-choose-mikael-granlund-10th-captain-team-history"
             }
           ],
-          "id": "a415-2dd37be00f38d2bc",
+          "id": "a415-68eb6689d10847d9",
           "feedRank": 24,
-          "compactHeadline": "Utah Mammoth beat Los Angeles Kings 6-3"
+          "compactHeadline": "Ducks choose Mikael Granlund as 10th captain in team history"
         }
       ]
     },
@@ -773,7 +785,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 11.79,
+          "ageHours": 12.29,
           "freshnessBasis": "Arsenal are expected to announce Mikel Arteta has signed a new long-term contract after the 44-year-old agreed terms to stay on as manager, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +814,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
+          "ageHours": 3.01,
           "freshnessBasis": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "status": "active",
           "sourceUrls": [
@@ -831,7 +843,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.68,
+          "ageHours": 3.18,
           "freshnessBasis": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "status": "active",
           "sourceUrls": [
@@ -860,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:35:56Z",
           "timePrecision": "exact",
-          "ageHours": 8.92,
+          "ageHours": 9.42,
           "freshnessBasis": "Old Trafford -- the home of Manchester United -- has seen plenty of history over the years. Now, fans can own a piece of the pitch ...for £125 ($165).",
           "status": "active",
           "sourceUrls": [
@@ -889,7 +901,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:57:35Z",
           "timePrecision": "exact",
-          "ageHours": 11.56,
+          "ageHours": 12.06,
           "freshnessBasis": "Manchester United's summer transfer strategy had \"financial sustainability in mind,\" according to CEO Omar Berrada, after reporting a increased financial losses.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +941,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:04:23Z",
           "timePrecision": "exact",
-          "ageHours": 7.44,
+          "ageHours": 7.94,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +970,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:59:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.03,
           "freshnessBasis": "Who takes the No. 1 spot? ESPN's Bill Connelly lists out his top 10 College Football Playoff games.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +999,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:15:26Z",
           "timePrecision": "exact",
-          "ageHours": 7.26,
+          "ageHours": 7.76,
           "freshnessBasis": "In his first comments since he fumbled in the end zone with one second left against Vanderbilt, leading to a shocking loss for the Wolfpack, NC State QB CJ Bailey said he \"was trying to get all the clock out. That was my thought. ... I fumbled the ball.\"",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1028,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:51:37Z",
           "timePrecision": "exact",
-          "ageHours": 8.66,
+          "ageHours": 9.16,
           "freshnessBasis": "Indiana defensive linemen Stephen Daley and Kellan Wyatt are eligible to play again after a judge granted them a preliminary injunction in their case against the NCAA.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1057,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 11.91,
+          "ageHours": 12.41,
           "freshnessBasis": "The Wolfpack's inexplicable loss resulted in a very predictable appearance on our dubious list.",
           "status": "active",
           "sourceUrls": [
@@ -1074,7 +1086,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 14.72,
+          "ageHours": 15.22,
           "freshnessBasis": "Ryan Grubb apologized for comments he made Monday in which he called out some fans for booing Alabama early during Saturday's win.",
           "status": "active",
           "sourceUrls": [
@@ -1114,7 +1126,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 109,
+    "freshCandidateCount": 104,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
