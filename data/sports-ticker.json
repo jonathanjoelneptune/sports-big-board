@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-24T19:30:49Z",
+  "generatedAt": "2026-09-24T20:00:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "12811850a8b6ba15ffc8f3591fc14685f7d6f095bd8feaf061f2e0c2c83ba47d",
+  "sourceCandidateHash": "09cc29b421c96a6f181cd2b06c8498f4ed9b4aa556a752c5aa6076fa00b62b1e",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:52:23Z",
           "timePrecision": "exact",
-          "ageHours": 1.64,
+          "ageHours": 2.14,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T08:04:32Z",
           "timePrecision": "exact",
-          "ageHours": 11.44,
+          "ageHours": 11.94,
           "freshnessBasis": "Milwaukee Brewers (99-59, first in the NL Central) vs. Philadelphia Phillies (87-71, second in the NL East)",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-2e04074271c4f1f1"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Ronny Simon raced home on Spencer Horwitz's eighth inning sacrifice fly and the Pittsburgh Pirates assured themselves of the club's first non-losing season in eight years with a 2-1 win over the St. Louis Cardinals on Thursday.",
+          "text": "Ronny Simon raced home on Spencer Horwitz's eighth inning sacrifice fly and the Pittsburgh Pirates assured themselves of the club's first non-losing season in eight years with a 2-1 win over the St. Louis Cardinals on Thursday.",
+          "entities": [],
+          "occurredAt": "2026-09-24T19:33:38Z",
+          "timePrecision": "exact",
+          "ageHours": 0.45,
+          "freshnessBasis": "— Ronny Simon raced home on Spencer Horwitz's eighth inning sacrifice fly and the Pittsburgh Pirates assured themselves of the club's first non-losing season in eight years with a 2-1 win over the St. Louis Cardinals on Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817063"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817063"
+            }
+          ],
+          "id": "a415-8e9d0d061d44f30c",
+          "feedRank": 3,
+          "compactHeadline": "Pirates beat the Cardinals 2-1 to secure their first non-losing season since 2018"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-a772bdc3436bcfa4"
           ],
           "type": "PLAYOFF",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T06:44:28Z",
           "timePrecision": "exact",
-          "ageHours": 12.77,
+          "ageHours": 13.27,
           "freshnessBasis": "— Josh Naylor singled home Randy Arozarena with the winning run in the 10th inning and the Seattle Mariners kept their slim playoff hopes alive by rallying past the Houston Astros 6-5 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-5c921e831b82ebdc",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Mariners rally past Astros 6-5 in 10 innings to keep faint playoff hopes alive"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-e4505d8f64568775"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T06:35:35Z",
           "timePrecision": "exact",
-          "ageHours": 12.92,
+          "ageHours": 13.42,
           "freshnessBasis": "— Kyle Stowers homered and the Miami Marlins prevented the Chicago Cubs from clinching a playoff berth for the second straight night with a 3-2 victory Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-4919db05aa005247",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Marlins prevent Cubs from clinching a playoff spot again with a 3-2 victory"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-e3ab536360f57c9f"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:59:42Z",
           "timePrecision": "exact",
-          "ageHours": 7.52,
+          "ageHours": 8.02,
           "freshnessBasis": "Yankees manager Aaron Boone predicted during spring training that Ben Rice would finish with 39 home runs this season. Rice is two-up after hitting Nos. 40 and 41 in a 9-2 victory over the Rays, tying for the AL home run lead.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-53c846c338002beb",
-          "feedRank": 5,
-          "compactHeadline": "Ben Rice tops Aaron Boone's preseason prediction, passes 40 HRs"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-7f396cd0a5c08413"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "The ABS challenge system leaderboard ranks batters, catchers, teams and umpires throughout the MLB season.",
-          "text": "The ABS challenge system leaderboard ranks batters, catchers, teams and umpires throughout the MLB season.",
-          "entities": [],
-          "occurredAt": "2026-09-24T05:44:21Z",
-          "timePrecision": "exact",
-          "ageHours": 13.77,
-          "freshnessBasis": "The ABS challenge system leaderboard ranks batters, catchers, teams and umpires throughout the MLB season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings"
-            }
-          ],
-          "id": "a415-c8d5c6048256e1c8",
           "feedRank": 6,
-          "compactHeadline": "2026 MLB ABS challenge system tracker: Team, player rankings"
+          "compactHeadline": "Ben Rice tops Aaron Boone's preseason prediction, passes 40 HRs"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:33:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.95,
+          "ageHours": 2.45,
           "freshnessBasis": "The judge who presided over the criminal case of Packers RB Josh Jacobs denied a request by the victim to have evidence permanently sealed.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 2.85,
+          "ageHours": 3.36,
           "freshnessBasis": "— Kyler Murray has the right opponent to get back on track after a concussion knocked him out of the season opener.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T10:49:38Z",
           "timePrecision": "exact",
-          "ageHours": 8.69,
+          "ageHours": 9.19,
           "freshnessBasis": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T10:42:46Z",
           "timePrecision": "exact",
-          "ageHours": 8.8,
+          "ageHours": 9.3,
           "freshnessBasis": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T15:08:15Z",
           "timePrecision": "exact",
-          "ageHours": 4.38,
+          "ageHours": 4.88,
           "freshnessBasis": "Can the Texans turn it around (again)? Do the Buccaneers, Colts or Chargers have a chance to get right? Is the season already over for the Falcons and Dolphins?",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.6,
           "freshnessBasis": "The NFL fined San Francisco 49ers fullback Kyle Juszczyk $14,926 on Thursday for \"engaging in offensive demonstrations.\"",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:35:40Z",
           "timePrecision": "exact",
-          "ageHours": 7.92,
+          "ageHours": 8.42,
           "freshnessBasis": "Cooper Flagg remains No. 1 in this high school class -- but we admit to some mistakes for the rest of the list.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T13:52:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.64,
+          "ageHours": 6.14,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:40:04Z",
           "timePrecision": "exact",
-          "ageHours": 7.85,
+          "ageHours": 8.35,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -461,6 +461,64 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-d733b4695a7176a4"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Oklahoma City GM Sam Presti said the Thunder could be as good as past teams despite key offseason departures.",
+          "text": "Oklahoma City GM Sam Presti said the Thunder could be as good as past teams despite key offseason departures.",
+          "entities": [],
+          "occurredAt": "2026-09-24T19:59:37Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "Oklahoma City GM Sam Presti said the Thunder could be as good as past teams despite key offseason departures.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50022435/presti-not-expecting-thunder-downturn-departures"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50022435/presti-not-expecting-thunder-downturn-departures"
+            }
+          ],
+          "id": "a415-2632248dd7615ff9",
+          "feedRank": 16,
+          "compactHeadline": "Presti not expecting Thunder downturn despite departures"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-3ef2da6796b9998d"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Terry Rozier's mother asked a federal judge to allow her son to return to basketball while the NBA veteran fights charges in a gambling case scheduled for trial in February, according to a letter filed with the court.",
+          "text": "Terry Rozier's mother asked a federal judge to allow her son to return to basketball while the NBA veteran fights charges in a gambling case scheduled for trial in February, according to a letter filed with the court.",
+          "entities": [],
+          "occurredAt": "2026-09-24T19:58:33Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "Terry Rozier's mother asked a federal judge to allow her son to return to basketball while the NBA veteran fights charges in a gambling case scheduled for trial in February, according to a letter filed with the court.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50022277/terry-rozier-mother-gina-tucker-asks-judge-nba-gambling-case"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50022277/terry-rozier-mother-gina-tucker-asks-judge-nba-gambling-case"
+            }
+          ],
+          "id": "a415-a444e75ae5859c4c",
+          "feedRank": 17,
+          "compactHeadline": "Terry Rozier's mother asks judge to allow him NBA return"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-4ded1442d56a15c9"
           ],
           "type": "NEWS",
@@ -470,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:31:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.99,
+          "ageHours": 1.49,
           "freshnessBasis": "In honor of 23 years since \"One Tree Hill\" premiered, James Lafferty & Co. take us inside the basketball heart of the cult classic TV show.",
           "status": "active",
           "sourceUrls": [
@@ -484,66 +542,8 @@
             }
           ],
           "id": "a415-cdadface309f09a8",
-          "feedRank": 16,
-          "compactHeadline": "Inside the basketball of 'One Tree Hill' 23 years later"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-acd94022363881a7"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
-          "text": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-09-23T21:18:51Z",
-          "timePrecision": "exact",
-          "ageHours": 22.2,
-          "freshnessBasis": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50014705/sources-knicks-karl-anthony-towns-contract-talks-standstill"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50014705/sources-knicks-karl-anthony-towns-contract-talks-standstill"
-            }
-          ],
-          "id": "a415-e40bfe0c844b5446",
-          "feedRank": 17,
-          "compactHeadline": "Sources: Extension talks stall between Knicks, Karl-Anthony Towns"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-92991bb46f6c34f3"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
-          "text": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
-          "entities": [],
-          "occurredAt": "2026-09-24T01:18:06Z",
-          "timePrecision": "exact",
-          "ageHours": 18.21,
-          "freshnessBasis": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50016983/sources-mavs-dereck-lively-ii-foot-not-cleared-camp"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50016983/sources-mavs-dereck-lively-ii-foot-not-cleared-camp"
-            }
-          ],
-          "id": "a415-7783e421c86a00d0",
           "feedRank": 18,
-          "compactHeadline": "Sources: Mavs' Dereck Lively II (foot) not cleared for camp"
+          "compactHeadline": "Inside the basketball of 'One Tree Hill' 23 years later"
         }
       ]
     },
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:13:14Z",
           "timePrecision": "exact",
-          "ageHours": 3.29,
+          "ageHours": 3.79,
           "freshnessBasis": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.38,
+          "ageHours": 2.88,
           "freshnessBasis": "The Chicago Blackhawks signed forward Oliver Moore to a five-year deal on Thursday, locking up an important piece of their long-term future.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:21:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
+          "ageHours": 0.66,
           "freshnessBasis": "Here are a dozen players who are in for a heightened -- or lowered -- level of production this season.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:04:11Z",
           "timePrecision": "exact",
-          "ageHours": 22.44,
+          "ageHours": 22.95,
           "freshnessBasis": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T14:04:14Z",
           "timePrecision": "exact",
-          "ageHours": 5.44,
+          "ageHours": 5.94,
           "freshnessBasis": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he was \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:21:02Z",
           "timePrecision": "exact",
-          "ageHours": 19.16,
+          "ageHours": 19.66,
           "freshnessBasis": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 2.77,
+          "ageHours": 3.27,
           "freshnessBasis": "Former England forward Andy Carroll has revealed in his autobiography he was sexually assaulted by a man during 2021.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 20.51,
+          "ageHours": 21.01,
           "freshnessBasis": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 20.68,
+          "ageHours": 21.18,
           "freshnessBasis": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "status": "active",
           "sourceUrls": [
@@ -841,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T14:38:07Z",
           "timePrecision": "exact",
-          "ageHours": 4.88,
+          "ageHours": 5.38,
           "freshnessBasis": "With a 4-0 record, Lincoln Riley isn't shying away from expectations as USC hosts Oregon this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -870,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:00:26Z",
           "timePrecision": "exact",
-          "ageHours": 8.51,
+          "ageHours": 9.01,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:20:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "Former NC State sports medicine director Robert Michael Murphy has been arrested after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:44:24Z",
           "timePrecision": "exact",
-          "ageHours": 16.77,
+          "ageHours": 17.27,
           "freshnessBasis": "Baylor quarterback DJ Lagway is expected to return for Saturday's game vs. Colorado after missing the Bears' previous two games with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -957,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:51:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.65,
+          "ageHours": 1.16,
           "freshnessBasis": "Indiana defensive linemen Stephen Daley and Kellan Wyatt are eligible to play again after a judge granted them a preliminary injunction in their case against the NCAA.",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:09:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.36,
+          "ageHours": 3.86,
           "freshnessBasis": "Unlikely stars a month ago, here are the biggest portal surprises at every position.",
           "status": "active",
           "sourceUrls": [
@@ -1026,7 +1026,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 90,
+    "freshCandidateCount": 94,
     "publishedItemCount": 33,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
