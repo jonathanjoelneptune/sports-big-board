@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-24T21:00:53Z",
+  "generatedAt": "2026-09-24T21:30:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5c1606354a529a332a6c0eae8768a7215f2fbcb50d769faa048cc2094bce7c24",
+  "sourceCandidateHash": "f9dd28231d3db58250b2c4dccdcb55eb8cf05fd7b46d927474bd0ac18d9aeace",
   "leagues": [
     {
       "league": "MLB",
@@ -14,6 +14,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-b634c87d719304c5"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The White Sox became the first team to follow consecutive 100-loss seasons by reaching the playoffs, clinching at least an AL wild-card berth with win No. 82 this year.",
+          "text": "The White Sox became the first team to follow consecutive 100-loss seasons by reaching the playoffs, clinching at least an AL wild-card berth with win No. 82 this year.",
+          "entities": [],
+          "occurredAt": "2026-09-24T21:05:19Z",
+          "timePrecision": "exact",
+          "ageHours": 0.43,
+          "freshnessBasis": "The White Sox became the first team to follow consecutive 100-loss seasons by reaching the playoffs, clinching at least an AL wild-card berth with win No. 82 this year.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50022885/white-sox-clinch-playoff-berth-back-back-100-loss-seasons"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50022885/white-sox-clinch-playoff-berth-back-back-100-loss-seasons"
+            }
+          ],
+          "id": "a415-2a8ac21884ad743e",
+          "feedRank": 1,
+          "compactHeadline": "White Sox clinch playoff berth after back-to-back 100-loss seasons"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
           "type": "PLAYOFF",
@@ -21,9 +50,9 @@
           "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "entities": [],
-          "occurredAt": "2026-09-24T20:53:55Z",
+          "occurredAt": "2026-09-24T21:00:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.51,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-1a43b73f6cca9f52"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:49:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.68,
           "freshnessBasis": "Phillies All-Star left-hander Jesús Luzardo said he has recovered enough from left shoulder inflammation that he should be able to pitch next week in the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,69 @@
             }
           ],
           "id": "a415-d39be141ca4a9d68",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Phillies' Luzardo throws bullpen, confident for playoff return"
         },
         {
-          "rank": 3,
+          "rank": 4,
+          "candidateIds": [
+            "cand-dac662ad19df2ccc"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Chicago Cubs clinched their second straight postseason berth a 2-1 victory over the Miami Marlins on Thursday.",
+          "text": "The Chicago Cubs clinched their second straight postseason berth a 2-1 victory over the Miami Marlins on Thursday.",
+          "entities": [],
+          "occurredAt": "2026-09-24T21:26:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "The Chicago Cubs clinched their second straight postseason berth a 2-1 victory over the Miami Marlins on Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50023000/cubs-earn-second-straight-playoff-berth-win-marlins"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50023000/cubs-earn-second-straight-playoff-berth-win-marlins"
+            }
+          ],
+          "id": "a415-f3634a1795878f96",
+          "feedRank": 4,
+          "compactHeadline": "Cubs earn second straight playoff berth with win over Marlins"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-3d15204504368a86"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Josh Jung and Corey Seager homered, Kumar Rocker pitched five solid innings and Texas closed out its home schedule with a 3-1 win over the New York Mets on Thursday that ensured that the Rangers would remain at least tied for the AL West lead...",
+          "text": "Josh Jung and Corey Seager homered, Kumar Rocker pitched five solid innings and Texas closed out its home schedule with a 3-1 win over the New York Mets on Thursday that ensured that the Rangers would remain at least tied for the AL West lead...",
+          "entities": [],
+          "occurredAt": "2026-09-24T21:12:31Z",
+          "timePrecision": "exact",
+          "ageHours": 0.31,
+          "freshnessBasis": "— Josh Jung and Corey Seager homered, Kumar Rocker pitched five solid innings and Texas closed out its home schedule with a 3-1 win over the New York Mets on Thursday that ensured that the Rangers would remain at least tied for the AL West lead...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817067"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817067"
+            }
+          ],
+          "id": "a415-1d46aee7c221fb39",
+          "feedRank": 5,
+          "compactHeadline": "Rangers finish home slate with 3-1 win over Mets to keep Texas at least tied for AL West lead"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-2c6a1305cd219a5d"
           ],
@@ -81,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T08:04:32Z",
           "timePrecision": "exact",
-          "ageHours": 12.94,
+          "ageHours": 13.44,
           "freshnessBasis": "Milwaukee Brewers (99-59, first in the NL Central) vs. Philadelphia Phillies (87-71, second in the NL East)",
           "status": "active",
           "sourceUrls": [
@@ -95,95 +182,8 @@
             }
           ],
           "id": "a415-e7bdd88a41f01eea",
-          "feedRank": 3,
-          "compactHeadline": "Brewers aim for 100th win this season, take on the Phillies"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2e04074271c4f1f1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ronny Simon raced home on Spencer Horwitz's eighth inning sacrifice fly and the Pittsburgh Pirates assured themselves of the club's first non-losing season in eight years with a 2-1 win over the St. Louis Cardinals on Thursday.",
-          "text": "Ronny Simon raced home on Spencer Horwitz's eighth inning sacrifice fly and the Pittsburgh Pirates assured themselves of the club's first non-losing season in eight years with a 2-1 win over the St. Louis Cardinals on Thursday.",
-          "entities": [],
-          "occurredAt": "2026-09-24T19:33:38Z",
-          "timePrecision": "exact",
-          "ageHours": 1.45,
-          "freshnessBasis": "— Ronny Simon raced home on Spencer Horwitz's eighth inning sacrifice fly and the Pittsburgh Pirates assured themselves of the club's first non-losing season in eight years with a 2-1 win over the St. Louis Cardinals on Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817063"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817063"
-            }
-          ],
-          "id": "a415-8e9d0d061d44f30c",
-          "feedRank": 4,
-          "compactHeadline": "Pirates beat the Cardinals 2-1 to secure their first non-losing season since 2018"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-a772bdc3436bcfa4"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Josh Naylor singled home Randy Arozarena with the winning run in the 10th inning and the Seattle Mariners kept their slim playoff hopes alive by rallying past the Houston Astros 6-5 on Wednesday night.",
-          "text": "Josh Naylor singled home Randy Arozarena with the winning run in the 10th inning and the Seattle Mariners kept their slim playoff hopes alive by rallying past the Houston Astros 6-5 on Wednesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-24T06:44:28Z",
-          "timePrecision": "exact",
-          "ageHours": 14.27,
-          "freshnessBasis": "— Josh Naylor singled home Randy Arozarena with the winning run in the 10th inning and the Seattle Mariners kept their slim playoff hopes alive by rallying past the Houston Astros 6-5 on Wednesday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817057"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817057"
-            }
-          ],
-          "id": "a415-5c921e831b82ebdc",
-          "feedRank": 5,
-          "compactHeadline": "Mariners rally past Astros 6-5 in 10 innings to keep faint playoff hopes alive"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e4505d8f64568775"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Kyle Stowers homered and the Miami Marlins prevented the Chicago Cubs from clinching a playoff berth for the second straight night with a 3-2 victory Wednesday.",
-          "text": "Kyle Stowers homered and the Miami Marlins prevented the Chicago Cubs from clinching a playoff berth for the second straight night with a 3-2 victory Wednesday.",
-          "entities": [],
-          "occurredAt": "2026-09-24T06:35:35Z",
-          "timePrecision": "exact",
-          "ageHours": 14.42,
-          "freshnessBasis": "— Kyle Stowers homered and the Miami Marlins prevented the Chicago Cubs from clinching a playoff berth for the second straight night with a 3-2 victory Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817053"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817053"
-            }
-          ],
-          "id": "a415-4919db05aa005247",
           "feedRank": 6,
-          "compactHeadline": "Marlins prevent Cubs from clinching a playoff spot again with a 3-2 victory"
+          "compactHeadline": "Brewers aim for 100th win this season, take on the Phillies"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:33:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.45,
+          "ageHours": 3.95,
           "freshnessBasis": "The judge who presided over the criminal case of Packers RB Josh Jacobs denied a request by the victim to have evidence permanently sealed.",
           "status": "active",
           "sourceUrls": [
@@ -223,6 +223,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-0db343cc66af0863"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Dolphins defensive end Chop Robinson has cleared the concussion protocol, he told reporters Thursday.",
+          "text": "Dolphins defensive end Chop Robinson has cleared the concussion protocol, he told reporters Thursday.",
+          "entities": [],
+          "occurredAt": "2026-09-24T21:21:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "Dolphins defensive end Chop Robinson has cleared the concussion protocol, he told reporters Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50022964/dolphins-de-chop-robinson-clears-concussion-protocol"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50022964/dolphins-de-chop-robinson-clears-concussion-protocol"
+            }
+          ],
+          "id": "a415-b8fb3d73566ddb02",
+          "feedRank": 8,
+          "compactHeadline": "Dolphins DE Chop Robinson clears concussion protocol"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-ee5437e7e58d9283"
           ],
           "type": "INJURY",
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:37:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.39,
+          "ageHours": 0.89,
           "freshnessBasis": "— The quarterback Brian Daboll envisioned would lead the New York Giants back to prominence is out for the rest of the season. And Daboll has not been their coach since getting fired 10...",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-1cf38bd247888000",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Brian Daboll and the Titans visit the Giants in Jameis Winston's first start in place of Jaxson Dart"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-1d477ac93d78d1dc"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:02:23Z",
           "timePrecision": "exact",
-          "ageHours": 0.98,
+          "ageHours": 1.48,
           "freshnessBasis": "Eagles head to Soldier Field to face an injury-riddled Bears in the third \"Monday Night Football\" game of the 2026 NFL season.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-6ba266503037633c",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Bears vs. Eagles: Where to watch 'Monday Night Football'"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-bcd2b0a97f96c1ef"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.86,
           "freshnessBasis": "— Kyler Murray has the right opponent to get back on track after a concussion knocked him out of the season opener.",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +333,37 @@
             }
           ],
           "id": "a415-86fd3fd148e78332",
-          "feedRank": 10,
-          "compactHeadline": "Kyler Murray returns for the Vikings against the struggling Buccaneers"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-662745dfd818d26f"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
-          "text": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
-          "entities": [],
-          "occurredAt": "2026-09-24T10:49:38Z",
-          "timePrecision": "exact",
-          "ageHours": 10.19,
-          "freshnessBasis": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50016014/mcvay-says-nacua-injury-not-long-term-concern-rams-being-cautious"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50016014/mcvay-says-nacua-injury-not-long-term-concern-rams-being-cautious"
-            }
-          ],
-          "id": "a415-673aed556b32ee5f",
           "feedRank": 11,
-          "compactHeadline": "McVay says Nacua's injury not 'long-term' concern, but Rams being cautious"
+          "compactHeadline": "Kyler Murray returns for the Vikings against the struggling Buccaneers"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-5e4b450b9d2dc8e1"
+            "cand-7b52dfc9598deba8"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
-          "text": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Can the Texans turn it around (again)? Do the Buccaneers, Colts or Chargers have a chance to get right? Is the season already over for the Falcons and Dolphins?",
+          "text": "Can the Texans turn it around (again)? Do the Buccaneers, Colts or Chargers have a chance to get right? Is the season already over for the Falcons and Dolphins?",
           "entities": [],
-          "occurredAt": "2026-09-24T10:42:46Z",
+          "occurredAt": "2026-09-24T15:08:15Z",
           "timePrecision": "exact",
-          "ageHours": 10.3,
-          "freshnessBasis": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
+          "ageHours": 6.38,
+          "freshnessBasis": "Can the Texans turn it around (again)? Do the Buccaneers, Colts or Chargers have a chance to get right? Is the season already over for the Falcons and Dolphins?",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50015858/commanders-respond-viral-video-clip-reject-notion-abandoned-injured-jayden-daniels"
+            "https://www.espn.com/nfl/story/_/id/50006560/ranking-winless-two-loss-teams-playoffs-barnwell-2026"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50015858/commanders-respond-viral-video-clip-reject-notion-abandoned-injured-jayden-daniels"
+              "url": "https://www.espn.com/nfl/story/_/id/50006560/ranking-winless-two-loss-teams-playoffs-barnwell-2026"
             }
           ],
-          "id": "a415-c5a16eba83c1417b",
+          "id": "a415-6823c5d0a49b9341",
           "feedRank": 12,
-          "compactHeadline": "Commanders say clip didn't reflect team response to Daniels injury"
+          "compactHeadline": "Ranking eight winless NFL teams: Texans, Bucs, others at 0-2"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:35:40Z",
           "timePrecision": "exact",
-          "ageHours": 9.42,
+          "ageHours": 9.92,
           "freshnessBasis": "Cooper Flagg remains No. 1 in this high school class -- but we admit to some mistakes for the rest of the list.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T13:52:31Z",
           "timePrecision": "exact",
-          "ageHours": 7.14,
+          "ageHours": 7.64,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:40:04Z",
           "timePrecision": "exact",
-          "ageHours": 9.35,
+          "ageHours": 9.85,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -461,6 +461,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-a1a247226b3ff948"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, has died, the Naismith Basketball Hall of Fame said Thursday.",
+          "text": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, has died, the Naismith Basketball Hall of Fame said Thursday.",
+          "entities": [],
+          "occurredAt": "2026-09-24T21:24:50Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, has died, the Naismith Basketball Hall of Fame said Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50023100/bob-pettit-starred-lsu-nba-dies-93"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50023100/bob-pettit-starred-lsu-nba-dies-93"
+            }
+          ],
+          "id": "a415-de087a841979cc37",
+          "feedRank": 16,
+          "compactHeadline": "Bob Pettit, who starred at LSU and then in NBA, dies at 93"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-d733b4695a7176a4"
           ],
           "type": "NEWS",
@@ -470,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:50:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.68,
           "freshnessBasis": "Oklahoma City GM Sam Presti said the Thunder could be as good as past teams despite key offseason departures.",
           "status": "active",
           "sourceUrls": [
@@ -484,11 +513,11 @@
             }
           ],
           "id": "a415-2632248dd7615ff9",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Presti not expecting Thunder downturn despite departures"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-db69561c42e59c93"
           ],
@@ -499,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:06:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.91,
+          "ageHours": 1.41,
           "freshnessBasis": "Our countdown of the NBA's top 100 players hits its grand finale.",
           "status": "active",
           "sourceUrls": [
@@ -513,37 +542,8 @@
             }
           ],
           "id": "a415-e4bf5a171774c18e",
-          "feedRank": 17,
-          "compactHeadline": "NBA Rank 2026: The new top 10 features a razor-thin race for No. 1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-3ef2da6796b9998d"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Terry Rozier's mother asked a federal judge to allow her son to return to basketball while the NBA veteran fights charges in a gambling case scheduled for trial in February, according to a letter filed with the court.",
-          "text": "Terry Rozier's mother asked a federal judge to allow her son to return to basketball while the NBA veteran fights charges in a gambling case scheduled for trial in February, according to a letter filed with the court.",
-          "entities": [],
-          "occurredAt": "2026-09-24T19:58:33Z",
-          "timePrecision": "exact",
-          "ageHours": 1.04,
-          "freshnessBasis": "Terry Rozier's mother asked a federal judge to allow her son to return to basketball while the NBA veteran fights charges in a gambling case scheduled for trial in February, according to a letter filed with the court.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50022277/terry-rozier-mother-gina-tucker-asks-judge-nba-gambling-case"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50022277/terry-rozier-mother-gina-tucker-asks-judge-nba-gambling-case"
-            }
-          ],
-          "id": "a415-a444e75ae5859c4c",
           "feedRank": 18,
-          "compactHeadline": "Terry Rozier's mother asks judge to allow him NBA return"
+          "compactHeadline": "NBA Rank 2026: The new top 10 features a razor-thin race for No. 1"
         }
       ]
     },
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:13:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
+          "ageHours": 5.29,
           "freshnessBasis": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:41:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
+          "ageHours": 0.82,
           "freshnessBasis": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 3.88,
+          "ageHours": 4.38,
           "freshnessBasis": "The Chicago Blackhawks signed forward Oliver Moore to a five-year deal on Thursday, locking up an important piece of their long-term future.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:21:21Z",
           "timePrecision": "exact",
-          "ageHours": 1.66,
+          "ageHours": 2.16,
           "freshnessBasis": "Here are a dozen players who are in for a heightened -- or lowered -- level of production this season.",
           "status": "active",
           "sourceUrls": [
@@ -670,35 +670,6 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-3a5a5cc6310a547e"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
-          "text": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
-          "entities": [],
-          "occurredAt": "2026-09-23T21:04:11Z",
-          "timePrecision": "exact",
-          "ageHours": 23.95,
-          "freshnessBasis": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50015624/sabres-mattias-samuelsson-injured-miss-start-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50015624/sabres-mattias-samuelsson-injured-miss-start-season"
-            }
-          ],
-          "id": "a415-7fec2c7a2bd73c04",
-          "feedRank": 23,
-          "compactHeadline": "Sabres' Mattias Samuelsson injured, may miss start of season"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-ab04012a09f71224"
           ],
           "type": "NEWS",
@@ -708,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T14:04:14Z",
           "timePrecision": "exact",
-          "ageHours": 6.94,
+          "ageHours": 7.44,
           "freshnessBasis": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he was \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "status": "active",
           "sourceUrls": [
@@ -722,8 +693,37 @@
             }
           ],
           "id": "a415-7d771dcc0004756b",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Mark Messier 'horrified' by Oilers' hire of coach Mike Babcock"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-750c978179334a63"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
+          "text": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
+          "entities": [],
+          "occurredAt": "2026-09-24T00:21:02Z",
+          "timePrecision": "exact",
+          "ageHours": 21.16,
+          "freshnessBasis": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50016360/former-montreal-canadiens-owner-george-gillett-jr-dies-87"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50016360/former-montreal-canadiens-owner-george-gillett-jr-dies-87"
+            }
+          ],
+          "id": "a415-b17933c0c33f1c08",
+          "feedRank": 24,
+          "compactHeadline": "Former Montreal Canadiens owner George Gillett Jr. dies at 87"
         }
       ]
     },
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.77,
           "freshnessBasis": "Former England forward Andy Carroll has revealed in his autobiography he was sexually assaulted by a man during 2021.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 22.01,
+          "ageHours": 22.51,
           "freshnessBasis": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 22.18,
+          "ageHours": 22.68,
           "freshnessBasis": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "status": "active",
           "sourceUrls": [
@@ -841,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T14:38:07Z",
           "timePrecision": "exact",
-          "ageHours": 6.38,
+          "ageHours": 6.88,
           "freshnessBasis": "With a 4-0 record, Lincoln Riley isn't shying away from expectations as USC hosts Oregon this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -870,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:00:26Z",
           "timePrecision": "exact",
-          "ageHours": 10.01,
+          "ageHours": 10.51,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:20:42Z",
           "timePrecision": "exact",
-          "ageHours": 1.67,
+          "ageHours": 2.17,
           "freshnessBasis": "Former NC State sports medicine director Robert Michael Murphy has been arrested after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:44:24Z",
           "timePrecision": "exact",
-          "ageHours": 18.27,
+          "ageHours": 18.77,
           "freshnessBasis": "Baylor quarterback DJ Lagway is expected to return for Saturday's game vs. Colorado after missing the Bears' previous two games with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -957,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:06:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.9,
+          "ageHours": 1.4,
           "freshnessBasis": "\"College GameDay\" heads to Knoxville, Tennessee for Week 4.",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:51:33Z",
           "timePrecision": "exact",
-          "ageHours": 2.16,
+          "ageHours": 2.66,
           "freshnessBasis": "Indiana defensive linemen Stephen Daley and Kellan Wyatt are eligible to play again after a judge granted them a preliminary injunction in their case against the NCAA.",
           "status": "active",
           "sourceUrls": [
@@ -1026,7 +1026,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 96,
+    "freshCandidateCount": 89,
     "publishedItemCount": 33,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
