@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-24T03:00:59Z",
+  "generatedAt": "2026-09-24T03:30:46Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "84bea8bd88d5fe2dc8fae7e903f41cc94f828bd90323a5baf42a41eff0fa658a",
+  "sourceCandidateHash": "f4b560532357214abea53e26f8d8c8aaf79b34ba99a32514c6171bb604d6ee1f",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:35:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.43,
+          "ageHours": 0.93,
           "freshnessBasis": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-e4505d8f64568775"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Kyle Stowers homered and the Miami Marlins denied the Chicago Cubs a chance to clinch a playoff berth for the second straight night with a 3-2 victory Wednesday.",
+          "text": "Kyle Stowers homered and the Miami Marlins denied the Chicago Cubs a chance to clinch a playoff berth for the second straight night with a 3-2 victory Wednesday.",
+          "entities": [],
+          "occurredAt": "2026-09-24T03:00:29Z",
+          "timePrecision": "exact",
+          "ageHours": 0.5,
+          "freshnessBasis": "— Kyle Stowers homered and the Miami Marlins denied the Chicago Cubs a chance to clinch a playoff berth for the second straight night with a 3-2 victory Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817053"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817053"
+            }
+          ],
+          "id": "a415-4919db05aa005247",
+          "feedRank": 2,
+          "compactHeadline": "Marlins prevent Cubs from clinching a playoff spot again with a 3-2 victory"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-5c1513b0412701fe"
           ],
           "type": "CONTRACT",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:43:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 0.79,
           "freshnessBasis": "Blue Jays first baseman Vladimir Guerrero Jr. is standing by comments he made during a recent interview regarding his performance this season after signing a 14-year, $500 million contract last year.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-e56a504c5af457e7",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Blue Jays' Guerrero stands by comments about contract extension"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-4cc40b36d07f5818"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:27:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
+          "ageHours": 1.05,
           "freshnessBasis": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-c2f6041816f5e569",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Judge says he intends to be available for AL Wild Card Series"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-45bdb922cdcbe40d"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:21:12Z",
           "timePrecision": "exact",
-          "ageHours": 2.66,
+          "ageHours": 3.16,
           "freshnessBasis": "Yankees slugger Giancarlo Stanton could return for the playoffs after a 5½-month absence due to calf strains.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-8aa3b95086ca5d40",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Stanton, Grisham take steps toward rejoining Yankees"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-bd46d42131b46271"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:38:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.37,
+          "ageHours": 5.87,
           "freshnessBasis": "Braves reliever Robert Suarez, who has been sidelined more than three months with right elbow inflammation, was activated with the aim of being used Wednesday night and again Saturday ahead of the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-89a8fadb2f71d1ea",
-          "feedRank": 5,
-          "compactHeadline": "Braves activate set-up man Suarez, target 2 appearances ahead of playoffs"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e3910a8c0cb153f0"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Miguel Garcia had three hits and three RBI, including a tiebreaking, run-scoring double in the seventh inning, as the Kansas City Royals beat the White Sox 5-4 Wednesday night and delayed Chicago's bid for a postseason berth.",
-          "text": "Miguel Garcia had three hits and three RBI, including a tiebreaking, run-scoring double in the seventh inning, as the Kansas City Royals beat the White Sox 5-4 Wednesday night and delayed Chicago's bid for a postseason berth.",
-          "entities": [],
-          "occurredAt": "2026-09-24T02:41:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "— Miguel Garcia had three hits and three RBI, including a tiebreaking, run-scoring double in the seventh inning, as the Kansas City Royals beat the White Sox 5-4 Wednesday night and delayed Chicago's bid for a postseason berth.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817052"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817052"
-            }
-          ],
-          "id": "a415-7087899467c811d3",
           "feedRank": 6,
-          "compactHeadline": "Royals snap a 5-game skid with a 5-4 win over White Sox, delaying Chicago's bid for a playoff berth"
+          "compactHeadline": "Braves activate set-up man Suarez, target 2 appearances ahead of playoffs"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:15:45Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 4.25,
           "freshnessBasis": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T01:17:59Z",
           "timePrecision": "exact",
-          "ageHours": 1.72,
+          "ageHours": 2.21,
           "freshnessBasis": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.18,
+          "ageHours": 4.67,
           "freshnessBasis": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:11Z",
           "timePrecision": "exact",
-          "ageHours": 4.18,
+          "ageHours": 4.68,
           "freshnessBasis": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:21:30Z",
           "timePrecision": "exact",
-          "ageHours": 4.66,
+          "ageHours": 5.15,
           "freshnessBasis": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:11:07Z",
           "timePrecision": "exact",
-          "ageHours": 6.83,
+          "ageHours": 7.33,
           "freshnessBasis": "The Vikings' offensive backfield is in flux this week as starter Aaron Jones Sr. works through a knee injury and backup Jordan Mason remains on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 5.7,
+          "ageHours": 6.2,
           "freshnessBasis": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T01:18:06Z",
           "timePrecision": "exact",
-          "ageHours": 1.71,
+          "ageHours": 2.21,
           "freshnessBasis": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:39:30Z",
           "timePrecision": "exact",
-          "ageHours": 11.36,
+          "ageHours": 11.85,
           "freshnessBasis": "Warriors star Stephen Curry said his unsettled contract extension situation will have zero impact on his play or the team's vibe entering the season.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:46:45Z",
           "timePrecision": "exact",
-          "ageHours": 6.24,
+          "ageHours": 6.73,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:04:07Z",
           "timePrecision": "exact",
-          "ageHours": 6.95,
+          "ageHours": 7.44,
           "freshnessBasis": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:41:08Z",
           "timePrecision": "exact",
-          "ageHours": 6.33,
+          "ageHours": 6.83,
           "freshnessBasis": "In honor of 23 years since \"One Tree Hill\" premiered, James Lafferty & Co. take us inside the basketball heart of the cult classic TV show.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:04:11Z",
           "timePrecision": "exact",
-          "ageHours": 5.95,
+          "ageHours": 6.44,
           "freshnessBasis": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 16.25,
+          "ageHours": 16.74,
           "freshnessBasis": "The Stars have signed forward Sam Steel to a four-year, $14.8 million contract extension that will begin next season and go through 2030-31.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:43:22Z",
           "timePrecision": "exact",
-          "ageHours": 16.29,
+          "ageHours": 16.79,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:21:02Z",
           "timePrecision": "exact",
-          "ageHours": 2.67,
+          "ageHours": 3.16,
           "freshnessBasis": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:26:46Z",
           "timePrecision": "exact",
-          "ageHours": 3.57,
+          "ageHours": 4.07,
           "freshnessBasis": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he was \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:43:39Z",
           "timePrecision": "exact",
-          "ageHours": 16.29,
+          "ageHours": 16.79,
           "freshnessBasis": "Ducks forward Mikael Granlund, who had 19 goals and 22 assists in his first season with the team, has been picked as the 10th captain in team history.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 13.29,
+          "ageHours": 13.79,
           "freshnessBasis": "Arsenal are expected to announce Mikel Arteta has signed a new long-term contract after the 44-year-old agreed terms to stay on as manager, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
+          "ageHours": 4.51,
           "freshnessBasis": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.18,
+          "ageHours": 4.67,
           "freshnessBasis": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:35:56Z",
           "timePrecision": "exact",
-          "ageHours": 10.42,
+          "ageHours": 10.91,
           "freshnessBasis": "Old Trafford -- the home of Manchester United -- has seen plenty of history over the years. Now, fans can own a piece of the pitch ...for £125 ($165).",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:57:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.06,
+          "ageHours": 13.55,
           "freshnessBasis": "Manchester United's summer transfer strategy had \"financial sustainability in mind,\" according to CEO Omar Berrada, after reporting a increased financial losses.",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:44:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.28,
+          "ageHours": 0.77,
           "freshnessBasis": "Baylor quarterback DJ Lagway is expected to return for Saturday's game vs. Colorado after missing the Bears' previous two games with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:04:23Z",
           "timePrecision": "exact",
-          "ageHours": 8.94,
+          "ageHours": 9.44,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -948,6 +948,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-d442e807b6a9f682"
+          ],
+          "type": "LEGAL",
+          "priority": 64,
+          "headline": "Former NC State sports medicine director Robert Michael Murphy was arrested Wednesday evening after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
+          "text": "Former NC State sports medicine director Robert Michael Murphy was arrested Wednesday evening after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
+          "entities": [],
+          "occurredAt": "2026-09-24T03:18:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.21,
+          "freshnessBasis": "Former NC State sports medicine director Robert Michael Murphy was arrested Wednesday evening after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-sports/story/_/id/50017566/ex-nc-state-sports-medicine-director-arrested-indictment"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-sports/story/_/id/50017566/ex-nc-state-sports-medicine-director-arrested-indictment"
+            }
+          ],
+          "id": "a415-377893ebd5ca927f",
+          "feedRank": 32,
+          "compactHeadline": "Ex-NC State sports medicine director arrested after indictment"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-eee2527368e11019"
           ],
           "type": "RANKING",
@@ -957,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:59:29Z",
           "timePrecision": "exact",
-          "ageHours": 11.03,
+          "ageHours": 11.52,
           "freshnessBasis": "Who takes the No. 1 spot? ESPN's Bill Connelly lists out his top 10 College Football Playoff games.",
           "status": "active",
           "sourceUrls": [
@@ -971,11 +1000,11 @@
             }
           ],
           "id": "a415-9c3b452ff3eac439",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Connelly: Ranking the 10 best College Football Playoff games"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-02f534579eb5cea1"
           ],
@@ -986,7 +1015,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:15:26Z",
           "timePrecision": "exact",
-          "ageHours": 8.76,
+          "ageHours": 9.26,
           "freshnessBasis": "In his first comments since he fumbled in the end zone with one second left against Vanderbilt, leading to a shocking loss for the Wolfpack, NC State QB CJ Bailey said he \"was trying to get all the clock out. That was my thought. ... I fumbled the ball.\"",
           "status": "active",
           "sourceUrls": [
@@ -1000,11 +1029,11 @@
             }
           ],
           "id": "a415-adebac0d25fcc64f",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "NC State QB CJ Bailey addresses costly fumble vs. Vanderbilt"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-605ffa2581f7c818"
           ],
@@ -1015,7 +1044,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:51:37Z",
           "timePrecision": "exact",
-          "ageHours": 10.16,
+          "ageHours": 10.65,
           "freshnessBasis": "Indiana defensive linemen Stephen Daley and Kellan Wyatt are eligible to play again after a judge granted them a preliminary injunction in their case against the NCAA.",
           "status": "active",
           "sourceUrls": [
@@ -1029,37 +1058,8 @@
             }
           ],
           "id": "a415-49aa257e8361f0a3",
-          "feedRank": 34,
-          "compactHeadline": "Stephen Daley, Kellan Wyatt get injunction to play for Hoosiers"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f5d86c051e04a96f"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Wolfpack's inexplicable loss resulted in a very predictable appearance on our dubious list.",
-          "text": "The Wolfpack's inexplicable loss resulted in a very predictable appearance on our dubious list.",
-          "entities": [],
-          "occurredAt": "2026-09-23T13:36:41Z",
-          "timePrecision": "exact",
-          "ageHours": 13.41,
-          "freshnessBasis": "The Wolfpack's inexplicable loss resulted in a very predictable appearance on our dubious list.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50008177/college-football-bottom-10-week-3-nc-state-dropped-ball"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50008177/college-football-bottom-10-week-3-nc-state-dropped-ball"
-            }
-          ],
-          "id": "a415-34e26ececce9a80f",
           "feedRank": 35,
-          "compactHeadline": "College football Bottom 10 after Week 3: NC State dropped ball"
+          "compactHeadline": "Stephen Daley, Kellan Wyatt get injunction to play for Hoosiers"
         }
       ]
     }
