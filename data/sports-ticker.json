@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-24T01:00:59Z",
+  "generatedAt": "2026-09-24T01:31:02Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "749634fed8ee6c21aa72c76814a0a21cba5b35f71e0f0056cf02457648d124e7",
+  "sourceCandidateHash": "65cd436e49a021f7ecef25ca572453f71c031787242a4da4f3e481a96ca29253",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,47 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-f986e58684ac89b2"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Christian Yelich and Brice Turang hit solo home runs, and the Milwaukee Brewers delayed Philadelphia’s potential postseason clinch with a 4-1 win over the Phillies on Wednesday night.",
+          "text": "Christian Yelich and Brice Turang hit solo home runs, and the Milwaukee Brewers delayed Philadelphia’s potential postseason clinch with a 4-1 win over the Phillies on Wednesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-23T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: Milwaukee Brewers 4, Philadelphia Phillies 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817047",
+            "https://www.espn.com/mlb/story/_/id/50012078/zack-wheeler-fans-7-straight-open-phillies-win-brewers"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-23",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817047"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50012078/zack-wheeler-fans-7-straight-open-phillies-win-brewers"
+            }
+          ],
+          "id": "a415-ae73975709fd4194",
+          "feedRank": 1,
+          "compactHeadline": "Yelich, Turang homer as Brewers win 99th game of season, delay Phillies' possible playoff clinch"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-9434410510bf2b36"
           ],
@@ -23,7 +64,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T19:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.77,
           "freshnessBasis": "Highlightly final: Minnesota Twins 4, San Francisco Giants 2.",
           "status": "active",
           "sourceUrls": [
@@ -49,11 +90,11 @@
             }
           ],
           "id": "a415-b53d8a7c5c3fa068",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Bradley passes 200 strikeouts, pitches Twins to 3-2 win over Giants"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-2908819ea289869f"
           ],
@@ -64,7 +105,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T17:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.85,
+          "ageHours": 8.35,
           "freshnessBasis": "Highlightly final: Washington Nationals 4, Detroit Tigers 2.",
           "status": "active",
           "sourceUrls": [
@@ -84,11 +125,11 @@
             }
           ],
           "id": "a415-97645ccb12caaa3c",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Yohandry Morales homers, Nationals bullpen hangs on for a 4-2 win over the Tigers"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-d03032aa14210323"
           ],
@@ -99,7 +140,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:14Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.68,
           "freshnessBasis": "Dodgers star Shohei Ohtani, who was on the injured list since Sept. 8, was activated and in the starting lineup for Wednesday's game against the Padres.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +154,11 @@
             }
           ],
           "id": "a415-7bb5ecd3edbf6634",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Dodgers' Shohei Ohtani returns from IL stint, starts vs. Padres"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-45bdb922cdcbe40d"
           ],
@@ -128,7 +169,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:21:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.66,
+          "ageHours": 1.16,
           "freshnessBasis": "Yankees slugger Giancarlo Stanton could return for the playoffs after a 5½-month absence due to calf strains.",
           "status": "active",
           "sourceUrls": [
@@ -142,11 +183,11 @@
             }
           ],
           "id": "a415-8aa3b95086ca5d40",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Stanton, Grisham take steps toward rejoining Yankees"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-5c1513b0412701fe"
           ],
@@ -157,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:13:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.8,
+          "ageHours": 1.3,
           "freshnessBasis": "Blue Jays first baseman Vladimir Guerrero Jr. is standing by comments he made during a recent interview regarding his performance this season after signing a 14-year, $500 million contract last year.",
           "status": "active",
           "sourceUrls": [
@@ -171,37 +212,8 @@
             }
           ],
           "id": "a415-e56a504c5af457e7",
-          "feedRank": 5,
-          "compactHeadline": "Blue Jays' Guerrero stands by comments about contract extension"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4cc40b36d07f5818"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
-          "text": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-09-24T00:00:25Z",
-          "timePrecision": "exact",
-          "ageHours": 1.01,
-          "freshnessBasis": "Yankees' slugger Aaron Judge told ESPN on Wednesday that he intends to be ready for Game 1 of the AL Wild Card Series at Yankee Stadium next Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50015975/aaron-judge-not-ruling-being-available-wild-card-series"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50015975/aaron-judge-not-ruling-being-available-wild-card-series"
-            }
-          ],
-          "id": "a415-c2f6041816f5e569",
           "feedRank": 6,
-          "compactHeadline": "Judge says he intends to be available for AL Wild Card Series"
+          "compactHeadline": "Blue Jays' Guerrero stands by comments about contract extension"
         }
       ]
     },
@@ -221,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:15:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.75,
+          "ageHours": 2.25,
           "freshnessBasis": "New York fans just don't seem to be allowed nice things these days. Our insiders get into the implications of Dart's injury and its effect on the Giants going forward.",
           "status": "active",
           "sourceUrls": [
@@ -241,6 +253,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-a4fc15886fdc6414"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
+          "text": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
+          "entities": [],
+          "occurredAt": "2026-09-24T01:17:59Z",
+          "timePrecision": "exact",
+          "ageHours": 0.22,
+          "freshnessBasis": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50013861/giants-qb-dart-knee-surgery-miss-rest-regular-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50013861/giants-qb-dart-knee-surgery-miss-rest-regular-season"
+            }
+          ],
+          "id": "a415-ea882b70fab1e780",
+          "feedRank": 8,
+          "compactHeadline": "Giants' Dart to have knee surgery, out rest of regular season"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-f709fe44fa67fcee"
           ],
           "type": "INJURY",
@@ -250,7 +291,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.68,
           "freshnessBasis": "49ers defensive tackle C.J. West, who is going to miss at least a chunk of the season with a bone chip in his knee that will require surgery, was placed on injured reserve Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -264,11 +305,11 @@
             }
           ],
           "id": "a415-e859213852f56c55",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "49ers place starting DT C.J. West on IR due to knee injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-662745dfd818d26f"
           ],
@@ -279,7 +320,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.68,
           "freshnessBasis": "Rams coach Sean McVay said receiver Puka Nacua does not have a hernia, but the team will \"err on the side of caution\" with the injury.",
           "status": "active",
           "sourceUrls": [
@@ -293,37 +334,8 @@
             }
           ],
           "id": "a415-673aed556b32ee5f",
-          "feedRank": 9,
-          "compactHeadline": "McVay says Nacua's injury not 'long-term' concern, but Rams being cautious"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-3ae2a08b4d9ed4b2"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
-          "text": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
-          "entities": [],
-          "occurredAt": "2026-09-24T00:51:27Z",
-          "timePrecision": "exact",
-          "ageHours": 0.16,
-          "freshnessBasis": "Giants quarterback Jaxson Dart will undergo surgery on his left knee and sit out the rest of the regular season, though head coach John Harbaugh didn't rule out the possibility Dart could return if the Giants were to make the playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50013861/giants-qb-dart-knee-surgery-miss-rest-regular-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50013861/giants-qb-dart-knee-surgery-miss-rest-regular-season"
-            }
-          ],
-          "id": "a415-86332be7bc8fc37f",
           "feedRank": 10,
-          "compactHeadline": "Giants QB Dart to have knee surgery, miss rest of regular season"
+          "compactHeadline": "McVay says Nacua's injury not 'long-term' concern, but Rams being cautious"
         },
         {
           "rank": 5,
@@ -337,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:21:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.66,
+          "ageHours": 3.16,
           "freshnessBasis": "After a short video clip showed a number of Commanders walking past Jayden Daniels as he was being helped by medical personnel Sunday, many players fired back at the takes being spouted on social media, emphasizing, \"It's bulls--- what people are saying.\"",
           "status": "active",
           "sourceUrls": [
@@ -357,31 +369,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-399ed3766c07f6d3"
+            "cand-03ed6e5fa2f56fc4"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Panthers running back Jonathon Brooks is expected to undergo surgery to repair a core muscle injury and is set to miss at least six weeks, sources told NFL Network.",
-          "text": "Panthers running back Jonathon Brooks is expected to undergo surgery to repair a core muscle injury and is set to miss at least six weeks, sources told NFL Network.",
+          "headline": "The Vikings' offensive backfield is in flux this week as starter Aaron Jones Sr. works through a knee injury and backup Jordan Mason remains on injured reserve.",
+          "text": "The Vikings' offensive backfield is in flux this week as starter Aaron Jones Sr. works through a knee injury and backup Jordan Mason remains on injured reserve.",
           "entities": [],
-          "occurredAt": "2026-09-23T21:24:07Z",
+          "occurredAt": "2026-09-23T20:11:07Z",
           "timePrecision": "exact",
-          "ageHours": 3.61,
-          "freshnessBasis": "Panthers running back Jonathon Brooks is expected to undergo surgery to repair a core muscle injury and is set to miss at least six weeks, sources told NFL Network.",
+          "ageHours": 5.33,
+          "freshnessBasis": "The Vikings' offensive backfield is in flux this week as starter Aaron Jones Sr. works through a knee injury and backup Jordan Mason remains on injured reserve.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50012387/sources-panthers-rb-jonathon-brooks-set-surgery-ir-move"
+            "https://www.espn.com/nfl/story/_/id/50014807/vikings-rb-aaron-jones-working-knee-injury"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50012387/sources-panthers-rb-jonathon-brooks-set-surgery-ir-move"
+              "url": "https://www.espn.com/nfl/story/_/id/50014807/vikings-rb-aaron-jones-working-knee-injury"
             }
           ],
-          "id": "a415-0673eef52409a68b",
+          "id": "a415-3cb052665e1a4674",
           "feedRank": 12,
-          "compactHeadline": "Sources: Panthers RB Jonathon Brooks set for surgery, put on IR"
+          "compactHeadline": "Vikings RB Aaron Jones working through knee injury"
         }
       ]
     },
@@ -401,7 +413,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 3.7,
+          "ageHours": 4.2,
           "freshnessBasis": "Extension talks have stagnated between the Knicks and Karl-Anthony Towns, and an agreement is considered unlikely as the team begins camp, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -421,6 +433,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-92991bb46f6c34f3"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
+          "text": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
+          "entities": [],
+          "occurredAt": "2026-09-24T01:18:06Z",
+          "timePrecision": "exact",
+          "ageHours": 0.22,
+          "freshnessBasis": "Dereck Lively II's status for the start of the season has yet to be determined as he continues to recover from right foot surgery, sources said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50016983/sources-mavs-dereck-lively-ii-foot-not-cleared-camp"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50016983/sources-mavs-dereck-lively-ii-foot-not-cleared-camp"
+            }
+          ],
+          "id": "a415-7783e421c86a00d0",
+          "feedRank": 14,
+          "compactHeadline": "Sources: Mavs' Dereck Lively II (foot) not cleared for camp"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-3813cbc7f7c7b257"
           ],
           "type": "CONTRACT",
@@ -430,7 +471,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:39:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.36,
+          "ageHours": 9.86,
           "freshnessBasis": "Warriors star Stephen Curry said his unsettled contract extension situation will have zero impact on his play or the team's vibe entering the season.",
           "status": "active",
           "sourceUrls": [
@@ -444,11 +485,11 @@
             }
           ],
           "id": "a415-265a46791c6e0185",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Warriors' Stephen Curry says 'no drama' over unsettled contract"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-9cdf657f98f70142"
           ],
@@ -459,7 +500,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:46:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.24,
+          "ageHours": 4.74,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -473,11 +514,11 @@
             }
           ],
           "id": "a415-126159cbfcd3aa9e",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "NBA Rank 2026, players Nos. 50-11: Where LeBron, Steph, KD check in"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-a1a9cce654f5a4df"
           ],
@@ -488,7 +529,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T20:04:07Z",
           "timePrecision": "exact",
-          "ageHours": 4.95,
+          "ageHours": 5.45,
           "freshnessBasis": "We're revealing our top 100 players in the league for the 2026-27 season. Which players broke into Nos. 100 to 51? Which stars fell?",
           "status": "active",
           "sourceUrls": [
@@ -502,11 +543,11 @@
             }
           ],
           "id": "a415-32f1fba64c025627",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "NBA Rank 2026, players Nos. 100-51: Four rookies make their debuts"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-976cf249fe950f3c"
           ],
@@ -517,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.02,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Golden State Valkyries Women 90, Portland Women 82.",
           "status": "active",
           "sourceUrls": [
@@ -531,37 +572,8 @@
             }
           ],
           "id": "a415-e28a5443232573c1",
-          "feedRank": 17,
-          "compactHeadline": "Golden State Valkyries Women beat Portland Women 90-82"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-eae4c789347b7dcd"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Los Angeles Sparks Women 79, Las Vegas Aces Women 89.",
-          "text": "Highlightly final: Los Angeles Sparks Women 79, Las Vegas Aces Women 89.",
-          "entities": [],
-          "occurredAt": "2026-09-23T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.02,
-          "freshnessBasis": "Highlightly final: Los Angeles Sparks Women 79, Las Vegas Aces Women 89.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-22",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-0752e42354b5a045",
           "feedRank": 18,
-          "compactHeadline": "Las Vegas Aces Women beat Los Angeles Sparks Women 89-79"
+          "compactHeadline": "Golden State Valkyries Women beat Portland Women 90-82"
         }
       ]
     },
@@ -581,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T21:04:11Z",
           "timePrecision": "exact",
-          "ageHours": 3.95,
+          "ageHours": 4.45,
           "freshnessBasis": "Sabres defenseman Mattias Samuelsson is listed as week to week with a lower-body injury, leaving him in jeopardy of missing the start of the season.",
           "status": "active",
           "sourceUrls": [
@@ -610,7 +622,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 14.25,
+          "ageHours": 14.75,
           "freshnessBasis": "The Stars have signed forward Sam Steel to a four-year, $14.8 million contract extension that will begin next season and go through 2030-31.",
           "status": "active",
           "sourceUrls": [
@@ -639,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:43:22Z",
           "timePrecision": "exact",
-          "ageHours": 14.29,
+          "ageHours": 14.79,
           "freshnessBasis": "Bill Guerin has signed a multiyear contract extension as general manager of the Minnesota Wild, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -668,7 +680,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T00:21:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.67,
+          "ageHours": 1.17,
           "freshnessBasis": "George Gillett Jr., who was a former majority owner of the NHL's Montreal Canadiens and part owner of soccer's Liverpool FC, has died. He was 87.",
           "status": "active",
           "sourceUrls": [
@@ -697,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:26:46Z",
           "timePrecision": "exact",
-          "ageHours": 1.57,
+          "ageHours": 2.07,
           "freshnessBasis": "Former NHL star Mark Messier, who had a Hall of Fame career with the Edmonton Oilers, said he was \"horrified\" by the team's hiring of controversial coach Mike Babcock.",
           "status": "active",
           "sourceUrls": [
@@ -726,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.02,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Utah Mammoth 6, Los Angeles Kings 3.",
           "status": "active",
           "sourceUrls": [
@@ -761,7 +773,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 11.29,
+          "ageHours": 11.79,
           "freshnessBasis": "Arsenal are expected to announce Mikel Arteta has signed a new long-term contract after the 44-year-old agreed terms to stay on as manager, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -790,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T23:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.01,
+          "ageHours": 2.51,
           "freshnessBasis": "A ban on football fans drinking in the stands during matches is outdated, discriminatory and should be scrapped, Andy Burnham said.",
           "status": "active",
           "sourceUrls": [
@@ -819,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T22:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.68,
           "freshnessBasis": "Manchester United great Eric Cantona has said he would never have joined the club had current co-owner Sir Jim Ratcliffe been in charge.",
           "status": "active",
           "sourceUrls": [
@@ -848,7 +860,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:35:56Z",
           "timePrecision": "exact",
-          "ageHours": 8.42,
+          "ageHours": 8.92,
           "freshnessBasis": "Old Trafford -- the home of Manchester United -- has seen plenty of history over the years. Now, fans can own a piece of the pitch ...for £125 ($165).",
           "status": "active",
           "sourceUrls": [
@@ -877,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:57:35Z",
           "timePrecision": "exact",
-          "ageHours": 11.06,
+          "ageHours": 11.56,
           "freshnessBasis": "Manchester United's summer transfer strategy had \"financial sustainability in mind,\" according to CEO Omar Berrada, after reporting a increased financial losses.",
           "status": "active",
           "sourceUrls": [
@@ -917,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:04:23Z",
           "timePrecision": "exact",
-          "ageHours": 6.94,
+          "ageHours": 7.44,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -946,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T15:59:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.03,
+          "ageHours": 9.53,
           "freshnessBasis": "Who takes the No. 1 spot? ESPN's Bill Connelly lists out his top 10 College Football Playoff games.",
           "status": "active",
           "sourceUrls": [
@@ -975,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T18:15:26Z",
           "timePrecision": "exact",
-          "ageHours": 6.76,
+          "ageHours": 7.26,
           "freshnessBasis": "In his first comments since he fumbled in the end zone with one second left against Vanderbilt, leading to a shocking loss for the Wolfpack, NC State QB CJ Bailey said he \"was trying to get all the clock out. That was my thought. ... I fumbled the ball.\"",
           "status": "active",
           "sourceUrls": [
@@ -1004,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T16:51:37Z",
           "timePrecision": "exact",
-          "ageHours": 8.16,
+          "ageHours": 8.66,
           "freshnessBasis": "Indiana defensive linemen Stephen Daley and Kellan Wyatt are eligible to play again after a judge granted them a preliminary injunction in their case against the NCAA.",
           "status": "active",
           "sourceUrls": [
@@ -1033,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T13:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 11.41,
+          "ageHours": 11.91,
           "freshnessBasis": "The Wolfpack's inexplicable loss resulted in a very predictable appearance on our dubious list.",
           "status": "active",
           "sourceUrls": [
@@ -1062,7 +1074,7 @@
           "entities": [],
           "occurredAt": "2026-09-23T10:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 14.22,
+          "ageHours": 14.72,
           "freshnessBasis": "Ryan Grubb apologized for comments he made Monday in which he called out some fans for booing Alabama early during Saturday's win.",
           "status": "active",
           "sourceUrls": [
@@ -1102,7 +1114,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 110,
+    "freshCandidateCount": 109,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
