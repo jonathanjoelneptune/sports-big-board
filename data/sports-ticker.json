@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-25T00:30:56Z",
+  "generatedAt": "2026-09-25T01:00:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "032482d5e8c2554b094f32f1aa6408055f3ed3c70ebc692ddc44104db6f2e553",
+  "sourceCandidateHash": "26f16202033ad28112035eda36a6d7f7e53b20e90fd6e1cb29833f2b50225645",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.35,
+          "ageHours": 5.85,
           "freshnessBasis": "Highlightly final: Arizona Diamondbacks 12, Colorado Rockies 8.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.18,
+          "ageHours": 6.68,
           "freshnessBasis": "Highlightly final: Miami Marlins 1, Chicago Cubs 2.",
           "status": "active",
           "sourceUrls": [
@@ -84,6 +84,41 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-f7187d80909d0c82"
+          ],
+          "type": "MILESTONE",
+          "priority": 82,
+          "headline": "Milwaukee Brewers (99-59, first in the NL Central) vs. Philadelphia Phillies (87-71, second in the NL East)",
+          "text": "Milwaukee Brewers (99-59, first in the NL Central) vs. Philadelphia Phillies (87-71, second in the NL East)",
+          "entities": [],
+          "occurredAt": "2026-09-24T22:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.93,
+          "freshnessBasis": "Highlightly final: Milwaukee Brewers 5, Philadelphia Phillies 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/preview?gameId=401817062"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-24",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817062"
+            }
+          ],
+          "id": "a415-58a7243555bc417a",
+          "feedRank": 3,
+          "compactHeadline": "Milwaukee Brewers beat Philadelphia Phillies 5-1"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-3254fcf11f70b977"
           ],
           "type": "RESULT",
@@ -93,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.93,
+          "ageHours": 6.43,
           "freshnessBasis": "Highlightly final: New York Mets 1, Texas Rangers 3.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +148,11 @@
             }
           ],
           "id": "a415-5499b7a2b5f43ee5",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Rangers finish home slate with 3-1 win over Mets to keep Texas at least tied for AL West lead"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-29ce71e3d61b9981"
           ],
@@ -128,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.93,
+          "ageHours": 8.43,
           "freshnessBasis": "Highlightly final: St. Louis Cardinals 1, Pittsburgh Pirates 2.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +183,11 @@
             }
           ],
           "id": "a415-52e076f6904c6189",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Pirates beat the Cardinals 2-1 to secure their first non-losing season since 2018"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-8c3d8809d6b67d60"
           ],
@@ -161,9 +196,9 @@
           "headline": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
           "text": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
           "entities": [],
-          "occurredAt": "2026-09-25T00:27:24Z",
+          "occurredAt": "2026-09-25T00:54:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.11,
           "freshnessBasis": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
           "status": "active",
           "sourceUrls": [
@@ -177,37 +212,8 @@
             }
           ],
           "id": "a415-d5923585714043c0",
-          "feedRank": 5,
-          "compactHeadline": "Yankees' Boone says he spoke with Judge after injury discord"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a80d2c061a6ebfa6"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Clarke Schmidt is back on the injured list and will miss the AL Wild Card Series, sidelined by right biceps neuritis that developed following his return from Tommy John surgery.",
-          "text": "Clarke Schmidt is back on the injured list and will miss the AL Wild Card Series, sidelined by right biceps neuritis that developed following his return from Tommy John surgery.",
-          "entities": [],
-          "occurredAt": "2026-09-25T00:09:20Z",
-          "timePrecision": "exact",
-          "ageHours": 0.36,
-          "freshnessBasis": "Clarke Schmidt is back on the injured list and will miss the AL Wild Card Series, sidelined by right biceps neuritis that developed following his return from Tommy John surgery.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50023919/yankees-put-schmidt-il-stanton-grisham-hit-again"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50023919/yankees-put-schmidt-il-stanton-grisham-hit-again"
-            }
-          ],
-          "id": "a415-02ca38b24f5a5f78",
           "feedRank": 6,
-          "compactHeadline": "Yankees put Schmidt on IL; Stanton, Grisham hit again"
+          "compactHeadline": "Yankees' Boone says he spoke with Judge after injury discord"
         }
       ]
     },
@@ -225,9 +231,9 @@
           "headline": "Seahawks quarterback Sam Darnold was limited Wednesday as he returned to practice after missing most of the first two games because of a glute injury.",
           "text": "Seahawks quarterback Sam Darnold was limited Wednesday as he returned to practice after missing most of the first two games because of a glute injury.",
           "entities": [],
-          "occurredAt": "2026-09-24T23:33:01Z",
+          "occurredAt": "2026-09-25T00:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.97,
+          "ageHours": 0.09,
           "freshnessBasis": "Seahawks quarterback Sam Darnold was limited Wednesday as he returned to practice after missing most of the first two games because of a glute injury.",
           "status": "active",
           "sourceUrls": [
@@ -256,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:14:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.28,
+          "ageHours": 1.78,
           "freshnessBasis": "Vikings quarterback Kyler Murray said he was over the symptoms from his Week 1 concussion \"pretty quickly\" and that being placed in protocol was \"just part of the process.\"",
           "status": "active",
           "sourceUrls": [
@@ -285,7 +291,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T21:37:08Z",
           "timePrecision": "exact",
-          "ageHours": 2.9,
+          "ageHours": 3.4,
           "freshnessBasis": "Dolphins defensive end Chop Robinson has cleared the concussion protocol, he told reporters Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -314,7 +320,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:33:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.95,
+          "ageHours": 7.45,
           "freshnessBasis": "The judge who presided over the criminal case of Packers RB Josh Jacobs denied a request by the victim to have evidence permanently sealed.",
           "status": "active",
           "sourceUrls": [
@@ -343,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:37:34Z",
           "timePrecision": "exact",
-          "ageHours": 3.89,
+          "ageHours": 4.39,
           "freshnessBasis": "— The quarterback Brian Daboll envisioned would lead the New York Giants back to prominence is out for the rest of the season. And Daboll has not been their coach since getting fired 10...",
           "status": "active",
           "sourceUrls": [
@@ -372,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:02:23Z",
           "timePrecision": "exact",
-          "ageHours": 4.48,
+          "ageHours": 4.98,
           "freshnessBasis": "Eagles head to Soldier Field to face an injury-riddled Bears in the third \"Monday Night Football\" game of the 2026 NFL season.",
           "status": "active",
           "sourceUrls": [
@@ -407,7 +413,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:35:40Z",
           "timePrecision": "exact",
-          "ageHours": 12.92,
+          "ageHours": 13.42,
           "freshnessBasis": "Cooper Flagg remains No. 1 in this high school class -- but we admit to some mistakes for the rest of the list.",
           "status": "active",
           "sourceUrls": [
@@ -436,7 +442,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T13:52:31Z",
           "timePrecision": "exact",
-          "ageHours": 10.64,
+          "ageHours": 11.14,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -465,7 +471,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:40:04Z",
           "timePrecision": "exact",
-          "ageHours": 12.85,
+          "ageHours": 13.35,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -485,35 +491,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-dac0911ce6af1973"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
-          "text": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
-          "entities": [],
-          "occurredAt": "2026-09-25T00:28:38Z",
-          "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50023928/pelinka-lakers-grateful-run-lebron-exit-done-amicably"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50023928/pelinka-lakers-grateful-run-lebron-exit-done-amicably"
-            }
-          ],
-          "id": "a415-ea872ce90fe69252",
-          "feedRank": 16,
-          "compactHeadline": "Pelinka: Lakers grateful for run with LeBron, exit 'done amicably'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-88c30cde67dd866d"
           ],
           "type": "NEWS",
@@ -521,9 +498,9 @@
           "headline": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
           "text": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
           "entities": [],
-          "occurredAt": "2026-09-25T00:18:08Z",
+          "occurredAt": "2026-09-25T00:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
+          "ageHours": 0.43,
           "freshnessBasis": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
           "status": "active",
           "sourceUrls": [
@@ -537,8 +514,37 @@
             }
           ],
           "id": "a415-6e5e66d698ae117b",
-          "feedRank": 17,
+          "feedRank": 16,
           "compactHeadline": "Pelinka touts post-LeBron overhaul as Lakers reset around Luka"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-dac0911ce6af1973"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
+          "text": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
+          "entities": [],
+          "occurredAt": "2026-09-25T00:34:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50023928/pelinka-lakers-grateful-run-lebron-exit-done-amicably"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50023928/pelinka-lakers-grateful-run-lebron-exit-done-amicably"
+            }
+          ],
+          "id": "a415-ea872ce90fe69252",
+          "feedRank": 17,
+          "compactHeadline": "Pelinka: Lakers grateful for run with LeBron, exit 'done amicably'"
         },
         {
           "rank": 6,
@@ -552,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Dallas Wings Women 103, Seattle Storm Women 91.",
           "status": "active",
           "sourceUrls": [
@@ -587,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:13:14Z",
           "timePrecision": "exact",
-          "ageHours": 8.3,
+          "ageHours": 8.8,
           "freshnessBasis": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
           "status": "active",
           "sourceUrls": [
@@ -616,7 +622,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:41:51Z",
           "timePrecision": "exact",
-          "ageHours": 3.82,
+          "ageHours": 4.32,
           "freshnessBasis": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
           "status": "active",
           "sourceUrls": [
@@ -645,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 7.38,
+          "ageHours": 7.88,
           "freshnessBasis": "The Chicago Blackhawks signed forward Oliver Moore to a five-year deal on Thursday, locking up an important piece of their long-term future.",
           "status": "active",
           "sourceUrls": [
@@ -665,6 +671,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-0826ce43621a2423"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to come see how the team is operating under the controversial coach's guidance.",
+          "text": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to come see how the team is operating under the controversial coach's guidance.",
+          "entities": [],
+          "occurredAt": "2026-09-25T00:46:46Z",
+          "timePrecision": "exact",
+          "ageHours": 0.24,
+          "freshnessBasis": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to come see how the team is operating under the controversial coach's guidance.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50024139/zach-hyman-positivity-mike-babcock-edmonton"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50024139/zach-hyman-positivity-mike-babcock-edmonton"
+            }
+          ],
+          "id": "a415-ced38c22c653cb36",
+          "feedRank": 22,
+          "compactHeadline": "Zach Hyman: 'Positivity' under Mike Babcock in Edmonton"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-e5c3cee2ae0bc3f9"
           ],
           "type": "RESULT",
@@ -674,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Los Angeles Kings 2, Anaheim Ducks 1.",
           "status": "active",
           "sourceUrls": [
@@ -688,11 +723,11 @@
             }
           ],
           "id": "a415-b36bdae02c0c146d",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Los Angeles Kings beat Anaheim Ducks 2-1"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-db544d0561fce1a0"
           ],
@@ -703,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:35:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
+          "ageHours": 2.43,
           "freshnessBasis": "Penguins' forward Andrei Kuzmenko is taking a leave of absence from the team after his father, Alexander, was killed by a bear while fishing in Russia on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -717,37 +752,8 @@
             }
           ],
           "id": "a415-c85aa4ba2961f205",
-          "feedRank": 23,
-          "compactHeadline": "Penguins' Kuzmenko takes leave after father killed by bear"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-7890e026976e782b"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Here are a dozen players who are in for a heightened -- or lowered -- level of production this season.",
-          "text": "Here are a dozen players who are in for a heightened -- or lowered -- level of production this season.",
-          "entities": [],
-          "occurredAt": "2026-09-24T19:21:21Z",
-          "timePrecision": "exact",
-          "ageHours": 5.16,
-          "freshnessBasis": "Here are a dozen players who are in for a heightened -- or lowered -- level of production this season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50013950/nhl-2026-27-top-players-stats-goals-scoring-regression"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50013950/nhl-2026-27-top-players-stats-goals-scoring-regression"
-            }
-          ],
-          "id": "a415-a008d307b390075b",
           "feedRank": 24,
-          "compactHeadline": "Projecting the NHL's leap-forward, regression candidates"
+          "compactHeadline": "Penguins' Kuzmenko takes leave after father killed by bear"
         }
       ]
     },
@@ -767,7 +773,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:07:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.4,
+          "ageHours": 2.9,
           "freshnessBasis": "Anthony Gordon has said Premier League players are destined to come into summer tournaments more fatigued than any other league.",
           "status": "active",
           "sourceUrls": [
@@ -796,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 7.77,
+          "ageHours": 8.27,
           "freshnessBasis": "Former England forward Andy Carroll has revealed in his autobiography he was sexually assaulted by a man during 2021.",
           "status": "active",
           "sourceUrls": [
@@ -831,7 +837,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.02,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Real Salt Lake 0, Seattle Sounders 2.",
           "status": "active",
           "sourceUrls": [
@@ -866,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:04:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.44,
+          "ageHours": 2.94,
           "freshnessBasis": "With a 4-0 record, Lincoln Riley isn't shying away from expectations as USC hosts Oregon this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -886,6 +892,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-179623eae5279247"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Linebacker and safety Antonio Watts will miss the rest of the season for the 16th-ranked Louisville Cardinals with an injured knee.",
+          "text": "Linebacker and safety Antonio Watts will miss the rest of the season for the 16th-ranked Louisville Cardinals with an injured knee.",
+          "entities": [],
+          "occurredAt": "2026-09-25T00:59:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "Linebacker and safety Antonio Watts will miss the rest of the season for the 16th-ranked Louisville Cardinals with an injured knee.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50024112/louisville-loses-antonio-watts-season-knee-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50024112/louisville-loses-antonio-watts-season-knee-injury"
+            }
+          ],
+          "id": "a415-adb743d9a3297986",
+          "feedRank": 29,
+          "compactHeadline": "No. 16 Louisville loses Antonio Watts for season with knee injury"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-6def47fcda86db99"
           ],
           "type": "INJURY",
@@ -895,7 +930,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:00:26Z",
           "timePrecision": "exact",
-          "ageHours": 13.51,
+          "ageHours": 14.01,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -909,11 +944,11 @@
             }
           ],
           "id": "a415-80fed881f0718d40",
-          "feedRank": 29,
+          "feedRank": 30,
           "compactHeadline": "Penn State's Koby Howard to miss time with undisclosed injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-d442e807b6a9f682"
           ],
@@ -924,7 +959,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:20:42Z",
           "timePrecision": "exact",
-          "ageHours": 5.17,
+          "ageHours": 5.67,
           "freshnessBasis": "Former NC State sports medicine director Robert Michael Murphy has been arrested after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
           "status": "active",
           "sourceUrls": [
@@ -938,11 +973,11 @@
             }
           ],
           "id": "a415-377893ebd5ca927f",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "Ex-NC State sports medicine director arrested after indictment"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-347b51215de36873"
           ],
@@ -953,7 +988,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:44:24Z",
           "timePrecision": "exact",
-          "ageHours": 21.78,
+          "ageHours": 22.28,
           "freshnessBasis": "Baylor quarterback DJ Lagway is expected to return for Saturday's game vs. Colorado after missing the Bears' previous two games with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -967,11 +1002,11 @@
             }
           ],
           "id": "a415-650af84e47b0f1a1",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Baylor QB Lagway expected to return from injury vs. Colorado"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-18795548d3941b87"
           ],
@@ -982,7 +1017,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:48:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Texas coach Steve Sarkisian said he will be prepared for communication issues when President Donald Trump attends Saturday's game at Tennessee.",
           "status": "active",
           "sourceUrls": [
@@ -996,37 +1031,8 @@
             }
           ],
           "id": "a415-0bfd7023a78e0659",
-          "feedRank": 32,
-          "compactHeadline": "Sarkisian says comms could be cut with Trump attending game"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-7a141477b471e49c"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
-          "text": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
-          "entities": [],
-          "occurredAt": "2026-09-24T22:45:47Z",
-          "timePrecision": "exact",
-          "ageHours": 1.75,
-          "freshnessBasis": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50023500/vols-lb-coach-william-inge-hospitalized-undisclosed-reasons"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50023500/vols-lb-coach-william-inge-hospitalized-undisclosed-reasons"
-            }
-          ],
-          "id": "a415-45f97434003f9ec2",
           "feedRank": 33,
-          "compactHeadline": "Vols LB coach William Inge hospitalized for undisclosed reasons"
+          "compactHeadline": "Sarkisian says comms could be cut with Trump attending game"
         }
       ]
     }
@@ -1051,7 +1057,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 101,
+    "freshCandidateCount": 103,
     "publishedItemCount": 33,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
