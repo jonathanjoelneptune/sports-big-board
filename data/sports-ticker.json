@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-25T00:01:07Z",
+  "generatedAt": "2026-09-25T00:30:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "f636a82fdc28a8ad65666b84ff2aabed519005849bf6698c6c80f6d3294e0468",
+  "sourceCandidateHash": "032482d5e8c2554b094f32f1aa6408055f3ed3c70ebc692ddc44104db6f2e553",
   "leagues": [
     {
       "league": "MLB",
@@ -23,13 +23,12 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.85,
+          "ageHours": 5.35,
           "freshnessBasis": "Highlightly final: Arizona Diamondbacks 12, Colorado Rockies 8.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401817068",
-            "http://www.espn.com/mlb/recap?gameId=401817055"
+            "http://www.espn.com/mlb/recap?gameId=401817068"
           ],
           "sources": [
             {
@@ -41,11 +40,6 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401817068"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817055"
             }
           ],
           "id": "a415-bc815aafb4499505",
@@ -64,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.69,
+          "ageHours": 6.18,
           "freshnessBasis": "Highlightly final: Miami Marlins 1, Chicago Cubs 2.",
           "status": "active",
           "sourceUrls": [
@@ -99,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.44,
+          "ageHours": 5.93,
           "freshnessBasis": "Highlightly final: New York Mets 1, Texas Rangers 3.",
           "status": "active",
           "sourceUrls": [
@@ -134,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.44,
+          "ageHours": 7.93,
           "freshnessBasis": "Highlightly final: St. Louis Cardinals 1, Pittsburgh Pirates 2.",
           "status": "active",
           "sourceUrls": [
@@ -160,6 +154,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-8c3d8809d6b67d60"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
+          "text": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
+          "entities": [],
+          "occurredAt": "2026-09-25T00:27:24Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50024079/yankees-boone-says-spoke-judge-injury-discord"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50024079/yankees-boone-says-spoke-judge-injury-discord"
+            }
+          ],
+          "id": "a415-d5923585714043c0",
+          "feedRank": 5,
+          "compactHeadline": "Yankees' Boone says he spoke with Judge after injury discord"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-a80d2c061a6ebfa6"
           ],
           "type": "INJURY",
@@ -167,9 +190,9 @@
           "headline": "Clarke Schmidt is back on the injured list and will miss the AL Wild Card Series, sidelined by right biceps neuritis that developed following his return from Tommy John surgery.",
           "text": "Clarke Schmidt is back on the injured list and will miss the AL Wild Card Series, sidelined by right biceps neuritis that developed following his return from Tommy John surgery.",
           "entities": [],
-          "occurredAt": "2026-09-24T23:50:01Z",
+          "occurredAt": "2026-09-25T00:09:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
+          "ageHours": 0.36,
           "freshnessBasis": "Clarke Schmidt is back on the injured list and will miss the AL Wild Card Series, sidelined by right biceps neuritis that developed following his return from Tommy John surgery.",
           "status": "active",
           "sourceUrls": [
@@ -183,37 +206,8 @@
             }
           ],
           "id": "a415-02ca38b24f5a5f78",
-          "feedRank": 5,
-          "compactHeadline": "Yankees put Schmidt on IL; Stanton, Grisham hit again"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-cf63059de3fcf73b"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "The White Sox became the first team to follow consecutive 100-loss seasons by reaching the playoffs, clinching at least an AL Wild Card berth with win No. 82 this year.",
-          "text": "The White Sox became the first team to follow consecutive 100-loss seasons by reaching the playoffs, clinching at least an AL Wild Card berth with win No. 82 this year.",
-          "entities": [],
-          "occurredAt": "2026-09-24T23:32:39Z",
-          "timePrecision": "exact",
-          "ageHours": 0.47,
-          "freshnessBasis": "The White Sox became the first team to follow consecutive 100-loss seasons by reaching the playoffs, clinching at least an AL Wild Card berth with win No. 82 this year.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50022885/white-sox-clinch-playoff-berth-back-back-100-loss-seasons"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50022885/white-sox-clinch-playoff-berth-back-back-100-loss-seasons"
-            }
-          ],
-          "id": "a415-c4f95ac952b9e80a",
           "feedRank": 6,
-          "compactHeadline": "White Sox clinch playoff berth after three straight 100-loss seasons"
+          "compactHeadline": "Yankees put Schmidt on IL; Stanton, Grisham hit again"
         }
       ]
     },
@@ -233,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:33:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.47,
+          "ageHours": 0.97,
           "freshnessBasis": "Seahawks quarterback Sam Darnold was limited Wednesday as he returned to practice after missing most of the first two games because of a glute injury.",
           "status": "active",
           "sourceUrls": [
@@ -262,7 +256,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:14:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.78,
+          "ageHours": 1.28,
           "freshnessBasis": "Vikings quarterback Kyler Murray said he was over the symptoms from his Week 1 concussion \"pretty quickly\" and that being placed in protocol was \"just part of the process.\"",
           "status": "active",
           "sourceUrls": [
@@ -291,7 +285,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T21:37:08Z",
           "timePrecision": "exact",
-          "ageHours": 2.4,
+          "ageHours": 2.9,
           "freshnessBasis": "Dolphins defensive end Chop Robinson has cleared the concussion protocol, he told reporters Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -320,7 +314,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:33:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.46,
+          "ageHours": 6.95,
           "freshnessBasis": "The judge who presided over the criminal case of Packers RB Josh Jacobs denied a request by the victim to have evidence permanently sealed.",
           "status": "active",
           "sourceUrls": [
@@ -349,7 +343,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:37:34Z",
           "timePrecision": "exact",
-          "ageHours": 3.39,
+          "ageHours": 3.89,
           "freshnessBasis": "— The quarterback Brian Daboll envisioned would lead the New York Giants back to prominence is out for the rest of the season. And Daboll has not been their coach since getting fired 10...",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +372,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:02:23Z",
           "timePrecision": "exact",
-          "ageHours": 3.98,
+          "ageHours": 4.48,
           "freshnessBasis": "Eagles head to Soldier Field to face an injury-riddled Bears in the third \"Monday Night Football\" game of the 2026 NFL season.",
           "status": "active",
           "sourceUrls": [
@@ -413,7 +407,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:35:40Z",
           "timePrecision": "exact",
-          "ageHours": 12.42,
+          "ageHours": 12.92,
           "freshnessBasis": "Cooper Flagg remains No. 1 in this high school class -- but we admit to some mistakes for the rest of the list.",
           "status": "active",
           "sourceUrls": [
@@ -442,7 +436,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T13:52:31Z",
           "timePrecision": "exact",
-          "ageHours": 10.14,
+          "ageHours": 10.64,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -471,7 +465,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:40:04Z",
           "timePrecision": "exact",
-          "ageHours": 12.35,
+          "ageHours": 12.85,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -498,9 +492,9 @@
           "headline": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
           "text": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
           "entities": [],
-          "occurredAt": "2026-09-24T23:48:15Z",
+          "occurredAt": "2026-09-25T00:28:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
+          "ageHours": 0.04,
           "freshnessBasis": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
           "status": "active",
           "sourceUrls": [
@@ -520,6 +514,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-88c30cde67dd866d"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
+          "text": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
+          "entities": [],
+          "occurredAt": "2026-09-25T00:18:08Z",
+          "timePrecision": "exact",
+          "ageHours": 0.21,
+          "freshnessBasis": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50023962/pelinka-touts-post-lebron-overhaul-lakers-reset-luka"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50023962/pelinka-touts-post-lebron-overhaul-lakers-reset-luka"
+            }
+          ],
+          "id": "a415-6e5e66d698ae117b",
+          "feedRank": 17,
+          "compactHeadline": "Pelinka touts post-LeBron overhaul as Lakers reset around Luka"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-ca19bbac3b5380a2"
           ],
           "type": "RESULT",
@@ -529,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.02,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: Dallas Wings Women 103, Seattle Storm Women 91.",
           "status": "active",
           "sourceUrls": [
@@ -543,37 +566,8 @@
             }
           ],
           "id": "a415-bfb5245c3e21589f",
-          "feedRank": 17,
-          "compactHeadline": "Dallas Wings Women beat Seattle Storm Women 103-91"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a1a247226b3ff948"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, died, the Naismith Basketball Hall of Fame said Thursday.",
-          "text": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, died, the Naismith Basketball Hall of Fame said Thursday.",
-          "entities": [],
-          "occurredAt": "2026-09-24T22:33:24Z",
-          "timePrecision": "exact",
-          "ageHours": 1.46,
-          "freshnessBasis": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, died, the Naismith Basketball Hall of Fame said Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50023100/bob-pettit-starred-lsu-nba-dies-93"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50023100/bob-pettit-starred-lsu-nba-dies-93"
-            }
-          ],
-          "id": "a415-de087a841979cc37",
           "feedRank": 18,
-          "compactHeadline": "Bob Pettit, who starred at LSU and then in NBA, dies at 93"
+          "compactHeadline": "Dallas Wings Women beat Seattle Storm Women 103-91"
         }
       ]
     },
@@ -593,7 +587,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:13:14Z",
           "timePrecision": "exact",
-          "ageHours": 7.8,
+          "ageHours": 8.3,
           "freshnessBasis": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
           "status": "active",
           "sourceUrls": [
@@ -622,7 +616,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:41:51Z",
           "timePrecision": "exact",
-          "ageHours": 3.32,
+          "ageHours": 3.82,
           "freshnessBasis": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
           "status": "active",
           "sourceUrls": [
@@ -651,7 +645,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.88,
+          "ageHours": 7.38,
           "freshnessBasis": "The Chicago Blackhawks signed forward Oliver Moore to a five-year deal on Thursday, locking up an important piece of their long-term future.",
           "status": "active",
           "sourceUrls": [
@@ -680,7 +674,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.02,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: Los Angeles Kings 2, Anaheim Ducks 1.",
           "status": "active",
           "sourceUrls": [
@@ -709,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:35:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.43,
+          "ageHours": 1.93,
           "freshnessBasis": "Penguins' forward Andrei Kuzmenko is taking a leave of absence from the team after his father, Alexander, was killed by a bear while fishing in Russia on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -738,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:21:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.66,
+          "ageHours": 5.16,
           "freshnessBasis": "Here are a dozen players who are in for a heightened -- or lowered -- level of production this season.",
           "status": "active",
           "sourceUrls": [
@@ -773,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:07:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.9,
+          "ageHours": 2.4,
           "freshnessBasis": "Anthony Gordon has said Premier League players are destined to come into summer tournaments more fatigued than any other league.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 7.27,
+          "ageHours": 7.77,
           "freshnessBasis": "Former England forward Andy Carroll has revealed in his autobiography he was sexually assaulted by a man during 2021.",
           "status": "active",
           "sourceUrls": [
@@ -837,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Real Salt Lake 0, Seattle Sounders 2.",
           "status": "active",
           "sourceUrls": [
@@ -872,7 +866,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:04:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.94,
+          "ageHours": 2.44,
           "freshnessBasis": "With a 4-0 record, Lincoln Riley isn't shying away from expectations as USC hosts Oregon this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -901,7 +895,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:00:26Z",
           "timePrecision": "exact",
-          "ageHours": 13.01,
+          "ageHours": 13.51,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -930,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:20:42Z",
           "timePrecision": "exact",
-          "ageHours": 4.67,
+          "ageHours": 5.17,
           "freshnessBasis": "Former NC State sports medicine director Robert Michael Murphy has been arrested after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
           "status": "active",
           "sourceUrls": [
@@ -959,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:44:24Z",
           "timePrecision": "exact",
-          "ageHours": 21.28,
+          "ageHours": 21.78,
           "freshnessBasis": "Baylor quarterback DJ Lagway is expected to return for Saturday's game vs. Colorado after missing the Bears' previous two games with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -988,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:48:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.22,
+          "ageHours": 0.71,
           "freshnessBasis": "Texas coach Steve Sarkisian said he will be prepared for communication issues when President Donald Trump attends Saturday's game at Tennessee.",
           "status": "active",
           "sourceUrls": [
@@ -1017,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:45:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.26,
+          "ageHours": 1.75,
           "freshnessBasis": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -1057,7 +1051,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 99,
+    "freshCandidateCount": 101,
     "publishedItemCount": 33,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
