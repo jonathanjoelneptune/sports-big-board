@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-25T01:00:56Z",
+  "generatedAt": "2026-09-25T01:30:55Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "26f16202033ad28112035eda36a6d7f7e53b20e90fd6e1cb29833f2b50225645",
+  "sourceCandidateHash": "ef93b8be8c30b296e02ee89892cae9d932de22e03e395f46a83c155ff7bb7cdc",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.85,
+          "ageHours": 6.35,
           "freshnessBasis": "Highlightly final: Arizona Diamondbacks 12, Colorado Rockies 8.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.68,
+          "ageHours": 7.18,
           "freshnessBasis": "Highlightly final: Miami Marlins 1, Chicago Cubs 2.",
           "status": "active",
           "sourceUrls": [
@@ -84,41 +84,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-f7187d80909d0c82"
-          ],
-          "type": "MILESTONE",
-          "priority": 82,
-          "headline": "Milwaukee Brewers (99-59, first in the NL Central) vs. Philadelphia Phillies (87-71, second in the NL East)",
-          "text": "Milwaukee Brewers (99-59, first in the NL Central) vs. Philadelphia Phillies (87-71, second in the NL East)",
-          "entities": [],
-          "occurredAt": "2026-09-24T22:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.93,
-          "freshnessBasis": "Highlightly final: Milwaukee Brewers 5, Philadelphia Phillies 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/preview?gameId=401817062"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-24",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401817062"
-            }
-          ],
-          "id": "a415-58a7243555bc417a",
-          "feedRank": 3,
-          "compactHeadline": "Milwaukee Brewers beat Philadelphia Phillies 5-1"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-3254fcf11f70b977"
           ],
           "type": "RESULT",
@@ -128,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T18:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.43,
+          "ageHours": 6.93,
           "freshnessBasis": "Highlightly final: New York Mets 1, Texas Rangers 3.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +113,11 @@
             }
           ],
           "id": "a415-5499b7a2b5f43ee5",
-          "feedRank": 4,
+          "feedRank": 3,
           "compactHeadline": "Rangers finish home slate with 3-1 win over Mets to keep Texas at least tied for AL West lead"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-29ce71e3d61b9981"
           ],
@@ -163,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.43,
+          "ageHours": 8.93,
           "freshnessBasis": "Highlightly final: St. Louis Cardinals 1, Pittsburgh Pirates 2.",
           "status": "active",
           "sourceUrls": [
@@ -183,8 +148,49 @@
             }
           ],
           "id": "a415-52e076f6904c6189",
-          "feedRank": 5,
+          "feedRank": 4,
           "compactHeadline": "Pirates beat the Cardinals 2-1 to secure their first non-losing season since 2018"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-f7187d80909d0c82"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Milwaukee Brewers reached 100 wins for the first time, and Jackson Chourio hit his 25th homer to lift them to a 5-1 victory over Philadelphia on Thursday night that slowed the Phillies’ playoff push.",
+          "text": "The Milwaukee Brewers reached 100 wins for the first time, and Jackson Chourio hit his 25th homer to lift them to a 5-1 victory over Philadelphia on Thursday night that slowed the Phillies’ playoff push.",
+          "entities": [],
+          "occurredAt": "2026-09-24T22:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.43,
+          "freshnessBasis": "Highlightly final: Milwaukee Brewers 5, Philadelphia Phillies 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817062",
+            "http://www.espn.com/mlb/preview?gameId=401817062"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-24",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817062"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817062"
+            }
+          ],
+          "id": "a415-58a7243555bc417a",
+          "feedRank": 5,
+          "compactHeadline": "Milwaukee Brewers beat Philadelphia Phillies 5-1"
         },
         {
           "rank": 6,
@@ -198,7 +204,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T00:54:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.61,
           "freshnessBasis": "Aaron Boone on Thursday said he spoke with Aaron Judge after the star outfielder expressed displeasure over the manager's description of his calf strain to reporters.",
           "status": "active",
           "sourceUrls": [
@@ -233,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T00:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.59,
           "freshnessBasis": "Seahawks quarterback Sam Darnold was limited Wednesday as he returned to practice after missing most of the first two games because of a glute injury.",
           "status": "active",
           "sourceUrls": [
@@ -262,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:14:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.78,
+          "ageHours": 2.28,
           "freshnessBasis": "Vikings quarterback Kyler Murray said he was over the symptoms from his Week 1 concussion \"pretty quickly\" and that being placed in protocol was \"just part of the process.\"",
           "status": "active",
           "sourceUrls": [
@@ -291,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T21:37:08Z",
           "timePrecision": "exact",
-          "ageHours": 3.4,
+          "ageHours": 3.9,
           "freshnessBasis": "Dolphins defensive end Chop Robinson has cleared the concussion protocol, he told reporters Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -320,7 +326,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:33:41Z",
           "timePrecision": "exact",
-          "ageHours": 7.45,
+          "ageHours": 7.95,
           "freshnessBasis": "The judge who presided over the criminal case of Packers RB Josh Jacobs denied a request by the victim to have evidence permanently sealed.",
           "status": "active",
           "sourceUrls": [
@@ -349,7 +355,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:37:34Z",
           "timePrecision": "exact",
-          "ageHours": 4.39,
+          "ageHours": 4.89,
           "freshnessBasis": "— The quarterback Brian Daboll envisioned would lead the New York Giants back to prominence is out for the rest of the season. And Daboll has not been their coach since getting fired 10...",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +384,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T20:02:23Z",
           "timePrecision": "exact",
-          "ageHours": 4.98,
+          "ageHours": 5.48,
           "freshnessBasis": "Eagles head to Soldier Field to face an injury-riddled Bears in the third \"Monday Night Football\" game of the 2026 NFL season.",
           "status": "active",
           "sourceUrls": [
@@ -404,6 +410,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-ff4ebde347eb44ee"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Toronto Tempo Women 81, Connecticut Sun Women 95.",
+          "text": "Highlightly final: Toronto Tempo Women 81, Connecticut Sun Women 95.",
+          "entities": [],
+          "occurredAt": "2026-09-24T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.52,
+          "freshnessBasis": "Highlightly final: Toronto Tempo Women 81, Connecticut Sun Women 95.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-24",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-91461940740cd0a8",
+          "feedRank": 13,
+          "compactHeadline": "Connecticut Sun Women beat Toronto Tempo Women 95-81"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-d5addec9f2f43977"
           ],
           "type": "RANKING",
@@ -413,7 +448,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:35:40Z",
           "timePrecision": "exact",
-          "ageHours": 13.42,
+          "ageHours": 13.92,
           "freshnessBasis": "Cooper Flagg remains No. 1 in this high school class -- but we admit to some mistakes for the rest of the list.",
           "status": "active",
           "sourceUrls": [
@@ -427,11 +462,11 @@
             }
           ],
           "id": "a415-2c1eda168cf7f099",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Reranking the men's basketball recruiting class of 2024"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-9cdf657f98f70142"
           ],
@@ -442,7 +477,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T13:52:31Z",
           "timePrecision": "exact",
-          "ageHours": 11.14,
+          "ageHours": 11.64,
           "freshnessBasis": "Our countdown of the NBA's top 100 players continues. See which stars just missed a spot in the top 10 -- and where three legends land.",
           "status": "active",
           "sourceUrls": [
@@ -456,11 +491,11 @@
             }
           ],
           "id": "a415-126159cbfcd3aa9e",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "NBA Rank 2026, players Nos. 50-11: Where LeBron, Steph, KD check in"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-1acda75a41ca6758"
           ],
@@ -471,7 +506,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:40:04Z",
           "timePrecision": "exact",
-          "ageHours": 13.35,
+          "ageHours": 13.85,
           "freshnessBasis": "The Hawks are sending Buddy Hield, Ryan Nembhard and cash considerations to the Charlotte Hornets for Dorian Finney-Smith.",
           "status": "active",
           "sourceUrls": [
@@ -485,11 +520,40 @@
             }
           ],
           "id": "a415-eea5d780af254e61",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Hawks trade Hield, Nembhard to Hornets for Finney-Smith"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-a1a247226b3ff948"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, died, the Naismith Basketball Hall of Fame said Thursday.",
+          "text": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, died, the Naismith Basketball Hall of Fame said Thursday.",
+          "entities": [],
+          "occurredAt": "2026-09-25T01:04:28Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "Bob Pettit, who was named an All-Star in each of his 11 NBA seasons and was one of the greatest scorers and rebounders in league history, died, the Naismith Basketball Hall of Fame said Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50023100/bob-pettit-starred-lsu-nba-dies-93"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50023100/bob-pettit-starred-lsu-nba-dies-93"
+            }
+          ],
+          "id": "a415-de087a841979cc37",
+          "feedRank": 17,
+          "compactHeadline": "Bob Pettit, who starred at LSU and then in NBA, dies at 93"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-88c30cde67dd866d"
           ],
@@ -500,7 +564,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T00:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.43,
+          "ageHours": 0.93,
           "freshnessBasis": "Lakers GM Rob Pelinka expressed excitement over the team's offseason overhaul as it transitions out of the LeBron James era, including retaining Austin Reaves and acquiring center Walker Kessler.",
           "status": "active",
           "sourceUrls": [
@@ -514,66 +578,8 @@
             }
           ],
           "id": "a415-6e5e66d698ae117b",
-          "feedRank": 16,
-          "compactHeadline": "Pelinka touts post-LeBron overhaul as Lakers reset around Luka"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-dac0911ce6af1973"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
-          "text": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
-          "entities": [],
-          "occurredAt": "2026-09-25T00:34:48Z",
-          "timePrecision": "exact",
-          "ageHours": 0.44,
-          "freshnessBasis": "Rob Pelinka said Thursday that the Lakers remain thankful for their time with LeBron James.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50023928/pelinka-lakers-grateful-run-lebron-exit-done-amicably"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50023928/pelinka-lakers-grateful-run-lebron-exit-done-amicably"
-            }
-          ],
-          "id": "a415-ea872ce90fe69252",
-          "feedRank": 17,
-          "compactHeadline": "Pelinka: Lakers grateful for run with LeBron, exit 'done amicably'"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ca19bbac3b5380a2"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Dallas Wings Women 103, Seattle Storm Women 91.",
-          "text": "Highlightly final: Dallas Wings Women 103, Seattle Storm Women 91.",
-          "entities": [],
-          "occurredAt": "2026-09-24T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.02,
-          "freshnessBasis": "Highlightly final: Dallas Wings Women 103, Seattle Storm Women 91.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-23",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-bfb5245c3e21589f",
           "feedRank": 18,
-          "compactHeadline": "Dallas Wings Women beat Seattle Storm Women 103-91"
+          "compactHeadline": "Pelinka touts post-LeBron overhaul as Lakers reset around Luka"
         }
       ]
     },
@@ -584,35 +590,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c8517e9b08f79ce7"
-          ],
-          "type": "MILESTONE",
-          "priority": 82,
-          "headline": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
-          "text": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
-          "entities": [],
-          "occurredAt": "2026-09-24T16:13:14Z",
-          "timePrecision": "exact",
-          "ageHours": 8.8,
-          "freshnessBasis": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50020898/pwhl-host-league-1st-all-star-game-next-march-toronto"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50020898/pwhl-host-league-1st-all-star-game-next-march-toronto"
-            }
-          ],
-          "id": "a415-fe04da04297c373f",
-          "feedRank": 19,
-          "compactHeadline": "PWHL to host league's 1st All-Star Game next March in Toronto"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-2699334232839c1f"
           ],
           "type": "SIGNING",
@@ -620,9 +597,9 @@
           "headline": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
           "text": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
           "entities": [],
-          "occurredAt": "2026-09-24T20:41:51Z",
+          "occurredAt": "2026-09-25T01:09:03Z",
           "timePrecision": "exact",
-          "ageHours": 4.32,
+          "ageHours": 0.36,
           "freshnessBasis": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
           "status": "active",
           "sourceUrls": [
@@ -636,8 +613,37 @@
             }
           ],
           "id": "a415-ea809e1af5f653cd",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Blue Jackets re-sign Adam Fantilli to 6-year, $82.5M deal"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c8517e9b08f79ce7"
+          ],
+          "type": "MILESTONE",
+          "priority": 82,
+          "headline": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
+          "text": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
+          "entities": [],
+          "occurredAt": "2026-09-24T16:13:14Z",
+          "timePrecision": "exact",
+          "ageHours": 9.29,
+          "freshnessBasis": "The PWHL announced its first All-Star event will take place next year, marking another significant milestone for the league's continued growth and expansion.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50020898/pwhl-host-league-1st-all-star-game-next-march-toronto"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50020898/pwhl-host-league-1st-all-star-game-next-march-toronto"
+            }
+          ],
+          "id": "a415-fe04da04297c373f",
+          "feedRank": 20,
+          "compactHeadline": "PWHL to host league's 1st All-Star Game next March in Toronto"
         },
         {
           "rank": 3,
@@ -651,7 +657,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T17:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 7.88,
+          "ageHours": 8.38,
           "freshnessBasis": "The Chicago Blackhawks signed forward Oliver Moore to a five-year deal on Thursday, locking up an important piece of their long-term future.",
           "status": "active",
           "sourceUrls": [
@@ -675,13 +681,13 @@
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to come see how the team is operating under the controversial coach's guidance.",
-          "text": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to come see how the team is operating under the controversial coach's guidance.",
+          "headline": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to see how the team is operating under the controversial coach's guidance.",
+          "text": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to see how the team is operating under the controversial coach's guidance.",
           "entities": [],
-          "occurredAt": "2026-09-25T00:46:46Z",
+          "occurredAt": "2026-09-25T01:25:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.24,
-          "freshnessBasis": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to come see how the team is operating under the controversial coach's guidance.",
+          "ageHours": 0.09,
+          "freshnessBasis": "One day after Mark Messier said he was \"horrified\" by the Oilers' hiring of Mike Babcock, Edmonton forward Zach Hyman invited the Hall of Famer to see how the team is operating under the controversial coach's guidance.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/50024139/zach-hyman-positivity-mike-babcock-edmonton"
@@ -709,7 +715,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.02,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Los Angeles Kings 2, Anaheim Ducks 1.",
           "status": "active",
           "sourceUrls": [
@@ -738,7 +744,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:35:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.43,
+          "ageHours": 2.93,
           "freshnessBasis": "Penguins' forward Andrei Kuzmenko is taking a leave of absence from the team after his father, Alexander, was killed by a bear while fishing in Russia on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -773,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:07:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.9,
+          "ageHours": 3.4,
           "freshnessBasis": "Anthony Gordon has said Premier League players are destined to come into summer tournaments more fatigued than any other league.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +808,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T16:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 8.27,
+          "ageHours": 8.77,
           "freshnessBasis": "Former England forward Andy Carroll has revealed in his autobiography he was sexually assaulted by a man during 2021.",
           "status": "active",
           "sourceUrls": [
@@ -824,37 +830,7 @@
     {
       "league": "MLS",
       "seasonState": "active",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-601455afabe5c3f9"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Real Salt Lake 0, Seattle Sounders 2.",
-          "text": "Highlightly final: Real Salt Lake 0, Seattle Sounders 2.",
-          "entities": [],
-          "occurredAt": "2026-09-24T01:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Real Salt Lake 0, Seattle Sounders 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-23",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-25a748d72a4b5f14",
-          "feedRank": 27,
-          "compactHeadline": "Seattle Sounders beat Real Salt Lake 2-0"
-        }
-      ]
+      "items": []
     },
     {
       "league": "NCAAF",
@@ -872,7 +848,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T22:04:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.94,
+          "ageHours": 3.44,
           "freshnessBasis": "With a 4-0 record, Lincoln Riley isn't shying away from expectations as USC hosts Oregon this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -886,7 +862,7 @@
             }
           ],
           "id": "a415-a04f56191db76414",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "'I'm not asking for anybody's sympathy': It's a pivotal season for Lincoln Riley and USC"
         },
         {
@@ -901,7 +877,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T00:59:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.03,
+          "ageHours": 0.53,
           "freshnessBasis": "Linebacker and safety Antonio Watts will miss the rest of the season for the 16th-ranked Louisville Cardinals with an injured knee.",
           "status": "active",
           "sourceUrls": [
@@ -915,7 +891,7 @@
             }
           ],
           "id": "a415-adb743d9a3297986",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "No. 16 Louisville loses Antonio Watts for season with knee injury"
         },
         {
@@ -930,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T11:00:26Z",
           "timePrecision": "exact",
-          "ageHours": 14.01,
+          "ageHours": 14.51,
           "freshnessBasis": "Koby Howard, Penn State's leading WR, is likely sidelined for a while though his undisclosed injury is \"not season-ending,\" coach Matt Campbell said.",
           "status": "active",
           "sourceUrls": [
@@ -944,7 +920,7 @@
             }
           ],
           "id": "a415-80fed881f0718d40",
-          "feedRank": 30,
+          "feedRank": 29,
           "compactHeadline": "Penn State's Koby Howard to miss time with undisclosed injury"
         },
         {
@@ -959,7 +935,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T19:20:42Z",
           "timePrecision": "exact",
-          "ageHours": 5.67,
+          "ageHours": 6.17,
           "freshnessBasis": "Former NC State sports medicine director Robert Michael Murphy has been arrested after a grand jury indicted him last week on multiple felony and misdemeanor counts involving the sexual abuse of male student-athletes he had treated.",
           "status": "active",
           "sourceUrls": [
@@ -973,7 +949,7 @@
             }
           ],
           "id": "a415-377893ebd5ca927f",
-          "feedRank": 31,
+          "feedRank": 30,
           "compactHeadline": "Ex-NC State sports medicine director arrested after indictment"
         },
         {
@@ -988,7 +964,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T02:44:24Z",
           "timePrecision": "exact",
-          "ageHours": 22.28,
+          "ageHours": 22.78,
           "freshnessBasis": "Baylor quarterback DJ Lagway is expected to return for Saturday's game vs. Colorado after missing the Bears' previous two games with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -1002,7 +978,7 @@
             }
           ],
           "id": "a415-650af84e47b0f1a1",
-          "feedRank": 32,
+          "feedRank": 31,
           "compactHeadline": "Baylor QB Lagway expected to return from injury vs. Colorado"
         },
         {
@@ -1017,7 +993,7 @@
           "entities": [],
           "occurredAt": "2026-09-24T23:48:11Z",
           "timePrecision": "exact",
-          "ageHours": 1.21,
+          "ageHours": 1.71,
           "freshnessBasis": "Texas coach Steve Sarkisian said he will be prepared for communication issues when President Donald Trump attends Saturday's game at Tennessee.",
           "status": "active",
           "sourceUrls": [
@@ -1031,7 +1007,7 @@
             }
           ],
           "id": "a415-0bfd7023a78e0659",
-          "feedRank": 33,
+          "feedRank": 32,
           "compactHeadline": "Sarkisian says comms could be cut with Trump attending game"
         }
       ]
@@ -1058,7 +1034,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 103,
-    "publishedItemCount": 33,
+    "publishedItemCount": 32,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
