@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-26T04:31:34Z",
+  "generatedAt": "2026-09-26T12:01:49Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "ab6e4eeb6810e12b4ab7a3754d11e562f5d9b87bf46872d3585d53c76a4dffbc",
+  "sourceCandidateHash": "d1a63750fc32c3dea1b44701035c5391bb0145d9d40f6a11f01a047a077cbcf0",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,64 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-44b3f38d8ea14645"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "From an injured captain to questions about the infield, rotation and bullpen, there's a lot to unpack in the Bronx.",
+          "text": "From an injured captain to questions about the infield, rotation and bullpen, there's a lot to unpack in the Bronx.",
+          "entities": [],
+          "occurredAt": "2026-09-26T10:57:07Z",
+          "timePrecision": "exact",
+          "ageHours": 1.08,
+          "freshnessBasis": "From an injured captain to questions about the infield, rotation and bullpen, there's a lot to unpack in the Bronx.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49895269/mlb-2026-new-york-yankees-postseason-playoffs-roster-wild-card-aaron-judge"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49895269/mlb-2026-new-york-yankees-postseason-playoffs-roster-wild-card-aaron-judge"
+            }
+          ],
+          "id": "a415-8cd67b43552c4944",
+          "feedRank": 1,
+          "compactHeadline": "MLB playoffs 2026: 5 questions for Yankees ahead of wild-card series"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-4d677bb0e01caec3"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "entities": [],
+          "occurredAt": "2026-09-26T10:55:11Z",
+          "timePrecision": "exact",
+          "ageHours": 1.11,
+          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+            }
+          ],
+          "id": "a415-dbccbfd4bc1f6041",
+          "feedRank": 2,
+          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-f3871c2d353d42ba"
           ],
@@ -23,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T04:05:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.43,
+          "ageHours": 7.93,
           "freshnessBasis": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +95,69 @@
             }
           ],
           "id": "a415-19946bef140359f1",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "White Sox's Montgomery sets single-season strikeout record"
         },
         {
-          "rank": 2,
+          "rank": 4,
+          "candidateIds": [
+            "cand-54fbab2d5af35c76"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Atlanta Braves (93-67, first in the NL East) vs. Miami Marlins (79-81, third in the NL East)",
+          "text": "Atlanta Braves (93-67, first in the NL East) vs. Miami Marlins (79-81, third in the NL East)",
+          "entities": [],
+          "occurredAt": "2026-09-26T08:02:55Z",
+          "timePrecision": "exact",
+          "ageHours": 3.98,
+          "freshnessBasis": "Atlanta Braves (93-67, first in the NL East) vs. Miami Marlins (79-81, third in the NL East)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/preview?gameId=401817087"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817087"
+            }
+          ],
+          "id": "a415-509b5546630905c0",
+          "feedRank": 4,
+          "compactHeadline": "Marlins host the Braves on 3-game home win streak"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-8ffdf1a903f20281"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Arizona Diamondbacks (86-74, third in the NL West) vs. San Diego Padres (89-71, second in the NL West)",
+          "text": "Arizona Diamondbacks (86-74, third in the NL West) vs. San Diego Padres (89-71, second in the NL West)",
+          "entities": [],
+          "occurredAt": "2026-09-26T08:02:51Z",
+          "timePrecision": "exact",
+          "ageHours": 3.98,
+          "freshnessBasis": "Arizona Diamondbacks (86-74, third in the NL West) vs. San Diego Padres (89-71, second in the NL West)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/preview?gameId=401817099"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817099"
+            }
+          ],
+          "id": "a415-f0fe5c423e01a8b7",
+          "feedRank": 5,
+          "compactHeadline": "Diamondbacks aim to keep win streak alive against the Padres"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-72ed704adafd3374"
           ],
@@ -52,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T03:23:21Z",
           "timePrecision": "exact",
-          "ageHours": 1.14,
+          "ageHours": 8.64,
           "freshnessBasis": "Arizona right-hander Corbin Burnes was placed on the 15-day injured list with shoulder inflammation Friday, a day before he was to start for the Diamondbacks as they try to stay alive for the National League's final wild-card spot.",
           "status": "active",
           "sourceUrls": [
@@ -66,124 +182,8 @@
             }
           ],
           "id": "a415-2beb91b3655926bd",
-          "feedRank": 2,
-          "compactHeadline": "Diamondbacks place Burnes on IL in midst of wild-card push"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-274eb36697a697cd"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "The Yankees and Red Sox both talked up the clubs' long-standing rivalry with mutual respect ahead of their best-of-three wild-card series.",
-          "text": "The Yankees and Red Sox both talked up the clubs' long-standing rivalry with mutual respect ahead of their best-of-three wild-card series.",
-          "entities": [],
-          "occurredAt": "2026-09-26T04:18:51Z",
-          "timePrecision": "exact",
-          "ageHours": 0.21,
-          "freshnessBasis": "The Yankees and Red Sox both talked up the clubs' long-standing rivalry with mutual respect ahead of their best-of-three wild-card series.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50030195/yankees-meet-red-sox-playoffs-seventh"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50030195/yankees-meet-red-sox-playoffs-seventh"
-            }
-          ],
-          "id": "a415-ade419516043efe3",
-          "feedRank": 3,
-          "compactHeadline": "Yankees to meet Red Sox in playoffs for seventh time"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-9b21609fb8e9c790"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Los Angeles Dodgers manager Dave Roberts says he trusts Shohei Ohtani to manage his workload and be fully healthy for the start of the playoffs.",
-          "text": "Los Angeles Dodgers manager Dave Roberts says he trusts Shohei Ohtani to manage his workload and be fully healthy for the start of the playoffs.",
-          "entities": [],
-          "occurredAt": "2026-09-26T02:43:58Z",
-          "timePrecision": "exact",
-          "ageHours": 1.79,
-          "freshnessBasis": "Los Angeles Dodgers manager Dave Roberts says he trusts Shohei Ohtani to manage his workload and be fully healthy for the start of the playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50030662/dodgers-roberts-says-trusts-ohtani-ready-playoffs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50030662/dodgers-roberts-says-trusts-ohtani-ready-playoffs"
-            }
-          ],
-          "id": "a415-2c2a5d6a9cd87130",
-          "feedRank": 4,
-          "compactHeadline": "Dodgers' Roberts says he trusts Ohtani to be ready for playoffs"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-25fb698cf65195bc"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Eury Perez dominated the playoff-bound Braves, finishing with a one-hit shutout Friday night in the Marlins' 3-0 win.",
-          "text": "Eury Perez dominated the playoff-bound Braves, finishing with a one-hit shutout Friday night in the Marlins' 3-0 win.",
-          "entities": [],
-          "occurredAt": "2026-09-26T02:28:25Z",
-          "timePrecision": "exact",
-          "ageHours": 2.05,
-          "freshnessBasis": "Eury Perez dominated the playoff-bound Braves, finishing with a one-hit shutout Friday night in the Marlins' 3-0 win.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50030494/marlins-perez-one-hits-braves-mlb-11th-shutout-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50030494/marlins-perez-one-hits-braves-mlb-11th-shutout-season"
-            }
-          ],
-          "id": "a415-4dd18cb6be847ad9",
-          "feedRank": 5,
-          "compactHeadline": "Marlins' Perez one-hits Braves in MLB's 11th shutout of season"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-82ce6fb217278f16"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
-          "text": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
-          "entities": [],
-          "occurredAt": "2026-09-26T01:10:56Z",
-          "timePrecision": "exact",
-          "ageHours": 3.34,
-          "freshnessBasis": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50029692/jays-guerrero-expresses-regret-remarks-contract"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50029692/jays-guerrero-expresses-regret-remarks-contract"
-            }
-          ],
-          "id": "a415-84228dd2179b2fbc",
           "feedRank": 6,
-          "compactHeadline": "Jays' Guerrero expresses 'regret' over remarks about contract"
+          "compactHeadline": "Diamondbacks place Burnes on IL in midst of wild-card push"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:01:03Z",
           "timePrecision": "exact",
-          "ageHours": 5.51,
+          "ageHours": 13.01,
           "freshnessBasis": "Eagles running back Saquon Barkley plans to play \"fearless\" Monday night against the Chicago Bears as he eyes a return from a stinger injury.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:01:57Z",
           "timePrecision": "exact",
-          "ageHours": 6.49,
+          "ageHours": 14.0,
           "freshnessBasis": "Commanders quarterback Jayden Daniels won't undergo surgery on his dislocated left elbow and, as of now, he won't be placed on injured reserve according to general manager Adam Peters.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:53:22Z",
           "timePrecision": "exact",
-          "ageHours": 6.64,
+          "ageHours": 14.14,
           "freshnessBasis": "Right guard Sam Cosmi (concussion), tight end Chig Okonkwo (hamstring) and linebacker Frankie Luvu (groin) won't play Sunday vs. the Seahawks.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:37:52Z",
           "timePrecision": "exact",
-          "ageHours": 7.9,
+          "ageHours": 15.4,
           "freshnessBasis": "Chiefs coach Andy Reid says rookie cornerback Mansoor Delane, who does not have a designation on the injury report, has a \"good chance\" of playing against the Dolphins.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T14:57:43Z",
           "timePrecision": "exact",
-          "ageHours": 13.56,
+          "ageHours": 21.07,
           "freshnessBasis": "Experts weigh in on Daniels' latest injury and what it means for him, the Commanders and their collective futures.",
           "status": "active",
           "sourceUrls": [
@@ -339,31 +339,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-20a33b69c891545f"
+            "cand-925b784ea5536b81"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Giants quarterback Jaxson Dart is scheduled to undergo surgery Friday on his left knee, sources told ESPN. The belief is it will be a meniscus and MCL repair.",
-          "text": "Giants quarterback Jaxson Dart is scheduled to undergo surgery Friday on his left knee, sources told ESPN. The belief is it will be a meniscus and MCL repair.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Aaron Glenn and Dan Campbell grew up playing and then coaching in the NFL. When Campbell made Glenn his DC, their bond was sealed.",
+          "text": "Aaron Glenn and Dan Campbell grew up playing and then coaching in the NFL. When Campbell made Glenn his DC, their bond was sealed.",
           "entities": [],
-          "occurredAt": "2026-09-25T18:43:10Z",
+          "occurredAt": "2026-09-26T10:00:12Z",
           "timePrecision": "exact",
-          "ageHours": 9.81,
-          "freshnessBasis": "Giants quarterback Jaxson Dart is scheduled to undergo surgery Friday on his left knee, sources told ESPN. The belief is it will be a meniscus and MCL repair.",
+          "ageHours": 2.03,
+          "freshnessBasis": "Aaron Glenn and Dan Campbell grew up playing and then coaching in the NFL. When Campbell made Glenn his DC, their bond was sealed.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50028187/sources-giants-jaxson-dart-scheduled-left-knee-surgery-friday"
+            "https://www.espn.com/nfl/story/_/id/50021504/new-york-jets-detroit-lions-dan-campbell-aaron-glenn-coaches-bond"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50028187/sources-giants-jaxson-dart-scheduled-left-knee-surgery-friday"
+              "url": "https://www.espn.com/nfl/story/_/id/50021504/new-york-jets-detroit-lions-dan-campbell-aaron-glenn-coaches-bond"
             }
           ],
-          "id": "a415-fe5fac514a666def",
+          "id": "a415-f0cc1f3823b44d30",
           "feedRank": 12,
-          "compactHeadline": "Sources: Giants' Jaxson Dart scheduled for left knee surgery Friday"
+          "compactHeadline": "The unshakable bond between Aaron Glenn and Dan Campbell"
         }
       ]
     },
@@ -381,9 +381,9 @@
           "headline": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "text": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "entities": [],
-          "occurredAt": "2026-09-26T03:40:15Z",
+          "occurredAt": "2026-09-26T06:35:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.86,
+          "ageHours": 5.45,
           "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:26:12Z",
           "timePrecision": "exact",
-          "ageHours": 9.09,
+          "ageHours": 16.59,
           "freshnessBasis": "The card was sold in early Friday morning at 2 a.m. ET.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:29:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.04,
+          "ageHours": 13.55,
           "freshnessBasis": "The Charlotte Hornets will be without Kon Knueppel for at least the entire preseason due to a left hamstring injury, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:46:42Z",
           "timePrecision": "exact",
-          "ageHours": 8.75,
+          "ageHours": 16.25,
           "freshnessBasis": "Kyrie Irving said he is under no physical restrictions from the torn ACL in his left knee that sidelined him 19 months ago, an injury that he called \"probably the best thing that happened to me.\"",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:13:10Z",
           "timePrecision": "exact",
-          "ageHours": 7.31,
+          "ageHours": 14.81,
           "freshnessBasis": "The Memphis Grizzlies waived veteran D'Angelo Russell and signed undrafted guard Brendan Hausen.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:38:28Z",
           "timePrecision": "exact",
-          "ageHours": 8.89,
+          "ageHours": 16.39,
           "freshnessBasis": "Knicks star guard Jalen Brunson is ready for the 2026-27 season after acknowledging that he underwent left wrist surgery.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T17:30:27Z",
           "timePrecision": "exact",
-          "ageHours": 11.02,
+          "ageHours": 18.52,
           "freshnessBasis": "The Carolina Hurricanes have signed goaltender Pyotr Kochetkov to a two-year extension running through the 2028-29 season with an average annual value of $3.95 million.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:58:25Z",
           "timePrecision": "exact",
-          "ageHours": 7.55,
+          "ageHours": 15.06,
           "freshnessBasis": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T12:31:06Z",
           "timePrecision": "exact",
-          "ageHours": 16.01,
+          "ageHours": 23.51,
           "freshnessBasis": "Miss anything since the end of June? Miss EVERYTHING since then? Get caught up here.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T12:28:29Z",
           "timePrecision": "exact",
-          "ageHours": 16.05,
+          "ageHours": 23.56,
           "freshnessBasis": "Flyers forward Trevor Zegras was given a minor penalty for \"improperly wearing the equipment\" in Thursday's preseason game after being warned about tucking his jersey into his pants.",
           "status": "active",
           "sourceUrls": [
@@ -683,9 +683,9 @@
           "headline": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "text": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "entities": [],
-          "occurredAt": "2026-09-25T10:26:45Z",
+          "occurredAt": "2026-09-26T11:31:41Z",
           "timePrecision": "exact",
-          "ageHours": 18.08,
+          "ageHours": 0.5,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -705,35 +705,6 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-4333611deb6229d4"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Manchester City are expected to be found guilty on the vast majority of charges of financial breaches in their legal case with the Premier League, a source confirmed to ESPN.",
-          "text": "Manchester City are expected to be found guilty on the vast majority of charges of financial breaches in their legal case with the Premier League, a source confirmed to ESPN.",
-          "entities": [],
-          "occurredAt": "2026-09-25T23:23:18Z",
-          "timePrecision": "exact",
-          "ageHours": 5.14,
-          "freshnessBasis": "Manchester City are expected to be found guilty on the vast majority of charges of financial breaches in their legal case with the Premier League, a source confirmed to ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/44382463/man-city-115-charges-premier-league-verdict"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/44382463/man-city-115-charges-premier-league-verdict"
-            }
-          ],
-          "id": "a415-d2f90795060b98a2",
-          "feedRank": 24,
-          "compactHeadline": "Source: Man City set to be found guilty on majority of Premier League charges"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-93a744ecbd7f5dbf"
           ],
           "type": "NEWS",
@@ -741,9 +712,9 @@
           "headline": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "text": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "entities": [],
-          "occurredAt": "2026-09-25T21:45:12Z",
+          "occurredAt": "2026-09-26T11:18:49Z",
           "timePrecision": "exact",
-          "ageHours": 6.77,
+          "ageHours": 0.72,
           "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -757,66 +728,95 @@
             }
           ],
           "id": "a415-656347ae57b38bac",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "Rio Ferdinand leads reaction to Man City's 115 breaches case: 'Another Premier League medal'"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-e055e565e6309572"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Liverpool have confirmed the appointment of Julian Ward as their new sporting director.",
+          "text": "Liverpool have confirmed the appointment of Julian Ward as their new sporting director.",
+          "entities": [],
+          "occurredAt": "2026-09-26T11:04:03Z",
+          "timePrecision": "exact",
+          "ageHours": 0.96,
+          "freshnessBasis": "Liverpool have confirmed the appointment of Julian Ward as their new sporting director.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50025521/liverpool-reappoint-julian-ward-sporting-director"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50025521/liverpool-reappoint-julian-ward-sporting-director"
+            }
+          ],
+          "id": "a415-15d71d2187b354fe",
+          "feedRank": 25,
+          "compactHeadline": "Liverpool reappoint Julian Ward as sporting director"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-54f4c0c092dd80a4"
+            "cand-00366397866cda20"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "The sporting world is waiting for a resolution to the hearings on Man City's charges for allegedly breaching the Premier League's financial rules. Here's what we know, and what might come next.",
-          "text": "The sporting world is waiting for a resolution to the hearings on Man City's charges for allegedly breaching the Premier League's financial rules. Here's what we know, and what might come next.",
+          "headline": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources have told ESPN.",
+          "text": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources have told ESPN.",
           "entities": [],
-          "occurredAt": "2026-09-25T18:11:57Z",
+          "occurredAt": "2026-09-26T10:42:32Z",
           "timePrecision": "exact",
-          "ageHours": 10.33,
-          "freshnessBasis": "The sporting world is waiting for a resolution to the hearings on Man City's charges for allegedly breaching the Premier League's financial rules. Here's what we know, and what might come next.",
+          "ageHours": 1.32,
+          "freshnessBasis": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50027680/manchester-city-premier-league-115-financial-charges-explained"
+            "https://www.espn.com/soccer/story/_/id/50032007/man-city-charges-115-premier-league-clubs-seeking-legal-advice-amid-expected-guilty-verdicts"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50027680/manchester-city-premier-league-115-financial-charges-explained"
+              "url": "https://www.espn.com/soccer/story/_/id/50032007/man-city-charges-115-premier-league-clubs-seeking-legal-advice-amid-expected-guilty-verdicts"
             }
           ],
-          "id": "a415-a4e4681481db8b4c",
+          "id": "a415-8626c0c248285e56",
           "feedRank": 26,
-          "compactHeadline": "Man City vs. Premier League: 115 financial charges explained"
+          "compactHeadline": "Man City charges: Premier League clubs seeking legal advice amid expected guilty verdicts - sources"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-cc7a89451c357a68"
+            "cand-1e67aa52796b43e5"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "text": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
+          "headline": "Barcelona have begun the season on fire, scoring 36 goals in their first eight matches. How does that compare to the best starts for all time? (Spoiler: Very well.)",
+          "text": "Barcelona have begun the season on fire, scoring 36 goals in their first eight matches. How does that compare to the best starts for all time? (Spoiler: Very well.)",
           "entities": [],
-          "occurredAt": "2026-09-25T12:30:47Z",
+          "occurredAt": "2026-09-26T10:36:01Z",
           "timePrecision": "exact",
-          "ageHours": 16.01,
-          "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
+          "ageHours": 1.43,
+          "freshnessBasis": "Barcelona have begun the season on fire, scoring 36 goals in their first eight matches. How does that compare to the best starts for all time? (Spoiler: Very well.)",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50026797/chelsea-charged-fa-alleged-discriminatory-chanting"
+            "https://www.espn.com/soccer/story/_/id/50004145/why-barcelona-start-season-laliga-champions-league-best-europe-top-5-leagues-almost-100-years"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50026797/chelsea-charged-fa-alleged-discriminatory-chanting"
+              "url": "https://www.espn.com/soccer/story/_/id/50004145/why-barcelona-start-season-laliga-champions-league-best-europe-top-5-leagues-almost-100-years"
             }
           ],
-          "id": "a415-cabe39a1b0e69da1",
+          "id": "a415-ef1f11177fbf0c5c",
           "feedRank": 27,
-          "compactHeadline": "Chelsea charged by FA over alleged discriminatory chanting"
+          "compactHeadline": "Barcelona's start to season is best in Europe's top 5 leagues for almost 100 years"
         }
       ]
     },
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:18:23Z",
           "timePrecision": "exact",
-          "ageHours": 8.22,
+          "ageHours": 15.72,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T17:39:38Z",
           "timePrecision": "exact",
-          "ageHours": 10.87,
+          "ageHours": 18.37,
           "freshnessBasis": "World Cup quarterfinalist Switzerland has lost a second player from its Nations League squad because of years-old cases of fake COVID-19 documents.",
           "status": "active",
           "sourceUrls": [
@@ -891,6 +891,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-bafed576dcfe7a57"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Clemson coach Dabo Swinney came into the season unsure what to make of his team's toughness. On Friday night, some of those questions began to get answered in a 24-10 win at California.",
+          "text": "Clemson coach Dabo Swinney came into the season unsure what to make of his team's toughness. On Friday night, some of those questions began to get answered in a 24-10 win at California.",
+          "entities": [],
+          "occurredAt": "2026-09-26T10:10:20Z",
+          "timePrecision": "exact",
+          "ageHours": 1.86,
+          "freshnessBasis": "Clemson coach Dabo Swinney came into the season unsure what to make of his team's toughness. On Friday night, some of those questions began to get answered in a 24-10 win at California.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50031986/dabo-swinney-praises-clemson-toughness-win-cal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50031986/dabo-swinney-praises-clemson-toughness-win-cal"
+            }
+          ],
+          "id": "a415-a9b0894607eecc45",
+          "feedRank": 30,
+          "compactHeadline": "Dabo Swinney praises Clemson's toughness in win over Cal"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-0f11943ba98dba4e"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Bryant Wesco Jr. had Clemson's first punt return touchdown in eight years to break a tie late in the third quarter and the Tigers went on to beat California 24-10 Friday night in a game where both offenses struggled.",
+          "text": "Bryant Wesco Jr. had Clemson's first punt return touchdown in eight years to break a tie late in the third quarter and the Tigers went on to beat California 24-10 Friday night in a game where both offenses struggled.",
+          "entities": [],
+          "occurredAt": "2026-09-26T07:21:28Z",
+          "timePrecision": "exact",
+          "ageHours": 4.67,
+          "freshnessBasis": "— Bryant Wesco Jr. had Clemson's first punt return touchdown in eight years to break a tie late in the third quarter and the Tigers went on to beat California 24-10 Friday night in a game where both offenses struggled.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858234"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858234"
+            }
+          ],
+          "id": "a415-d9f365c9d5f73cf7",
+          "feedRank": 31,
+          "compactHeadline": "Bryant Wesco's punt return TD leads Clemson to a 24-10 win over Cal"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6cb4db89ea38b83a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Indiana starting running back Turbo Richard left Friday's 29-23 win over Northwestern with a right lower-leg injury in the first half and did not return.",
+          "text": "Indiana starting running back Turbo Richard left Friday's 29-23 win over Northwestern with a right lower-leg injury in the first half and did not return.",
+          "entities": [],
+          "occurredAt": "2026-09-26T06:32:34Z",
+          "timePrecision": "exact",
+          "ageHours": 5.49,
+          "freshnessBasis": "Indiana starting running back Turbo Richard left Friday's 29-23 win over Northwestern with a right lower-leg injury in the first half and did not return.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50031067/no-5-indiana-loses-rb-turbo-richard-right-leg-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50031067/no-5-indiana-loses-rb-turbo-richard-right-leg-injury"
+            }
+          ],
+          "id": "a415-b9d945bf9c77d113",
+          "feedRank": 32,
+          "compactHeadline": "No. 5 Indiana loses RB Turbo Richard to right leg injury"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-bb1e63e06f930d1d"
           ],
           "type": "RESULT",
@@ -900,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T02:54:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.62,
+          "ageHours": 9.12,
           "freshnessBasis": "— Bam McReynolds followed a Navy turnover in the fourth quarter with a 48-yard touchdown run and UAB rallied to beat the Midshipman 24-20 on Friday night in the Blazers' American Conference opener.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +1001,11 @@
             }
           ],
           "id": "a415-406793b48dc1b8fe",
-          "feedRank": 30,
+          "feedRank": 33,
           "compactHeadline": "Bam McReynolds rushes for 2 TDs, including go-ahead 48-yarder as UAB edges Navy 24-20"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-594a0c126babf3c4"
           ],
@@ -929,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:09:09Z",
           "timePrecision": "exact",
-          "ageHours": 3.37,
+          "ageHours": 10.88,
           "freshnessBasis": "The SEC is \"deeply disappointed\" LSU tried to dismiss its lawsuit against the university stemming from an attempt to add former NFL players to the Tigers' roster.",
           "status": "active",
           "sourceUrls": [
@@ -943,124 +1030,37 @@
             }
           ],
           "id": "a415-3b621958a07d8c4a",
-          "feedRank": 31,
-          "compactHeadline": "SEC irked LSU is trying to dismiss suit with issue 'unresolved'"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-7b0a0e2faee82091"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Lee Beebe Jr. rushed for 203 yards, including a 70-yard burst that set up Josh Hoover's game-sealing 1-yard TD run with 1:56 to play, and No. 5 Indiana held off surprising Northwestern 29-23 on Friday night.",
-          "text": "Lee Beebe Jr. rushed for 203 yards, including a 70-yard burst that set up Josh Hoover's game-sealing 1-yard TD run with 1:56 to play, and No. 5 Indiana held off surprising Northwestern 29-23 on Friday night.",
-          "entities": [],
-          "occurredAt": "2026-09-26T04:03:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.47,
-          "freshnessBasis": "— Lee Beebe Jr. rushed for 203 yards, including a 70-yard burst that set up Josh Hoover's game-sealing 1-yard TD run with 1:56 to play, and No. 5 Indiana held off surprising Northwestern 29-23 on Friday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858461"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858461"
-            }
-          ],
-          "id": "a415-194669bf5867bbc2",
-          "feedRank": 32,
-          "compactHeadline": "Lee Beebe Jr. rushes for 203 yards and No. 4 Indiana holds off surprising Northwestern 29-23"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-566d7d4681c8406d"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "After teasing us with ranked games over three weeks, we get six that should tell us a lot about the 2026 season.",
-          "text": "After teasing us with ranked games over three weeks, we get six that should tell us a lot about the 2026 season.",
-          "entities": [],
-          "occurredAt": "2026-09-25T11:58:42Z",
-          "timePrecision": "exact",
-          "ageHours": 16.55,
-          "freshnessBasis": "After teasing us with ranked games over three weeks, we get six that should tell us a lot about the 2026 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50021053/bill-connelly-sec-launch-texas-tennessee-texas-lsu-big-ten-question-oregon-usc"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50021053/bill-connelly-sec-launch-texas-tennessee-texas-lsu-big-ten-question-oregon-usc"
-            }
-          ],
-          "id": "a415-02fff3578bdb908e",
-          "feedRank": 33,
-          "compactHeadline": "Connelly checks in on the SEC's launch party and Big Ten's question marks in Week 4"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-ec5b9dd813df98e2"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Antwan Raymond ran for 140 yards and three touchdowns to lead Rutgers to a 58-7 victory over Howard on Friday night.",
-          "text": "Antwan Raymond ran for 140 yards and three touchdowns to lead Rutgers to a 58-7 victory over Howard on Friday night.",
-          "entities": [],
-          "occurredAt": "2026-09-26T03:56:29Z",
-          "timePrecision": "exact",
-          "ageHours": 0.58,
-          "freshnessBasis": "— Antwan Raymond ran for 140 yards and three touchdowns to lead Rutgers to a 58-7 victory over Howard on Friday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858468"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858468"
-            }
-          ],
-          "id": "a415-813b3cc5e5fe2e3a",
           "feedRank": 34,
-          "compactHeadline": "Antwan Raymond runs for 140 yards and 3 TDs in Rutgers' 58-7 romp over Howard"
+          "compactHeadline": "SEC irked LSU is trying to dismiss suit with issue 'unresolved'"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-e36fd4725e28c688"
+            "cand-cdb738224ae43c89"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Charlie Smith threw a pair of touchdown passes in the first half and Harvard held off Brown 14-10 on Friday night in an Ivy League opener.",
-          "text": "Charlie Smith threw a pair of touchdown passes in the first half and Harvard held off Brown 14-10 on Friday night in an Ivy League opener.",
+          "headline": "The Vols and Horns haven't met since 1969, but there's still plenty of history in this matchup.",
+          "text": "The Vols and Horns haven't met since 1969, but there's still plenty of history in this matchup.",
           "entities": [],
-          "occurredAt": "2026-09-26T02:22:09Z",
+          "occurredAt": "2026-09-26T04:57:35Z",
           "timePrecision": "exact",
-          "ageHours": 2.16,
-          "freshnessBasis": "— Charlie Smith threw a pair of touchdown passes in the first half and Harvard held off Brown 14-10 on Friday night in an Ivy League opener.",
+          "ageHours": 7.07,
+          "freshnessBasis": "The Vols and Horns haven't met since 1969, but there's still plenty of history in this matchup.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401867806"
+            "https://www.espn.com/college-football/story/_/id/50021477/tennessee-texas-battle-ut-rights-sec-orange-manning-loyalty"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401867806"
+              "url": "https://www.espn.com/college-football/story/_/id/50021477/tennessee-texas-battle-ut-rights-sec-orange-manning-loyalty"
             }
           ],
-          "id": "a415-99bb5aac24bfee8e",
+          "id": "a415-b7c5a6eb46a28de2",
           "feedRank": 35,
-          "compactHeadline": "Charlie Smith throws 2 touchdown passes to help Harvard hold off Brown 14-10 in Ivy League opener"
+          "compactHeadline": "Tennessee and Texas battle for UT rights, SEC orange, Manning loyalty"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 96,
+    "freshCandidateCount": 100,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
