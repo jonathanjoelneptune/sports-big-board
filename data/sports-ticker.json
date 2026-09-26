@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-26T02:31:41Z",
+  "generatedAt": "2026-09-26T03:01:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "6499532c50871af84c13e76bfb2d5606790d9c74d30fb7b40104a93cef534a8d",
+  "sourceCandidateHash": "39b4347c97f381f2abcd058498c663946c35f2e4a1d33084f385b6a9a6ebfb4f",
   "leagues": [
     {
       "league": "MLB",
@@ -21,9 +21,9 @@
           "headline": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
           "text": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
           "entities": [],
-          "occurredAt": "2026-09-26T02:29:00Z",
+          "occurredAt": "2026-09-26T02:30:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.52,
           "freshnessBasis": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-9b21609fb8e9c790"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Los Angeles Dodgers manager Dave Roberts says he trusts Shohei Ohtani to manage his workload and be fully healthy for the start of the playoffs.",
+          "text": "Los Angeles Dodgers manager Dave Roberts says he trusts Shohei Ohtani to manage his workload and be fully healthy for the start of the playoffs.",
+          "entities": [],
+          "occurredAt": "2026-09-26T02:43:58Z",
+          "timePrecision": "exact",
+          "ageHours": 0.3,
+          "freshnessBasis": "Los Angeles Dodgers manager Dave Roberts says he trusts Shohei Ohtani to manage his workload and be fully healthy for the start of the playoffs.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50030662/dodgers-roberts-says-trusts-ohtani-ready-playoffs"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50030662/dodgers-roberts-says-trusts-ohtani-ready-playoffs"
+            }
+          ],
+          "id": "a415-2c2a5d6a9cd87130",
+          "feedRank": 2,
+          "compactHeadline": "Dodgers' Roberts says he trusts Ohtani to be ready for playoffs"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-25fb698cf65195bc"
           ],
           "type": "PLAYOFF",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T02:28:25Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.56,
           "freshnessBasis": "Eury Perez dominated the playoff-bound Braves, finishing with a one-hit shutout Friday night in the Marlins' 3-0 win.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-4dd18cb6be847ad9",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Marlins' Perez one-hits Braves in MLB's 11th shutout of season"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-274eb36697a697cd"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:48:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.22,
           "freshnessBasis": "The Yankees and Red Sox both talked up the clubs' long-standing rivalry with mutual respect ahead of their best-of-three wild-card series.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-ade419516043efe3",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Yankees to meet Red Sox in playoffs for seventh time"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-82ce6fb217278f16"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:10:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.35,
+          "ageHours": 1.85,
           "freshnessBasis": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +153,37 @@
             }
           ],
           "id": "a415-84228dd2179b2fbc",
-          "feedRank": 4,
-          "compactHeadline": "Jays' Guerrero expresses 'regret' over remarks about contract"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-89d7f0b6fad2a987"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Spencer Torkelson finished a single short of the cycle, Jackson Jobe allowed two runs in 5 1/3 innings and the Detroit Tigers beat the Pittsburgh Pirates 8-7 on Friday night after nearly wasting a six-run lead.",
-          "text": "Spencer Torkelson finished a single short of the cycle, Jackson Jobe allowed two runs in 5 1/3 innings and the Detroit Tigers beat the Pittsburgh Pirates 8-7 on Friday night after nearly wasting a six-run lead.",
-          "entities": [],
-          "occurredAt": "2026-09-26T02:17:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.24,
-          "freshnessBasis": "— Spencer Torkelson finished a single short of the cycle, Jackson Jobe allowed two runs in 5 1/3 innings and the Detroit Tigers beat the Pittsburgh Pirates 8-7 on Friday night after nearly wasting a six-run lead.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817077"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817077"
-            }
-          ],
-          "id": "a415-4b4a39a8e45d037d",
           "feedRank": 5,
-          "compactHeadline": "Torkelson narrowly misses cycle as Tigers hang on to beat Pirates, 8-7"
+          "compactHeadline": "Jays' Guerrero expresses 'regret' over remarks about contract"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-481b2184db2f7f2f"
+            "cand-356695dff536d8d1"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Nathan Lukes hit a go-ahead single in a four-run seventh inning, Kazuma Okamoto had two hits and three RBI, and the Toronto Blue Jays rallied to beat the Cincinnati Reds 6-5 on Friday night.",
-          "text": "Nathan Lukes hit a go-ahead single in a four-run seventh inning, Kazuma Okamoto had two hits and three RBI, and the Toronto Blue Jays rallied to beat the Cincinnati Reds 6-5 on Friday night.",
+          "headline": "Eury Pérez pitched a one-hitter for just the 11th complete-game shutout in the major leagues this season, and the Miami Marlins beat the playoff-bound Atlanta Braves 3-0 on Friday night.",
+          "text": "Eury Pérez pitched a one-hitter for just the 11th complete-game shutout in the major leagues this season, and the Miami Marlins beat the playoff-bound Atlanta Braves 3-0 on Friday night.",
           "entities": [],
-          "occurredAt": "2026-09-26T02:09:30Z",
+          "occurredAt": "2026-09-26T02:46:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
-          "freshnessBasis": "— Nathan Lukes hit a go-ahead single in a four-run seventh inning, Kazuma Okamoto had two hits and three RBI, and the Toronto Blue Jays rallied to beat the Cincinnati Reds 6-5 on Friday night.",
+          "ageHours": 0.26,
+          "freshnessBasis": "— Eury Pérez pitched a one-hitter for just the 11th complete-game shutout in the major leagues this season, and the Miami Marlins beat the playoff-bound Atlanta Braves 3-0 on Friday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817075"
+            "http://www.espn.com/mlb/recap?gameId=401817072"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817075"
+              "url": "http://www.espn.com/mlb/recap?gameId=401817072"
             }
           ],
-          "id": "a415-cb3e0c572e50d25c",
+          "id": "a415-b3354f68c55d61df",
           "feedRank": 6,
-          "compactHeadline": "Lukes has go-ahead hit in four-run seventh, Okamoto drives in three as Blue Jays beat Reds 6-5"
+          "compactHeadline": "Pérez throws 1-hitter for just 11th MLB complete-game shutout this year as Marlins beat Braves 3-0"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:01:03Z",
           "timePrecision": "exact",
-          "ageHours": 3.51,
+          "ageHours": 4.01,
           "freshnessBasis": "Eagles running back Saquon Barkley plans to play \"fearless\" Monday night against the Chicago Bears as he eyes a return from a stinger injury.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:01:57Z",
           "timePrecision": "exact",
-          "ageHours": 4.5,
+          "ageHours": 5.0,
           "freshnessBasis": "Commanders quarterback Jayden Daniels won't undergo surgery on his dislocated left elbow and, as of now, he won't be placed on injured reserve according to general manager Adam Peters.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:53:22Z",
           "timePrecision": "exact",
-          "ageHours": 4.64,
+          "ageHours": 5.14,
           "freshnessBasis": "Right guard Sam Cosmi (concussion), tight end Chig Okonkwo (hamstring) and linebacker Frankie Luvu (groin) won't play Sunday vs. the Seahawks.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:37:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.9,
+          "ageHours": 6.4,
           "freshnessBasis": "Chiefs coach Andy Reid says rookie cornerback Mansoor Delane, who does not have a designation on the injury report, has a \"good chance\" of playing against the Dolphins.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T14:57:43Z",
           "timePrecision": "exact",
-          "ageHours": 11.57,
+          "ageHours": 12.07,
           "freshnessBasis": "Experts weigh in on Daniels' latest injury and what it means for him, the Commanders and their collective futures.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T18:43:10Z",
           "timePrecision": "exact",
-          "ageHours": 7.81,
+          "ageHours": 8.31,
           "freshnessBasis": "Giants quarterback Jaxson Dart is scheduled to undergo surgery Friday on his left knee, sources told ESPN. The belief is it will be a meniscus and MCL repair.",
           "status": "active",
           "sourceUrls": [
@@ -378,13 +378,13 @@
           ],
           "type": "CONTRACT",
           "priority": 76,
-          "headline": "Warriors star Stephen Curry has agreed on a two-year, $116 million contract extension with the franchise, with a player option in 2028-29, sources told ESPN's Shams Charania.",
-          "text": "Warriors star Stephen Curry has agreed on a two-year, $116 million contract extension with the franchise, with a player option in 2028-29, sources told ESPN's Shams Charania.",
+          "headline": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension with the franchise, with a player option in 2028-29, sources told ESPN's Shams Charania on Friday.",
+          "text": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension with the franchise, with a player option in 2028-29, sources told ESPN's Shams Charania on Friday.",
           "entities": [],
-          "occurredAt": "2026-09-26T02:27:36Z",
+          "occurredAt": "2026-09-26T02:48:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "Warriors star Stephen Curry has agreed on a two-year, $116 million contract extension with the franchise, with a player option in 2028-29, sources told ESPN's Shams Charania.",
+          "ageHours": 0.22,
+          "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension with the franchise, with a player option in 2028-29, sources told ESPN's Shams Charania on Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50030670/sources-warriors-curry-reach-2-year-extension-worth-116-million"
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:26:12Z",
           "timePrecision": "exact",
-          "ageHours": 7.09,
+          "ageHours": 7.59,
           "freshnessBasis": "The card was sold in early Friday morning at 2 a.m. ET.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:29:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.04,
+          "ageHours": 4.55,
           "freshnessBasis": "The Charlotte Hornets will be without Kon Knueppel for at least the entire preseason due to a left hamstring injury, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:46:42Z",
           "timePrecision": "exact",
-          "ageHours": 6.75,
+          "ageHours": 7.25,
           "freshnessBasis": "Kyrie Irving said he is under no physical restrictions from the torn ACL in his left knee that sidelined him 19 months ago, an injury that he called \"probably the best thing that happened to me.\"",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:13:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.31,
+          "ageHours": 5.81,
           "freshnessBasis": "The Memphis Grizzlies waived veteran D'Angelo Russell and signed undrafted guard Brendan Hausen.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:38:28Z",
           "timePrecision": "exact",
-          "ageHours": 6.89,
+          "ageHours": 7.39,
           "freshnessBasis": "Knicks star guard Jalen Brunson is ready for the 2026-27 season after acknowledging that he underwent left wrist surgery.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T17:30:27Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 9.52,
           "freshnessBasis": "The Carolina Hurricanes have signed goaltender Pyotr Kochetkov to a two-year extension running through the 2028-29 season with an average annual value of $3.95 million.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:58:25Z",
           "timePrecision": "exact",
-          "ageHours": 5.55,
+          "ageHours": 6.06,
           "freshnessBasis": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T12:31:06Z",
           "timePrecision": "exact",
-          "ageHours": 14.01,
+          "ageHours": 14.51,
           "freshnessBasis": "Miss anything since the end of June? Miss EVERYTHING since then? Get caught up here.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T12:28:29Z",
           "timePrecision": "exact",
-          "ageHours": 14.05,
+          "ageHours": 14.56,
           "freshnessBasis": "Flyers forward Trevor Zegras was given a minor penalty for \"improperly wearing the equipment\" in Thursday's preseason game after being warned about tucking his jersey into his pants.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T10:26:45Z",
           "timePrecision": "exact",
-          "ageHours": 16.08,
+          "ageHours": 16.59,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:23:18Z",
           "timePrecision": "exact",
-          "ageHours": 3.14,
+          "ageHours": 3.64,
           "freshnessBasis": "Manchester City are expected to be found guilty on the vast majority of charges of financial breaches in their legal case with the Premier League, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:45:12Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 5.28,
           "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T18:11:57Z",
           "timePrecision": "exact",
-          "ageHours": 8.33,
+          "ageHours": 8.83,
           "freshnessBasis": "The sporting world is waiting for a resolution to the hearings on Man City's charges for allegedly breaching the Premier League's financial rules. Here's what we know, and what might come next.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T12:30:47Z",
           "timePrecision": "exact",
-          "ageHours": 14.02,
+          "ageHours": 14.52,
           "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:18:23Z",
           "timePrecision": "exact",
-          "ageHours": 6.22,
+          "ageHours": 6.73,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T17:39:38Z",
           "timePrecision": "exact",
-          "ageHours": 8.87,
+          "ageHours": 9.37,
           "freshnessBasis": "World Cup quarterfinalist Switzerland has lost a second player from its Nations League squad because of years-old cases of fake COVID-19 documents.",
           "status": "active",
           "sourceUrls": [
@@ -891,6 +891,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-bb1e63e06f930d1d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Bam McReynolds followed a Navy turnover in the fourth quarter with a 48-yard touchdown run and UAB rallied to beat the Midshipman 24-20 on Friday night in the Blazers' American Conference opener.",
+          "text": "Bam McReynolds followed a Navy turnover in the fourth quarter with a 48-yard touchdown run and UAB rallied to beat the Midshipman 24-20 on Friday night in the Blazers' American Conference opener.",
+          "entities": [],
+          "occurredAt": "2026-09-26T02:54:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.12,
+          "freshnessBasis": "— Bam McReynolds followed a Navy turnover in the fourth quarter with a 48-yard touchdown run and UAB rallied to beat the Midshipman 24-20 on Friday night in the Blazers' American Conference opener.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401862778"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401862778"
+            }
+          ],
+          "id": "a415-406793b48dc1b8fe",
+          "feedRank": 30,
+          "compactHeadline": "Bam McReynolds rushes for 2 TDs, including go-ahead 48-yarder as UAB edges Navy 24-20"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-594a0c126babf3c4"
           ],
           "type": "LEGAL",
@@ -900,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:09:09Z",
           "timePrecision": "exact",
-          "ageHours": 1.38,
+          "ageHours": 1.88,
           "freshnessBasis": "The SEC is \"deeply disappointed\" LSU tried to dismiss its lawsuit against the university stemming from an attempt to add former NFL players to the Tigers' roster.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +943,11 @@
             }
           ],
           "id": "a415-3b621958a07d8c4a",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "SEC irked LSU is trying to dismiss suit with issue 'unresolved'"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-566d7d4681c8406d"
           ],
@@ -929,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T11:58:42Z",
           "timePrecision": "exact",
-          "ageHours": 14.55,
+          "ageHours": 15.05,
           "freshnessBasis": "After teasing us with ranked games over three weeks, we get six that should tell us a lot about the 2026 season.",
           "status": "active",
           "sourceUrls": [
@@ -943,11 +972,40 @@
             }
           ],
           "id": "a415-02fff3578bdb908e",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Connelly checks in on the SEC's launch party and Big Ten's question marks in Week 4"
         },
         {
-          "rank": 3,
+          "rank": 4,
+          "candidateIds": [
+            "cand-ec5b9dd813df98e2"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Antwan Raymond ran for 140 yards and three touchdowns to lead Rutgers to a 58-7 victory over Howard on Friday night.",
+          "text": "Antwan Raymond ran for 140 yards and three touchdowns to lead Rutgers to a 58-7 victory over Howard on Friday night.",
+          "entities": [],
+          "occurredAt": "2026-09-26T02:43:31Z",
+          "timePrecision": "exact",
+          "ageHours": 0.31,
+          "freshnessBasis": "— Antwan Raymond ran for 140 yards and three touchdowns to lead Rutgers to a 58-7 victory over Howard on Friday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858468"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858468"
+            }
+          ],
+          "id": "a415-813b3cc5e5fe2e3a",
+          "feedRank": 33,
+          "compactHeadline": "Antwan Raymond runs for 140 yards and 3 TDs in Rutgers' 58-7 romp over Howard"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-e36fd4725e28c688"
           ],
@@ -958,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T02:22:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
+          "ageHours": 0.66,
           "freshnessBasis": "— Charlie Smith threw a pair of touchdown passes in the first half and Harvard held off Brown 14-10 on Friday night in an Ivy League opener.",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1030,11 @@
             }
           ],
           "id": "a415-99bb5aac24bfee8e",
-          "feedRank": 32,
+          "feedRank": 34,
           "compactHeadline": "Charlie Smith throws 2 touchdown passes to help Harvard hold off Brown 14-10 in Ivy League opener"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-f966eb6ff3a3a87d"
           ],
@@ -987,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T10:21:37Z",
           "timePrecision": "exact",
-          "ageHours": 16.17,
+          "ageHours": 16.67,
           "freshnessBasis": "As recruiting season quiets down, here's how the top classes are shaping up.",
           "status": "active",
           "sourceUrls": [
@@ -1001,66 +1059,8 @@
             }
           ],
           "id": "a415-7bda90d7d094aa50",
-          "feedRank": 33,
-          "compactHeadline": "2027 college football recruiting class rankings: Top 45 schools"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-8778e732790b04a7"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Quarterback Cale Hellums rushed for 104 yards and three touchdowns to lead Army over Temple 21-17 on Friday in the Owls' American Conference opener.",
-          "text": "Quarterback Cale Hellums rushed for 104 yards and three touchdowns to lead Army over Temple 21-17 on Friday in the Owls' American Conference opener.",
-          "entities": [],
-          "occurredAt": "2026-09-25T23:54:33Z",
-          "timePrecision": "exact",
-          "ageHours": 2.62,
-          "freshnessBasis": "— Quarterback Cale Hellums rushed for 104 yards and three touchdowns to lead Army over Temple 21-17 on Friday in the Owls' American Conference opener.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401862779"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401862779"
-            }
-          ],
-          "id": "a415-63ad15615f299e1b",
-          "feedRank": 34,
-          "compactHeadline": "Cale Hellums has 3 TD runs to rally Army over Temple 21-17 in Owls' American Conference opener"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8859bf1794aa220b"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Deshawn Purdie threw for 216 yards and two touchdowns, Kam Davis rushed for 166 yards and a touchdown, and Liberty scored 24 unanswered points in the second half to beat Coastal Carolina 34-17 on Thursday night.",
-          "text": "Deshawn Purdie threw for 216 yards and two touchdowns, Kam Davis rushed for 166 yards and a touchdown, and Liberty scored 24 unanswered points in the second half to beat Coastal Carolina 34-17 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-09-25T04:19:30Z",
-          "timePrecision": "exact",
-          "ageHours": 22.2,
-          "freshnessBasis": "— Deshawn Purdie threw for 216 yards and two touchdowns, Kam Davis rushed for 166 yards and a touchdown, and Liberty scored 24 unanswered points in the second half to beat Coastal Carolina 34-17 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401869941"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401869941"
-            }
-          ],
-          "id": "a415-c806bcce9e6d20e3",
           "feedRank": 35,
-          "compactHeadline": "Liberty scores 24 unanswered points in the 2nd half to beat Coastal Carolina 34-17"
+          "compactHeadline": "2027 college football recruiting class rankings: Top 45 schools"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 105,
+    "freshCandidateCount": 104,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
