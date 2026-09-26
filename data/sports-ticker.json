@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-26T20:31:46Z",
+  "generatedAt": "2026-09-26T21:01:42Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "9f8ad0db9d8cf7b382069ff3f717ed3f2bd02f3805ced4b2f14109f833f22a27",
+  "sourceCandidateHash": "f843c6c7992615e7699a93a20ef58edab795e761615cd1a6c12792063b9ef04b",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:45:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 5.27,
           "freshnessBasis": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -50,9 +50,9 @@
           "headline": "A.J. Ewing hit a go-ahead, three-run homer, Ronny Mauricio went deep from both sides of the plate for his first career multi-homer game and the New York Mets defeated the Washington Nationals 7-1 on Saturday.",
           "text": "A.J. Ewing hit a go-ahead, three-run homer, Ronny Mauricio went deep from both sides of the plate for his first career multi-homer game and the New York Mets defeated the Washington Nationals 7-1 on Saturday.",
           "entities": [],
-          "occurredAt": "2026-09-26T20:17:34Z",
+          "occurredAt": "2026-09-26T20:35:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.24,
+          "ageHours": 0.44,
           "freshnessBasis": "— A.J. Ewing hit a go-ahead, three-run homer, Ronny Mauricio went deep from both sides of the plate for his first career multi-homer game and the New York Mets defeated the Washington Nationals 7-1 on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-ada9092743ed09da"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Justin Verlander made a teary farewell, accompanied by his 7-year-old daughter as he left a major league mound for the final time in the Detroit Tigers'...",
+          "text": "Justin Verlander made a teary farewell, accompanied by his 7-year-old daughter as he left a major league mound for the final time in the Detroit Tigers'...",
+          "entities": [],
+          "occurredAt": "2026-09-26T20:34:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.45,
+          "freshnessBasis": "— Justin Verlander made a teary farewell, accompanied by his 7-year-old daughter as he left a major league mound for the final time in the Detroit Tigers'...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817092"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817092"
+            }
+          ],
+          "id": "a415-2ced224953366883",
+          "feedRank": 3,
+          "compactHeadline": "Justin Verlander makes teary farewell to 21-year career as Tigers rally to beat Pirates 4-3"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-44b3f38d8ea14645"
           ],
           "type": "INJURY",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T10:57:07Z",
           "timePrecision": "exact",
-          "ageHours": 9.58,
+          "ageHours": 10.08,
           "freshnessBasis": "From an injured captain to questions about the infield, rotation and bullpen, there's a lot to unpack in the Bronx.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-8cd67b43552c4944",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "MLB playoffs 2026: 5 questions for Yankees ahead of wild-card series"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-54fbab2d5af35c76"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T08:02:55Z",
           "timePrecision": "exact",
-          "ageHours": 12.48,
+          "ageHours": 12.98,
           "freshnessBasis": "Atlanta Braves (93-67, first in the NL East) vs. Miami Marlins (79-81, third in the NL East)",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-509b5546630905c0",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Marlins host the Braves on 3-game home win streak"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-8ffdf1a903f20281"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T08:02:51Z",
           "timePrecision": "exact",
-          "ageHours": 12.48,
+          "ageHours": 12.98,
           "freshnessBasis": "Arizona Diamondbacks (86-74, third in the NL West) vs. San Diego Padres (89-71, second in the NL West)",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-f0fe5c423e01a8b7",
-          "feedRank": 5,
-          "compactHeadline": "Diamondbacks aim to keep win streak alive against the Padres"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-72ed704adafd3374"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Arizona right-hander Corbin Burnes was placed on the 15-day injured list with shoulder inflammation Friday, a day before he was to start for the Diamondbacks as they try to stay alive for the National League's final wild-card spot.",
-          "text": "Arizona right-hander Corbin Burnes was placed on the 15-day injured list with shoulder inflammation Friday, a day before he was to start for the Diamondbacks as they try to stay alive for the National League's final wild-card spot.",
-          "entities": [],
-          "occurredAt": "2026-09-26T03:23:21Z",
-          "timePrecision": "exact",
-          "ageHours": 17.14,
-          "freshnessBasis": "Arizona right-hander Corbin Burnes was placed on the 15-day injured list with shoulder inflammation Friday, a day before he was to start for the Diamondbacks as they try to stay alive for the National League's final wild-card spot.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50030784/diamondbacks-place-burnes-il-midst-wild-card-push"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50030784/diamondbacks-place-burnes-il-midst-wild-card-push"
-            }
-          ],
-          "id": "a415-2beb91b3655926bd",
           "feedRank": 6,
-          "compactHeadline": "Diamondbacks place Burnes on IL in midst of wild-card push"
+          "compactHeadline": "Diamondbacks aim to keep win streak alive against the Padres"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:44:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.79,
+          "ageHours": 1.29,
           "freshnessBasis": "The Jets promoted veteran Sterling Shepard from the practice squad, as starting WR Adonai Mitchell is questionable with a finger injury, and three other Jets receivers are on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:24Z",
           "timePrecision": "exact",
-          "ageHours": 1.02,
+          "ageHours": 1.52,
           "freshnessBasis": "Bears QB Caleb Williams is out for Monday's game against the Eagles, and backup Tyson Bagent returned to the practice field while still in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:59:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.54,
+          "ageHours": 4.04,
           "freshnessBasis": "The Colts officially placed receiver Alec Pierce on injured reserve Saturday, starting the clock on a potential return as he attempts to rehab and rejoin the lineup.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:01:03Z",
           "timePrecision": "exact",
-          "ageHours": 21.51,
+          "ageHours": 22.01,
           "freshnessBasis": "Eagles running back Saquon Barkley plans to play \"fearless\" Monday night against the Chicago Bears as he eyes a return from a stinger injury.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:01:57Z",
           "timePrecision": "exact",
-          "ageHours": 22.5,
+          "ageHours": 23.0,
           "freshnessBasis": "Commanders quarterback Jayden Daniels won't undergo surgery on his dislocated left elbow and, as of now, he won't be placed on injured reserve according to general manager Adam Peters.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:53:22Z",
           "timePrecision": "exact",
-          "ageHours": 22.64,
+          "ageHours": 23.14,
           "freshnessBasis": "Right guard Sam Cosmi (concussion), tight end Chig Okonkwo (hamstring) and linebacker Frankie Luvu (groin) won't play Sunday vs. the Seahawks.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T06:35:03Z",
           "timePrecision": "exact",
-          "ageHours": 13.95,
+          "ageHours": 14.44,
           "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:29:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.05,
+          "ageHours": 22.55,
           "freshnessBasis": "The Charlotte Hornets will be without Kon Knueppel for at least the entire preseason due to a left hamstring injury, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:13:10Z",
           "timePrecision": "exact",
-          "ageHours": 23.31,
+          "ageHours": 23.81,
           "freshnessBasis": "The Memphis Grizzlies waived veteran D'Angelo Russell and signed undrafted guard Brendan Hausen.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:05:56Z",
           "timePrecision": "exact",
-          "ageHours": 19.43,
+          "ageHours": 19.93,
           "freshnessBasis": "Cavs president of basketball operations Koby Altman said he wasn't fazed when LeBron James chose to sign with the Sixers, saying, \"We're built for a sustainable run here regardless of one outcome.\"",
           "status": "active",
           "sourceUrls": [
@@ -492,37 +492,7 @@
     {
       "league": "NHL",
       "seasonState": "offseason",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-c5a6706d91aad190"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
-          "text": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
-          "entities": [],
-          "occurredAt": "2026-09-25T20:58:25Z",
-          "timePrecision": "exact",
-          "ageHours": 23.56,
-          "freshnessBasis": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50028512/macklin-celebrini-20-becomes-youngest-ever-sharks-captain"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50028512/macklin-celebrini-20-becomes-youngest-ever-sharks-captain"
-            }
-          ],
-          "id": "a415-07ec853709387def",
-          "feedRank": 17,
-          "compactHeadline": "Macklin Celebrini, 20, becomes youngest Sharks captain"
-        }
-      ]
+      "items": []
     },
     {
       "league": "EPL",
@@ -540,7 +510,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T11:31:41Z",
           "timePrecision": "exact",
-          "ageHours": 9.0,
+          "ageHours": 9.5,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -554,7 +524,7 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 18,
+          "feedRank": 17,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
@@ -569,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.43,
+          "ageHours": 4.93,
           "freshnessBasis": "Manchester City chairman Khaldoon Al Mubarak has said \"nothing has changed\" regarding the club's ongoing legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -583,7 +553,7 @@
             }
           ],
           "id": "a415-e738f11989199f74",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Man City chairman on club's Premier League charges case: 'Nothing has changed'"
         },
         {
@@ -598,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T14:07:25Z",
           "timePrecision": "exact",
-          "ageHours": 6.41,
+          "ageHours": 6.9,
           "freshnessBasis": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
           "status": "active",
           "sourceUrls": [
@@ -612,7 +582,7 @@
             }
           ],
           "id": "a415-ef8036046abcec4a",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Man City verdict will leave a stain and stench on a Premier League era"
         },
         {
@@ -627,7 +597,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:38:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.88,
+          "ageHours": 8.38,
           "freshnessBasis": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -641,7 +611,7 @@
             }
           ],
           "id": "a415-8626c0c248285e56",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Man City charges: Premier League clubs seeking legal advice amid expected guilty verdicts - sources"
         },
         {
@@ -656,7 +626,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:03:43Z",
           "timePrecision": "exact",
-          "ageHours": 8.47,
+          "ageHours": 8.97,
           "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
           "status": "active",
           "sourceUrls": [
@@ -670,7 +640,7 @@
             }
           ],
           "id": "a415-cabe39a1b0e69da1",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "Chelsea charged by FA over alleged discriminatory chanting"
         },
         {
@@ -685,7 +655,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T11:18:49Z",
           "timePrecision": "exact",
-          "ageHours": 9.22,
+          "ageHours": 9.71,
           "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +669,7 @@
             }
           ],
           "id": "a415-656347ae57b38bac",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Rio Ferdinand leads reaction to Man City's 115 breaches case: 'Another Premier League medal'"
         }
       ]
@@ -720,7 +690,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
+          "ageHours": 5.02,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -734,7 +704,7 @@
             }
           ],
           "id": "a415-33d8c9a078d52094",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Mauricio Pochettino: Cavan Sullivan ready for USMNT debut"
         },
         {
@@ -749,7 +719,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 4.56,
+          "ageHours": 5.06,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -763,7 +733,7 @@
             }
           ],
           "id": "a415-1375489762173612",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "16-year-old Cavan Sullivan named to USMNT squad, Christian Pulisic left out"
         }
       ]
@@ -784,7 +754,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T20:23:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.63,
           "freshnessBasis": "Oklahoma star defensive tackle David Stone, who suffered a knee injury in practice earlier this week, was in the starting lineup for Saturday's game at No. 2 Georgia.",
           "status": "active",
           "sourceUrls": [
@@ -798,7 +768,7 @@
             }
           ],
           "id": "a415-a389e7e65c6a7c13",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Sooners' David Stone, Kip Lewis return from injuries vs. Georgia"
         },
         {
@@ -813,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T20:09:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.87,
           "freshnessBasis": "Kewan Lacy, the star running back for No. 4 Ole Miss, has been ruled out against No. 21 Florida on Saturday due to his left shoulder injury.",
           "status": "active",
           "sourceUrls": [
@@ -827,7 +797,7 @@
             }
           ],
           "id": "a415-bf2f88a466d48b60",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "Ole Miss RB Kewan Lacy (shoulder) ruled out vs. Florida"
         },
         {
@@ -842,7 +812,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T18:54:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.62,
+          "ageHours": 2.11,
           "freshnessBasis": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -856,7 +826,7 @@
             }
           ],
           "id": "a415-0e60b6d9ec542aa9",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "Sources: Indiana RB Turbo Richard likely avoids serious injury"
         },
         {
@@ -869,10 +839,10 @@
           "headline": "Wake Forest takes down No. 16 Louisville for road upset",
           "text": "Wake Forest takes down No. 16 Louisville for road upset",
           "entities": [],
-          "occurredAt": "2026-09-26T20:24:22Z",
+          "occurredAt": "2026-09-26T20:34:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "Wake Forest block of Louisville's field goal attempt with 15 seconds left sealed their 30-277 upset of the 16th-ranked Cardinals.",
+          "ageHours": 0.46,
+          "freshnessBasis": "Wake Forest block of Louisville's field goal attempt with 15 seconds left sealed their 30-27 upset of the 16th-ranked Cardinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50035786/wake-forest-takes-no-16-louisville-road-upset",
@@ -891,66 +861,66 @@
             }
           ],
           "id": "a415-e0573760dfbb93b2",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "Wake Forest takes down No. 16 Louisville for road upset"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-0b0c788091e4f0a6"
+            "cand-d6fa92055d1dd0a0"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "DJ Lagway threw two touchdowns in his return to Baylor's lineup, including the go-ahead score with 9:02 left as the Bears beat Colorado 23-13 in the Big 12 opener for both teams on Saturday.",
-          "text": "DJ Lagway threw two touchdowns in his return to Baylor's lineup, including the go-ahead score with 9:02 left as the Bears beat Colorado 23-13 in the Big 12 opener for both teams on Saturday.",
+          "headline": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14",
+          "text": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14",
           "entities": [],
-          "occurredAt": "2026-09-26T20:27:30Z",
+          "occurredAt": "2026-09-26T20:58:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "— DJ Lagway threw two touchdowns in his return to Baylor's lineup, including the go-ahead score with 9:02 left as the Bears beat Colorado 23-13 in the Big 12 opener for both teams on Saturday.",
+          "ageHours": 0.05,
+          "freshnessBasis": "— Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856813"
+            "http://www.espn.com/ncf/recap?gameId=401856704"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856813"
+              "url": "http://www.espn.com/ncf/recap?gameId=401856704"
             }
           ],
-          "id": "a415-2667830bf2ebbcd8",
-          "feedRank": 30,
-          "compactHeadline": "Lagway throws 2 touchdown passes to help Baylor hold off Colorado 23-13 in Big 12 opener"
+          "id": "a415-407d8073a3366b18",
+          "feedRank": 29,
+          "compactHeadline": "Colin Simmons ties program-record with 5 sacks as No. 1 Texas beats No. 14 Tennessee 20-17"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-62e819cc709ed348"
+            "cand-75a2be289e611b0e"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14 Tennessee 20-17 Saturday in the Longhorns' first visit to Neyland Stadium.",
-          "text": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14 Tennessee 20-17 Saturday in the Longhorns' first visit to Neyland Stadium.",
+          "headline": "Derek Morgan threw for a touchdown and ran for another to guide Lehigh to a 20-7 victory over Pennsylvania on Saturday.",
+          "text": "Derek Morgan threw for a touchdown and ran for another to guide Lehigh to a 20-7 victory over Pennsylvania on Saturday.",
           "entities": [],
-          "occurredAt": "2026-09-26T20:24:49Z",
+          "occurredAt": "2026-09-26T20:56:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14 Tennessee 20-17 Saturday in the Longhorns' first visit to Neyland Stadium.",
+          "ageHours": 0.09,
+          "freshnessBasis": "— Derek Morgan threw for a touchdown and ran for another to guide Lehigh to a 20-7 victory over Pennsylvania on Saturday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50035662/texas-rides-stout-defensive-performance-hold-vols"
+            "http://www.espn.com/ncf/recap?gameId=401868034"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50035662/texas-rides-stout-defensive-performance-hold-vols"
+              "url": "http://www.espn.com/ncf/recap?gameId=401868034"
             }
           ],
-          "id": "a415-0b6fa36c7d48f411",
-          "feedRank": 31,
-          "compactHeadline": "Texas rides stout defensive performance to hold off Vols"
+          "id": "a415-fb1b8f9e275676ff",
+          "feedRank": 30,
+          "compactHeadline": "Lehigh beats Penn 20-7 for 5th consecutive win against an Ivy League opponent"
         }
       ]
     }
@@ -975,8 +945,8 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 102,
-    "publishedItemCount": 31,
+    "freshCandidateCount": 98,
+    "publishedItemCount": 30,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
