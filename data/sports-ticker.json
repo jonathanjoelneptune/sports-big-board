@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-26T20:02:07Z",
+  "generatedAt": "2026-09-26T20:31:46Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "4fd460112bf357b26cc71845783324bf4555bbb825b68777b36067cb1500bbc0",
+  "sourceCandidateHash": "9f8ad0db9d8cf7b382069ff3f717ed3f2bd02f3805ced4b2f14109f833f22a27",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:45:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.28,
+          "ageHours": 4.78,
           "freshnessBasis": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-4b51f188b153cb57"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "A.J. Ewing hit a go-ahead, three-run homer, Ronny Mauricio went deep from both sides of the plate for his first career multi-homer game and the New York Mets defeated the Washington Nationals 7-1 on Saturday.",
+          "text": "A.J. Ewing hit a go-ahead, three-run homer, Ronny Mauricio went deep from both sides of the plate for his first career multi-homer game and the New York Mets defeated the Washington Nationals 7-1 on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-09-26T20:17:34Z",
+          "timePrecision": "exact",
+          "ageHours": 0.24,
+          "freshnessBasis": "— A.J. Ewing hit a go-ahead, three-run homer, Ronny Mauricio went deep from both sides of the plate for his first career multi-homer game and the New York Mets defeated the Washington Nationals 7-1 on Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817091"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817091"
+            }
+          ],
+          "id": "a415-e6bdfd2ce60a4cdb",
+          "feedRank": 2,
+          "compactHeadline": "Mets beat Nationals 7-1 behind 2 homers from Mauricio and 3-run drive by Ewing"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-44b3f38d8ea14645"
           ],
           "type": "INJURY",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T10:57:07Z",
           "timePrecision": "exact",
-          "ageHours": 9.08,
+          "ageHours": 9.58,
           "freshnessBasis": "From an injured captain to questions about the infield, rotation and bullpen, there's a lot to unpack in the Bronx.",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +95,8 @@
             }
           ],
           "id": "a415-8cd67b43552c4944",
-          "feedRank": 2,
-          "compactHeadline": "MLB playoffs 2026: 5 questions for Yankees ahead of wild-card series"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-f3871c2d353d42ba"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
-          "text": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
-          "entities": [],
-          "occurredAt": "2026-09-26T04:05:50Z",
-          "timePrecision": "exact",
-          "ageHours": 15.94,
-          "freshnessBasis": "White Sox infielder Colson Montgomery set the record for most strikeouts in a season with his 224th on Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50030455/white-sox-montgomery-sets-single-season-strikeout-record"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50030455/white-sox-montgomery-sets-single-season-strikeout-record"
-            }
-          ],
-          "id": "a415-19946bef140359f1",
           "feedRank": 3,
-          "compactHeadline": "White Sox's Montgomery sets single-season strikeout record"
+          "compactHeadline": "MLB playoffs 2026: 5 questions for Yankees ahead of wild-card series"
         },
         {
           "rank": 4,
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T08:02:55Z",
           "timePrecision": "exact",
-          "ageHours": 11.99,
+          "ageHours": 12.48,
           "freshnessBasis": "Atlanta Braves (93-67, first in the NL East) vs. Miami Marlins (79-81, third in the NL East)",
           "status": "active",
           "sourceUrls": [
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T08:02:51Z",
           "timePrecision": "exact",
-          "ageHours": 11.99,
+          "ageHours": 12.48,
           "freshnessBasis": "Arizona Diamondbacks (86-74, third in the NL West) vs. San Diego Padres (89-71, second in the NL West)",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T03:23:21Z",
           "timePrecision": "exact",
-          "ageHours": 16.65,
+          "ageHours": 17.14,
           "freshnessBasis": "Arizona right-hander Corbin Burnes was placed on the 15-day injured list with shoulder inflammation Friday, a day before he was to start for the Diamondbacks as they try to stay alive for the National League's final wild-card spot.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:44:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 0.79,
           "freshnessBasis": "The Jets promoted veteran Sterling Shepard from the practice squad, as starting WR Adonai Mitchell is questionable with a finger injury, and three other Jets receivers are on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.53,
+          "ageHours": 1.02,
           "freshnessBasis": "Bears QB Caleb Williams is out for Monday's game against the Eagles, and backup Tyson Bagent returned to the practice field while still in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:59:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.05,
+          "ageHours": 3.54,
           "freshnessBasis": "The Colts officially placed receiver Alec Pierce on injured reserve Saturday, starting the clock on a potential return as he attempts to rehab and rejoin the lineup.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:01:03Z",
           "timePrecision": "exact",
-          "ageHours": 21.02,
+          "ageHours": 21.51,
           "freshnessBasis": "Eagles running back Saquon Barkley plans to play \"fearless\" Monday night against the Chicago Bears as he eyes a return from a stinger injury.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:01:57Z",
           "timePrecision": "exact",
-          "ageHours": 22.0,
+          "ageHours": 22.5,
           "freshnessBasis": "Commanders quarterback Jayden Daniels won't undergo surgery on his dislocated left elbow and, as of now, he won't be placed on injured reserve according to general manager Adam Peters.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:53:22Z",
           "timePrecision": "exact",
-          "ageHours": 22.15,
+          "ageHours": 22.64,
           "freshnessBasis": "Right guard Sam Cosmi (concussion), tight end Chig Okonkwo (hamstring) and linebacker Frankie Luvu (groin) won't play Sunday vs. the Seahawks.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T06:35:03Z",
           "timePrecision": "exact",
-          "ageHours": 13.45,
+          "ageHours": 13.95,
           "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:29:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.55,
+          "ageHours": 22.05,
           "freshnessBasis": "The Charlotte Hornets will be without Kon Knueppel for at least the entire preseason due to a left hamstring injury, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:13:10Z",
           "timePrecision": "exact",
-          "ageHours": 22.82,
+          "ageHours": 23.31,
           "freshnessBasis": "The Memphis Grizzlies waived veteran D'Angelo Russell and signed undrafted guard Brendan Hausen.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:05:56Z",
           "timePrecision": "exact",
-          "ageHours": 18.94,
+          "ageHours": 19.43,
           "freshnessBasis": "Cavs president of basketball operations Koby Altman said he wasn't fazed when LeBron James chose to sign with the Sixers, saying, \"We're built for a sustainable run here regardless of one outcome.\"",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:58:25Z",
           "timePrecision": "exact",
-          "ageHours": 23.06,
+          "ageHours": 23.56,
           "freshnessBasis": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
           "status": "active",
           "sourceUrls": [
@@ -540,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T11:31:41Z",
           "timePrecision": "exact",
-          "ageHours": 8.51,
+          "ageHours": 9.0,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.94,
+          "ageHours": 4.43,
           "freshnessBasis": "Manchester City chairman Khaldoon Al Mubarak has said \"nothing has changed\" regarding the club's ongoing legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T14:07:25Z",
           "timePrecision": "exact",
-          "ageHours": 5.91,
+          "ageHours": 6.41,
           "freshnessBasis": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:38:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.39,
+          "ageHours": 7.88,
           "freshnessBasis": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:03:43Z",
           "timePrecision": "exact",
-          "ageHours": 7.97,
+          "ageHours": 8.47,
           "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T11:18:49Z",
           "timePrecision": "exact",
-          "ageHours": 8.72,
+          "ageHours": 9.22,
           "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -720,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.52,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 4.07,
+          "ageHours": 4.56,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -775,31 +775,31 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-fec8bc434662fba4"
+            "cand-4f8696addb3af4e3"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
-          "text": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
+          "headline": "Oklahoma star defensive tackle David Stone, who suffered a knee injury in practice earlier this week, was in the starting lineup for Saturday's game at No. 2 Georgia.",
+          "text": "Oklahoma star defensive tackle David Stone, who suffered a knee injury in practice earlier this week, was in the starting lineup for Saturday's game at No. 2 Georgia.",
           "entities": [],
-          "occurredAt": "2026-09-26T18:54:52Z",
+          "occurredAt": "2026-09-26T20:23:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.12,
-          "freshnessBasis": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
+          "ageHours": 0.13,
+          "freshnessBasis": "Oklahoma star defensive tackle David Stone, who suffered a knee injury in practice earlier this week, was in the starting lineup for Saturday's game at No. 2 Georgia.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50034505/sources-indiana-rb-turbo-richard-likely-avoids-serious-injury"
+            "https://www.espn.com/college-football/story/_/id/50035543/sooners-david-stone-kip-lewis-return-injuries-vs-georgia"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50034505/sources-indiana-rb-turbo-richard-likely-avoids-serious-injury"
+              "url": "https://www.espn.com/college-football/story/_/id/50035543/sooners-david-stone-kip-lewis-return-injuries-vs-georgia"
             }
           ],
-          "id": "a415-0e60b6d9ec542aa9",
+          "id": "a415-a389e7e65c6a7c13",
           "feedRank": 26,
-          "compactHeadline": "Sources: Indiana RB Turbo Richard likely avoids serious injury"
+          "compactHeadline": "Sooners' David Stone, Kip Lewis return from injuries vs. Georgia"
         },
         {
           "rank": 2,
@@ -811,9 +811,9 @@
           "headline": "Kewan Lacy, the star running back for No. 4 Ole Miss, has been ruled out against No. 21 Florida on Saturday due to his left shoulder injury.",
           "text": "Kewan Lacy, the star running back for No. 4 Ole Miss, has been ruled out against No. 21 Florida on Saturday due to his left shoulder injury.",
           "entities": [],
-          "occurredAt": "2026-09-26T18:13:14Z",
+          "occurredAt": "2026-09-26T20:09:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
+          "ageHours": 0.37,
           "freshnessBasis": "Kewan Lacy, the star running back for No. 4 Ole Miss, has been ruled out against No. 21 Florida on Saturday due to his left shoulder injury.",
           "status": "active",
           "sourceUrls": [
@@ -833,118 +833,124 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-c31d6b87ff3f0840"
+            "cand-fec8bc434662fba4"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jeremiah Smith tied an Ohio State record with four touchdown catches and also had career highs with 12 receptions for 217 yards as the seventh-ranked Buckeyes beat Illinois 42-19 on Saturday.",
-          "text": "Jeremiah Smith tied an Ohio State record with four touchdown catches and also had career highs with 12 receptions for 217 yards as the seventh-ranked Buckeyes beat Illinois 42-19 on Saturday.",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
+          "text": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
           "entities": [],
-          "occurredAt": "2026-09-26T19:51:33Z",
+          "occurredAt": "2026-09-26T18:54:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
-          "freshnessBasis": "— Jeremiah Smith tied an Ohio State record with four touchdown catches and also had career highs with 12 receptions for 217 yards as the seventh-ranked Buckeyes beat Illinois 42-19 on Saturday.",
+          "ageHours": 1.62,
+          "freshnessBasis": "Indiana RB Turbo Richard likely avoided serious injury after leaving Friday's game against Northwestern and should return to the field soon, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858465"
+            "https://www.espn.com/college-football/story/_/id/50034505/sources-indiana-rb-turbo-richard-likely-avoids-serious-injury"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858465"
+              "url": "https://www.espn.com/college-football/story/_/id/50034505/sources-indiana-rb-turbo-richard-likely-avoids-serious-injury"
             }
           ],
-          "id": "a415-c660644caf70a009",
+          "id": "a415-0e60b6d9ec542aa9",
           "feedRank": 28,
-          "compactHeadline": "Jeremiah Smith ties Ohio State record with 4 TD catches as No. 7 Buckeyes beat Illinois 42-19"
+          "compactHeadline": "Sources: Indiana RB Turbo Richard likely avoids serious injury"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-e9b8310214af3e62"
+            "cand-16171999baa7abde"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jackson Arnold threw for 290 yards and three touchdowns, Jai’Den Thomas had 167 total yards and three touchdowns, and UNLV beat Akron 38-10 on Saturday.",
-          "text": "Jackson Arnold threw for 290 yards and three touchdowns, Jai’Den Thomas had 167 total yards and three touchdowns, and UNLV beat Akron 38-10 on Saturday.",
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Wake Forest takes down No. 16 Louisville for road upset",
+          "text": "Wake Forest takes down No. 16 Louisville for road upset",
           "entities": [],
-          "occurredAt": "2026-09-26T19:48:30Z",
+          "occurredAt": "2026-09-26T20:24:22Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
-          "freshnessBasis": "— Jackson Arnold threw for 290 yards and three touchdowns, Jai’Den Thomas had 167 total yards and three touchdowns, and UNLV beat Akron 38-10 on Saturday.",
+          "ageHours": 0.12,
+          "freshnessBasis": "Wake Forest block of Louisville's field goal attempt with 15 seconds left sealed their 30-277 upset of the 16th-ranked Cardinals.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401864512"
+            "https://www.espn.com/college-football/story/_/id/50035786/wake-forest-takes-no-16-louisville-road-upset",
+            "http://www.espn.com/ncf/recap?gameId=401858243"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401864512"
+              "url": "https://www.espn.com/college-football/story/_/id/50035786/wake-forest-takes-no-16-louisville-road-upset"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858243"
             }
           ],
-          "id": "a415-f30b7389e52e1afa",
+          "id": "a415-e0573760dfbb93b2",
           "feedRank": 29,
-          "compactHeadline": "Jai’Den Thomas has 167 total yards and 3 touchdowns to lead UNLV past Akron 38-10"
+          "compactHeadline": "Wake Forest takes down No. 16 Louisville for road upset"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-b4d41db965a4c267"
+            "cand-0b0c788091e4f0a6"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Dru DeShields threw for two touchdowns and ran for another to lead Kent State to a 26-13 win over Kent State in the Mid-American Conference opener for both teams on Saturday.",
-          "text": "Dru DeShields threw for two touchdowns and ran for another to lead Kent State to a 26-13 win over Kent State in the Mid-American Conference opener for both teams on Saturday.",
+          "headline": "DJ Lagway threw two touchdowns in his return to Baylor's lineup, including the go-ahead score with 9:02 left as the Bears beat Colorado 23-13 in the Big 12 opener for both teams on Saturday.",
+          "text": "DJ Lagway threw two touchdowns in his return to Baylor's lineup, including the go-ahead score with 9:02 left as the Bears beat Colorado 23-13 in the Big 12 opener for both teams on Saturday.",
           "entities": [],
-          "occurredAt": "2026-09-26T19:42:32Z",
+          "occurredAt": "2026-09-26T20:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
-          "freshnessBasis": "— Dru DeShields threw for two touchdowns and ran for another to lead Kent State to a 26-13 win over Kent State in the Mid-American Conference opener for both teams on Saturday.",
+          "ageHours": 0.07,
+          "freshnessBasis": "— DJ Lagway threw two touchdowns in his return to Baylor's lineup, including the go-ahead score with 9:02 left as the Bears beat Colorado 23-13 in the Big 12 opener for both teams on Saturday.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401866425"
+            "http://www.espn.com/ncf/recap?gameId=401856813"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401866425"
+              "url": "http://www.espn.com/ncf/recap?gameId=401856813"
             }
           ],
-          "id": "a415-76b5c54775f39fb2",
+          "id": "a415-2667830bf2ebbcd8",
           "feedRank": 30,
-          "compactHeadline": "DeShields accounts for 3 TDs, Kent State tops Ball State 26-13 in MAC opener"
+          "compactHeadline": "Lagway throws 2 touchdown passes to help Baylor hold off Colorado 23-13 in Big 12 opener"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-a5ab6eb88cbd9209"
+            "cand-62e819cc709ed348"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Texas Tech linebacker Austin Romaine became the first FBS player in 13 years to return two interceptions for touchdowns on consecutive throws,...",
-          "text": "Texas Tech linebacker Austin Romaine became the first FBS player in 13 years to return two interceptions for touchdowns on consecutive throws,...",
+          "headline": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14 Tennessee 20-17 Saturday in the Longhorns' first visit to Neyland Stadium.",
+          "text": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14 Tennessee 20-17 Saturday in the Longhorns' first visit to Neyland Stadium.",
           "entities": [],
-          "occurredAt": "2026-09-26T19:39:35Z",
+          "occurredAt": "2026-09-26T20:24:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
-          "freshnessBasis": "— Texas Tech linebacker Austin Romaine became the first FBS player in 13 years to return two interceptions for touchdowns on consecutive throws,...",
+          "ageHours": 0.12,
+          "freshnessBasis": "Colin Simmons tied the program record with five sacks as top-ranked Texas held off No. 14 Tennessee 20-17 Saturday in the Longhorns' first visit to Neyland Stadium.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856805"
+            "https://www.espn.com/college-football/story/_/id/50035662/texas-rides-stout-defensive-performance-hold-vols"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856805"
+              "url": "https://www.espn.com/college-football/story/_/id/50035662/texas-rides-stout-defensive-performance-hold-vols"
             }
           ],
-          "id": "a415-3a129fc7d8f132e0",
+          "id": "a415-0b6fa36c7d48f411",
           "feedRank": 31,
-          "compactHeadline": "Romaine has 2 quick pick-6s as No. 11 Texas Tech beats Sam Houston 49-14 for 11th home win in row"
+          "compactHeadline": "Texas rides stout defensive performance to hold off Vols"
         }
       ]
     }
@@ -969,7 +975,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 90,
+    "freshCandidateCount": 102,
     "publishedItemCount": 31,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
