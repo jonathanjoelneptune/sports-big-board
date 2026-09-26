@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-25T23:30:51Z",
+  "generatedAt": "2026-09-26T00:00:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "fe0895b56b1ca7bea922dad400f96f71818fada1f896387a5f1ab07f6b20acf8",
+  "sourceCandidateHash": "4965aa7ffbb9727ccc78b332bdc7047245d6b438163a8c13b1c73e8257f8c616",
   "leagues": [
     {
       "league": "MLB",
@@ -21,9 +21,9 @@
           "headline": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
           "text": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
           "entities": [],
-          "occurredAt": "2026-09-25T23:08:52Z",
+          "occurredAt": "2026-09-25T23:31:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.49,
           "freshnessBasis": "Blue Jays star Vladimir Guerrero, who earlier this week said he stood by his remarks that he received a $500 million extension for what he did in the past, said he owed an apology for comments that were \"not what I really wanted to say.\"",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,105 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-6bb18676ce21c976"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "For some teams this October, a victory would be even sweeter -- and a defeat all the more painful.",
+          "text": "For some teams this October, a victory would be even sweeter -- and a defeat all the more painful.",
+          "entities": [],
+          "occurredAt": "2026-09-25T17:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 6.93,
+          "freshnessBasis": "Highlightly final: Chicago Cubs 3, Boston Red Sox 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/49974802/mlb-2026-world-series-pressure-playoffs-postseason"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-25",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49974802/mlb-2026-world-series-pressure-playoffs-postseason"
+            }
+          ],
+          "id": "a415-59534753fb059cf2",
+          "feedRank": 2,
+          "compactHeadline": "Boston Red Sox beat Chicago Cubs 4-3"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6f62abdc532bad8c"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Baltimore Orioles 10, New York Yankees 2.",
+          "text": "Highlightly final: Baltimore Orioles 10, New York Yankees 2.",
+          "entities": [],
+          "occurredAt": "2026-09-25T20:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.93,
+          "freshnessBasis": "Highlightly final: Baltimore Orioles 10, New York Yankees 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-25",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-ea837d848b241f0b",
+          "feedRank": 3,
+          "compactHeadline": "Baltimore Orioles beat New York Yankees 10-2"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-53cd3ee1ac79fd6a"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Fernando Tatis Jr. and Ethan Salas had RBI singles in a three-run seventh inning and the San Diego Padres beat the Los Angeles Dodgers 4-2 on Thursday night to clinch their franchise-record third consecutive postseason berth and fifth in seven seasons.",
+          "text": "Fernando Tatis Jr. and Ethan Salas had RBI singles in a three-run seventh inning and the San Diego Padres beat the Los Angeles Dodgers 4-2 on Thursday night to clinch their franchise-record third consecutive postseason berth and fifth in seven seasons.",
+          "entities": [],
+          "occurredAt": "2026-09-25T02:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.85,
+          "freshnessBasis": "Highlightly final: San Diego Padres 4, Los Angeles Dodgers 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817071"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-24",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817071"
+            }
+          ],
+          "id": "a415-9d0215dd8d24b222",
+          "feedRank": 4,
+          "compactHeadline": "Padres beat Dodgers 4-2 to clinch a franchise-record 3rd straight postseason berth"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-71bc4951079a8d8d"
           ],
           "type": "PLAYOFF",
@@ -52,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:43:31Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.29,
           "freshnessBasis": "Phillies second baseman Luis Arraez will sit against the Tampa Bay Rays on Friday night because of a sprained ankle. Philadelphia needs at least one win to move closer to its fifth straight playoff berth.",
           "status": "active",
           "sourceUrls": [
@@ -66,124 +165,43 @@
             }
           ],
           "id": "a415-eba21a43d2f165ad",
-          "feedRank": 2,
-          "compactHeadline": "Luis Arraez (ankle) out as Phillies eye 5th straight playoff"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-451d3e50dc5402ff"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "San Diego Padres clinch third-straight playoffs berth with a Major League Baseball-leading September record of 16-5.",
-          "text": "San Diego Padres clinch third-straight playoffs berth with a Major League Baseball-leading September record of 16-5.",
-          "entities": [],
-          "occurredAt": "2026-09-25T11:56:32Z",
-          "timePrecision": "exact",
-          "ageHours": 11.57,
-          "freshnessBasis": "San Diego Padres clinch third-straight playoffs berth with a Major League Baseball-leading September record of 16-5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50026172/padres-clinch-third-straight-playoffs-berth-september-surge"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50026172/padres-clinch-third-straight-playoffs-berth-september-surge"
-            }
-          ],
-          "id": "a415-f0b9ec44b5c1f6ee",
-          "feedRank": 3,
-          "compactHeadline": "Padres clinch third straight playoff berth after September surge"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-4d677bb0e01caec3"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "entities": [],
-          "occurredAt": "2026-09-25T17:01:14Z",
-          "timePrecision": "exact",
-          "ageHours": 6.49,
-          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
-            }
-          ],
-          "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 4,
-          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e4521500549bb136"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
-          "text": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
-          "entities": [],
-          "occurredAt": "2026-09-25T14:41:50Z",
-          "timePrecision": "exact",
-          "ageHours": 8.82,
-          "freshnessBasis": "Your favorite team won't be playing in October -- but that doesn't mean the season was a total loss. Right?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49974689/mlb-2026-playoffs-postseason-eliminated-teams-bright-side-optimism-silver-linings-2027"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49974689/mlb-2026-playoffs-postseason-eliminated-teams-bright-side-optimism-silver-linings-2027"
-            }
-          ],
-          "id": "a415-e74da20ec45f7e36",
           "feedRank": 5,
-          "compactHeadline": "Silver linings for MLB's 2026 non-playoff teams"
+          "compactHeadline": "Luis Arraez (ankle) out as Phillies eye 5th straight playoff"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-a200bab227947fec"
+            "cand-b11618a091a4819a"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Chicago officially punched its NL Wild Card ticket. And there is no doubt why the Cubs are where they are.",
-          "text": "Chicago officially punched its NL Wild Card ticket. And there is no doubt why the Cubs are where they are.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Christian Moore hit a two-run double and had three RBI, Bryce Teodosio drove in two runs, and the Los Angeles Angels beat the Seattle Mariners 6-4 on Thursday night.",
+          "text": "Christian Moore hit a two-run double and had three RBI, Bryce Teodosio drove in two runs, and the Los Angeles Angels beat the Seattle Mariners 6-4 on Thursday night.",
           "entities": [],
-          "occurredAt": "2026-09-25T13:37:39Z",
+          "occurredAt": "2026-09-25T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.89,
-          "freshnessBasis": "Chicago officially punched its NL Wild Card ticket. And there is no doubt why the Cubs are where they are.",
+          "ageHours": 22.35,
+          "freshnessBasis": "Highlightly final: Los Angeles Angels 6, Seattle Mariners 4.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50014964/mlb-2026-pete-crow-armstrong-chicago-cubs-mvp-clinch-nl-wild-card"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401817069"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-24",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50014964/mlb-2026-pete-crow-armstrong-chicago-cubs-mvp-clinch-nl-wild-card"
+              "url": "http://www.espn.com/mlb/recap?gameId=401817069"
             }
           ],
-          "id": "a415-385350e4603337ce",
+          "id": "a415-e5d5b5a13a93b0fd",
           "feedRank": 6,
-          "compactHeadline": "How Pete Crow-Armstrong's MVP year carried Cubs to MLB playoffs"
+          "compactHeadline": "Christian Moore and Bryce Teodosio rally Angels past Mariners 6-4"
         }
       ]
     },
@@ -203,7 +221,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:01:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.5,
+          "ageHours": 1.0,
           "freshnessBasis": "Eagles running back Saquon Barkley plans to play \"fearless\" Monday night against the Chicago Bears as he eyes a return from a stinger injury.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +250,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:01:57Z",
           "timePrecision": "exact",
-          "ageHours": 1.48,
+          "ageHours": 1.98,
           "freshnessBasis": "Commanders quarterback Jayden Daniels won't undergo surgery on his dislocated left elbow and, as of now, he won't be placed on injured reserve according to general manager Adam Peters.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +279,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:53:22Z",
           "timePrecision": "exact",
-          "ageHours": 1.62,
+          "ageHours": 2.13,
           "freshnessBasis": "Right guard Sam Cosmi (concussion), tight end Chig Okonkwo (hamstring) and linebacker Frankie Luvu (groin) won't play Sunday vs. the Seahawks.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +308,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:37:52Z",
           "timePrecision": "exact",
-          "ageHours": 2.88,
+          "ageHours": 3.38,
           "freshnessBasis": "Chiefs coach Andy Reid says rookie cornerback Mansoor Delane, who does not have a designation on the injury report, has a \"good chance\" of playing against the Dolphins.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +337,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T14:57:43Z",
           "timePrecision": "exact",
-          "ageHours": 8.55,
+          "ageHours": 9.05,
           "freshnessBasis": "Experts weigh in on Daniels' latest injury and what it means for him, the Commanders and their collective futures.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +366,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T18:43:10Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
+          "ageHours": 5.3,
           "freshnessBasis": "Giants quarterback Jaxson Dart is scheduled to undergo surgery Friday on his left knee, sources told ESPN. The belief is it will be a meniscus and MCL repair.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +401,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:26:12Z",
           "timePrecision": "exact",
-          "ageHours": 4.08,
+          "ageHours": 4.58,
           "freshnessBasis": "The card was sold in early Friday morning at 2 a.m. ET.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +430,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T22:29:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.03,
+          "ageHours": 1.53,
           "freshnessBasis": "The Charlotte Hornets will be without Kon Knueppel for at least the entire preseason due to a left hamstring injury, the team announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:46:42Z",
           "timePrecision": "exact",
-          "ageHours": 3.74,
+          "ageHours": 4.24,
           "freshnessBasis": "Kyrie Irving said he is under no physical restrictions from the torn ACL in his left knee that sidelined him 19 months ago, an injury that he called \"probably the best thing that happened to me.\"",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:13:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 2.8,
           "freshnessBasis": "The Memphis Grizzlies waived veteran D'Angelo Russell and signed undrafted guard Brendan Hausen.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T19:38:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.87,
+          "ageHours": 4.37,
           "freshnessBasis": "Knicks star guard Jalen Brunson is ready for the 2026-27 season after acknowledging that he underwent left wrist surgery.",
           "status": "active",
           "sourceUrls": [
@@ -519,31 +537,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-9c3489e231b84ea5"
+            "cand-02d590826dceebbd"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "LeBron James says his long-standing friendship with All-Star Tyrese Maxey and a desire to help Joel Embiid win his first NBA title played significant roles in his decision to sign with the 76ers.",
-          "text": "LeBron James says his long-standing friendship with All-Star Tyrese Maxey and a desire to help Joel Embiid win his first NBA title played significant roles in his decision to sign with the 76ers.",
+          "headline": "Cavs president of basketball operations Koby Altman said he wasn't fazed when LeBron James chose to sign with the Sixers, saying, \"We're built for a sustainable run here regardless of one outcome.\"",
+          "text": "Cavs president of basketball operations Koby Altman said he wasn't fazed when LeBron James chose to sign with the Sixers, saying, \"We're built for a sustainable run here regardless of one outcome.\"",
           "entities": [],
-          "occurredAt": "2026-09-25T16:35:21Z",
+          "occurredAt": "2026-09-25T23:45:16Z",
           "timePrecision": "exact",
-          "ageHours": 6.93,
-          "freshnessBasis": "LeBron James says his long-standing friendship with All-Star Tyrese Maxey and a desire to help Joel Embiid win his first NBA title played significant roles in his decision to sign with the 76ers.",
+          "ageHours": 0.26,
+          "freshnessBasis": "Cavs president of basketball operations Koby Altman said he wasn't fazed when LeBron James chose to sign with the Sixers, saying, \"We're built for a sustainable run here regardless of one outcome.\"",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50027833/lebron-james-maxey-friendship-helping-embiid-were-76ers-factors"
+            "https://www.espn.com/nba/story/_/id/50029817/altman-cavs-built-sustainable-run-missing-lebron"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50027833/lebron-james-maxey-friendship-helping-embiid-were-76ers-factors"
+              "url": "https://www.espn.com/nba/story/_/id/50029817/altman-cavs-built-sustainable-run-missing-lebron"
             }
           ],
-          "id": "a415-1e41a7d0cf6ed6cb",
+          "id": "a415-14c8aeef1a31b1f5",
           "feedRank": 18,
-          "compactHeadline": "LeBron James: Maxey friendship, helping Embiid were 76ers factors"
+          "compactHeadline": "Altman: Cavs built for 'sustainable run' despite missing on LeBron"
         }
       ]
     },
@@ -563,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T17:30:27Z",
           "timePrecision": "exact",
-          "ageHours": 6.01,
+          "ageHours": 6.51,
           "freshnessBasis": "The Carolina Hurricanes have signed goaltender Pyotr Kochetkov to a two-year extension running through the 2028-29 season with an average annual value of $3.95 million.",
           "status": "active",
           "sourceUrls": [
@@ -583,89 +601,118 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-2699334232839c1f"
+            "cand-41a6a9def4feb3ec"
           ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
-          "text": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Utah Mammoth 4, Vegas Golden Knights 5.",
+          "text": "Highlightly final: Utah Mammoth 4, Vegas Golden Knights 5.",
           "entities": [],
-          "occurredAt": "2026-09-25T01:09:03Z",
+          "occurredAt": "2026-09-25T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.36,
-          "freshnessBasis": "The Blue Jackets re-signed center Adam Fantilli to a six-year, $82.5 million contract.",
+          "ageHours": 22.02,
+          "freshnessBasis": "Highlightly final: Utah Mammoth 4, Vegas Golden Knights 5.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50022597/blue-jackets-re-sign-adam-fantilli-6-year-825m-deal"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50022597/blue-jackets-re-sign-adam-fantilli-6-year-825m-deal"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-24",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-ea809e1af5f653cd",
+          "id": "a415-cc8e12707598c18d",
           "feedRank": 20,
-          "compactHeadline": "Blue Jackets re-sign Adam Fantilli to 6-year, $82.5M deal"
+          "compactHeadline": "Vegas Golden Knights beat Utah Mammoth 5-4"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-c5a6706d91aad190"
+            "cand-9f4ca97a497a5d6c"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
-          "text": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Anaheim Ducks 0, San Jose Sharks 10.",
+          "text": "Highlightly final: Anaheim Ducks 0, San Jose Sharks 10.",
           "entities": [],
-          "occurredAt": "2026-09-25T20:58:25Z",
+          "occurredAt": "2026-09-25T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.54,
-          "freshnessBasis": "Macklin Celebrini, 20, has been selected as the Sharks captain, making him the youngest in team history to fill that role.",
+          "ageHours": 22.02,
+          "freshnessBasis": "Highlightly final: Anaheim Ducks 0, San Jose Sharks 10.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50028512/macklin-celebrini-20-becomes-youngest-ever-sharks-captain"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50028512/macklin-celebrini-20-becomes-youngest-ever-sharks-captain"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-24",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-07ec853709387def",
+          "id": "a415-e8c574b84e0be6cc",
           "feedRank": 21,
-          "compactHeadline": "Macklin Celebrini, 20, becomes youngest Sharks captain"
+          "compactHeadline": "San Jose Sharks beat Anaheim Ducks 10-0"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-ed68de75568a057c"
+            "cand-3af52101d9b30bc6"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Miss anything since the end of June? Miss EVERYTHING since then? Get caught up here.",
-          "text": "Miss anything since the end of June? Miss EVERYTHING since then? Get caught up here.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Calgary Flames 3, Seattle Kraken 4.",
+          "text": "Highlightly final: Calgary Flames 3, Seattle Kraken 4.",
           "entities": [],
-          "occurredAt": "2026-09-25T12:31:06Z",
+          "occurredAt": "2026-09-25T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.0,
-          "freshnessBasis": "Miss anything since the end of June? Miss EVERYTHING since then? Get caught up here.",
+          "ageHours": 22.35,
+          "freshnessBasis": "Highlightly final: Calgary Flames 3, Seattle Kraken 4.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50022825/nhl-2026-27-preview-guide-top-teams-players-storylines-trades-contracts-lapsed-fan"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50022825/nhl-2026-27-preview-guide-top-teams-players-storylines-trades-contracts-lapsed-fan"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-24",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-60dc5a9cd0e58528",
+          "id": "a415-be768551f3939834",
           "feedRank": 22,
-          "compactHeadline": "Lapsed fan's guide to the NHL season: Top teams, players, storylines for 2026-27"
+          "compactHeadline": "Seattle Kraken beat Calgary Flames 4-3"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-a61e31ba4bac0b6e"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Edmonton Oilers 2, Vancouver Canucks 1.",
+          "text": "Highlightly final: Edmonton Oilers 2, Vancouver Canucks 1.",
+          "entities": [],
+          "occurredAt": "2026-09-25T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.02,
+          "freshnessBasis": "Highlightly final: Edmonton Oilers 2, Vancouver Canucks 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-24",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-f2ca6ff282455c00",
+          "feedRank": 23,
+          "compactHeadline": "Edmonton Oilers beat Vancouver Canucks 2-1"
         }
       ]
     },
@@ -685,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T10:26:45Z",
           "timePrecision": "exact",
-          "ageHours": 13.07,
+          "ageHours": 13.57,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +746,7 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
@@ -714,7 +761,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T23:23:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.63,
           "freshnessBasis": "Manchester City are expected to be found guilty on the vast majority of charges of financial breaches in their legal case with the Premier League, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -728,7 +775,7 @@
             }
           ],
           "id": "a415-d2f90795060b98a2",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Source: Man City set to be found guilty on majority of Premier League charges"
         },
         {
@@ -743,7 +790,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T21:45:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.76,
+          "ageHours": 2.26,
           "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -757,7 +804,7 @@
             }
           ],
           "id": "a415-656347ae57b38bac",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Rio Ferdinand leads reaction to Man City's 115 breaches case: 'Another Premier League medal'"
         },
         {
@@ -772,7 +819,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T18:11:57Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
+          "ageHours": 5.82,
           "freshnessBasis": "The sporting world is waiting for a resolution to the hearings on Man City's charges for allegedly breaching the Premier League's financial rules. Here's what we know, and what might come next.",
           "status": "active",
           "sourceUrls": [
@@ -786,37 +833,8 @@
             }
           ],
           "id": "a415-a4e4681481db8b4c",
-          "feedRank": 26,
-          "compactHeadline": "Man City vs. Premier League: 115 financial charges explained"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-cc7a89451c357a68"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "text": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "entities": [],
-          "occurredAt": "2026-09-25T12:30:47Z",
-          "timePrecision": "exact",
-          "ageHours": 11.0,
-          "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50026797/chelsea-charged-fa-alleged-discriminatory-chanting"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50026797/chelsea-charged-fa-alleged-discriminatory-chanting"
-            }
-          ],
-          "id": "a415-cabe39a1b0e69da1",
           "feedRank": 27,
-          "compactHeadline": "Chelsea charged by FA over alleged discriminatory chanting"
+          "compactHeadline": "Man City vs. Premier League: 115 financial charges explained"
         }
       ]
     },
@@ -836,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T20:18:23Z",
           "timePrecision": "exact",
-          "ageHours": 3.21,
+          "ageHours": 3.71,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T17:39:38Z",
           "timePrecision": "exact",
-          "ageHours": 5.85,
+          "ageHours": 6.36,
           "freshnessBasis": "World Cup quarterfinalist Switzerland has lost a second player from its Nations League squad because of years-old cases of fake COVID-19 documents.",
           "status": "active",
           "sourceUrls": [
@@ -891,6 +909,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-ff818d0a708348df"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Army Black Knights 21, Temple Owls 17.",
+          "text": "Highlightly final: Army Black Knights 21, Temple Owls 17.",
+          "entities": [],
+          "occurredAt": "2026-09-25T20:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.02,
+          "freshnessBasis": "Highlightly final: Army Black Knights 21, Temple Owls 17.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-25",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-d35ef19924488e5b",
+          "feedRank": 30,
+          "compactHeadline": "Army Black Knights beat Temple Owls 21-17"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-594a0c126babf3c4"
+          ],
+          "type": "LEGAL",
+          "priority": 64,
+          "headline": "The SEC is \"deeply disappointed\" in LSU's attempt to dismiss its lawsuit against the university stemming from an attempt to add former NFL players to the Tigers' roster.",
+          "text": "The SEC is \"deeply disappointed\" in LSU's attempt to dismiss its lawsuit against the university stemming from an attempt to add former NFL players to the Tigers' roster.",
+          "entities": [],
+          "occurredAt": "2026-09-25T23:42:46Z",
+          "timePrecision": "exact",
+          "ageHours": 0.3,
+          "freshnessBasis": "The SEC is \"deeply disappointed\" in LSU's attempt to dismiss its lawsuit against the university stemming from an attempt to add former NFL players to the Tigers' roster.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50029872/sec-irked-lsu-trying-dismiss-suit-issue-unresolved"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50029872/sec-irked-lsu-trying-dismiss-suit-issue-unresolved"
+            }
+          ],
+          "id": "a415-3b621958a07d8c4a",
+          "feedRank": 31,
+          "compactHeadline": "SEC irked LSU is trying to dismiss suit with issue 'unresolved'"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-566d7d4681c8406d"
           ],
           "type": "RANKING",
@@ -900,7 +976,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T11:58:42Z",
           "timePrecision": "exact",
-          "ageHours": 11.54,
+          "ageHours": 12.04,
           "freshnessBasis": "After teasing us with ranked games over three weeks, we get six that should tell us a lot about the 2026 season.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +990,11 @@
             }
           ],
           "id": "a415-02fff3578bdb908e",
-          "feedRank": 30,
+          "feedRank": 32,
           "compactHeadline": "Connelly checks in on the SEC's launch party and Big Ten's question marks in Week 4"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-f966eb6ff3a3a87d"
           ],
@@ -929,7 +1005,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T10:21:37Z",
           "timePrecision": "exact",
-          "ageHours": 13.15,
+          "ageHours": 13.66,
           "freshnessBasis": "As recruiting season quiets down, here's how the top classes are shaping up.",
           "status": "active",
           "sourceUrls": [
@@ -943,11 +1019,40 @@
             }
           ],
           "id": "a415-7bda90d7d094aa50",
-          "feedRank": 31,
+          "feedRank": 33,
           "compactHeadline": "2027 college football recruiting class rankings: Top 45 schools"
         },
         {
-          "rank": 3,
+          "rank": 5,
+          "candidateIds": [
+            "cand-8778e732790b04a7"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Quarterback Cale Hellums rushed for 104 yards and three touchdowns to lead Army over Temple 21-17 on Friday in the Owls' American Conference opener.",
+          "text": "Quarterback Cale Hellums rushed for 104 yards and three touchdowns to lead Army over Temple 21-17 on Friday in the Owls' American Conference opener.",
+          "entities": [],
+          "occurredAt": "2026-09-25T23:54:33Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "— Quarterback Cale Hellums rushed for 104 yards and three touchdowns to lead Army over Temple 21-17 on Friday in the Owls' American Conference opener.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401862779"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401862779"
+            }
+          ],
+          "id": "a415-63ad15615f299e1b",
+          "feedRank": 34,
+          "compactHeadline": "Cale Hellums has 3 TD runs to rally Army over Temple 21-17 in Owls' American Conference opener"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-179623eae5279247"
           ],
@@ -958,7 +1063,7 @@
           "entities": [],
           "occurredAt": "2026-09-25T00:59:13Z",
           "timePrecision": "exact",
-          "ageHours": 22.53,
+          "ageHours": 23.03,
           "freshnessBasis": "Linebacker and safety Antonio Watts will miss the rest of the season for the 16th-ranked Louisville Cardinals with an injured knee.",
           "status": "active",
           "sourceUrls": [
@@ -972,95 +1077,8 @@
             }
           ],
           "id": "a415-adb743d9a3297986",
-          "feedRank": 32,
-          "compactHeadline": "No. 16 Louisville loses Antonio Watts for season with knee injury"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-8859bf1794aa220b"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Deshawn Purdie threw for 216 yards and two touchdowns, Kam Davis rushed for 166 yards and a touchdown, and Liberty scored 24 unanswered points in the second half to beat Coastal Carolina 34-17 on Thursday night.",
-          "text": "Deshawn Purdie threw for 216 yards and two touchdowns, Kam Davis rushed for 166 yards and a touchdown, and Liberty scored 24 unanswered points in the second half to beat Coastal Carolina 34-17 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-09-25T04:19:30Z",
-          "timePrecision": "exact",
-          "ageHours": 19.19,
-          "freshnessBasis": "— Deshawn Purdie threw for 216 yards and two touchdowns, Kam Davis rushed for 166 yards and a touchdown, and Liberty scored 24 unanswered points in the second half to beat Coastal Carolina 34-17 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401869941"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401869941"
-            }
-          ],
-          "id": "a415-c806bcce9e6d20e3",
-          "feedRank": 33,
-          "compactHeadline": "Liberty scores 24 unanswered points in the 2nd half to beat Coastal Carolina 34-17"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-07b8583bf8dfae80"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The American Conference issued a statement Friday saying it is \"not proactively\" seeking to expand. Sources told ESPN that Miami (Ohio), James Madison and UConn have approached the conference about potentially joining.",
-          "text": "The American Conference issued a statement Friday saying it is \"not proactively\" seeking to expand. Sources told ESPN that Miami (Ohio), James Madison and UConn have approached the conference about potentially joining.",
-          "entities": [],
-          "occurredAt": "2026-09-25T15:02:41Z",
-          "timePrecision": "exact",
-          "ageHours": 8.47,
-          "freshnessBasis": "The American Conference issued a statement Friday saying it is \"not proactively\" seeking to expand. Sources told ESPN that Miami (Ohio), James Madison and UConn have approached the conference about potentially joining.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50027524/american-conference-not-pursuing-expansion-3-interested"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50027524/american-conference-not-pursuing-expansion-3-interested"
-            }
-          ],
-          "id": "a415-8f536fd06419c299",
-          "feedRank": 34,
-          "compactHeadline": "American Conference not pursuing expansion, but 3 interested"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-7a141477b471e49c"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
-          "text": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
-          "entities": [],
-          "occurredAt": "2026-09-25T14:05:14Z",
-          "timePrecision": "exact",
-          "ageHours": 9.43,
-          "freshnessBasis": "Tennessee assistant coach William Inge has been hospitalized for undisclosed reasons, the school announced Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50023500/vols-lb-coach-william-inge-hospitalized-undisclosed-reasons"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50023500/vols-lb-coach-william-inge-hospitalized-undisclosed-reasons"
-            }
-          ],
-          "id": "a415-45f97434003f9ec2",
           "feedRank": 35,
-          "compactHeadline": "Vols LB coach William Inge hospitalized for undisclosed reasons"
+          "compactHeadline": "No. 16 Louisville loses Antonio Watts for season with knee injury"
         }
       ]
     }
@@ -1085,7 +1103,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 103,
+    "freshCandidateCount": 114,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
