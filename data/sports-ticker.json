@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-27T00:01:53Z",
+  "generatedAt": "2026-09-27T00:32:08Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "595e1d6e002b6df6ae7e74f97b719ec311f1e2d2d731b03ce4c8ebe58d688d2b",
+  "sourceCandidateHash": "516471876602d3af36fe1708438df823c7a6893f47eb96d6da59dbacd315473b",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T17:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.86,
+          "ageHours": 7.37,
           "freshnessBasis": "Highlightly final: Pittsburgh Pirates 3, Detroit Tigers 4.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T20:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.95,
+          "ageHours": 4.45,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, San Francisco Giants 3.",
           "status": "active",
           "sourceUrls": [
@@ -99,7 +99,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:07:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.91,
+          "ageHours": 5.42,
           "freshnessBasis": "Highlightly final: Cincinnati Reds 5, Toronto Blue Jays 1.",
           "status": "active",
           "sourceUrls": [
@@ -134,7 +134,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.45,
+          "ageHours": 7.95,
           "freshnessBasis": "Highlightly final: New York Mets 7, Washington Nationals 1.",
           "status": "active",
           "sourceUrls": [
@@ -160,6 +160,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-dd9fafe2edb4f07f"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Dodgers right-hander Blake Treinen suffered a season-ending shoulder shoulder while warming up in the bullpen late in a 4-3 win Saturday over the Giants.",
+          "text": "Dodgers right-hander Blake Treinen suffered a season-ending shoulder shoulder while warming up in the bullpen late in a 4-3 win Saturday over the Giants.",
+          "entities": [],
+          "occurredAt": "2026-09-27T00:27:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.09,
+          "freshnessBasis": "Dodgers right-hander Blake Treinen suffered a season-ending shoulder shoulder while warming up in the bullpen late in a 4-3 win Saturday over the Giants.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50037936/season-dodgers-blake-treinen-shoulder-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50037936/season-dodgers-blake-treinen-shoulder-injury"
+            }
+          ],
+          "id": "a415-efd51fe556c3e350",
+          "feedRank": 5,
+          "compactHeadline": "Season over for Dodgers' Blake Treinen after shoulder injury"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-9c793e16039b664b"
           ],
           "type": "STREAK",
@@ -169,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
+          "ageHours": 4.37,
           "freshnessBasis": "Highlightly final: Atlanta Braves 8, Miami Marlins 3.",
           "status": "active",
           "sourceUrls": [
@@ -189,43 +218,8 @@
             }
           ],
           "id": "a415-02371401096271e2",
-          "feedRank": 5,
-          "compactHeadline": "Atlanta Braves beat Miami Marlins 8-3"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f881b2c79d08752e"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Reid Detmers pitched six shutout innings, Wade Meckler finished a home run short of the cycle, and the Los Angeles Angels beat the Seattle Mariners 7-5 on Friday night.",
-          "text": "Reid Detmers pitched six shutout innings, Wade Meckler finished a home run short of the cycle, and the Los Angeles Angels beat the Seattle Mariners 7-5 on Friday night.",
-          "entities": [],
-          "occurredAt": "2026-09-26T02:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.86,
-          "freshnessBasis": "Highlightly final: Los Angeles Angels 7, Seattle Mariners 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401817083"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-25",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817083"
-            }
-          ],
-          "id": "a415-db41fe3372d9da83",
           "feedRank": 6,
-          "compactHeadline": "Detmers throws 6 shutout innings as the Angels beat the Mariners 7-5"
+          "compactHeadline": "Atlanta Braves beat Miami Marlins 8-3"
         }
       ]
     },
@@ -245,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:43:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.3,
+          "ageHours": 1.8,
           "freshnessBasis": "Denver Broncos rookie running back Jonah Coleman was placed on injured reserve Saturday with an ankle injury he suffered in the team's Week 2 win over the Jacksonville Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -274,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:44:13Z",
           "timePrecision": "exact",
-          "ageHours": 4.29,
+          "ageHours": 4.8,
           "freshnessBasis": "The Jets promoted veteran Sterling Shepard from the practice squad, as starting WR Adonai Mitchell is questionable with a finger injury, and three other Jets receivers are on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -303,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:24Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
+          "ageHours": 5.03,
           "freshnessBasis": "Bears QB Caleb Williams is out for Monday's game against the Eagles, and backup Tyson Bagent returned to the practice field while still in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -332,7 +326,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:59:20Z",
           "timePrecision": "exact",
-          "ageHours": 7.04,
+          "ageHours": 7.55,
           "freshnessBasis": "The Colts officially placed receiver Alec Pierce on injured reserve Saturday, starting the clock on a potential return as he attempts to rehab and rejoin the lineup.",
           "status": "active",
           "sourceUrls": [
@@ -361,7 +355,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T21:33:09Z",
           "timePrecision": "exact",
-          "ageHours": 2.48,
+          "ageHours": 2.98,
           "freshnessBasis": "Seahawks quarterback Sam Darnold will start Sunday, but the defending Super Bowl champions will be without both starting safeties as Julian Love and Ty Okada have been ruled out.",
           "status": "active",
           "sourceUrls": [
@@ -390,7 +384,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:00:06Z",
           "timePrecision": "exact",
-          "ageHours": 2.03,
+          "ageHours": 2.53,
           "freshnessBasis": "The second-round pick has made impact plays over the first two weeks and will start vs. the Jaguars. Here's the latest on Jacas and other notes on the Patriots.",
           "status": "active",
           "sourceUrls": [
@@ -425,7 +419,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.59,
+          "ageHours": 2.09,
           "freshnessBasis": "The Chicago Bulls are trading Rob Dillingham to the Charlotte Hornets for Buddy Hield and cash, sources told ESPN's Shams Charania on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -454,7 +448,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T06:35:03Z",
           "timePrecision": "exact",
-          "ageHours": 17.45,
+          "ageHours": 17.95,
           "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "status": "active",
           "sourceUrls": [
@@ -483,7 +477,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T01:05:56Z",
           "timePrecision": "exact",
-          "ageHours": 22.93,
+          "ageHours": 23.44,
           "freshnessBasis": "Cavs president of basketball operations Koby Altman said he wasn't fazed when LeBron James chose to sign with the Sixers, saying, \"We're built for a sustainable run here regardless of one outcome.\"",
           "status": "active",
           "sourceUrls": [
@@ -518,7 +512,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.54,
           "freshnessBasis": "Highlightly final: Washington Capitals 5, Philadelphia Flyers 1.",
           "status": "active",
           "sourceUrls": [
@@ -547,7 +541,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.54,
           "freshnessBasis": "Highlightly final: Colorado Avalanche 0, Utah Mammoth 2.",
           "status": "active",
           "sourceUrls": [
@@ -576,7 +570,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.54,
           "freshnessBasis": "Highlightly final: Anaheim Ducks 2, Los Angeles Kings 6.",
           "status": "active",
           "sourceUrls": [
@@ -605,7 +599,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.54,
           "freshnessBasis": "Highlightly final: Pittsburgh Penguins 3, Buffalo Sabres 1.",
           "status": "active",
           "sourceUrls": [
@@ -634,7 +628,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.54,
           "freshnessBasis": "Highlightly final: Carolina Hurricanes 6, Nashville Predators 0.",
           "status": "active",
           "sourceUrls": [
@@ -650,35 +644,6 @@
           "id": "a415-664704057599eec8",
           "feedRank": 20,
           "compactHeadline": "Carolina Hurricanes beat Nashville Predators 6-0"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d11841b8e381ed2c"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Winnipeg Jets 2, Colorado Avalanche 5.",
-          "text": "Highlightly final: Winnipeg Jets 2, Colorado Avalanche 5.",
-          "entities": [],
-          "occurredAt": "2026-09-26T00:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Winnipeg Jets 2, Colorado Avalanche 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-09-25",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-ad26674345e550cd",
-          "feedRank": 21,
-          "compactHeadline": "Colorado Avalanche beat Winnipeg Jets 5-2"
         }
       ]
     },
@@ -698,7 +663,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:48:16Z",
           "timePrecision": "exact",
-          "ageHours": 1.23,
+          "ageHours": 1.73,
           "freshnessBasis": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
           "status": "active",
           "sourceUrls": [
@@ -712,7 +677,7 @@
             }
           ],
           "id": "a415-ae4bbd0ba1112477",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "England boss Thomas Tuchel: Potential Man City punishments not a distraction in Spain defeat"
         },
         {
@@ -727,7 +692,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T11:31:41Z",
           "timePrecision": "exact",
-          "ageHours": 12.5,
+          "ageHours": 13.01,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -741,7 +706,7 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
@@ -756,7 +721,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 7.94,
+          "ageHours": 8.44,
           "freshnessBasis": "Manchester City chairman Khaldoon Al Mubarak has said \"nothing has changed\" regarding the club's ongoing legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -770,7 +735,7 @@
             }
           ],
           "id": "a415-e738f11989199f74",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Man City chairman on club's Premier League charges case: 'Nothing has changed'"
         },
         {
@@ -785,7 +750,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T14:07:25Z",
           "timePrecision": "exact",
-          "ageHours": 9.91,
+          "ageHours": 10.41,
           "freshnessBasis": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
           "status": "active",
           "sourceUrls": [
@@ -799,7 +764,7 @@
             }
           ],
           "id": "a415-ef8036046abcec4a",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "Man City verdict will leave a stain and stench on a Premier League era"
         },
         {
@@ -814,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:38:45Z",
           "timePrecision": "exact",
-          "ageHours": 11.39,
+          "ageHours": 11.89,
           "freshnessBasis": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -828,7 +793,7 @@
             }
           ],
           "id": "a415-8626c0c248285e56",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Man City charges: Premier League clubs seeking legal advice amid expected guilty verdicts - sources"
         },
         {
@@ -843,7 +808,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:03:43Z",
           "timePrecision": "exact",
-          "ageHours": 11.97,
+          "ageHours": 12.47,
           "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
           "status": "active",
           "sourceUrls": [
@@ -857,7 +822,7 @@
             }
           ],
           "id": "a415-cabe39a1b0e69da1",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "Chelsea charged by FA over alleged discriminatory chanting"
         }
       ]
@@ -878,7 +843,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.53,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -892,7 +857,7 @@
             }
           ],
           "id": "a415-33d8c9a078d52094",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "Mauricio Pochettino: Cavan Sullivan ready for USMNT debut"
         },
         {
@@ -907,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 8.07,
+          "ageHours": 8.57,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -921,7 +886,7 @@
             }
           ],
           "id": "a415-1375489762173612",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "16-year-old Cavan Sullivan named to USMNT squad, Christian Pulisic left out"
         }
       ]
@@ -942,7 +907,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.04,
           "freshnessBasis": "Highlightly final: Iowa Hawkeyes 20, Michigan Wolverines 19.",
           "status": "active",
           "sourceUrls": [
@@ -962,7 +927,7 @@
             }
           ],
           "id": "a415-cb5201643a95b258",
-          "feedRank": 30,
+          "feedRank": 29,
           "compactHeadline": "Iowa Hawkeyes survives late missed field goal to beat Michigan Wolverines 20-19"
         },
         {
@@ -977,7 +942,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.04,
           "freshnessBasis": "Highlightly final: Utah Utes 31, Iowa State Cyclones 17.",
           "status": "active",
           "sourceUrls": [
@@ -997,7 +962,7 @@
             }
           ],
           "id": "a415-c0bb4203ceea766e",
-          "feedRank": 31,
+          "feedRank": 30,
           "compactHeadline": "Fast-starting Utes get career-high 174 yards from Wayshawn Parker in 31-17 win over Iowa State"
         },
         {
@@ -1012,7 +977,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.54,
           "freshnessBasis": "Highlightly final: Houston Cougars 42, Georgia Southern Eagles 28.",
           "status": "active",
           "sourceUrls": [
@@ -1032,11 +997,46 @@
             }
           ],
           "id": "a415-6ab11b14b18110f2",
-          "feedRank": 32,
+          "feedRank": 31,
           "compactHeadline": "Conner Weigman throws 4 TD passes, runs for 2 scores as No. 25 Houston beats Georgia Southern 42-28"
         },
         {
           "rank": 4,
+          "candidateIds": [
+            "cand-cd21f2d6c54e1e92"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Byrum Brown threw and ran for a touchdown, Cade Carlson recovered a blocked punt for a score and Auburn beat Vanderbilt 21-15 on Saturday.",
+          "text": "Byrum Brown threw and ran for a touchdown, Cade Carlson recovered a blocked punt for a score and Auburn beat Vanderbilt 21-15 on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-09-26T20:15:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.29,
+          "freshnessBasis": "Highlightly final: Vanderbilt Commodores 15, Auburn Tigers 21.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401856698"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-26",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401856698"
+            }
+          ],
+          "id": "a415-4af7bf2e5340c8aa",
+          "feedRank": 32,
+          "compactHeadline": "Brown has a pair of scores, special teams add a score and Auburn edges Vanderbilt 21-15"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-157651d27481a558"
           ],
@@ -1047,7 +1047,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.04,
           "freshnessBasis": "Highlightly final: New Mexico Lobos 42, New Mexico State Aggies 18.",
           "status": "active",
           "sourceUrls": [
@@ -1071,7 +1071,7 @@
           "compactHeadline": "New Mexico beats New Mexico State 42-18 in the 116th edition of the Rio Grande Rivalry"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-daaa16840570d58f"
           ],
@@ -1082,7 +1082,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.04,
           "freshnessBasis": "Highlightly final: Boise State Broncos 32, Western Michigan Broncos 7.",
           "status": "active",
           "sourceUrls": [
@@ -1104,41 +1104,6 @@
           "id": "a415-1f82cd06a28a0f69",
           "feedRank": 34,
           "compactHeadline": "Boise State beats Western Michigan 32-7 behind Madsen's 3 TD passes"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ddf280f35df314be"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "David McComb threw for 312 yards and two touchdowns and added a rushing score as Miami (Ohio) rallied from a 14-point deficit to beat Connecticut 24-21 on Saturday.",
-          "text": "David McComb threw for 312 yards and two touchdowns and added a rushing score as Miami (Ohio) rallied from a 14-point deficit to beat Connecticut 24-21 on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-26T19:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.53,
-          "freshnessBasis": "Highlightly final: UConn Huskies 21, Miami (OH) RedHawks 24.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401861970"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-26",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401861970"
-            }
-          ],
-          "id": "a415-5f9978c93d222515",
-          "feedRank": 35,
-          "compactHeadline": "David McComb leads Miami (Ohio) to 24-21 victory over UConn"
         }
       ]
     }
@@ -1163,8 +1128,8 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 109,
-    "publishedItemCount": 35,
+    "freshCandidateCount": 107,
+    "publishedItemCount": 34,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
