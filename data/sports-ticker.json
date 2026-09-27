@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-27T04:31:40Z",
+  "generatedAt": "2026-09-27T12:01:34Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "cc7dae583803d86406462e94a101fb5eae25f04b399ba5d193e9c476796f31d6",
+  "sourceCandidateHash": "4031f8f446176fe5efaf103995c2bde7e7ebfa0113a97310a233d66b422bf6c5",
   "leagues": [
     {
       "league": "MLB",
@@ -21,9 +21,9 @@
           "headline": "The Texas Rangers' quest for an AL West title -- and a .500 record -- will go down to the final day of the regular season.",
           "text": "The Texas Rangers' quest for an AL West title -- and a .500 record -- will go down to the final day of the regular season.",
           "entities": [],
-          "occurredAt": "2026-09-27T02:52:57Z",
+          "occurredAt": "2026-09-27T05:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 1.65,
+          "ageHours": 6.58,
           "freshnessBasis": "The Texas Rangers' quest for an AL West title -- and a .500 record -- will go down to the final day of the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -50,9 +50,9 @@
           "headline": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
           "text": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
           "entities": [],
-          "occurredAt": "2026-09-27T04:29:36Z",
+          "occurredAt": "2026-09-27T10:59:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.03,
+          "ageHours": 1.04,
           "freshnessBasis": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-8f6c996e637399c0"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Cleveland Guardians (85-76, first in the AL Central) vs. Kansas City Royals (68-93, fifth in the AL Central)",
+          "text": "Cleveland Guardians (85-76, first in the AL Central) vs. Kansas City Royals (68-93, fifth in the AL Central)",
+          "entities": [],
+          "occurredAt": "2026-09-27T08:02:36Z",
+          "timePrecision": "exact",
+          "ageHours": 3.98,
+          "freshnessBasis": "Cleveland Guardians (85-76, first in the AL Central) vs. Kansas City Royals (68-93, fifth in the AL Central)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/preview?gameId=401817109"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401817109"
+            }
+          ],
+          "id": "a415-4625a5b318f3c3de",
+          "feedRank": 3,
+          "compactHeadline": "Royals host the Guardians on home losing streak"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-ead6c9e0b58c1f6f"
           ],
           "type": "PLAYOFF",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T04:23:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 7.63,
           "freshnessBasis": "— Aaron Nola was hit hard on two days' rest and the Phillies' bullpen unraveled in a 12-1 loss to the Tampa Bay Rays on Saturday night, forcing...",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,40 @@
             }
           ],
           "id": "a415-e9c00723a40a09e3",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Phillies lose 4th straight game in last-week collapse, will play for NL wild card in season finale"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-f897eb8e5f0ab5cd"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Through all the final-week hardships for the Phillies -- a 4-game losing streak, a catcher in an 0-for-34 funk, a punchless offense, a desperate gamble on Aaron Nola -- they are taking solace in one certainty about the final game -- win and they're in.",
+          "text": "Through all the final-week hardships for the Phillies -- a 4-game losing streak, a catcher in an 0-for-34 funk, a punchless offense, a desperate gamble on Aaron Nola -- they are taking solace in one certainty about the final game -- win and they're in.",
+          "entities": [],
+          "occurredAt": "2026-09-27T04:57:23Z",
+          "timePrecision": "exact",
+          "ageHours": 7.07,
+          "freshnessBasis": "Through all the final-week hardships for the Phillies -- a 4-game losing streak, a catcher in an 0-for-34 funk, a punchless offense, a desperate gamble on Aaron Nola -- they are taking solace in one certainty about the final game -- win and they're in.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50036740/aaron-nola-pitching-2-days-rest-phillies-make-4th-attempt-clinch-nl-wild-card"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50036740/aaron-nola-pitching-2-days-rest-phillies-make-4th-attempt-clinch-nl-wild-card"
+            }
+          ],
+          "id": "a415-be1b9579bb6f4d4a",
+          "feedRank": 5,
+          "compactHeadline": "Phillies turn to Wheeler to right ship, get them in playoffs"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-dd9fafe2edb4f07f"
           ],
@@ -110,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T00:27:02Z",
           "timePrecision": "exact",
-          "ageHours": 4.08,
+          "ageHours": 11.58,
           "freshnessBasis": "Dodgers right-hander Blake Treinen suffered a season-ending shoulder shoulder while warming up in the bullpen late in a 4-3 win Saturday over the Giants.",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +182,8 @@
             }
           ],
           "id": "a415-efd51fe556c3e350",
-          "feedRank": 4,
-          "compactHeadline": "Season over for Dodgers' Blake Treinen after shoulder injury"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-250df2b7d7f899f7"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Manny Machado hit a three-run homer and the San Diego Padres beat the Arizona Diamondbacks 10-7 on Saturday to secure the No. 4 seed in the National League playoffs.",
-          "text": "Manny Machado hit a three-run homer and the San Diego Padres beat the Arizona Diamondbacks 10-7 on Saturday to secure the No. 4 seed in the National League playoffs.",
-          "entities": [],
-          "occurredAt": "2026-09-27T04:24:28Z",
-          "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "— Manny Machado hit a three-run homer and the San Diego Padres beat the Arizona Diamondbacks 10-7 on Saturday to secure the No. 4 seed in the National League playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817099"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817099"
-            }
-          ],
-          "id": "a415-5216fae1bfbe79c1",
-          "feedRank": 5,
-          "compactHeadline": "Machado homers as Padres beat D-backs 10-7 to clinch home field in wild-card round vs Cubs"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-828a7eaae90e1907"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Kiké Hernández hit a tiebreaking home run leading off the ninth inning, Mookie Betts also homered and the Los Angeles Dodgers beat the San Francisco Giants 4-3 on Saturday.",
-          "text": "Kiké Hernández hit a tiebreaking home run leading off the ninth inning, Mookie Betts also homered and the Los Angeles Dodgers beat the San Francisco Giants 4-3 on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-27T03:09:29Z",
-          "timePrecision": "exact",
-          "ageHours": 1.37,
-          "freshnessBasis": "— Kiké Hernández hit a tiebreaking home run leading off the ninth inning, Mookie Betts also homered and the Los Angeles Dodgers beat the San Francisco Giants 4-3 on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817101"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817101"
-            }
-          ],
-          "id": "a415-5c2a68df58f74817",
           "feedRank": 6,
-          "compactHeadline": "Kiké Hernández hits tiebreaking home run leading off 9th to lift Dodgers over Giants 4-3"
+          "compactHeadline": "Season over for Dodgers' Blake Treinen after shoulder injury"
         }
       ]
     },
@@ -194,6 +194,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-f4e9004316cda047"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Myles Garrett was given a six-week recovery timeline from his knee surgery, meaning the star pass rusher might not return until early November, sources told NFL Network.",
+          "text": "Myles Garrett was given a six-week recovery timeline from his knee surgery, meaning the star pass rusher might not return until early November, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-09-27T11:50:10Z",
+          "timePrecision": "exact",
+          "ageHours": 0.19,
+          "freshnessBasis": "Myles Garrett was given a six-week recovery timeline from his knee surgery, meaning the star pass rusher might not return until early November, sources told NFL Network.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50038925/sources-myles-garrett-faces-6-week-line-knee-surgery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50038925/sources-myles-garrett-faces-6-week-line-knee-surgery"
+            }
+          ],
+          "id": "a415-e99490ebbf966532",
+          "feedRank": 7,
+          "compactHeadline": "Sources: Myles Garrett faces 6-week timeline from knee surgery"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-9a37ca641777cb6c"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "A handful of teams, including the Cowboys and Lions, have begun making inquiries about the availability of Steelers cornerback Joey Porter Jr., sources told ESPN.",
+          "text": "A handful of teams, including the Cowboys and Lions, have begun making inquiries about the availability of Steelers cornerback Joey Porter Jr., sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-09-27T11:36:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.42,
+          "freshnessBasis": "A handful of teams, including the Cowboys and Lions, have begun making inquiries about the availability of Steelers cornerback Joey Porter Jr., sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50038725/sources-steelers-field-joey-porter-jr-trade-calls-cowboys-lions"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50038725/sources-steelers-field-joey-porter-jr-trade-calls-cowboys-lions"
+            }
+          ],
+          "id": "a415-9609706fba072d1b",
+          "feedRank": 8,
+          "compactHeadline": "Sources: Cowboys, Lions make trade inquiries on Joey Porter Jr."
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-88b78b2841b9a194"
           ],
           "type": "INJURY",
@@ -203,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:43:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.8,
+          "ageHours": 13.3,
           "freshnessBasis": "Denver Broncos rookie running back Jonah Coleman was placed on injured reserve Saturday with an ankle injury he suffered in the team's Week 2 win over the Jacksonville Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +275,11 @@
             }
           ],
           "id": "a415-e2110b01d2af9b4e",
-          "feedRank": 7,
+          "feedRank": 9,
           "compactHeadline": "Broncos place RB Jonah Coleman (ankle) on IR"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-1d15cba4cdac384a"
           ],
@@ -232,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:44:13Z",
           "timePrecision": "exact",
-          "ageHours": 8.79,
+          "ageHours": 16.29,
           "freshnessBasis": "The Jets promoted veteran Sterling Shepard from the practice squad, as starting WR Adonai Mitchell is questionable with a finger injury, and three other Jets receivers are on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +304,11 @@
             }
           ],
           "id": "a415-886f911d12f9035d",
-          "feedRank": 8,
+          "feedRank": 10,
           "compactHeadline": "Jets elevate Sterling Shepard with Adonai Mitchell in question"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-b5307666627cc69b"
           ],
@@ -261,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:24Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 16.52,
           "freshnessBasis": "Bears QB Caleb Williams is out for Monday's game against the Eagles, and backup Tyson Bagent returned to the practice field while still in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +333,11 @@
             }
           ],
           "id": "a415-fb1a1cac24ff3a80",
-          "feedRank": 9,
+          "feedRank": 11,
           "compactHeadline": "Bears QB Williams out for MNF; backup Bagent back at practice"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-916bc04e1796cdbd"
           ],
@@ -290,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:59:20Z",
           "timePrecision": "exact",
-          "ageHours": 11.54,
+          "ageHours": 19.04,
           "freshnessBasis": "The Colts officially placed receiver Alec Pierce on injured reserve Saturday, starting the clock on a potential return as he attempts to rehab and rejoin the lineup.",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +362,8 @@
             }
           ],
           "id": "a415-f60ab1f0b1018b13",
-          "feedRank": 10,
-          "compactHeadline": "Colts officially place WR Alec Pierce on IR with heel issue"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-a9f88159b4bb4484"
-          ],
-          "type": "ROSTER",
-          "priority": 64,
-          "headline": "Seahawks quarterback Sam Darnold will start Sunday, but the defending Super Bowl champions will be without both starting safeties as Julian Love and Ty Okada have been ruled out.",
-          "text": "Seahawks quarterback Sam Darnold will start Sunday, but the defending Super Bowl champions will be without both starting safeties as Julian Love and Ty Okada have been ruled out.",
-          "entities": [],
-          "occurredAt": "2026-09-26T21:33:09Z",
-          "timePrecision": "exact",
-          "ageHours": 6.98,
-          "freshnessBasis": "Seahawks quarterback Sam Darnold will start Sunday, but the defending Super Bowl champions will be without both starting safeties as Julian Love and Ty Okada have been ruled out.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50029379/qb-sam-darnold-back-sunday-seahawks-two-safeties"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50029379/qb-sam-darnold-back-sunday-seahawks-two-safeties"
-            }
-          ],
-          "id": "a415-7c99aef4f8a31516",
-          "feedRank": 11,
-          "compactHeadline": "QB Sam Darnold back Sunday, but Seahawks down two safeties"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-fcfa285f3995b8e4"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The second-round pick has made impact plays over the first two weeks and will start vs. the Jaguars. Here's the latest on Jacas and other notes on the Patriots.",
-          "text": "The second-round pick has made impact plays over the first two weeks and will start vs. the Jaguars. Here's the latest on Jacas and other notes on the Patriots.",
-          "entities": [],
-          "occurredAt": "2026-09-26T22:00:06Z",
-          "timePrecision": "exact",
-          "ageHours": 6.53,
-          "freshnessBasis": "The second-round pick has made impact plays over the first two weeks and will start vs. the Jaguars. Here's the latest on Jacas and other notes on the Patriots.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50028606/new-england-patriots-week-3-defense-gabe-jacas-rookie"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50028606/new-england-patriots-week-3-defense-gabe-jacas-rookie"
-            }
-          ],
-          "id": "a415-ed65d5a53d56971f",
           "feedRank": 12,
-          "compactHeadline": "Patriots need rookie LB Gabe Jacas to fill big shoes on defense"
+          "compactHeadline": "Colts officially place WR Alec Pierce on IR with heel issue"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 6.09,
+          "ageHours": 13.59,
           "freshnessBasis": "The Chicago Bulls are trading Rob Dillingham to the Charlotte Hornets for Buddy Hield and cash, sources told ESPN's Shams Charania on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -403,31 +403,31 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-0b53dee39446a2f0"
+            "cand-88c3d8860d99b84c"
           ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
-          "text": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Jalen Brunson had four of his Knicks teammates -- Karl-Anthony Towns, Mikal Bridges, OG Anunoby and Josh Hart -- in the audience for his monologue Saturday night, in his role as host of \"SNL.\"",
+          "text": "Jalen Brunson had four of his Knicks teammates -- Karl-Anthony Towns, Mikal Bridges, OG Anunoby and Josh Hart -- in the audience for his monologue Saturday night, in his role as host of \"SNL.\"",
           "entities": [],
-          "occurredAt": "2026-09-26T06:35:03Z",
+          "occurredAt": "2026-09-27T05:09:02Z",
           "timePrecision": "exact",
-          "ageHours": 21.94,
-          "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
+          "ageHours": 6.88,
+          "freshnessBasis": "Jalen Brunson had four of his Knicks teammates -- Karl-Anthony Towns, Mikal Bridges, OG Anunoby and Josh Hart -- in the audience for his monologue Saturday night, in his role as host of \"SNL.\"",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50030670/sources-warriors-curry-reach-2-year-extension-worth-116-million"
+            "https://www.espn.com/nba/story/_/id/50039929/host-jalen-brunson-gets-assist-knicks-snl-premiere"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50030670/sources-warriors-curry-reach-2-year-extension-worth-116-million"
+              "url": "https://www.espn.com/nba/story/_/id/50039929/host-jalen-brunson-gets-assist-knicks-snl-premiere"
             }
           ],
-          "id": "a415-6d0b719a1d962f48",
+          "id": "a415-9beb58f6bc868dec",
           "feedRank": 14,
-          "compactHeadline": "Sources: Warriors, Curry reach 2-year extension worth $116 million"
+          "compactHeadline": "Host Jalen Brunson gets assist from Knicks on 'SNL' premiere"
         }
       ]
     },
@@ -560,35 +560,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0911c78527819073"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
-          "text": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
-          "entities": [],
-          "occurredAt": "2026-09-26T22:48:16Z",
-          "timePrecision": "exact",
-          "ageHours": 5.72,
-          "freshnessBasis": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50036795/england-boss-thomas-tuchel-potential-manchester-city-punishments-not-distraction-spain-defeat"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50036795/england-boss-thomas-tuchel-potential-manchester-city-punishments-not-distraction-spain-defeat"
-            }
-          ],
-          "id": "a415-ae4bbd0ba1112477",
-          "feedRank": 15,
-          "compactHeadline": "England boss Thomas Tuchel: Potential Man City punishments not a distraction in Spain defeat"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-ea13da58a838832c"
           ],
           "type": "INJURY",
@@ -596,9 +567,9 @@
           "headline": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "text": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "entities": [],
-          "occurredAt": "2026-09-26T11:31:41Z",
+          "occurredAt": "2026-09-27T11:44:38Z",
           "timePrecision": "exact",
-          "ageHours": 17.0,
+          "ageHours": 0.28,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -612,11 +583,127 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 16,
+          "feedRank": 15,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
+          "rank": 2,
+          "candidateIds": [
+            "cand-076d62e1141b104a"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Alexander Isak is returning to Liverpool after sustaining a \"minor injury\" on international duty.",
+          "text": "Alexander Isak is returning to Liverpool after sustaining a \"minor injury\" on international duty.",
+          "entities": [],
+          "occurredAt": "2026-09-27T10:34:22Z",
+          "timePrecision": "exact",
+          "ageHours": 1.45,
+          "freshnessBasis": "Alexander Isak is returning to Liverpool after sustaining a \"minor injury\" on international duty.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50041047/liverpool-alexander-isak-leaves-sweden-camp-early-minor-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50041047/liverpool-alexander-isak-leaves-sweden-camp-early-minor-injury"
+            }
+          ],
+          "id": "a415-6bb5fa485997be5a",
+          "feedRank": 16,
+          "compactHeadline": "Liverpool's Alexander Isak leaves Sweden camp early with 'minor injury'"
+        },
+        {
           "rank": 3,
+          "candidateIds": [
+            "cand-93a744ecbd7f5dbf"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
+          "text": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
+          "entities": [],
+          "occurredAt": "2026-09-27T11:40:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.35,
+          "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50029047/rio-ferdinand-david-de-gea-football-world-reaction-man-city-115-premier-league-breaches-case"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50029047/rio-ferdinand-david-de-gea-football-world-reaction-man-city-115-premier-league-breaches-case"
+            }
+          ],
+          "id": "a415-656347ae57b38bac",
+          "feedRank": 17,
+          "compactHeadline": "Rio Ferdinand leads reaction to Man City's 115 breaches case: 'Another Premier League medal'"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-0911c78527819073"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
+          "text": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
+          "entities": [],
+          "occurredAt": "2026-09-26T22:48:16Z",
+          "timePrecision": "exact",
+          "ageHours": 13.22,
+          "freshnessBasis": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50036795/england-boss-thomas-tuchel-potential-manchester-city-punishments-not-distraction-spain-defeat"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50036795/england-boss-thomas-tuchel-potential-manchester-city-punishments-not-distraction-spain-defeat"
+            }
+          ],
+          "id": "a415-ae4bbd0ba1112477",
+          "feedRank": 18,
+          "compactHeadline": "England boss Thomas Tuchel: Potential Man City punishments not a distraction in Spain defeat"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-af414b8e8a356662"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "In the fiercely competitive race for the best Premier League academy players, JJ Gabriel won't be the last young talent at the center of a transfer tug-of-war.",
+          "text": "In the fiercely competitive race for the best Premier League academy players, JJ Gabriel won't be the last young talent at the center of a transfer tug-of-war.",
+          "entities": [],
+          "occurredAt": "2026-09-27T11:33:54Z",
+          "timePrecision": "exact",
+          "ageHours": 0.46,
+          "freshnessBasis": "In the fiercely competitive race for the best Premier League academy players, JJ Gabriel won't be the last young talent at the center of a transfer tug-of-war.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50006976/jj-gabriel-nightmare-battle-premier-league-academy-talent"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50006976/jj-gabriel-nightmare-battle-premier-league-academy-talent"
+            }
+          ],
+          "id": "a415-6dfe002856611bef",
+          "feedRank": 19,
+          "compactHeadline": "JJ Gabriel and the 'nightmare' battle for Premier League academy talent"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-033e2c87d6a967de"
           ],
@@ -627,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 12.43,
+          "ageHours": 19.93,
           "freshnessBasis": "Manchester City chairman Khaldoon Al Mubarak has said \"nothing has changed\" regarding the club's ongoing legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -641,95 +728,8 @@
             }
           ],
           "id": "a415-e738f11989199f74",
-          "feedRank": 17,
-          "compactHeadline": "Man City chairman on club's Premier League charges case: 'Nothing has changed'"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-eee40c11e496511a"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
-          "text": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
-          "entities": [],
-          "occurredAt": "2026-09-26T14:07:25Z",
-          "timePrecision": "exact",
-          "ageHours": 14.4,
-          "freshnessBasis": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50032611/man-city-verdict-leave-stain-stench-premier-league-era"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50032611/man-city-verdict-leave-stain-stench-premier-league-era"
-            }
-          ],
-          "id": "a415-ef8036046abcec4a",
-          "feedRank": 18,
-          "compactHeadline": "Man City verdict will leave a stain and stench on a Premier League era"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-00366397866cda20"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
-          "text": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-09-26T12:38:45Z",
-          "timePrecision": "exact",
-          "ageHours": 15.88,
-          "freshnessBasis": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50032007/man-city-charges-115-premier-league-clubs-seeking-legal-advice-amid-expected-guilty-verdicts"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50032007/man-city-charges-115-premier-league-clubs-seeking-legal-advice-amid-expected-guilty-verdicts"
-            }
-          ],
-          "id": "a415-8626c0c248285e56",
-          "feedRank": 19,
-          "compactHeadline": "Man City charges: Premier League clubs seeking legal advice amid expected guilty verdicts - sources"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-cc7a89451c357a68"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "text": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "entities": [],
-          "occurredAt": "2026-09-26T12:03:43Z",
-          "timePrecision": "exact",
-          "ageHours": 16.47,
-          "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50026797/chelsea-charged-fa-alleged-discriminatory-chanting"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50026797/chelsea-charged-fa-alleged-discriminatory-chanting"
-            }
-          ],
-          "id": "a415-cabe39a1b0e69da1",
           "feedRank": 20,
-          "compactHeadline": "Chelsea charged by FA over alleged discriminatory chanting"
+          "compactHeadline": "Man City chairman on club's Premier League charges case: 'Nothing has changed'"
         }
       ]
     },
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T03:03:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
+          "ageHours": 8.97,
           "freshnessBasis": "Milan Iloski scored three goals, his second hat trick this season, Indiana Vassilev added a goal and two assists, and the Philadelphia Union beat Orlando City SC 4-2 on Saturday night for their sixth consecutive win.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 12.52,
+          "ageHours": 20.02,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 12.56,
+          "ageHours": 20.06,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -840,9 +840,9 @@
           "headline": "Dylan Raiola passed for 289 yards and two touchdowns after star Oregon quarterback Dante Moore's frightening injury, leading the 20th-ranked Ducks to a stirring 41-27 victory over No. 12 Southern California on Saturday night.",
           "text": "Dylan Raiola passed for 289 yards and two touchdowns after star Oregon quarterback Dante Moore's frightening injury, leading the 20th-ranked Ducks to a stirring 41-27 victory over No. 12 Southern California on Saturday night.",
           "entities": [],
-          "occurredAt": "2026-09-27T04:09:03Z",
+          "occurredAt": "2026-09-27T05:05:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 6.94,
           "freshnessBasis": "Dylan Raiola passed for 289 yards and two touchdowns after star Oregon quarterback Dante Moore's frightening injury, leading the 20th-ranked Ducks to a stirring 41-27 victory over No. 12 Southern California on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -862,35 +862,6 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-1d0aee3ae211f5b3"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "LSU star linebacker Whit Weeks is out of Saturday night's game against Texas A&M after heading to the locker room on crutches with a boot on his foot.",
-          "text": "LSU star linebacker Whit Weeks is out of Saturday night's game against Texas A&M after heading to the locker room on crutches with a boot on his foot.",
-          "entities": [],
-          "occurredAt": "2026-09-27T03:29:59Z",
-          "timePrecision": "exact",
-          "ageHours": 1.03,
-          "freshnessBasis": "LSU star linebacker Whit Weeks is out of Saturday night's game against Texas A&M after heading to the locker room on crutches with a boot on his foot.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50039102/lsu-star-lb-whit-weeks-exits-vs-texas-foot-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50039102/lsu-star-lb-whit-weeks-exits-vs-texas-foot-injury"
-            }
-          ],
-          "id": "a415-4fd61bbf70f78812",
-          "feedRank": 25,
-          "compactHeadline": "LSU star LB Whit Weeks exits vs. Texas A&M with foot injury"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-3c3de8b84396198d"
           ],
           "type": "PLAYOFF",
@@ -898,9 +869,9 @@
           "headline": "We assess how the selection committee could stack the top teams in the country after Week 4.",
           "text": "We assess how the selection committee could stack the top teams in the country after Week 4.",
           "entities": [],
-          "occurredAt": "2026-09-27T04:19:57Z",
+          "occurredAt": "2026-09-27T04:47:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.2,
+          "ageHours": 7.24,
           "freshnessBasis": "We assess how the selection committee could stack the top teams in the country after Week 4.",
           "status": "active",
           "sourceUrls": [
@@ -914,66 +885,95 @@
             }
           ],
           "id": "a415-66c35a19bbf739ef",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "Projecting the College Football Playoff top 12 after Week 4"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-bec7dd086e2c0c42"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Drake Lindsey tossed three touchdowns in the first half to three different receivers and Minnesota defeated Washington 27-24 on Saturday night.",
+          "text": "Drake Lindsey tossed three touchdowns in the first half to three different receivers and Minnesota defeated Washington 27-24 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-27T07:58:41Z",
+          "timePrecision": "exact",
+          "ageHours": 4.05,
+          "freshnessBasis": "— Drake Lindsey tossed three touchdowns in the first half to three different receivers and Minnesota defeated Washington 27-24 on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858470"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858470"
+            }
+          ],
+          "id": "a415-1abdafd14e17d87b",
+          "feedRank": 27,
+          "compactHeadline": "Drake Lindsey throws 3 touchdowns in the first half as Minnesota holds off Washington 27-24"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-b1e86ac1999f64c6"
+            "cand-185f6a25fe1ef0b4"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Drew Mestemaker threw for a season-high 389 yards and three touchdowns, Caleb Hawkins rushed for 180 yards and a score, and Oklahoma State beat West Virginia 41-24 in their Big 12 opener Saturday night.",
-          "text": "Drew Mestemaker threw for a season-high 389 yards and three touchdowns, Caleb Hawkins rushed for 180 yards and a score, and Oklahoma State beat West Virginia 41-24 in their Big 12 opener Saturday night.",
+          "headline": "Davis Warren passed for a career-high 396 yards and three touchdowns to lead Stanford in a 34-27 comeback win over Georgia Tech on Saturday night.",
+          "text": "Davis Warren passed for a career-high 396 yards and three touchdowns to lead Stanford in a 34-27 comeback win over Georgia Tech on Saturday night.",
           "entities": [],
-          "occurredAt": "2026-09-27T04:16:29Z",
+          "occurredAt": "2026-09-27T07:00:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
-          "freshnessBasis": "— Drew Mestemaker threw for a season-high 389 yards and three touchdowns, Caleb Hawkins rushed for 180 yards and a score, and Oklahoma State beat West Virginia 41-24 in their Big 12 opener Saturday night.",
+          "ageHours": 5.02,
+          "freshnessBasis": "— Davis Warren passed for a career-high 396 yards and three touchdowns to lead Stanford in a 34-27 comeback win over Georgia Tech on Saturday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856881"
+            "http://www.espn.com/ncf/recap?gameId=401858240"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856881"
+              "url": "http://www.espn.com/ncf/recap?gameId=401858240"
             }
           ],
-          "id": "a415-a13f13854be7f082",
+          "id": "a415-9f2719fce48297e4",
           "feedRank": 28,
-          "compactHeadline": "Mestemaker throws for 389 yards and 3 TDs as Oklahoma State beats West Virginia 41-24"
+          "compactHeadline": "Davis Warren sets career high in Stanford's comeback win over Georgia Tech, 34-27"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-6ff5398b36488e47"
+            "cand-db81db923328019b"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Arkansas snapped a 12-game losing streak against Bowl Subdivision opponents with a 34-6 win over Tulsa on Saturday night.",
-          "text": "Arkansas snapped a 12-game losing streak against Bowl Subdivision opponents with a 34-6 win over Tulsa on Saturday night.",
+          "headline": "Kamario Taylor threw for 360 yards and three touchdowns, including a tiebreaking, 24-yard pass to Sanfrisco Magee with 3:57 remaining, and No. 24 Mississippi State rallied past No. 19 Missouri 31-24 on Saturday night.",
+          "text": "Kamario Taylor threw for 360 yards and three touchdowns, including a tiebreaking, 24-yard pass to Sanfrisco Magee with 3:57 remaining, and No. 24 Mississippi State rallied past No. 19 Missouri 31-24 on Saturday night.",
           "entities": [],
-          "occurredAt": "2026-09-27T04:11:30Z",
+          "occurredAt": "2026-09-27T06:57:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.34,
-          "freshnessBasis": "— Arkansas snapped a 12-game losing streak against Bowl Subdivision opponents with a 34-6 win over Tulsa on Saturday night.",
+          "ageHours": 5.07,
+          "freshnessBasis": "— Kamario Taylor threw for 360 yards and three touchdowns, including a tiebreaking, 24-yard pass to Sanfrisco Magee with 3:57 remaining, and No. 24 Mississippi State rallied past No. 19 Missouri 31-24 on Saturday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856697"
+            "http://www.espn.com/ncf/recap?gameId=401856703"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856697"
+              "url": "http://www.espn.com/ncf/recap?gameId=401856703"
             }
           ],
-          "id": "a415-fa613036fbab8e50",
+          "id": "a415-635810c5c8bdfee2",
           "feedRank": 29,
-          "compactHeadline": "KJ Jackson impresses as Arkansas snaps 12-game skid vs FBS opponents with win over Tulsa"
+          "compactHeadline": "Kamario Taylor leads 4th-quarter rally and No. 24 Mississippi State beats No. 19 Missouri 31-24"
         }
       ]
     }
@@ -998,7 +998,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 103,
+    "freshCandidateCount": 111,
     "publishedItemCount": 32,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
