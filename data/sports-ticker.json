@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-27T14:01:54Z",
+  "generatedAt": "2026-09-27T14:31:32Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "f05d008b1a391d6abcbcf34537fe791a187ca2039990c9769afa590082bc3da4",
+  "sourceCandidateHash": "d4537def9374e0b0dec02d606419599f6ed551c561336e12377f7c768e00707d",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T05:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 8.59,
+          "ageHours": 9.08,
           "freshnessBasis": "The Texas Rangers' quest for an AL West title -- and a .500 record -- will go down to the final day of the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T10:59:01Z",
           "timePrecision": "exact",
-          "ageHours": 3.05,
+          "ageHours": 3.54,
           "freshnessBasis": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-e2e497bfe7c62fa7"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Padres beat the Diamondbacks 10-7 to wrap up the No. 4 seed in the NL playoffs. They will host every game in a best-of-three wild-card series against the fifth-seeded Cubs.",
+          "text": "The Padres beat the Diamondbacks 10-7 to wrap up the No. 4 seed in the NL playoffs. They will host every game in a best-of-three wild-card series against the fifth-seeded Cubs.",
+          "entities": [],
+          "occurredAt": "2026-09-27T14:10:07Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "The Padres beat the Diamondbacks 10-7 to wrap up the No. 4 seed in the NL playoffs. They will host every game in a best-of-three wild-card series against the fifth-seeded Cubs.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50040141/padres-secure-home-field-advantage-wild-card-rematch-cubs"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50040141/padres-secure-home-field-advantage-wild-card-rematch-cubs"
+            }
+          ],
+          "id": "a415-d01ae5fe5ea6be7f",
+          "feedRank": 3,
+          "compactHeadline": "Padres secure home field for wild-card rematch with Cubs"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-8f6c996e637399c0"
           ],
           "type": "STREAK",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T08:02:36Z",
           "timePrecision": "exact",
-          "ageHours": 5.99,
+          "ageHours": 6.48,
           "freshnessBasis": "Cleveland Guardians (85-76, first in the AL Central) vs. Kansas City Royals (68-93, fifth in the AL Central)",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +124,8 @@
             }
           ],
           "id": "a415-4625a5b318f3c3de",
-          "feedRank": 3,
-          "compactHeadline": "Royals host the Guardians on home losing streak"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-6eeec522c045c409"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "The Padres beat the Diamondbacks 10-7 on Saturday to wrap up the No. 4 seed in the NL playoffs and will host every game in a best-of-three Wild Card Series against the fifth-seeded Cubs.",
-          "text": "The Padres beat the Diamondbacks 10-7 on Saturday to wrap up the No. 4 seed in the NL playoffs and will host every game in a best-of-three Wild Card Series against the fifth-seeded Cubs.",
-          "entities": [],
-          "occurredAt": "2026-09-27T12:35:34Z",
-          "timePrecision": "exact",
-          "ageHours": 1.44,
-          "freshnessBasis": "The Padres beat the Diamondbacks 10-7 on Saturday to wrap up the No. 4 seed in the NL playoffs and will host every game in a best-of-three Wild Card Series against the fifth-seeded Cubs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50040141/padres-secure-home-field-advantage-wild-card-rematch-cubs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50040141/padres-secure-home-field-advantage-wild-card-rematch-cubs"
-            }
-          ],
-          "id": "a415-dee2e57a1369e41e",
           "feedRank": 4,
-          "compactHeadline": "Padres secure home-field advantage in wild-card rematch with Cubs"
+          "compactHeadline": "Royals host the Guardians on home losing streak"
         },
         {
           "rank": 5,
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T04:23:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.64,
+          "ageHours": 10.13,
           "freshnessBasis": "— Aaron Nola was hit hard on two days' rest and the Phillies' bullpen unraveled in a 12-1 loss to the Tampa Bay Rays on Saturday night, forcing...",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T04:57:23Z",
           "timePrecision": "exact",
-          "ageHours": 9.08,
+          "ageHours": 9.57,
           "freshnessBasis": "Through all the final-week hardships for the Phillies -- a 4-game losing streak, a catcher in an 0-for-34 funk, a punchless offense, a desperate gamble on Aaron Nola -- they are taking solace in one certainty about the final game -- win and they're in.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T13:53:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.63,
           "freshnessBasis": "Bears quarterback Caleb Williams has a Grade 2 hamstring injury that doctors say could sideline him for three to four weeks, league sources told ESPN and NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T13:39:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 0.87,
           "freshnessBasis": "Myles Garrett was given a six-week recovery timeline from his knee surgery, meaning the star pass rusher might not return until early November, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T13:33:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.47,
+          "ageHours": 0.97,
           "freshnessBasis": "A handful of teams, including the Cowboys and Lions, have begun making inquiries about the availability of Steelers cornerback Joey Porter Jr., sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:43:52Z",
           "timePrecision": "exact",
-          "ageHours": 15.3,
+          "ageHours": 15.79,
           "freshnessBasis": "Denver Broncos rookie running back Jonah Coleman was placed on injured reserve Saturday with an ankle injury he suffered in the team's Week 2 win over the Jacksonville Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:44:13Z",
           "timePrecision": "exact",
-          "ageHours": 18.29,
+          "ageHours": 18.79,
           "freshnessBasis": "The Jets promoted veteran Sterling Shepard from the practice squad, as starting WR Adonai Mitchell is questionable with a finger injury, and three other Jets receivers are on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:24Z",
           "timePrecision": "exact",
-          "ageHours": 18.53,
+          "ageHours": 19.02,
           "freshnessBasis": "Bears QB Caleb Williams is out for Monday's game against the Eagles, and backup Tyson Bagent returned to the practice field while still in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 15.59,
+          "ageHours": 16.08,
           "freshnessBasis": "The Chicago Bulls are trading Rob Dillingham to the Charlotte Hornets for Buddy Hield and cash, sources told ESPN's Shams Charania on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T05:09:02Z",
           "timePrecision": "exact",
-          "ageHours": 8.88,
+          "ageHours": 9.38,
           "freshnessBasis": "Jalen Brunson had four of his Knicks teammates -- Karl-Anthony Towns, Mikal Bridges, OG Anunoby and Josh Hart -- in the audience for his monologue Saturday night, in his role as host of \"SNL.\"",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T13:30:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.53,
+          "ageHours": 1.02,
           "freshnessBasis": "The Islanders have signed Logan Stanley to a one-year contract, adding the defenseman days before their season opener.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T11:44:38Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 2.78,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T10:34:22Z",
           "timePrecision": "exact",
-          "ageHours": 3.46,
+          "ageHours": 3.95,
           "freshnessBasis": "Alexander Isak is returning to Liverpool after sustaining a \"minor injury\" on international duty.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T11:40:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.36,
+          "ageHours": 2.85,
           "freshnessBasis": "The football world has been reacting to reports that Manchester City are expected to be found guilty of most charges in their legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:48:16Z",
           "timePrecision": "exact",
-          "ageHours": 15.23,
+          "ageHours": 15.72,
           "freshnessBasis": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T11:33:54Z",
           "timePrecision": "exact",
-          "ageHours": 2.47,
+          "ageHours": 2.96,
           "freshnessBasis": "In the fiercely competitive race for the best Premier League academy players, JJ Gabriel won't be the last young talent at the center of a transfer tug-of-war.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 21.94,
+          "ageHours": 22.43,
           "freshnessBasis": "Manchester City chairman Khaldoon Al Mubarak has said \"nothing has changed\" regarding the club's ongoing legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T03:03:19Z",
           "timePrecision": "exact",
-          "ageHours": 10.98,
+          "ageHours": 11.47,
           "freshnessBasis": "Milan Iloski scored three goals, his second hat trick this season, Indiana Vassilev added a goal and two assists, and the Philadelphia Union beat Orlando City SC 4-2 on Saturday night for their sixth consecutive win.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.52,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 22.07,
+          "ageHours": 22.56,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T13:29:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.53,
+          "ageHours": 1.03,
           "freshnessBasis": "Dylan Raiola passed for 289 yards and two touchdowns after star Oregon quarterback Dante Moore's frightening injury, leading the 20th-ranked Ducks to a stirring 41-27 victory over No. 12 Southern California on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -871,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T12:58:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
+          "ageHours": 1.54,
           "freshnessBasis": "We assess how the selection committee could stack the top teams in the country after Week 4.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T13:47:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
+          "ageHours": 0.73,
           "freshnessBasis": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T07:58:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.05,
+          "ageHours": 6.55,
           "freshnessBasis": "— Drake Lindsey tossed three touchdowns in the first half to three different receivers and Minnesota defeated Washington 27-24 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T07:00:31Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
+          "ageHours": 7.52,
           "freshnessBasis": "— Davis Warren passed for a career-high 396 yards and three touchdowns to lead Stanford in a 34-27 comeback win over Georgia Tech on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -998,7 +998,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 111,
     "publishedItemCount": 32,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
