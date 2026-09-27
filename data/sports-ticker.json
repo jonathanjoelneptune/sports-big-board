@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-27T02:01:45Z",
+  "generatedAt": "2026-09-27T02:31:34Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "03d72f0bf5329eb578f50e834a70dd11a5c068d3e8ceb77e1185278bf74c432f",
+  "sourceCandidateHash": "96a718a39840a28a06bdd8aa531b7c0491ef9cadf5120637120ee31ecf4f6527",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T00:27:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
+          "ageHours": 2.08,
           "freshnessBasis": "Dodgers right-hander Blake Treinen suffered a season-ending shoulder shoulder while warming up in the bullpen late in a 4-3 win Saturday over the Giants.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,64 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-4d677bb0e01caec3"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
+          "text": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
+          "entities": [],
+          "occurredAt": "2026-09-27T02:04:56Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "From current playoff matchups to the postseason schedule, we have everything you need to know.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+            }
+          ],
+          "id": "a415-dbccbfd4bc1f6041",
+          "feedRank": 2,
+          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-72a3dcd21493fcbb"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Once again, the Cleveland Guardians are division champs.",
+          "text": "Once again, the Cleveland Guardians are division champs.",
+          "entities": [],
+          "occurredAt": "2026-09-27T02:22:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "— Once again, the Cleveland Guardians are division champs.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401817094"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401817094"
+            }
+          ],
+          "id": "a415-7bf2204b262389a7",
+          "feedRank": 3,
+          "compactHeadline": "Guardians clinch 3rd straight AL Central crown with 11-5 win over Royals"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-a66ecc6b65648c40"
           ],
           "type": "RESULT",
@@ -52,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T01:56:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.58,
           "freshnessBasis": "— Brice Turang hit a go-ahead two-run homer and the Milwaukee Brewers beat the St. Louis Cardinals 3-2 on Saturday night for their major league-leading 102nd win.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +124,11 @@
             }
           ],
           "id": "a415-0409d017c289ee23",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Turang's go-ahead homer lifts Brewers over Cardinals 3-2 for 102nd win"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-8071762ab1b39044"
           ],
@@ -81,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T01:46:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.75,
           "freshnessBasis": "— Danny Jansen homered and drove in two runs as the Texas Rangers pushed the AL West race to the final day of the regular season with a rain-delayed 6-2 victory over the Minnesota Twins on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +153,11 @@
             }
           ],
           "id": "a415-b20f7d21812310c3",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Rangers push the AL West race to the final day of the regular season with a 6-2 win over the Twins"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-ada9092743ed09da"
           ],
@@ -110,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T00:58:29Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
+          "ageHours": 1.55,
           "freshnessBasis": "— Justin Verlander made a teary farewell, accompanied by his 7-year-old daughter as he left a major league mound for the final time in the Detroit Tigers'...",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +182,8 @@
             }
           ],
           "id": "a415-2ced224953366883",
-          "feedRank": 4,
-          "compactHeadline": "Justin Verlander makes teary farewell to 21-year career as Tigers rally to beat Pirates 4-3"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-828a7eaae90e1907"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Kiké Hernández hit a tiebreaking home run leading off the ninth inning, Mookie Betts also homered and the Los Angeles Dodgers beat the San Francisco Giants 4-3 on Saturday.",
-          "text": "Kiké Hernández hit a tiebreaking home run leading off the ninth inning, Mookie Betts also homered and the Los Angeles Dodgers beat the San Francisco Giants 4-3 on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-26T23:05:31Z",
-          "timePrecision": "exact",
-          "ageHours": 2.94,
-          "freshnessBasis": "— Kiké Hernández hit a tiebreaking home run leading off the ninth inning, Mookie Betts also homered and the Los Angeles Dodgers beat the San Francisco Giants 4-3 on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817101"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817101"
-            }
-          ],
-          "id": "a415-5c2a68df58f74817",
-          "feedRank": 5,
-          "compactHeadline": "Kiké Hernández hits tiebreaking home run leading off 9th to lift Dodgers over Giants 4-3"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-31d51cda4d9e89ee"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "JJ Bleday hit a solo home run, Héctor Rodríguez added a two-run triple and the Cincinnati Reds beat the Toronto Blue Jays 5-1 on Saturday.",
-          "text": "JJ Bleday hit a solo home run, Héctor Rodríguez added a two-run triple and the Cincinnati Reds beat the Toronto Blue Jays 5-1 on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-26T21:47:30Z",
-          "timePrecision": "exact",
-          "ageHours": 4.24,
-          "freshnessBasis": "— JJ Bleday hit a solo home run, Héctor Rodríguez added a two-run triple and the Cincinnati Reds beat the Toronto Blue Jays 5-1 on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401817090"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401817090"
-            }
-          ],
-          "id": "a415-768bfaad1ba20675",
           "feedRank": 6,
-          "compactHeadline": "Bleday hits 24th homer, Lowder pitches 6 innings for first win since August as Reds beat Blue Jays"
+          "compactHeadline": "Justin Verlander makes teary farewell to 21-year career as Tigers rally to beat Pirates 4-3"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:43:52Z",
           "timePrecision": "exact",
-          "ageHours": 3.3,
+          "ageHours": 3.8,
           "freshnessBasis": "Denver Broncos rookie running back Jonah Coleman was placed on injured reserve Saturday with an ankle injury he suffered in the team's Week 2 win over the Jacksonville Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:44:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.29,
+          "ageHours": 6.79,
           "freshnessBasis": "The Jets promoted veteran Sterling Shepard from the practice squad, as starting WR Adonai Mitchell is questionable with a finger injury, and three other Jets receivers are on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T19:30:24Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Bears QB Caleb Williams is out for Monday's game against the Eagles, and backup Tyson Bagent returned to the practice field while still in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:59:20Z",
           "timePrecision": "exact",
-          "ageHours": 9.04,
+          "ageHours": 9.54,
           "freshnessBasis": "The Colts officially placed receiver Alec Pierce on injured reserve Saturday, starting the clock on a potential return as he attempts to rehab and rejoin the lineup.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T21:33:09Z",
           "timePrecision": "exact",
-          "ageHours": 4.48,
+          "ageHours": 4.97,
           "freshnessBasis": "Seahawks quarterback Sam Darnold will start Sunday, but the defending Super Bowl champions will be without both starting safeties as Julian Love and Ty Okada have been ruled out.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:00:06Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.52,
           "freshnessBasis": "The second-round pick has made impact plays over the first two weeks and will start vs. the Jaguars. Here's the latest on Jacas and other notes on the Patriots.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.59,
+          "ageHours": 4.09,
           "freshnessBasis": "The Chicago Bulls are trading Rob Dillingham to the Charlotte Hornets for Buddy Hield and cash, sources told ESPN's Shams Charania on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T06:35:03Z",
           "timePrecision": "exact",
-          "ageHours": 19.45,
+          "ageHours": 19.94,
           "freshnessBasis": "Warriors star Stephen Curry agreed to a two-year, $116 million contract extension, sources told ESPN's Shams Charania on Friday, ultimately opting for a pay cut and security over a max contract.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T22:48:16Z",
           "timePrecision": "exact",
-          "ageHours": 3.22,
+          "ageHours": 3.72,
           "freshnessBasis": "Thomas Tuchel has insisted Manchester City's potential punishment for breaching Premier League financial rules was not a distraction for his England players in Saturday's 3-2 Nations League defeat to Spain.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T11:31:41Z",
           "timePrecision": "exact",
-          "ageHours": 14.5,
+          "ageHours": 15.0,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 9.93,
+          "ageHours": 10.43,
           "freshnessBasis": "Manchester City chairman Khaldoon Al Mubarak has said \"nothing has changed\" regarding the club's ongoing legal battle with the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T14:07:25Z",
           "timePrecision": "exact",
-          "ageHours": 11.91,
+          "ageHours": 12.4,
           "freshnessBasis": "Manchester City are expected to be found guilty of almost all 115 financial charges against them. It means an era of English soccer is now tarnished with multiple asterisks.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:38:45Z",
           "timePrecision": "exact",
-          "ageHours": 13.38,
+          "ageHours": 13.88,
           "freshnessBasis": "Premier League clubs are seeking legal advice amid an expectation that Man City have been found guilty of hundreds of breaches of financial regulations, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T12:03:43Z",
           "timePrecision": "exact",
-          "ageHours": 13.97,
+          "ageHours": 14.46,
           "freshnessBasis": "Chelsea have been charged by the Football Association after discriminatory chanting was reported during their Premier League game away at Fulham in August.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T16:00:18Z",
           "timePrecision": "exact",
-          "ageHours": 10.02,
+          "ageHours": 10.52,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said 16-year-old phenom Cavan Sullivan is ready to play for the USMNT during the current international window, but was non-committal as to what role he would play in Saturday's friendly against Peru.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-09-26T15:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 10.06,
+          "ageHours": 10.56,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -804,63 +804,150 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-10ea0be7cdaf377c"
+            "cand-1d0aee3ae211f5b3"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "New Florida coach Jon Sumrall called his program a sleeping giant when he took over 10 months ago and has said repeatedly since that it's time to “wake the beast.\"",
-          "text": "New Florida coach Jon Sumrall called his program a sleeping giant when he took over 10 months ago and has said repeatedly since that it's time to “wake the beast.\"",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "LSU star linebacker Whit Weeks is out of Saturday night's game against Texas A&M after heading to the locker room on crutches with a boot on his foot.",
+          "text": "LSU star linebacker Whit Weeks is out of Saturday night's game against Texas A&M after heading to the locker room on crutches with a boot on his foot.",
           "entities": [],
-          "occurredAt": "2026-09-27T00:58:33Z",
+          "occurredAt": "2026-09-27T02:23:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
-          "freshnessBasis": "— New Florida coach Jon Sumrall called his program a sleeping giant when he took over 10 months ago and has said repeatedly since that it's time to “wake the beast.\"",
+          "ageHours": 0.14,
+          "freshnessBasis": "LSU star linebacker Whit Weeks is out of Saturday night's game against Texas A&M after heading to the locker room on crutches with a boot on his foot.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856699"
+            "https://www.espn.com/college-football/story/_/id/50039102/lsu-star-lb-whit-weeks-exits-vs-texas-foot-injury"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856699"
+              "url": "https://www.espn.com/college-football/story/_/id/50039102/lsu-star-lb-whit-weeks-exits-vs-texas-foot-injury"
             }
           ],
-          "id": "a415-87c0fc3b78aa987e",
+          "id": "a415-4fd61bbf70f78812",
           "feedRank": 23,
-          "compactHeadline": "Jadan Baugh and No. 21 Florida run roughshod over 4th-ranked Ole Miss, 52-28 in the Swamp"
+          "compactHeadline": "LSU star LB Whit Weeks exits vs. Texas A&M with foot injury"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-dd97287f0fdfe595"
+            "cand-02d6a4d99e877eaa"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Iowa stunned Michigan with a last-second, 16-yard touchdown pass to lift the No. 17 Hawkeyes over the No. 18 Wolverines 20-19.",
-          "text": "Iowa stunned Michigan with a last-second, 16-yard touchdown pass to lift the No. 17 Hawkeyes over the No. 18 Wolverines 20-19.",
+          "headline": "DJ Williams threw for 217 yards and two touchdowns, including 145 yards to Markell Quick, as Southern Illinois scored 46 unanswered points to beat Murray State 46-6 on Saturday in a Missouri Valley Football Conference opener for both teams.",
+          "text": "DJ Williams threw for 217 yards and two touchdowns, including 145 yards to Markell Quick, as Southern Illinois scored 46 unanswered points to beat Murray State 46-6 on Saturday in a Missouri Valley Football Conference opener for both teams.",
           "entities": [],
-          "occurredAt": "2026-09-27T01:55:54Z",
+          "occurredAt": "2026-09-27T02:23:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
-          "freshnessBasis": "Iowa stunned Michigan with a last-second, 16-yard touchdown pass to lift the No. 17 Hawkeyes over the No. 18 Wolverines 20-19.",
+          "ageHours": 0.13,
+          "freshnessBasis": "— DJ Williams threw for 217 yards and two touchdowns, including 145 yards to Markell Quick, as Southern Illinois scored 46 unanswered points to beat Murray State 46-6 on Saturday in a Missouri Valley Football Conference opener for both teams.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50037425/no-17-iowa-downs-no-18-michigan-last-second-td-pass"
+            "http://www.espn.com/ncf/recap?gameId=401867868"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50037425/no-17-iowa-downs-no-18-michigan-last-second-td-pass"
+              "url": "http://www.espn.com/ncf/recap?gameId=401867868"
             }
           ],
-          "id": "a415-0859666512c16d8f",
+          "id": "a415-4bb132f604b8a222",
           "feedRank": 24,
-          "compactHeadline": "'Just gotta believe': Iowa tops Michigan with last-second TD"
+          "compactHeadline": "DJ Williams throws 2 TDs as Southern Illinois cruises past Murray State 46-6"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-1c3919cdc488d4a1"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Camden Coleman threw fourth touchdown passes to lead James Madison to a 46-20 win over Old Dominion in the Sun Belt Conference opener for both teams on Saturday night.",
+          "text": "Camden Coleman threw fourth touchdown passes to lead James Madison to a 46-20 win over Old Dominion in the Sun Belt Conference opener for both teams on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-27T02:12:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.32,
+          "freshnessBasis": "— Camden Coleman threw fourth touchdown passes to lead James Madison to a 46-20 win over Old Dominion in the Sun Belt Conference opener for both teams on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401869961"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401869961"
+            }
+          ],
+          "id": "a415-157533925bb8f417",
+          "feedRank": 25,
+          "compactHeadline": "Coleman throws 4 TD pass, James Madison cruises past Old Dominion 46-20"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-95023b8675a38e17"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Anthony Colandrea passed for 212 yards and two first-half touchdowns as undefeated Nebraska pulled away to a 31-13 win over mistake-prone Michigan State in the Big Ten opener for both teams on Saturday.",
+          "text": "Anthony Colandrea passed for 212 yards and two first-half touchdowns as undefeated Nebraska pulled away to a 31-13 win over mistake-prone Michigan State in the Big Ten opener for both teams on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-09-27T02:12:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.32,
+          "freshnessBasis": "— Anthony Colandrea passed for 212 yards and two first-half touchdowns as undefeated Nebraska pulled away to a 31-13 win over mistake-prone Michigan State in the Big Ten opener for both teams on Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858464"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858464"
+            }
+          ],
+          "id": "a415-0421310b9dbf30bc",
+          "feedRank": 26,
+          "compactHeadline": "Colandrea's two TD passes and stout defense lifts unbeaten Nebraska past Michigan State, 31-13"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-b0ff06a653522c2b"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Brad Jackson threw five first-half touchdown passes, Torrance Burgess Jr. had 140 yards rushing and a TD on nine carries, and Texas State beat Incarnate Word 63-10 on Saturday night.",
+          "text": "Brad Jackson threw five first-half touchdown passes, Torrance Burgess Jr. had 140 yards rushing and a TD on nine carries, and Texas State beat Incarnate Word 63-10 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-27T02:08:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.38,
+          "freshnessBasis": "— Brad Jackson threw five first-half touchdown passes, Torrance Burgess Jr. had 140 yards rushing and a TD on nine carries, and Texas State beat Incarnate Word 63-10 on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401860892"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401860892"
+            }
+          ],
+          "id": "a415-554ebac9b60473e9",
+          "feedRank": 27,
+          "compactHeadline": "Brady Jackson throws 5 TD passes, Texas State beats Incarnate Word 63-10"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-dcced0d0ed0ad605"
           ],
@@ -871,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-27T01:51:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "— Colton Joseph hit Jacob Harris on a 72-yard touchdown pass with 1:13 to play and Wisconsin scored twice in the last four minutes to beat No. 13 Penn State 24-20 on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -885,95 +972,8 @@
             }
           ],
           "id": "a415-e3a8de8383fe934b",
-          "feedRank": 25,
-          "compactHeadline": "Wisconsin scores twice in last 4 minutes, rallies to beat No. 13 Penn State 24-20"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-291e2e4f4a93f08d"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Anthony Colandrea passed for 212 yards and two first-half touchdowns as undefeated Nebraska pulled away to a 31-13 win over mistake-prone Michigan State in the Big Ten opener for both teams on Saturday.",
-          "text": "Anthony Colandrea passed for 212 yards and two first-half touchdowns as undefeated Nebraska pulled away to a 31-13 win over mistake-prone Michigan State in the Big Ten opener for both teams on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-27T01:45:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.27,
-          "freshnessBasis": "— Anthony Colandrea passed for 212 yards and two first-half touchdowns as undefeated Nebraska pulled away to a 31-13 win over mistake-prone Michigan State in the Big Ten opener for both teams on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858464"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858464"
-            }
-          ],
-          "id": "a415-ce1db50f28f3f6cf",
-          "feedRank": 26,
-          "compactHeadline": "Colandrea's two TD passes and stout defense lifts unbeaten Cornhuskers past Spartans, 31-13"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e60cdfab011f18ba"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Quarterback Beau Pribula scored five touchdowns, helping Virginia jump out to a two-score lead on its way to a 42-3 win over Delaware on Saturday night at Scott Stadium.",
-          "text": "Quarterback Beau Pribula scored five touchdowns, helping Virginia jump out to a two-score lead on its way to a 42-3 win over Delaware on Saturday night at Scott Stadium.",
-          "entities": [],
-          "occurredAt": "2026-09-27T01:28:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.55,
-          "freshnessBasis": "— Quarterback Beau Pribula scored five touchdowns, helping Virginia jump out to a two-score lead on its way to a 42-3 win over Delaware on Saturday night at Scott Stadium.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858239"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858239"
-            }
-          ],
-          "id": "a415-8fd46c56eed0c33c",
-          "feedRank": 27,
-          "compactHeadline": "Virginia bounces back, takes care of business against Delaware with 42-3 win"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-16e5efd2b6cbf005"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Wayshawn Parker broke a 54-yard run on the game's opening play from scrimmage for the first of his three touchdowns and No. 15 Utah held off Iowa State in the second half to beat the Cyclones 31-17 Saturday.",
-          "text": "Wayshawn Parker broke a 54-yard run on the game's opening play from scrimmage for the first of his three touchdowns and No. 15 Utah held off Iowa State in the second half to beat the Cyclones 31-17 Saturday.",
-          "entities": [],
-          "occurredAt": "2026-09-27T01:26:29Z",
-          "timePrecision": "exact",
-          "ageHours": 0.59,
-          "freshnessBasis": "— Wayshawn Parker broke a 54-yard run on the game's opening play from scrimmage for the first of his three touchdowns and No. 15 Utah held off Iowa State in the second half to beat the Cyclones 31-17 Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856816"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856816"
-            }
-          ],
-          "id": "a415-d830440be33ec035",
           "feedRank": 28,
-          "compactHeadline": "Fast-starting Utes get career-high 174 yards from Wayshawn Parker in 31-17 win over Iowa State"
+          "compactHeadline": "Wisconsin scores twice in last 4 minutes, rallies to beat No. 13 Penn State 24-20"
         }
       ]
     }
@@ -998,7 +998,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 101,
+    "freshCandidateCount": 99,
     "publishedItemCount": 32,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
