@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-29T03:01:40Z",
+  "generatedAt": "2026-09-29T03:31:28Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "c409b5f961196b5aa292192519289040e38ef54439fc82ef5851fc1d860a4059",
+  "sourceCandidateHash": "b1840c4f2afb8c0211aa61f54dacd9ea73311e6c3bf218e06c399243f51f4d8a",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T00:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.57,
+          "ageHours": 3.07,
           "freshnessBasis": "— The Houston Astros are the first team to reach the postseason without a winning record.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T01:05:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.94,
+          "ageHours": 2.43,
           "freshnessBasis": "— Yankees-Red Sox matchups have produced plenty of melodrama, with video clips of Bucky Dent, Pedro Martínez, Aaron Boone, Curt Schilling and Dave Roberts becoming a staple of videoboards and TV broadcasts.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T00:43:55Z",
           "timePrecision": "exact",
-          "ageHours": 2.3,
+          "ageHours": 2.79,
           "freshnessBasis": "Luis Arraez won't be on the Phillies' wild-card roster as he continues to recover from a sprained ankle he suffered late in the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T00:38:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.39,
+          "ageHours": 2.88,
           "freshnessBasis": "— Back in 1984, Tony Gwynn, Steve Garvey and the San Diego Padres used the energy from their home crowd at Jack Murphy Stadium to rally from a 2-0 deficit in the National League Championship Series and stun Ryan Sandberg, Gary Matthews and the Chicago...",
           "status": "active",
           "sourceUrls": [
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T23:47:54Z",
           "timePrecision": "exact",
-          "ageHours": 3.23,
+          "ageHours": 3.73,
           "freshnessBasis": "Astros owner Jim Crane said Monday the team's playoff berth will be \"something to consider\" when deciding on the future of manager Joe Espada, whose contract expires after the season.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T22:29:34Z",
           "timePrecision": "exact",
-          "ageHours": 4.54,
+          "ageHours": 5.03,
           "freshnessBasis": "— The Atlanta Braves battled through a long list of pitching injuries that left their rotation depleted for their National League Wild Card Series against the Philadelphia Phillies.",
           "status": "active",
           "sourceUrls": [
@@ -194,6 +194,41 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-88247ed1072205fa"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Case Keenum passed for two touchdowns in his first start in almost three years, and the Chicago Bears shut down Jalen Hurts and the Philadelphia Eagles for a 27-7 victory on Monday night.",
+          "text": "Case Keenum passed for two touchdowns in his first start in almost three years, and the Chicago Bears shut down Jalen Hurts and the Philadelphia Eagles for a 27-7 victory on Monday night.",
+          "entities": [],
+          "occurredAt": "2026-09-29T00:15:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.27,
+          "freshnessBasis": "Highlightly final: Philadelphia Eagles 7, Chicago Bears 27.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872963"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-28",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872963"
+            }
+          ],
+          "id": "a415-bef68a20bf6bf77e",
+          "feedRank": 7,
+          "compactHeadline": "Case Keenum drives Chicago to 3 touchdowns as the Bears beat the Eagles 27-7"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-adcb9a52846b5c22"
           ],
           "type": "INJURY",
@@ -203,7 +238,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T01:59:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.04,
+          "ageHours": 1.53,
           "freshnessBasis": "Edge Jonathan Greenard made his Eagles debut Monday night. He had been sidelined because of a pectoral injury.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +252,11 @@
             }
           ],
           "id": "a415-1171d139e890002d",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Jonathan Greenard (pectoral) makes Eagles debut on Monday"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-c02e62fa61aa861a"
           ],
@@ -232,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:16:48Z",
           "timePrecision": "exact",
-          "ageHours": 5.75,
+          "ageHours": 6.24,
           "freshnessBasis": "There just aren't many positions in which you can the push the Lions' offense that it can't get out of.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +281,11 @@
             }
           ],
           "id": "a415-34fac507526dc81a",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Lions post 31 points for record-setting third time to start 2026"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-f3e1102a6821b315"
           ],
@@ -261,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T22:48:08Z",
           "timePrecision": "exact",
-          "ageHours": 4.23,
+          "ageHours": 4.72,
           "freshnessBasis": "The Giants are trading for Vikings quarterback J.J. McCarthy, sending a 2027 fifth-round draft pick to Minnesota for the 2024 first-round pick.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +310,11 @@
             }
           ],
           "id": "a415-d4f74fc9d92ce88b",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Giants trade for Vikings QB McCarthy but say Winston is QB1"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-ea032a6c2e51d536"
           ],
@@ -290,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:37:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.4,
+          "ageHours": 5.89,
           "freshnessBasis": "The Ravens may be force to start rookie offensive guard Vega Ioane at center after losing two centers to injury in Sunday's win over the Cowboys.",
           "status": "active",
           "sourceUrls": [
@@ -304,11 +339,11 @@
             }
           ],
           "id": "a415-fc640f77ed017ca6",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Injuries might force Ravens to start rookie OG Vega Ioane at C"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-0956edfbfee58a7b"
           ],
@@ -319,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:05:41Z",
           "timePrecision": "exact",
-          "ageHours": 5.93,
+          "ageHours": 6.43,
           "freshnessBasis": "With Jaxson Dart out for the season, the Giants dealt a fifth-round pick to Minnesota for McCarthy. But does this move the needle for New York? Can it work?",
           "status": "active",
           "sourceUrls": [
@@ -333,37 +368,8 @@
             }
           ],
           "id": "a415-18b94993ce699b26",
-          "feedRank": 11,
-          "compactHeadline": "J.J. McCarthy traded to Giants: Will he succeed in New York?"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-1d74fa0c87db502e"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Dolphins running back De'Von Achane suffered a torn ACL during Sunday's loss to the Chiefs and will be out for the rest of the 2026 season, sources told ESPN and NFL Network.",
-          "text": "Dolphins running back De'Von Achane suffered a torn ACL during Sunday's loss to the Chiefs and will be out for the rest of the 2026 season, sources told ESPN and NFL Network.",
-          "entities": [],
-          "occurredAt": "2026-09-28T20:24:41Z",
-          "timePrecision": "exact",
-          "ageHours": 6.62,
-          "freshnessBasis": "Dolphins running back De'Von Achane suffered a torn ACL during Sunday's loss to the Chiefs and will be out for the rest of the 2026 season, sources told ESPN and NFL Network.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50052064/sources-dolphins-rb-devon-achane-suffered-torn-acl-vs-chiefs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50052064/sources-dolphins-rb-devon-achane-suffered-torn-acl-vs-chiefs"
-            }
-          ],
-          "id": "a415-d9006aafbe4e7051",
           "feedRank": 12,
-          "compactHeadline": "Sources: Dolphins RB De'Von Achane suffered torn ACL vs. Chiefs"
+          "compactHeadline": "J.J. McCarthy traded to Giants: Will he succeed in New York?"
         }
       ]
     },
@@ -383,7 +389,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:25:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.6,
+          "ageHours": 6.09,
           "freshnessBasis": "The Charlotte Hornets are waiving guard Rob Dillingham one day after acquiring the former No. 8 pick, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T22:59:53Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Anthony Davis plans on finishing the season with the Washington Wizards before deciding on any potential contract extension, he said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T22:29:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.03,
           "freshnessBasis": "Nikola Jokic left little doubt that he plans to be back in Denver at least next season after saying he plans to sign his extension when it's offered next summer.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T19:42:15Z",
           "timePrecision": "exact",
-          "ageHours": 7.32,
+          "ageHours": 7.82,
           "freshnessBasis": "Brandon Ingram, a key part of the Clippers' return in their trade of Kawhi Leonard, will not be available to start the 2026-27 season as he recovers from a surgery that addressed a right heel injury and partially torn Achilles tendon.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T02:26:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.59,
+          "ageHours": 1.09,
           "freshnessBasis": "Jayson Tatum says he's thankful for his time with Jaylen Brown and the success they shared but feels comfortable leading the new-look Celtics this season.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:05:30Z",
           "timePrecision": "exact",
-          "ageHours": 5.94,
+          "ageHours": 6.43,
           "freshnessBasis": "Stephen Curry called Golden State \"home\" in his first public appearance since signing a two-year, $116 million extension with the Warriors.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T00:34:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.46,
+          "ageHours": 2.95,
           "freshnessBasis": "The new-look Maple Leafs, on the eve of the NHL season, acquired Kirill Marchenko in a trade with the Columbus Blue Jackets on Monday, the teams announced, and Toronto quickly agreed to a six-year extension with the 26-year-old forward.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:49:17Z",
           "timePrecision": "exact",
-          "ageHours": 5.21,
+          "ageHours": 5.7,
           "freshnessBasis": "Penguins general manager Kyle Dubas said he's \"not doing this day-to-day, year-to-year thing with Geno,\" after Evgeni Malkin waited until May to sign a contract extension that brings the franchise legend back for a 21st year.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T15:48:16Z",
           "timePrecision": "exact",
-          "ageHours": 11.22,
+          "ageHours": 11.72,
           "freshnessBasis": "The Hurricanes are still hoping to reach a deal with holdout defenseman Alexander Nikishin.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T12:49:24Z",
           "timePrecision": "exact",
-          "ageHours": 14.2,
+          "ageHours": 14.7,
           "freshnessBasis": "The Carolina Hurricanes have signed goaltender Pyotr Kochetkov to a two-year extension running through the 2028-29 season with an average annual value of $3.95 million.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T12:48:58Z",
           "timePrecision": "exact",
-          "ageHours": 14.21,
+          "ageHours": 14.71,
           "freshnessBasis": "The Islanders have signed Logan Stanley to a one-year contract, adding the defenseman days before their season opener.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T21:17:06Z",
           "timePrecision": "exact",
-          "ageHours": 5.74,
+          "ageHours": 6.24,
           "freshnessBasis": "Although sportsbooks are not in consensus over which NHL team should be the stand-alone Stanley Cup favorite in the new season, three stand above the rest -- Carolina, Florida and Colorado.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.03,
+          "ageHours": 9.52,
           "freshnessBasis": "Highlightly final: Norwich City U21 3, Exeter U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T10:17:39Z",
           "timePrecision": "exact",
-          "ageHours": 16.73,
+          "ageHours": 17.23,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T07:20:15Z",
           "timePrecision": "exact",
-          "ageHours": 19.69,
+          "ageHours": 20.19,
           "freshnessBasis": "The sporting world is waiting for a resolution to the hearings on Man City's charges for allegedly breaching the Premier League's financial rules. Here's what we know, and what might come next.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T20:26:54Z",
           "timePrecision": "exact",
-          "ageHours": 6.58,
+          "ageHours": 7.08,
           "freshnessBasis": "Both Arsenal and Tottenham Hotspur are competing to sign Bayer Leverkusen's Ibrahim Maza. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T07:57:50Z",
           "timePrecision": "exact",
-          "ageHours": 19.06,
+          "ageHours": 19.56,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T19:49:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.2,
+          "ageHours": 7.7,
           "freshnessBasis": "Alabama and athletic director Greg Byrne have agreed to a revised two-year contract extension that will pay him an average annual base salary of $2.67 million through June 30, 2033.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +935,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T16:53:26Z",
           "timePrecision": "exact",
-          "ageHours": 10.14,
+          "ageHours": 10.63,
           "freshnessBasis": "Michigan State running back Cam Edwards will miss the rest of the season with a knee injury.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +964,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T16:08:37Z",
           "timePrecision": "exact",
-          "ageHours": 10.88,
+          "ageHours": 11.38,
           "freshnessBasis": "Florida coach Jon Sumrall said the injury to leading receiver Vernell Brown III is 'nothing serious' ahead of this week's game at Missouri.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +993,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T15:00:35Z",
           "timePrecision": "exact",
-          "ageHours": 12.02,
+          "ageHours": 12.51,
           "freshnessBasis": "With thrilling finishes and a few big upsets, here are projections for each postseason game following Week 4.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1022,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T17:22:16Z",
           "timePrecision": "exact",
-          "ageHours": 9.66,
+          "ageHours": 10.15,
           "freshnessBasis": "Notre Dame wide receiver Quincy Porter will undergo season-ending surgery for a knee issue, coach Marcus Freeman announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1051,7 @@
           "entities": [],
           "occurredAt": "2026-09-28T23:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.29,
           "freshnessBasis": "The SEC and South Carolina jointly announced a one-game suspension of Gamecocks star edge rusher Dylan Stewart on Monday for \"egregious contact\" against an Alabama player during Saturday's matchup.",
           "status": "active",
           "sourceUrls": [
