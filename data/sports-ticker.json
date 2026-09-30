@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-30T21:01:35Z",
+  "generatedAt": "2026-09-30T21:31:47Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "1e9d314d7974700e968138450f5d99d6cba8291ee43ad371408b5e70d335b9b5",
+  "sourceCandidateHash": "56e19f6a021532d21ef541c0ff510f9af61c95ebd357fada7e9783cb8d8330e1",
   "leagues": [
     {
       "league": "MLB",
@@ -14,17 +14,46 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-4dd4d183277e20e2"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Vegas Golden Knights have locked in center William Karlsson on a two-year extension with an AAV of $6.75 million.",
+          "text": "The Vegas Golden Knights have locked in center William Karlsson on a two-year extension with an AAV of $6.75 million.",
+          "entities": [],
+          "occurredAt": "2026-09-30T21:26:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "The Vegas Golden Knights have locked in center William Karlsson on a two-year extension with an AAV of $6.75 million.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50071303/golden-knights-sign-c-william-karlsson-2-year-135m-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/mlb/story/_/id/50071303/golden-knights-sign-c-william-karlsson-2-year-135m-deal"
+            }
+          ],
+          "id": "a415-1f134fce2002a99a",
+          "feedRank": 1,
+          "compactHeadline": "Golden Knights sign C William Karlsson to 2-year, $13.5M deal"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-f0d0c6843fdf8cbf"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "Red Sox outfielder Roman Anthony has been ruled out of AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
-          "text": "Red Sox outfielder Roman Anthony has been ruled out of AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
+          "headline": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
+          "text": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
           "entities": [],
-          "occurredAt": "2026-09-30T20:54:33Z",
+          "occurredAt": "2026-09-30T21:29:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "Red Sox outfielder Roman Anthony has been ruled out of AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
+          "ageHours": 0.04,
+          "freshnessBasis": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50070582/roman-anthony-hand-red-sox-lineup-game-2-alwcs"
@@ -37,11 +66,40 @@
             }
           ],
           "id": "a415-2b08a03b34484684",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Red Sox's Roman Anthony ruled out of ALWCS with hand, wrist injuries"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-37fff10359b2f543"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
+          "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
+          "entities": [],
+          "occurredAt": "2026-09-30T21:20:41Z",
+          "timePrecision": "exact",
+          "ageHours": 0.19,
+          "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50022544/2026-mlb-playoffs-schedule-how-watch-postseason-world-series-bracket-standings"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50022544/2026-mlb-playoffs-schedule-how-watch-postseason-world-series-bracket-standings"
+            }
+          ],
+          "id": "a415-3dc7d494f0f3540b",
+          "feedRank": 3,
+          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-00b11b9f491500bc"
           ],
@@ -52,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:29:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.54,
+          "ageHours": 1.04,
           "freshnessBasis": "Astros center fielder Daulton Varsho underwent left arthroscopic wrist surgery on Tuesday, a procedure that will sideline him for the entire postseason.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +124,11 @@
             }
           ],
           "id": "a415-0d5a4134a6e24665",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Astros' Daulton Varsho has wrist surgery, done for season"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-bd2ce97e20dbcd8a"
           ],
@@ -81,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:38:01Z",
           "timePrecision": "exact",
-          "ageHours": 3.39,
+          "ageHours": 3.9,
           "freshnessBasis": "The Dodgers, aided by a lengthy break before they open the playoffs, expect a healthier Shohei Ohtani at the top of their lineup for the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -95,95 +153,37 @@
             }
           ],
           "id": "a415-099c707d9f3fc85e",
-          "feedRank": 3,
-          "compactHeadline": "Dodgers expect healthier Shohei Ohtani for NLDS opener"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e5283605e1eb6261"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Astros players were \"extremely frustrated\" at opening the playoffs in front of a sparse crowd that showered boos on the home team during a 6-3 loss to the White Sox.",
-          "text": "Astros players were \"extremely frustrated\" at opening the playoffs in front of a sparse crowd that showered boos on the home team during a 6-3 loss to the White Sox.",
-          "entities": [],
-          "occurredAt": "2026-09-30T14:06:36Z",
-          "timePrecision": "exact",
-          "ageHours": 6.92,
-          "freshnessBasis": "Astros players were \"extremely frustrated\" at opening the playoffs in front of a sparse crowd that showered boos on the home team during a 6-3 loss to the White Sox.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50066623/astros-frustrated-boos-sparse-crowd-wild-card-opener"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50066623/astros-frustrated-boos-sparse-crowd-wild-card-opener"
-            }
-          ],
-          "id": "a415-d9c478acaf4818bd",
-          "feedRank": 4,
-          "compactHeadline": "Astros frustrated by boos from sparse crowd during wild-card opener"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-c4e975e34756397f"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "It's unclear whether Red Sox OF Roman Anthony will be available for Game 2 of their AL Wild Card Series after suffering an injury to the same hand that sidelined him for nearly four months.",
-          "text": "It's unclear whether Red Sox OF Roman Anthony will be available for Game 2 of their AL Wild Card Series after suffering an injury to the same hand that sidelined him for nearly four months.",
-          "entities": [],
-          "occurredAt": "2026-09-30T11:12:19Z",
-          "timePrecision": "exact",
-          "ageHours": 9.82,
-          "freshnessBasis": "It's unclear whether Red Sox OF Roman Anthony will be available for Game 2 of their AL Wild Card Series after suffering an injury to the same hand that sidelined him for nearly four months.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50064536/red-sox-anthony-hand-exits-early-game-2-status-unclear"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50064536/red-sox-anthony-hand-exits-early-game-2-status-unclear"
-            }
-          ],
-          "id": "a415-2d0c4cd0eb6c9e4d",
           "feedRank": 5,
-          "compactHeadline": "Red Sox OF Anthony (hand) exits early; Game 2 status unclear"
+          "compactHeadline": "Dodgers expect healthier Shohei Ohtani for NLDS opener"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-137ef8f7c7f27dfd"
+            "cand-3f17919d0a15b00c"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Don Mattingly wanted the Phillies' best reliever on the mound as early as possible in the opener of a best-of-three NL Wild Card Series against the Braves, but the move backfired when All-Star closer Jhoan Duran allowed a three-run homer in a Game 1 loss.",
-          "text": "Don Mattingly wanted the Phillies' best reliever on the mound as early as possible in the opener of a best-of-three NL Wild Card Series against the Braves, but the move backfired when All-Star closer Jhoan Duran allowed a three-run homer in a Game 1 loss.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning and the Phillies beat the Atlanta Braves 4-3 on Wednesday to force a decisive third game in their National League Wild Card Series.",
+          "text": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning and the Phillies beat the Atlanta Braves 4-3 on Wednesday to force a decisive third game in their National League Wild Card Series.",
           "entities": [],
-          "occurredAt": "2026-09-30T12:23:52Z",
+          "occurredAt": "2026-09-30T21:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 8.63,
-          "freshnessBasis": "Don Mattingly wanted the Phillies' best reliever on the mound as early as possible in the opener of a best-of-three NL Wild Card Series against the Braves, but the move backfired when All-Star closer Jhoan Duran allowed a three-run homer in a Game 1 loss.",
+          "ageHours": 0.07,
+          "freshnessBasis": "— Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning and the Phillies beat the Atlanta Braves 4-3 on Wednesday to force a decisive third game in their National League Wild Card Series.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
+            "http://www.espn.com/mlb/recap?gameId=401907972"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
+              "url": "http://www.espn.com/mlb/recap?gameId=401907972"
             }
           ],
-          "id": "a415-142d484e372fae94",
+          "id": "a415-b55d156f9a350a9e",
           "feedRank": 6,
-          "compactHeadline": "Mattingly's call to Duran in 7th backfires in Phillies' loss"
+          "compactHeadline": "Bohm's homer in 10th lifts Phillies over Braves 4-3 to force decisive Game 3"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:39:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 0.88,
           "freshnessBasis": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:12:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.82,
+          "ageHours": 1.32,
           "freshnessBasis": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:34:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.44,
+          "ageHours": 0.95,
           "freshnessBasis": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:12:43Z",
           "timePrecision": "exact",
-          "ageHours": 3.81,
+          "ageHours": 4.32,
           "freshnessBasis": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T15:23:09Z",
           "timePrecision": "exact",
-          "ageHours": 5.64,
+          "ageHours": 6.14,
           "freshnessBasis": "The Buccaneers placed wide receiver Jalen McMillan on injured reserve Wednesday, sidelining him for at least the next four games.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T12:41:05Z",
           "timePrecision": "exact",
-          "ageHours": 8.34,
+          "ageHours": 8.85,
           "freshnessBasis": "Ravens starting center Jovaughn Gwyn is expected to miss two to three months with a fractured fibula that will likely require surgery, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 2.45,
+          "ageHours": 2.95,
           "freshnessBasis": "Jordan wore the jersey in Game 3 of the 1998 NBA Finals.",
           "status": "active",
           "sourceUrls": [
@@ -410,9 +410,9 @@
           "headline": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "text": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "entities": [],
-          "occurredAt": "2026-09-30T14:47:49Z",
+          "occurredAt": "2026-09-30T21:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 6.23,
+          "ageHours": 0.42,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.59,
+          "ageHours": 2.09,
           "freshnessBasis": "Brandon Ingram, recovering from heel surgery, got in some light shooting and court work ahead of Clippers practice Tuesday in Hawai'i.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T16:33:52Z",
           "timePrecision": "exact",
-          "ageHours": 4.46,
+          "ageHours": 4.97,
           "freshnessBasis": "Suns forward Dillon Brooks was charged Monday with driving under the influence following his March arrest in Scottsdale, Arizona, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -497,9 +497,9 @@
           "headline": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
           "text": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
           "entities": [],
-          "occurredAt": "2026-09-30T20:29:50Z",
+          "occurredAt": "2026-09-30T21:16:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.53,
+          "ageHours": 0.25,
           "freshnessBasis": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:28:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.56,
+          "ageHours": 1.06,
           "freshnessBasis": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:58:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.56,
           "freshnessBasis": "The Stars signed backup goaltender Casey DeSmith to a two-year, $5 million contract extension that runs through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 2.23,
+          "ageHours": 2.74,
           "freshnessBasis": "After he was set to coach on the final season of his contract, the Avalanche's Jared Bednar is getting a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:11:32Z",
           "timePrecision": "exact",
-          "ageHours": 3.83,
+          "ageHours": 4.34,
           "freshnessBasis": "Here's a look at the notable goalie mask designs across the NHL for the upcoming season.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T06:23:38Z",
           "timePrecision": "exact",
-          "ageHours": 14.63,
+          "ageHours": 15.14,
           "freshnessBasis": "No. 1 overall pick Gavin McKenna, 18, made his NHL debut Tuesday night, when the Toronto Maple Leafs fell to the Montreal Canadiens 3-2 in the season opener, and he told reporters after the loss that \"to get that first one under my belt, it feels good.\"",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T05:30:33Z",
           "timePrecision": "exact",
-          "ageHours": 15.52,
+          "ageHours": 16.02,
           "freshnessBasis": "— Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T05:25:31Z",
           "timePrecision": "exact",
-          "ageHours": 15.6,
+          "ageHours": 16.1,
           "freshnessBasis": "— Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:52:42Z",
           "timePrecision": "exact",
-          "ageHours": 6.15,
+          "ageHours": 6.65,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -763,16 +763,16 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-78c2bdb12ea15e21"
+            "cand-faccdcebf63677d7"
           ],
           "type": "NEWS",
           "priority": 64,
           "headline": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
           "text": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
           "entities": [],
-          "occurredAt": "2026-09-30T20:49:56Z",
+          "occurredAt": "2026-09-30T21:04:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
+          "ageHours": 0.45,
           "freshnessBasis": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -785,9 +785,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/50070645/klopp-not-preparing-title-manchester-city-verdict"
             }
           ],
-          "id": "a415-9a04dace3e12c3e4",
+          "id": "a415-215afd7b6ed4c4a4",
           "feedRank": 26,
-          "compactHeadline": "Klopp 'not preparing for a title' after verdict against Man City"
+          "compactHeadline": "Klopp not preparing for more titles after verdict against Man City"
         },
         {
           "rank": 3,
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:16:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.76,
+          "ageHours": 7.26,
           "freshnessBasis": "Fulham boss Alvaro Arbeloa has been charged with misconduct by the FA for claiming officials would \"not let Manchester United lose\" after Michael Carrick's side scored a late equaliser to draw their Premier League match at Craven Cottage.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:52:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.15,
+          "ageHours": 1.66,
           "freshnessBasis": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.31,
+          "ageHours": 1.82,
           "freshnessBasis": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -888,7 +888,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:30:16Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 3.03,
           "freshnessBasis": "Norway defender Kristoffer Ajer said football's \"biggest star\" Erling Haaland has been unaffected by Manchester City being found guilty of breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -923,7 +923,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:32:53Z",
           "timePrecision": "exact",
-          "ageHours": 6.48,
+          "ageHours": 6.98,
           "freshnessBasis": "Philadelphia Union and USMNT midfielder Cavan Sullivan became the youngest player in MLS history to be named Player of the Month on Wednesday when he was awarded the honors for September.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:18:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.71,
+          "ageHours": 2.22,
           "freshnessBasis": "CFP leaders continued to discuss a 24-team model but didn't vote on any calendar or scheduling changes for the 2027 season as negotiations with ESPN continue.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.37,
+          "ageHours": 1.87,
           "freshnessBasis": "We've seen four weeks of football. How has that changed our opinions about the top quarterbacks.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:45:24Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.77,
           "freshnessBasis": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:42:01Z",
           "timePrecision": "exact",
-          "ageHours": 3.33,
+          "ageHours": 3.83,
           "freshnessBasis": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 116,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
