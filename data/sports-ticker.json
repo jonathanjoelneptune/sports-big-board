@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-29T23:31:36Z",
+  "generatedAt": "2026-09-30T00:01:59Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "8de867972ac3d76111b8b9a04dff33b4f63d47e36fb5b142dae4b9a93d318c3c",
+  "sourceCandidateHash": "dee37300522f5e9128de4fa7111b8cac4a6e55bc6031d640516c566ce35c7e3e",
   "leagues": [
     {
       "league": "MLB",
@@ -14,31 +14,49 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-6e4365bea82db907"
+            "cand-c01682e66858e427"
           ],
           "type": "PLAYOFF",
           "priority": 76,
           "headline": "Austin Riley hit a three-run homer off All-Star closer Jhoan Duran in the eighth inning, and the Braves rallied past the Phillies 5-3 on Tuesday in the opener their National League Wild Card Series.",
           "text": "Austin Riley hit a three-run homer off All-Star closer Jhoan Duran in the eighth inning, and the Braves rallied past the Phillies 5-3 on Tuesday in the opener their National League Wild Card Series.",
           "entities": [],
-          "occurredAt": "2026-09-29T23:15:56Z",
+          "occurredAt": "2026-09-29T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "Austin Riley hit a three-run homer off All-Star closer Jhoan Duran in the eighth inning, and the Braves rallied past the Phillies 5-3 on Tuesday in the opener their National League Wild Card Series.",
+          "ageHours": 6.03,
+          "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, Atlanta Braves 5.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50061256/riley-homer-rallies-braves-phillies-wild-card-opener"
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50061256/riley-homer-rallies-braves-phillies-wild-card-opener",
+            "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss",
+            "http://www.espn.com/mlb/recap?gameId=401907965"
           ],
           "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-29",
+              "url": "https://highlightly.net"
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50061256/riley-homer-rallies-braves-phillies-wild-card-opener"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907965"
             }
           ],
-          "id": "a415-22c3c48190614254",
+          "id": "a415-3a10d685f75a3b0f",
           "feedRank": 1,
-          "compactHeadline": "Riley's homer rallies Braves past Phillies in wild-card opener"
+          "compactHeadline": "Atlanta Braves beat Philadelphia Phillies 5-3"
         },
         {
           "rank": 2,
@@ -52,7 +70,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T22:42:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.82,
+          "ageHours": 1.33,
           "freshnessBasis": "Aaron Judge will not play for the Yankees in the AL Wild Card series, but Giancarlo Stanton -- who hasn't played in over five months -- was included on the roster.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +99,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T16:12:50Z",
           "timePrecision": "exact",
-          "ageHours": 7.31,
+          "ageHours": 7.82,
           "freshnessBasis": "Fastball velocity in Major League Baseball hit a record high for the sixth straight season and batting averages remained near all-time lows in this era of pitching dominance.",
           "status": "active",
           "sourceUrls": [
@@ -110,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T22:21:22Z",
           "timePrecision": "exact",
-          "ageHours": 1.17,
+          "ageHours": 1.68,
           "freshnessBasis": "The White Sox got a letter of support from Pope Leo XIV, a longtime fan and Chicago native, prior to Tuesday's playoff opener vs. the Astros.",
           "status": "active",
           "sourceUrls": [
@@ -130,35 +148,6 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-aed78b25500b4909"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Austin Riley hit a three-run homer off All-Star closer Jhoan Duran in the eighth inning and the Atlanta Braves rallied past the Philadelphia Phillies 5-3 on Tuesday in the opener of a best-of-three National League Wild Card Series.",
-          "text": "Austin Riley hit a three-run homer off All-Star closer Jhoan Duran in the eighth inning and the Atlanta Braves rallied past the Philadelphia Phillies 5-3 on Tuesday in the opener of a best-of-three National League Wild Card Series.",
-          "entities": [],
-          "occurredAt": "2026-09-29T22:02:29Z",
-          "timePrecision": "exact",
-          "ageHours": 1.49,
-          "freshnessBasis": "— Austin Riley hit a three-run homer off All-Star closer Jhoan Duran in the eighth inning and the Atlanta Braves rallied past the Philadelphia Phillies 5-3 on Tuesday in the opener of a best-of-three National League Wild Card Series.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401907965"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907965"
-            }
-          ],
-          "id": "a415-a92aad9855873b43",
-          "feedRank": 5,
-          "compactHeadline": "Austin Riley's 3-run homer off Jhoan Duran rallies Braves past Phillies 5-3 in NLWCS opener"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-37fff10359b2f543"
           ],
           "type": "PLAYOFF",
@@ -168,7 +157,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T20:45:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.77,
+          "ageHours": 3.28,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -182,8 +171,37 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 6,
+          "feedRank": 5,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-654cbf73fd12aa88"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "RHP Joe Musgrove last played in 2024 before undergoing Tommy John surgery, but the Padres added him to their wild-card roster Tuesday.",
+          "text": "RHP Joe Musgrove last played in 2024 before undergoing Tommy John surgery, but the Padres added him to their wild-card roster Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-29T23:14:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.79,
+          "freshnessBasis": "RHP Joe Musgrove last played in 2024 before undergoing Tommy John surgery, but the Padres added him to their wild-card roster Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50059817/padres-add-joe-musgrove-2024-wild-card-roster"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50059817/padres-add-joe-musgrove-2024-wild-card-roster"
+            }
+          ],
+          "id": "a415-e30e79baf58e1502",
+          "feedRank": 6,
+          "compactHeadline": "Padres add Joe Musgrove, out since 2024, to wild-card roster"
         }
       ]
     },
@@ -194,6 +212,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-1eb9164202d66c79"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "The Ravens' 34-31 victory over the Cowboys in Rio de Janeiro, Brazil, averaged 29.9 million viewers on CBS on Sunday, making it the most-watched NFL international game in history.",
+          "text": "The Ravens' 34-31 victory over the Cowboys in Rio de Janeiro, Brazil, averaged 29.9 million viewers on CBS on Sunday, making it the most-watched NFL international game in history.",
+          "entities": [],
+          "occurredAt": "2026-09-29T23:47:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.24,
+          "freshnessBasis": "The Ravens' 34-31 victory over the Cowboys in Rio de Janeiro, Brazil, averaged 29.9 million viewers on CBS on Sunday, making it the most-watched NFL international game in history.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50062493/ravens-cowboys-brazil-averaged-record-299m-viewers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50062493/ravens-cowboys-brazil-averaged-record-299m-viewers"
+            }
+          ],
+          "id": "a415-35fa76cbb4ef7723",
+          "feedRank": 7,
+          "compactHeadline": "Ravens-Cowboys in Brazil averaged record 29.9M viewers"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-3affd919ab63e984"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Commanders guard Sam Cosmi and safety Nick Cross did not travel with the team to London Tuesday night for their Week 4 game against the Colts.",
+          "text": "Commanders guard Sam Cosmi and safety Nick Cross did not travel with the team to London Tuesday night for their Week 4 game against the Colts.",
+          "entities": [],
+          "occurredAt": "2026-09-29T23:57:41Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Commanders guard Sam Cosmi and safety Nick Cross did not travel with the team to London Tuesday night for their Week 4 game against the Colts.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50062628/guard-sam-cosmi-safety-nick-cross-london-game-vs-colts"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50062628/guard-sam-cosmi-safety-nick-cross-london-game-vs-colts"
+            }
+          ],
+          "id": "a415-7e49914b3c8f7960",
+          "feedRank": 8,
+          "compactHeadline": "Guard Sam Cosmi, safety Nick Cross out for London game vs. Colts"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-4a67c26d7efafc3f"
           ],
           "type": "INJURY",
@@ -203,7 +279,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T22:28:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
+          "ageHours": 1.56,
           "freshnessBasis": "The Patriots placed guard Greg Van Roten on injured reserve Tuesday as the infrastructure around quarterback Drake Maye took another hit.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +293,11 @@
             }
           ],
           "id": "a415-9d36cca7aab9a5f8",
-          "feedRank": 7,
+          "feedRank": 9,
           "compactHeadline": "Patriots place offensive lineman Greg Van Roten (thigh) on IR"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-7a83f0d5e9181f67"
           ],
@@ -232,7 +308,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T18:56:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.59,
+          "ageHours": 5.1,
           "freshnessBasis": "Falcons QB Tua Tagovailoa said he's not 100% recovered from his oblique injury but is embracing his role as backup to Michael Penix Jr.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +322,11 @@
             }
           ],
           "id": "a415-a87ed0b8ca186d7b",
-          "feedRank": 8,
+          "feedRank": 10,
           "compactHeadline": "Falcons' Tua Tagovailoa healing, embracing backup QB role"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-a09828dc52ecbb3c"
           ],
@@ -261,7 +337,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T20:33:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.96,
+          "ageHours": 3.47,
           "freshnessBasis": "Despite tearing his Achilles in the playoffs, Kittle appears to be back to his normal self. Here's how he won the recovery process.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +351,11 @@
             }
           ],
           "id": "a415-cde0b1386c1292ea",
-          "feedRank": 9,
+          "feedRank": 11,
           "compactHeadline": "Inside George Kittle's 243-day recovery from torn Achilles"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-a99a7c2ad0cb0148"
           ],
@@ -290,7 +366,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T19:26:23Z",
           "timePrecision": "exact",
-          "ageHours": 4.09,
+          "ageHours": 4.59,
           "freshnessBasis": "The Cincinnati Bengals cut WR Ke'Shawn Williams after he muffed a punt that eventually led to the Pittsburgh Steelers' 30-27 win. On Tuesday, Cincinnati signed WR Mitch Tinsley.",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +380,8 @@
             }
           ],
           "id": "a415-be28a587155e67db",
-          "feedRank": 10,
-          "compactHeadline": "Bengals cut WR Ke'Shawn Williams after costly muffed punt"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-1bafd07e19df028f"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Panthers left guard Damien Lewis has a UCL injury in an elbow and will be out a few weeks, sources told NFL Network's Mike Garafolo and Ian Rapoport.",
-          "text": "Panthers left guard Damien Lewis has a UCL injury in an elbow and will be out a few weeks, sources told NFL Network's Mike Garafolo and Ian Rapoport.",
-          "entities": [],
-          "occurredAt": "2026-09-29T15:43:17Z",
-          "timePrecision": "exact",
-          "ageHours": 7.81,
-          "freshnessBasis": "Panthers left guard Damien Lewis has a UCL injury in an elbow and will be out a few weeks, sources told NFL Network's Mike Garafolo and Ian Rapoport.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50058897/panthers-ol-damien-lewis-ucl-injury-sources-say"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50058897/panthers-ol-damien-lewis-ucl-injury-sources-say"
-            }
-          ],
-          "id": "a415-ec2d16aad530de93",
-          "feedRank": 11,
-          "compactHeadline": "Sources: Panthers OL Damien Lewis (UCL injury) to miss time"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-29679030ed4d0dd1"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "text": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "entities": [],
-          "occurredAt": "2026-09-29T14:48:15Z",
-          "timePrecision": "exact",
-          "ageHours": 8.72,
-          "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-            }
-          ],
-          "id": "a415-dcde4a422d8ea634",
           "feedRank": 12,
-          "compactHeadline": "2026 NFL pass rush, run stop, blocking win rate rankings"
+          "compactHeadline": "Bengals cut WR Ke'Shawn Williams after costly muffed punt"
         }
       ]
     },
@@ -383,7 +401,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T21:41:58Z",
           "timePrecision": "exact",
-          "ageHours": 1.83,
+          "ageHours": 2.33,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +430,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T22:58:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
+          "ageHours": 1.06,
           "freshnessBasis": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T19:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.3,
           "freshnessBasis": "The Knicks are still deciding if they will become the first NBA champions to visit the White House under President Donald Trump.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T02:26:16Z",
           "timePrecision": "exact",
-          "ageHours": 21.09,
+          "ageHours": 21.6,
           "freshnessBasis": "Jayson Tatum says he's thankful for his time with Jaylen Brown and the success they shared but feels comfortable leading the new-look Celtics this season.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T16:39:52Z",
           "timePrecision": "exact",
-          "ageHours": 6.86,
+          "ageHours": 7.37,
           "freshnessBasis": "From LeBron James' fit in Philadelphia to Kawhi Leonard's return to Toronto, we're answering the biggest preseason questions for all 30 teams.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T14:10:18Z",
           "timePrecision": "exact",
-          "ageHours": 9.36,
+          "ageHours": 9.86,
           "freshnessBasis": "The new-look Maple Leafs, on the eve of the NHL season, acquired Kirill Marchenko in a trade with the Columbus Blue Jackets on Monday, the teams announced, and Toronto quickly agreed to a six-year extension with the 26-year-old forward.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T16:58:53Z",
           "timePrecision": "exact",
-          "ageHours": 6.55,
+          "ageHours": 7.05,
           "freshnessBasis": "Wild top-pair defenseman Brock Faber underwent surgery for a fractured skull and is out indefinitely.",
           "status": "active",
           "sourceUrls": [
@@ -583,35 +601,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-600444226b597d62"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Players rocked some fierce looks before the first games of the NHL's 2026-27 season.",
-          "text": "Players rocked some fierce looks before the first games of the NHL's 2026-27 season.",
-          "entities": [],
-          "occurredAt": "2026-09-29T22:51:10Z",
-          "timePrecision": "exact",
-          "ageHours": 0.67,
-          "freshnessBasis": "Players rocked some fierce looks before the first games of the NHL's 2026-27 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50058720/nhl-opening-night-best-fits-outfits-style-fashion"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50058720/nhl-opening-night-best-fits-outfits-style-fashion"
-            }
-          ],
-          "id": "a415-1bd364058a926ef5",
-          "feedRank": 20,
-          "compactHeadline": "Maple Leafs, Canadiens lead best fits from NHL opening night arrivals"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-11e256329eaa2fe0"
           ],
           "type": "NEWS",
@@ -619,9 +608,9 @@
           "headline": "The parents of Matthew Mayich, the Arizona State hockey player who collapsed during an outdoor workout last month, are calling for the coaches involved to be removed until an independent investigation is completed.",
           "text": "The parents of Matthew Mayich, the Arizona State hockey player who collapsed during an outdoor workout last month, are calling for the coaches involved to be removed until an independent investigation is completed.",
           "entities": [],
-          "occurredAt": "2026-09-29T21:56:51Z",
+          "occurredAt": "2026-09-30T00:00:15Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
+          "ageHours": 0.03,
           "freshnessBasis": "The parents of Matthew Mayich, the Arizona State hockey player who collapsed during an outdoor workout last month, are calling for the coaches involved to be removed until an independent investigation is completed.",
           "status": "active",
           "sourceUrls": [
@@ -635,8 +624,37 @@
             }
           ],
           "id": "a415-db540fd85229ae23",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Matthew Mayich's parents want ASU coaches to be put on leave"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-600444226b597d62"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Players rocked some fierce looks before the first games of the NHL's 2026-27 season.",
+          "text": "Players rocked some fierce looks before the first games of the NHL's 2026-27 season.",
+          "entities": [],
+          "occurredAt": "2026-09-29T22:51:10Z",
+          "timePrecision": "exact",
+          "ageHours": 1.18,
+          "freshnessBasis": "Players rocked some fierce looks before the first games of the NHL's 2026-27 season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50058720/nhl-opening-night-best-fits-outfits-style-fashion"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50058720/nhl-opening-night-best-fits-outfits-style-fashion"
+            }
+          ],
+          "id": "a415-1bd364058a926ef5",
+          "feedRank": 21,
+          "compactHeadline": "Maple Leafs, Canadiens lead best fits from NHL opening night arrivals"
         },
         {
           "rank": 5,
@@ -650,7 +668,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T08:12:40Z",
           "timePrecision": "exact",
-          "ageHours": 15.32,
+          "ageHours": 15.82,
           "freshnessBasis": "Montreal Canadiens vs. Toronto Maple Leafs",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T06:24:11Z",
           "timePrecision": "exact",
-          "ageHours": 17.12,
+          "ageHours": 17.63,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T22:23:09Z",
           "timePrecision": "exact",
-          "ageHours": 1.14,
+          "ageHours": 1.65,
           "freshnessBasis": "Culture Secretary Lisa Nandy has said Manchester City could be thrown out of the Premier League after being found guilty of all charges of financial breaches by an independent commission.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +761,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T20:30:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.52,
           "freshnessBasis": "The news that Man City were found guilty of 100-plus charges by the Premier League was the only topic of conversation around Manchester, and lower-league games, over the weekend.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +790,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T20:29:45Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.54,
           "freshnessBasis": "Tuesday's confirmation that Manchester City were found guilty by the Premier League on over 100 breaches of financial regulations has sent shockwaves through the sport. How do Man City survive this?",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +819,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T20:05:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.44,
+          "ageHours": 3.95,
           "freshnessBasis": "Manchester City chief executive officer Ferran Soriano has claimed the bombshell guilty verdict against the club is the result of a \"Premier League conspiracy theory.\"",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +848,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T19:56:32Z",
           "timePrecision": "exact",
-          "ageHours": 3.58,
+          "ageHours": 4.09,
           "freshnessBasis": "Manchester City have been found guilty of all charges of serious breaches of Premier League financial regulations, the Premier League confirmed in a 1,545-word statement Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T07:18:55Z",
           "timePrecision": "exact",
-          "ageHours": 16.21,
+          "ageHours": 16.72,
           "freshnessBasis": "Is the hype around Cavan Sullivan's USMNT future too much? No, it's actually not enough -- and here are five reasons why.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +918,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T22:36:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.91,
+          "ageHours": 1.42,
           "freshnessBasis": "Notre Dame wide receiver Quincy Porter will undergo season-ending surgery for a knee issue, coach Marcus Freeman announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +947,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T15:08:23Z",
           "timePrecision": "exact",
-          "ageHours": 8.39,
+          "ageHours": 8.89,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +976,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T10:24:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.13,
+          "ageHours": 13.63,
           "freshnessBasis": "Find out which teams our experts think will make this season's CFP.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +1005,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T19:50:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.69,
+          "ageHours": 4.2,
           "freshnessBasis": "A former Auburn football staff member has been accused of stealing trade secrets from the Tigers and sending them to their competitors, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1034,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T23:08:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 0.89,
           "freshnessBasis": "In his weekly availability Tuesday, Maryland coach Mike Locksley, who was already in the hot-seat discussion before the season began, told reporters his \"focus has been on getting us ready to play up at Lincoln,\" referring to Saturday's date vs. Nebraska.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1063,7 @@
           "entities": [],
           "occurredAt": "2026-09-29T19:10:34Z",
           "timePrecision": "exact",
-          "ageHours": 4.35,
+          "ageHours": 4.86,
           "freshnessBasis": "After his team blew a 20-point fourth-quarter lead at Texas, Ohio State head coach Ryan Day said the Buckeyes would have to find a way to \"get some momentum again.\" Two wins later, Saturday at No. 14 Iowa offers a chance to do just that.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1103,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 88,
+    "freshCandidateCount": 87,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
