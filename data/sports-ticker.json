@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-30T22:31:31Z",
+  "generatedAt": "2026-09-30T23:01:44Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "2cbe28eed8083cbe4f640a19294eceaa44a2b8300d08f4854169c787bb3ed204",
+  "sourceCandidateHash": "56cb767f8b795f31fc868ffecf4ed4c8e6723934edda5f3f5c24877b138b78af",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-221620d028ee0f29"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "text": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "entities": [],
+          "occurredAt": "2026-09-30T22:58:37Z",
+          "timePrecision": "exact",
+          "ageHours": 0.05,
+          "freshnessBasis": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
+            }
+          ],
+          "id": "a415-a603a6114aaa4415",
+          "feedRank": 1,
+          "compactHeadline": "Alec Bohm home run caps Phillies' rally, forces Game 3 vs. Braves"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-67c0de8bcefb7398"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T22:24:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.62,
           "freshnessBasis": "Ethan Salas will be the Padres' starting catcher and bat seventh in the lineup in Wednesday night's Game 2 against the Cubs, making him the youngest in MLB history to catch in a postseason game.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-79b2996d2ee1425f",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Padres' Salas set to become youngest ever to catch playoff game"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-4dd4d183277e20e2"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.08,
+          "ageHours": 1.58,
           "freshnessBasis": "The Vegas Golden Knights have locked in center William Karlsson on a two-year extension with an AAV of $6.75 million.",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +95,8 @@
             }
           ],
           "id": "a415-1f134fce2002a99a",
-          "feedRank": 2,
-          "compactHeadline": "Golden Knights sign C William Karlsson to 2-year, $13.5M deal"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-6976d9543fc08e44"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their NL Wild Card series.",
-          "text": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their NL Wild Card series.",
-          "entities": [],
-          "occurredAt": "2026-09-30T22:12:29Z",
-          "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their NL Wild Card series.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
-            }
-          ],
-          "id": "a415-6ed2ca8909aad946",
           "feedRank": 3,
-          "compactHeadline": "Alec Bohm home run caps Phillies rally, forces Game 3 vs. Braves"
+          "compactHeadline": "Golden Knights sign C William Karlsson to 2-year, $13.5M deal"
         },
         {
           "rank": 4,
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T22:09:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.87,
           "freshnessBasis": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:20:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.18,
+          "ageHours": 1.68,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:29:20Z",
           "timePrecision": "exact",
-          "ageHours": 2.04,
+          "ageHours": 2.54,
           "freshnessBasis": "Astros center fielder Daulton Varsho underwent left arthroscopic wrist surgery on Tuesday, a procedure that will sideline him for the entire postseason.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T22:28:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.56,
           "freshnessBasis": "The Falcons signed Gervon Dexter Sr. to a four-year, $78 million contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:39:03Z",
           "timePrecision": "exact",
-          "ageHours": 1.87,
+          "ageHours": 2.38,
           "freshnessBasis": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:12:28Z",
           "timePrecision": "exact",
-          "ageHours": 2.32,
+          "ageHours": 2.82,
           "freshnessBasis": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:34:57Z",
           "timePrecision": "exact",
-          "ageHours": 1.94,
+          "ageHours": 2.45,
           "freshnessBasis": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:12:43Z",
           "timePrecision": "exact",
-          "ageHours": 5.31,
+          "ageHours": 5.82,
           "freshnessBasis": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T15:23:09Z",
           "timePrecision": "exact",
-          "ageHours": 7.14,
+          "ageHours": 7.64,
           "freshnessBasis": "The Buccaneers placed wide receiver Jalen McMillan on injured reserve Wednesday, sidelining him for at least the next four games.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 3.95,
+          "ageHours": 4.45,
           "freshnessBasis": "Jordan wore the jersey in Game 3 of the 1998 NBA Finals.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 1.42,
+          "ageHours": 1.92,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.09,
+          "ageHours": 3.59,
           "freshnessBasis": "Brandon Ingram, recovering from heel surgery, got in some light shooting and court work ahead of Clippers practice Tuesday in Hawai'i.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T16:33:52Z",
           "timePrecision": "exact",
-          "ageHours": 5.96,
+          "ageHours": 6.46,
           "freshnessBasis": "Suns forward Dillon Brooks was charged Monday with driving under the influence following his March arrest in Scottsdale, Arizona, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:16:38Z",
           "timePrecision": "exact",
-          "ageHours": 1.25,
+          "ageHours": 1.75,
           "freshnessBasis": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:28:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.06,
+          "ageHours": 2.56,
           "freshnessBasis": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:58:15Z",
           "timePrecision": "exact",
-          "ageHours": 1.55,
+          "ageHours": 2.06,
           "freshnessBasis": "The Stars signed backup goaltender Casey DeSmith to a two-year, $5 million contract extension that runs through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 3.73,
+          "ageHours": 4.24,
           "freshnessBasis": "After he was set to coach on the final season of his contract, the Avalanche's Jared Bednar is getting a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:11:32Z",
           "timePrecision": "exact",
-          "ageHours": 5.33,
+          "ageHours": 5.84,
           "freshnessBasis": "Here's a look at the notable goalie mask designs across the NHL for the upcoming season.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T06:23:38Z",
           "timePrecision": "exact",
-          "ageHours": 16.13,
+          "ageHours": 16.64,
           "freshnessBasis": "No. 1 overall pick Gavin McKenna, 18, made his NHL debut Tuesday night, when the Toronto Maple Leafs fell to the Montreal Canadiens 3-2 in the season opener, and he told reporters after the loss that \"to get that first one under my belt, it feels good.\"",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T05:30:33Z",
           "timePrecision": "exact",
-          "ageHours": 17.02,
+          "ageHours": 17.52,
           "freshnessBasis": "— Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T05:25:31Z",
           "timePrecision": "exact",
-          "ageHours": 17.1,
+          "ageHours": 17.6,
           "freshnessBasis": "— Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:52:42Z",
           "timePrecision": "exact",
-          "ageHours": 7.65,
+          "ageHours": 8.15,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:04:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.45,
+          "ageHours": 1.95,
           "freshnessBasis": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:16:13Z",
           "timePrecision": "exact",
-          "ageHours": 8.26,
+          "ageHours": 8.76,
           "freshnessBasis": "Fulham boss Alvaro Arbeloa has been charged with misconduct by the FA for claiming officials would \"not let Manchester United lose\" after Michael Carrick's side scored a late equaliser to draw their Premier League match at Craven Cottage.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:52:19Z",
           "timePrecision": "exact",
-          "ageHours": 2.65,
+          "ageHours": 3.16,
           "freshnessBasis": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.81,
+          "ageHours": 3.32,
           "freshnessBasis": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -888,7 +888,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:30:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 4.52,
           "freshnessBasis": "Norway defender Kristoffer Ajer said football's \"biggest star\" Erling Haaland has been unaffected by Manchester City being found guilty of breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -923,7 +923,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:32:53Z",
           "timePrecision": "exact",
-          "ageHours": 7.98,
+          "ageHours": 8.48,
           "freshnessBasis": "Philadelphia Union and USMNT midfielder Cavan Sullivan became the youngest player in MLS history to be named Player of the Month on Wednesday when he was awarded the honors for September.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:18:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.21,
+          "ageHours": 3.72,
           "freshnessBasis": "CFP leaders continued to discuss a 24-team model but didn't vote on any calendar or scheduling changes for the 2027 season as negotiations with ESPN continue.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 2.87,
+          "ageHours": 3.37,
           "freshnessBasis": "We've seen four weeks of football. How has that changed our opinions about the top quarterbacks.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:45:24Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 5.27,
           "freshnessBasis": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:42:01Z",
           "timePrecision": "exact",
-          "ageHours": 4.83,
+          "ageHours": 5.33,
           "freshnessBasis": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 116,
+    "freshCandidateCount": 113,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
