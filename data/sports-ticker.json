@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-01T04:31:30Z",
+  "generatedAt": "2026-10-01T12:01:44Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "6642985f4d99c86c24844e99982ce492e187caa721922638376d114d5f47a41d",
+  "sourceCandidateHash": "cd3fb95ed54834752265d6b7c66999a17efa5cbdf5995225b1a8610c27c55990",
   "leagues": [
     {
       "league": "MLB",
@@ -14,22 +14,23 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-db1ce6e31ad20fb8"
+            "cand-ecc446aab72f151d"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Cam Schlittler pitched another playoff gem against the Boston Red Sox, and Ben Rice also burned their hometown team with a late grand slam and six RBI as the New York Yankees opened this Wild Card Series rematch with a 9-0 victory Tuesday night.",
-          "text": "Cam Schlittler pitched another playoff gem against the Boston Red Sox, and Ben Rice also burned their hometown team with a late grand slam and six RBI as the New York Yankees opened this Wild Card Series rematch with a 9-0 victory Tuesday night.",
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Five Padres pitchers combined on a five-hitter and Gavin Sheets hit a pinch-hit two-run homer, as the Padres swept the Cubs out of the NL Wild Card Series with a 4-1 win.",
+          "text": "Five Padres pitchers combined on a five-hitter and Gavin Sheets hit a pinch-hit two-run homer, as the Padres swept the Cubs out of the NL Wild Card Series with a 4-1 win.",
           "entities": [],
-          "occurredAt": "2026-10-01T00:00:00Z",
+          "occurredAt": "2026-10-01T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
-          "freshnessBasis": "Highlightly final: Boston Red Sox 2, New York Yankees 9.",
+          "ageHours": 10.03,
+          "freshnessBasis": "Highlightly final: Chicago Cubs 1, San Diego Padres 4.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/50064240/schlittler-rice-lead-yankees-rout-red-sox-game-1",
-            "http://www.espn.com/mlb/recap?gameId=401907924"
+            "https://www.espn.com/mlb/story/_/id/50074597/padres-silence-cubs-bats-again-finish-2-game-wild-card-sweep",
+            "https://www.espn.com/mlb/story/_/id/50070369/mlb-playoffs-2026-first-look-preview-division-series-matchups-brewers-dodgers-rays-guardians",
+            "http://www.espn.com/mlb/recap?gameId=401907975"
           ],
           "sources": [
             {
@@ -40,46 +41,69 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50064240/schlittler-rice-lead-yankees-rout-red-sox-game-1"
+              "url": "https://www.espn.com/mlb/story/_/id/50074597/padres-silence-cubs-bats-again-finish-2-game-wild-card-sweep"
             },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907924"
+              "url": "https://www.espn.com/mlb/story/_/id/50070369/mlb-playoffs-2026-first-look-preview-division-series-matchups-brewers-dodgers-rays-guardians"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907975"
             }
           ],
-          "id": "a415-39d3ac06f671640f",
+          "id": "a415-5312caa58941e1ea",
           "feedRank": 1,
-          "compactHeadline": "Schlittler and Rice torment hometown team as Yankees beat rival Red Sox 9-0 in playoff opener"
+          "compactHeadline": "San Diego Padres beat Chicago Cubs 4-1"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-eab9ecf10a5d8a22"
+            "cand-db1ce6e31ad20fb8"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "The Yankees finished their AL Wild Card Series outscoring the Red Sox 18-2 in a dominate display against their division rivals.",
-          "text": "The Yankees finished their AL Wild Card Series outscoring the Red Sox 18-2 in a dominate display against their division rivals.",
+          "headline": "One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
+          "text": "One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
           "entities": [],
-          "occurredAt": "2026-10-01T04:17:31Z",
+          "occurredAt": "2026-10-01T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
-          "freshnessBasis": "The Yankees finished their AL Wild Card Series outscoring the Red Sox 18-2 in a dominate display against their division rivals.",
+          "ageHours": 12.03,
+          "freshnessBasis": "Highlightly final: Boston Red Sox 2, New York Yankees 9.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401907963",
+            "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds",
+            "https://www.espn.com/mlb/story/_/id/50064240/schlittler-rice-lead-yankees-rout-red-sox-game-1"
           ],
           "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-30",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907963"
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50064240/schlittler-rice-lead-yankees-rout-red-sox-game-1"
             }
           ],
-          "id": "a415-40e6add4d0839695",
+          "id": "a415-39d3ac06f671640f",
           "feedRank": 2,
-          "compactHeadline": "Yankees send Red Sox home again, move on to face Rays in ALDS"
+          "compactHeadline": "New York Yankees beat Boston Red Sox 9-2"
         },
         {
           "rank": 3,
@@ -88,13 +112,13 @@
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "Here's how the winter looks in Boston and Houston after they were swept out of the playoffs.",
-          "text": "Here's how the winter looks in Boston and Houston after they were swept out of the playoffs.",
+          "headline": "Here's how the winter looks in Chicago, Boston and Houston after those teams were swept out of the playoffs.",
+          "text": "Here's how the winter looks in Chicago, Boston and Houston after those teams were swept out of the playoffs.",
           "entities": [],
-          "occurredAt": "2026-10-01T03:39:05Z",
+          "occurredAt": "2026-10-01T05:35:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.87,
-          "freshnessBasis": "Here's how the winter looks in Boston and Houston after they were swept out of the playoffs.",
+          "ageHours": 6.44,
+          "freshnessBasis": "Here's how the winter looks in Chicago, Boston and Houston after those teams were swept out of the playoffs.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions"
@@ -113,35 +137,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-016adff5a0e6d51b"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Just two years removed from a 121-loss season, the White Sox finished off the Astros with a 7-3 win Wednesday to secure their first playoff series win since beating Houston in the 2005 World Series.",
-          "text": "Just two years removed from a 121-loss season, the White Sox finished off the Astros with a 7-3 win Wednesday to secure their first playoff series win since beating Houston in the 2005 World Series.",
-          "entities": [],
-          "occurredAt": "2026-10-01T03:27:18Z",
-          "timePrecision": "exact",
-          "ageHours": 1.07,
-          "freshnessBasis": "Just two years removed from a 121-loss season, the White Sox finished off the Astros with a 7-3 win Wednesday to secure their first playoff series win since beating Houston in the 2005 World Series.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005"
-            }
-          ],
-          "id": "a415-5a6d7e270dddbf95",
-          "feedRank": 4,
-          "compactHeadline": "White Sox sweep Astros for first playoff series win since 2005"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-37fff10359b2f543"
           ],
           "type": "PLAYOFF",
@@ -149,9 +144,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-01T03:17:17Z",
+          "occurredAt": "2026-10-01T05:01:14Z",
           "timePrecision": "exact",
-          "ageHours": 1.24,
+          "ageHours": 7.01,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -165,8 +160,55 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 5,
+          "feedRank": 4,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-39c6e1c367f9b213"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "From 100 losses to their first playoff series win in two decades, these scrappy Chicago White Sox just keep outdoing themselves.",
+          "text": "From 100 losses to their first playoff series win in two decades, these scrappy Chicago White Sox just keep outdoing themselves.",
+          "entities": [],
+          "occurredAt": "2026-09-30T21:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 15.03,
+          "freshnessBasis": "Highlightly final: Chicago White Sox 7, Houston Astros 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401907897",
+            "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005",
+            "https://www.espn.com/mlb/story/_/id/50066623/astros-frustrated-boos-sparse-crowd-wild-card-opener"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-30",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907897"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50066623/astros-frustrated-boos-sparse-crowd-wild-card-opener"
+            }
+          ],
+          "id": "a415-bef7d4ccb6161067",
+          "feedRank": 5,
+          "compactHeadline": "Chicago White Sox beat Houston Astros 7-3"
         },
         {
           "rank": 6,
@@ -180,7 +222,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.76,
+          "ageHours": 9.26,
           "freshnessBasis": "Ethan Salas became the youngest player to catch in a major league postseason game when he started for the Padres in Game 2 of their Wild Card Series with the Cubs.",
           "status": "active",
           "sourceUrls": [
@@ -206,6 +248,127 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9c9febacf0bd7d14"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "text": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "entities": [],
+          "occurredAt": "2026-10-01T09:40:31Z",
+          "timePrecision": "exact",
+          "ageHours": 2.35,
+          "freshnessBasis": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+            }
+          ],
+          "id": "a415-7a75961a3d7042a4",
+          "feedRank": 7,
+          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-91dab84e3f6ce30e"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
+          "text": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
+          "entities": [],
+          "occurredAt": "2026-10-01T10:41:28Z",
+          "timePrecision": "exact",
+          "ageHours": 1.34,
+          "freshnessBasis": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50068583/sources-packers-put-wr-jayden-reed-ir-due-neck-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50068583/sources-packers-put-wr-jayden-reed-ir-due-neck-injury"
+            }
+          ],
+          "id": "a415-326f39f1cc636567",
+          "feedRank": 8,
+          "compactHeadline": "Packers WR Jayden Reed to undergo season-ending neck surgery"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-909e94b9136b2fb8"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
+          "text": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
+          "entities": [],
+          "occurredAt": "2026-10-01T11:19:32Z",
+          "timePrecision": "exact",
+          "ageHours": 0.7,
+          "freshnessBasis": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/draft2027/story/_/id/50068479/2027-nfl-draft-rankings-jordan-reid-top-prospects-players-positions"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50068479/2027-nfl-draft-rankings-jordan-reid-top-prospects-players-positions"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50068479/2027-nfl-draft-rankings-jordan-reid-top-prospects-players-positions"
+            }
+          ],
+          "id": "a415-b75eebe2181006ac",
+          "feedRank": 9,
+          "compactHeadline": "2027 NFL draft rankings: Jordan Reid's top 50 prospects, scouting reports"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-a1f1bedd0a5eee59"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN.",
+          "text": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN.",
+          "entities": [],
+          "occurredAt": "2026-10-01T11:21:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.66,
+          "freshnessBasis": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50074351/sources-steelers-trade-joey-porter-jr-cowboys"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50074351/sources-steelers-trade-joey-porter-jr-cowboys"
+            }
+          ],
+          "id": "a415-87f9c41318ee934a",
+          "feedRank": 10,
+          "compactHeadline": "Sources: Steelers to trade Joey Porter Jr. to Cowboys"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-6aed856254a0d7c6"
           ],
           "type": "SIGNING",
@@ -215,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T04:21:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 7.68,
           "freshnessBasis": "The Falcons signed Gervon Dexter Sr. to a four-year, $78 million contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -229,52 +392,23 @@
             }
           ],
           "id": "a415-48b85df97fb1ff4b",
-          "feedRank": 7,
+          "feedRank": 11,
           "compactHeadline": "Falcons sign DT Gervon Dexter Sr. to four-year extension"
         },
         {
-          "rank": 2,
-          "candidateIds": [
-            "cand-a1f1bedd0a5eee59"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN on Wednesday night.",
-          "text": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN on Wednesday night.",
-          "entities": [],
-          "occurredAt": "2026-10-01T04:23:51Z",
-          "timePrecision": "exact",
-          "ageHours": 0.13,
-          "freshnessBasis": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN on Wednesday night.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50074351/sources-steelers-trade-joey-porter-jr-cowboys"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50074351/sources-steelers-trade-joey-porter-jr-cowboys"
-            }
-          ],
-          "id": "a415-87f9c41318ee934a",
-          "feedRank": 8,
-          "compactHeadline": "Sources: Steelers to trade Joey Porter Jr. to Cowboys"
-        },
-        {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-4d06cf05f158466d"
           ],
           "type": "TRADE",
           "priority": 78,
-          "headline": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Steelers sending Joey Porter Jr. to the Cowboys.",
-          "text": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Steelers sending Joey Porter Jr. to the Cowboys.",
+          "headline": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including the Steelers sending Joey Porter Jr. to the Cowboys.",
+          "text": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including the Steelers sending Joey Porter Jr. to the Cowboys.",
           "entities": [],
-          "occurredAt": "2026-10-01T04:20:06Z",
+          "occurredAt": "2026-10-01T04:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
-          "freshnessBasis": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Steelers sending Joey Porter Jr. to the Cowboys.",
+          "ageHours": 7.06,
+          "freshnessBasis": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including the Steelers sending Joey Porter Jr. to the Cowboys.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50043471/2026-trade-deadline-updates-latest-news-deals-terms"
@@ -287,95 +421,8 @@
             }
           ],
           "id": "a415-5d5d156277695f89",
-          "feedRank": 9,
-          "compactHeadline": "2026 NFL trade deadline updates: Latest on Joey Porter Jr., J.J. McCarthy deals"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-7c82d3823998ec51"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
-          "text": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
-          "entities": [],
-          "occurredAt": "2026-09-30T20:39:03Z",
-          "timePrecision": "exact",
-          "ageHours": 7.87,
-          "freshnessBasis": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50068364/panthers-cbs-jaycee-horn-mike-jackson-placed-ir"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50068364/panthers-cbs-jaycee-horn-mike-jackson-placed-ir"
-            }
-          ],
-          "id": "a415-3809358888dceda3",
-          "feedRank": 10,
-          "compactHeadline": "Panthers CBs Jaycee Horn, Mike Jackson placed on IR"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-567f9b98f865396b"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
-          "text": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
-          "entities": [],
-          "occurredAt": "2026-09-30T20:12:28Z",
-          "timePrecision": "exact",
-          "ageHours": 8.32,
-          "freshnessBasis": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50070581/steelers-rule-joey-porter-again-jalen-ramsey-questionable"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50070581/steelers-rule-joey-porter-again-jalen-ramsey-questionable"
-            }
-          ],
-          "id": "a415-556481f274c3eb7d",
-          "feedRank": 11,
-          "compactHeadline": "Steelers rule Joey Porter out again; Jalen Ramsey questionable"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4e1c5ddc482fdf1c"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
-          "text": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
-          "entities": [],
-          "occurredAt": "2026-09-30T20:34:57Z",
-          "timePrecision": "exact",
-          "ageHours": 7.94,
-          "freshnessBasis": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50067128/packers-guard-kevin-zeitler-agree-one-year-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50067128/packers-guard-kevin-zeitler-agree-one-year-deal"
-            }
-          ],
-          "id": "a415-862697f519552f81",
           "feedRank": 12,
-          "compactHeadline": "Packers, guard Kevin Zeitler agree to one-year deal"
+          "compactHeadline": "2026 NFL trade deadline updates: Latest on Joey Porter Jr., J.J. McCarthy deals"
         }
       ]
     },
@@ -386,35 +433,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ab3566791e623c84"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Golden State Valkyries Women 100, Dallas Wings Women 108.",
-          "text": "Highlightly final: Golden State Valkyries Women 100, Dallas Wings Women 108.",
-          "entities": [],
-          "occurredAt": "2026-10-01T01:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.53,
-          "freshnessBasis": "Highlightly final: Golden State Valkyries Women 100, Dallas Wings Women 108.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-30",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-a3c79581c11713fc",
-          "feedRank": 13,
-          "compactHeadline": "Dallas Wings Women beat Golden State Valkyries Women 108-100"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-f567d0e05d007907"
           ],
           "type": "RECORD",
@@ -424,7 +442,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 9.95,
+          "ageHours": 17.45,
           "freshnessBasis": "Jordan wore the jersey in Game 3 of the 1998 NBA Finals.",
           "status": "active",
           "sourceUrls": [
@@ -438,11 +456,11 @@
             }
           ],
           "id": "a415-e9592bd3b99e5f6e",
-          "feedRank": 14,
+          "feedRank": 13,
           "compactHeadline": "Michael Jordan's Game 3 'Last Dance' jersey sold for record amount"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-915a7bd06df24a15"
           ],
@@ -453,7 +471,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 7.42,
+          "ageHours": 14.92,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -467,11 +485,11 @@
             }
           ],
           "id": "a415-f0b87f7b8298e545",
-          "feedRank": 15,
+          "feedRank": 14,
           "compactHeadline": "Ex-NBA champ JR Smith arrested on assault charge in Texas"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-43bccbb9f0d571e1"
           ],
@@ -482,7 +500,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 9.09,
+          "ageHours": 16.59,
           "freshnessBasis": "Brandon Ingram, recovering from heel surgery, got in some light shooting and court work ahead of Clippers practice Tuesday in Hawai'i.",
           "status": "active",
           "sourceUrls": [
@@ -496,11 +514,11 @@
             }
           ],
           "id": "a415-576e41805d9c4850",
-          "feedRank": 16,
+          "feedRank": 15,
           "compactHeadline": "Clippers' Brandon Ingram gets in light work before practice"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-8dadfc78b1c908e3"
           ],
@@ -511,7 +529,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T16:33:52Z",
           "timePrecision": "exact",
-          "ageHours": 11.96,
+          "ageHours": 19.46,
           "freshnessBasis": "Suns forward Dillon Brooks was charged Monday with driving under the influence following his March arrest in Scottsdale, Arizona, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -525,37 +543,8 @@
             }
           ],
           "id": "a415-a709671b2cea8320",
-          "feedRank": 17,
+          "feedRank": 16,
           "compactHeadline": "Suns' Dillon Brooks charged with DUI from March arrest"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-bacd32b2a69a39f2"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
-          "text": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
-          "entities": [],
-          "occurredAt": "2026-09-30T21:16:38Z",
-          "timePrecision": "exact",
-          "ageHours": 7.25,
-          "freshnessBasis": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50070779/76ers-guard-tyrese-maxey-want-judged-winning"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50070779/76ers-guard-tyrese-maxey-want-judged-winning"
-            }
-          ],
-          "id": "a415-e154a9ca72b9d43a",
-          "feedRank": 18,
-          "compactHeadline": "76ers guard Tyrese Maxey: 'I want to be judged by winning'"
         }
       ]
     },
@@ -575,7 +564,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:58:15Z",
           "timePrecision": "exact",
-          "ageHours": 7.55,
+          "ageHours": 15.06,
           "freshnessBasis": "The Stars signed backup goaltender Casey DeSmith to a two-year, $5 million contract extension that runs through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -589,7 +578,7 @@
             }
           ],
           "id": "a415-5bd329787f1ed3f5",
-          "feedRank": 19,
+          "feedRank": 17,
           "compactHeadline": "Stars sign backup goalie DeSmith to 2-year, $5M extension"
         },
         {
@@ -604,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:36:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.92,
+          "ageHours": 9.42,
           "freshnessBasis": "— Easton Cowan had a goal and an assist in the first period and the Toronto Maple Leafs beat the New York Islanders 2-1 on Wednesday night for their first victory under coach Jim Hiller.",
           "status": "active",
           "sourceUrls": [
@@ -618,7 +607,7 @@
             }
           ],
           "id": "a415-25ac3215ad7f57af",
-          "feedRank": 20,
+          "feedRank": 18,
           "compactHeadline": "Maple Leafs beat the Islanders 2-1 to rebound from opening loss"
         },
         {
@@ -633,7 +622,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:17:42Z",
           "timePrecision": "exact",
-          "ageHours": 2.23,
+          "ageHours": 9.73,
           "freshnessBasis": "— Evgeni Malkin, Hendrix Lapierre and Filip Hallander scored in the second period and Arturs Silovs stopped 19 shots to help the Pittsburgh Penguins steamroll the Philadelphia Flyers 7-0 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -647,7 +636,7 @@
             }
           ],
           "id": "a415-913e990a94ab4e2b",
-          "feedRank": 21,
+          "feedRank": 19,
           "compactHeadline": "Malkin scores, Silovs stops 19 shots as Penguins pile on in 7-0 win over Flyers in teams' opener"
         },
         {
@@ -662,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 9.73,
+          "ageHours": 17.24,
           "freshnessBasis": "After he was set to coach on the final season of his contract, the Avalanche's Jared Bednar is getting a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -676,7 +665,7 @@
             }
           ],
           "id": "a415-cbb1becf44c5a379",
-          "feedRank": 22,
+          "feedRank": 20,
           "compactHeadline": "Avalanche signing coach Jared Bednar to four-year extension"
         },
         {
@@ -691,7 +680,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:11:32Z",
           "timePrecision": "exact",
-          "ageHours": 11.33,
+          "ageHours": 18.84,
           "freshnessBasis": "Here's a look at the notable goalie mask designs across the NHL for the upcoming season.",
           "status": "active",
           "sourceUrls": [
@@ -705,7 +694,7 @@
             }
           ],
           "id": "a415-538df45811673c62",
-          "feedRank": 23,
+          "feedRank": 21,
           "compactHeadline": "A guide to NHL goalie masks for the 2026-27 season"
         }
       ]
@@ -724,9 +713,9 @@
           "headline": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "text": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "entities": [],
-          "occurredAt": "2026-09-30T14:52:42Z",
+          "occurredAt": "2026-10-01T07:21:05Z",
           "timePrecision": "exact",
-          "ageHours": 13.65,
+          "ageHours": 4.68,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -740,11 +729,98 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 24,
+          "feedRank": 22,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-67fa27bb3e48a1b3"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 64,
+          "headline": "The Premier League is well underway, but with the transfer window closed, where do players stand in their teams? How deep do the squads go?",
+          "text": "The Premier League is well underway, but with the transfer window closed, where do players stand in their teams? How deep do the squads go?",
+          "entities": [],
+          "occurredAt": "2026-10-01T07:05:03Z",
+          "timePrecision": "exact",
+          "ageHours": 4.94,
+          "freshnessBasis": "The Premier League is well underway, but with the transfer window closed, where do players stand in their teams? How deep do the squads go?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50012221/premier-league-depth-chart-arsenal-man-united-man-city-liverpool-chelsea-tottenham"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50012221/premier-league-depth-chart-arsenal-man-united-man-city-liverpool-chelsea-tottenham"
+            }
+          ],
+          "id": "a415-a26fe9e2664a8305",
+          "feedRank": 23,
+          "compactHeadline": "Premier League depth charts for most popular teams: Who is key?"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-2997b90ccb1927cb"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Cristiano Ronaldo walked out of the Portugal national team's camp after being benched. It is far from the first high-profile row of his two decades at the top.",
+          "text": "Cristiano Ronaldo walked out of the Portugal national team's camp after being benched. It is far from the first high-profile row of his two decades at the top.",
+          "entities": [],
+          "occurredAt": "2026-10-01T11:14:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.8,
+          "freshnessBasis": "Cristiano Ronaldo walked out of the Portugal national team's camp after being benched. It is far from the first high-profile row of his two decades at the top.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50075485/cristiano-ronaldo-long-history-rows-portugal-manchester-united-real-madrid-juventus-coaches"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50075485/cristiano-ronaldo-long-history-rows-portugal-manchester-united-real-madrid-juventus-coaches"
+            }
+          ],
+          "id": "a415-84b6658cf042f2bd",
+          "feedRank": 24,
+          "compactHeadline": "Portugal, Man United, Real Madrid: Cristiano Ronaldo's long history of rows with coaches"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-3218775e3635f935"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Premier League has been \"dragged through the mud\" by the Manchester City guilty verdict, Gary Neville has said.",
+          "text": "The Premier League has been \"dragged through the mud\" by the Manchester City guilty verdict, Gary Neville has said.",
+          "entities": [],
+          "occurredAt": "2026-10-01T10:56:26Z",
+          "timePrecision": "exact",
+          "ageHours": 1.09,
+          "freshnessBasis": "The Premier League has been \"dragged through the mud\" by the Manchester City guilty verdict, Gary Neville has said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50075558/premier-league-dragged-mud-man-city-case-gary-neville"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50075558/premier-league-dragged-mud-man-city-case-gary-neville"
+            }
+          ],
+          "id": "a415-6879c45e7dd61d6b",
+          "feedRank": 25,
+          "compactHeadline": "Premier League 'dragged through the mud' by Man City case - Gary Neville"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-3332f1515bf1ea74"
           ],
@@ -755,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T04:28:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 7.55,
           "freshnessBasis": "Fulham boss Alvaro Arbeloa has been charged with misconduct by the FA for claiming officials would \"not let Manchester United lose\" after Michael Carrick's side scored a late equaliser to draw their Premier League match at Craven Cottage.",
           "status": "active",
           "sourceUrls": [
@@ -769,95 +845,37 @@
             }
           ],
           "id": "a415-ba92d9aa8c533ecf",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "FA charges Fulham boss Álvaro Arbeloa with misconduct for comments after Man United draw"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
-            "cand-faccdcebf63677d7"
+            "cand-ee549ada49609aef"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
-          "text": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
+          "headline": "Chief executive Vinai Venkatesham has offered his backing to Roberto De Zerbi after Tottenham's poor start to the new campaign.",
+          "text": "Chief executive Vinai Venkatesham has offered his backing to Roberto De Zerbi after Tottenham's poor start to the new campaign.",
           "entities": [],
-          "occurredAt": "2026-09-30T21:04:34Z",
+          "occurredAt": "2026-10-01T10:27:50Z",
           "timePrecision": "exact",
-          "ageHours": 7.45,
-          "freshnessBasis": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
+          "ageHours": 1.57,
+          "freshnessBasis": "Chief executive Vinai Venkatesham has offered his backing to Roberto De Zerbi after Tottenham's poor start to the new campaign.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50070645/klopp-not-preparing-title-manchester-city-verdict"
+            "https://www.espn.com/soccer/story/_/id/50075848/roberto-de-zerbi-receives-backing-tottenham-chief-executive"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50070645/klopp-not-preparing-title-manchester-city-verdict"
+              "url": "https://www.espn.com/soccer/story/_/id/50075848/roberto-de-zerbi-receives-backing-tottenham-chief-executive"
             }
           ],
-          "id": "a415-215afd7b6ed4c4a4",
-          "feedRank": 26,
-          "compactHeadline": "Klopp not preparing for more titles after verdict against Man City"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-8be4dd4baf6d0298"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
-          "text": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
-          "entities": [],
-          "occurredAt": "2026-09-30T19:52:19Z",
-          "timePrecision": "exact",
-          "ageHours": 8.65,
-          "freshnessBasis": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50066641/pep-guardiola-fans-man-city-guilty-verdict-here-more-ever"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50066641/pep-guardiola-fans-man-city-guilty-verdict-here-more-ever"
-            }
-          ],
-          "id": "a415-4c2fe3b83905439a",
+          "id": "a415-259d6262bbbb3747",
           "feedRank": 27,
-          "compactHeadline": "Pep Guardiola after Man City guilty verdict: 'I am behind my club'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e91801066402ca33"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
-          "text": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
-          "entities": [],
-          "occurredAt": "2026-09-30T19:42:47Z",
-          "timePrecision": "exact",
-          "ageHours": 8.81,
-          "freshnessBasis": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50070465/andy-burnham-man-city-owners-sell-uk-prime-minister"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50070465/andy-burnham-man-city-owners-sell-uk-prime-minister"
-            }
-          ],
-          "id": "a415-5ccf52e3ffae731a",
-          "feedRank": 28,
-          "compactHeadline": "UK PM Burnham 'concerned' Man City's owners could sell club"
+          "compactHeadline": "Roberto De Zerbi receives backing of Tottenham's chief executive"
         }
       ]
     },
@@ -877,7 +895,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:19:42Z",
           "timePrecision": "exact",
-          "ageHours": 2.2,
+          "ageHours": 9.7,
           "freshnessBasis": "Simon Becher and Tomas Ostrak each scored late in the second half as St. Louis City SC beat the New York Red Bulls 3-0 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -891,7 +909,7 @@
             }
           ],
           "id": "a415-51692c0da8d84fe2",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "St. Louis up to 2nd place with unbeaten run now at 17 games"
         },
         {
@@ -906,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:32:53Z",
           "timePrecision": "exact",
-          "ageHours": 13.98,
+          "ageHours": 21.48,
           "freshnessBasis": "Philadelphia Union and USMNT midfielder Cavan Sullivan became the youngest player in MLS history to be named Player of the Month on Wednesday when he was awarded the honors for September.",
           "status": "active",
           "sourceUrls": [
@@ -920,7 +938,7 @@
             }
           ],
           "id": "a415-986f2d5e886ea8b4",
-          "feedRank": 30,
+          "feedRank": 29,
           "compactHeadline": "Philadelphia Union, USMNT's Cavan Sullivan becomes youngest MLS Player of the Month"
         }
       ]
@@ -932,16 +950,16 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-cdc5f21a7d5eb277"
+            "cand-5da621cdac68697f"
           ],
           "type": "INJURY",
           "priority": 78,
           "headline": "Tennessee All-SEC offensive guard Wendell Moe Jr. is expected to miss the rest of the season with a lower-body injury, sources told ESPN.",
           "text": "Tennessee All-SEC offensive guard Wendell Moe Jr. is expected to miss the rest of the season with a lower-body injury, sources told ESPN.",
           "entities": [],
-          "occurredAt": "2026-10-01T00:48:01Z",
+          "occurredAt": "2026-10-01T10:38:04Z",
           "timePrecision": "exact",
-          "ageHours": 3.72,
+          "ageHours": 1.39,
           "freshnessBasis": "Tennessee All-SEC offensive guard Wendell Moe Jr. is expected to miss the rest of the season with a lower-body injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -954,12 +972,41 @@
               "url": "https://www.espn.com/college-football/story/_/id/50072637/all-sec-pick-wendell-moe-expected-miss-rest-season-sources-say"
             }
           ],
-          "id": "a415-be19851b50b9fa42",
-          "feedRank": 31,
-          "compactHeadline": "All-SEC pick Wendell Moe expected to miss rest of season, sources say"
+          "id": "a415-b6d125e7495860d5",
+          "feedRank": 30,
+          "compactHeadline": "All-SEC pick Wendell Moe set to miss rest of season, sources say"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-4de1889e190624e1"
+          ],
+          "type": "COACHING",
+          "priority": 64,
+          "headline": "So far, internal hires aren't working at a few spots while other coaches have elevated their profiles.",
+          "text": "So far, internal hires aren't working at a few spots while other coaches have elevated their profiles.",
+          "entities": [],
+          "occurredAt": "2026-10-01T10:10:44Z",
+          "timePrecision": "exact",
+          "ageHours": 1.85,
+          "freshnessBasis": "So far, internal hires aren't working at a few spots while other coaches have elevated their profiles.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50068029/college-football-coaching-change-coordinators-hot-seat-updates"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50068029/college-football-coaching-change-coordinators-hot-seat-updates"
+            }
+          ],
+          "id": "a415-5086cb202118a847",
+          "feedRank": 31,
+          "compactHeadline": "Taking stock of college football's coaching changes and what's next"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-e94b4110b118ee08"
           ],
@@ -970,7 +1017,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:18:48Z",
           "timePrecision": "exact",
-          "ageHours": 9.21,
+          "ageHours": 16.72,
           "freshnessBasis": "CFP leaders continued to discuss a 24-team model but didn't vote on any calendar or scheduling changes for the 2027 season as negotiations with ESPN continue.",
           "status": "active",
           "sourceUrls": [
@@ -988,7 +1035,7 @@
           "compactHeadline": "College Football Playoff leaders continue to discuss 24-team model"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-295b4c63ce574377"
           ],
@@ -999,7 +1046,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 8.87,
+          "ageHours": 16.37,
           "freshnessBasis": "We've seen four weeks of football. How has that changed our opinions about the top quarterbacks.",
           "status": "active",
           "sourceUrls": [
@@ -1017,62 +1064,62 @@
           "compactHeadline": "QB rankings for all 68 Power 4 college football teams"
         },
         {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2a3f138d5e6855c9"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
-          "text": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
-          "entities": [],
-          "occurredAt": "2026-09-30T17:45:24Z",
-          "timePrecision": "exact",
-          "ageHours": 10.77,
-          "freshnessBasis": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50068724/texas-ad-calls-longhorns-vulgar-celebrations-embarrassing"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50068724/texas-ad-calls-longhorns-vulgar-celebrations-embarrassing"
-            }
-          ],
-          "id": "a415-bf09d53ae276c38b",
-          "feedRank": 34,
-          "compactHeadline": "Texas AD calls Longhorns' vulgar celebrations 'embarrassing'"
-        },
-        {
           "rank": 5,
           "candidateIds": [
-            "cand-6c29c4342fca1ecd"
+            "cand-0f8767e7db4a1723"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
-          "text": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Mississippi State and Kamario Taylor will face their biggest test yet, plus, teams on upset watch and other games to watch.",
+          "text": "Mississippi State and Kamario Taylor will face their biggest test yet, plus, teams on upset watch and other games to watch.",
           "entities": [],
-          "occurredAt": "2026-09-30T17:42:01Z",
+          "occurredAt": "2026-10-01T11:19:29Z",
           "timePrecision": "exact",
-          "ageHours": 10.82,
-          "freshnessBasis": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
+          "ageHours": 0.7,
+          "freshnessBasis": "Mississippi State and Kamario Taylor will face their biggest test yet, plus, teams on upset watch and other games to watch.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50069082/no-3-notre-dame-challenge-top-ranked-defense-vs-unc"
+            "https://www.espn.com/college-football/story/_/page/gamedaykickoff100126/2026-gameday-kickoff-week-5-preview-top-games-mississippi-state-alabama"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50069082/no-3-notre-dame-challenge-top-ranked-defense-vs-unc"
+              "url": "https://www.espn.com/college-football/story/_/page/gamedaykickoff100126/2026-gameday-kickoff-week-5-preview-top-games-mississippi-state-alabama"
             }
           ],
-          "id": "a415-c681888dd13a685b",
+          "id": "a415-9f2454f2e00590e0",
+          "feedRank": 34,
+          "compactHeadline": "Game Day Kickoff: An epic QB showcase in Starkville and the best of the rest of Week 5"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-ce299b555749b274"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "After his team blew a 20-point fourth-quarter lead at Texas, Ohio State head coach Ryan Day said the Buckeyes would have to find a way to \"get some momentum again.\" Two wins later, Saturday at No. 14 Iowa offers a chance to do just that.",
+          "text": "After his team blew a 20-point fourth-quarter lead at Texas, Ohio State head coach Ryan Day said the Buckeyes would have to find a way to \"get some momentum again.\" Two wins later, Saturday at No. 14 Iowa offers a chance to do just that.",
+          "entities": [],
+          "occurredAt": "2026-10-01T10:32:05Z",
+          "timePrecision": "exact",
+          "ageHours": 1.49,
+          "freshnessBasis": "After his team blew a 20-point fourth-quarter lead at Texas, Ohio State head coach Ryan Day said the Buckeyes would have to find a way to \"get some momentum again.\" Two wins later, Saturday at No. 14 Iowa offers a chance to do just that.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50059915/ryan-day-ohio-state-get-some-momentum-again-iowa"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50059915/ryan-day-ohio-state-get-some-momentum-again-iowa"
+            }
+          ],
+          "id": "a415-9ad53f1e5189d1dd",
           "feedRank": 35,
-          "compactHeadline": "No. 3 Notre Dame to challenge its top-ranked defense vs. UNC"
+          "compactHeadline": "Ryan Day: Ohio State can 'get some momentum again' at Iowa"
         }
       ]
     }
@@ -1097,7 +1144,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 103,
+    "freshCandidateCount": 98,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
