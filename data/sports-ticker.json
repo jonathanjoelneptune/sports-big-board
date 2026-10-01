@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-30T23:31:40Z",
+  "generatedAt": "2026-10-01T00:01:48Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "2e603dd93ac86a523c89576e360364205f1610fbd5ebc8941d57d9e5b1ebc1fe",
+  "sourceCandidateHash": "b6f0cc5d90d51c5b7b8c9f3511c0c466dbd50d84fac9e9836fc3fec96d9df83b",
   "leagues": [
     {
       "league": "MLB",
@@ -14,34 +14,87 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-221620d028ee0f29"
+            "cand-4b856fad7272156c"
           ],
           "type": "PLAYOFF",
           "priority": 76,
           "headline": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
           "text": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
           "entities": [],
-          "occurredAt": "2026-09-30T23:27:35Z",
+          "occurredAt": "2026-09-30T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "ageHours": 6.03,
+          "freshnessBasis": "Highlightly final: Philadelphia Phillies 4, Atlanta Braves 3.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves",
+            "http://www.espn.com/mlb/recap?gameId=401907972",
+            "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
           ],
           "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-30",
+              "url": "https://highlightly.net"
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907972"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
             }
           ],
-          "id": "a415-a603a6114aaa4415",
+          "id": "a415-af536f9ddd8959f1",
           "feedRank": 1,
-          "compactHeadline": "Alec Bohm home run caps Phillies' rally, forces Game 3 vs. Braves"
+          "compactHeadline": "Philadelphia Phillies beat Atlanta Braves 4-3"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-eff1469a984b47fc"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Fernando Tatis Jr. hit the first leadoff homer in Padres playoff history on the Cubs’ first pitch, Michael King took a no-hitter into the seventh...",
+          "text": "Fernando Tatis Jr. hit the first leadoff homer in Padres playoff history on the Cubs’ first pitch, Michael King took a no-hitter into the seventh...",
+          "entities": [],
+          "occurredAt": "2026-09-30T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: Chicago Cubs 0, San Diego Padres 8.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401907974"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907974"
+            }
+          ],
+          "id": "a415-a6dc6785e11c8c1f",
+          "feedRank": 2,
+          "compactHeadline": "Padres rout Cubs 8-0 in emphatic Wild Card opener with Tatis' leadoff homer, King's no-hit bid"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-67c0de8bcefb7398"
           ],
@@ -52,7 +105,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T22:24:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.12,
+          "ageHours": 1.62,
           "freshnessBasis": "Ethan Salas will be the Padres' starting catcher and bat seventh in the lineup in Wednesday night's Game 2 against the Cubs, making him the youngest in MLB history to catch in a postseason game.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +119,11 @@
             }
           ],
           "id": "a415-79b2996d2ee1425f",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Padres' Salas set to become youngest ever to catch playoff game"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-4dd4d183277e20e2"
           ],
@@ -81,7 +134,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.08,
+          "ageHours": 2.58,
           "freshnessBasis": "The Vegas Golden Knights have locked in center William Karlsson on a two-year extension with an AAV of $6.75 million.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +148,8 @@
             }
           ],
           "id": "a415-1f134fce2002a99a",
-          "feedRank": 3,
-          "compactHeadline": "Golden Knights sign C William Karlsson to 2-year, $13.5M deal"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2c52a7fc7fbbfac7"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
-          "text": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
-          "entities": [],
-          "occurredAt": "2026-09-30T22:09:37Z",
-          "timePrecision": "exact",
-          "ageHours": 1.37,
-          "freshnessBasis": "Red Sox outfielder Roman Anthony has been ruled out of the AL Wild Card Series and the foreseeable future after damaging muscles in his wrist during Game 1, Red Sox manager Chad Tracy said Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50070582/roman-anthony-hand-red-sox-lineup-game-2-alwcs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50070582/roman-anthony-hand-red-sox-lineup-game-2-alwcs"
-            }
-          ],
-          "id": "a415-b9b3fe86edb0374c",
           "feedRank": 4,
-          "compactHeadline": "Red Sox's Roman Anthony ruled out of ALWC with hand, wrist injuries"
+          "compactHeadline": "Golden Knights sign C William Karlsson to 2-year, $13.5M deal"
         },
         {
           "rank": 5,
@@ -139,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:20:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.69,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +192,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:29:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.04,
+          "ageHours": 3.54,
           "freshnessBasis": "Astros center fielder Daulton Varsho underwent left arthroscopic wrist surgery on Tuesday, a procedure that will sideline him for the entire postseason.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T22:28:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.06,
+          "ageHours": 1.56,
           "freshnessBasis": "The Falcons signed Gervon Dexter Sr. to a four-year, $78 million contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +256,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:39:03Z",
           "timePrecision": "exact",
-          "ageHours": 2.88,
+          "ageHours": 3.38,
           "freshnessBasis": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +285,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:12:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.32,
+          "ageHours": 3.82,
           "freshnessBasis": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +314,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:34:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.95,
+          "ageHours": 3.45,
           "freshnessBasis": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +343,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:12:43Z",
           "timePrecision": "exact",
-          "ageHours": 6.32,
+          "ageHours": 6.82,
           "freshnessBasis": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +372,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T15:23:09Z",
           "timePrecision": "exact",
-          "ageHours": 8.14,
+          "ageHours": 8.64,
           "freshnessBasis": "The Buccaneers placed wide receiver Jalen McMillan on injured reserve Wednesday, sidelining him for at least the next four games.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +407,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 4.95,
+          "ageHours": 5.45,
           "freshnessBasis": "Jordan wore the jersey in Game 3 of the 1998 NBA Finals.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +436,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 2.42,
+          "ageHours": 2.92,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +465,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 4.09,
+          "ageHours": 4.59,
           "freshnessBasis": "Brandon Ingram, recovering from heel surgery, got in some light shooting and court work ahead of Clippers practice Tuesday in Hawai'i.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +494,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T16:33:52Z",
           "timePrecision": "exact",
-          "ageHours": 6.96,
+          "ageHours": 7.47,
           "freshnessBasis": "Suns forward Dillon Brooks was charged Monday with driving under the influence following his March arrest in Scottsdale, Arizona, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -490,6 +514,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-27b6b1a029c88d29"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Minnesota Lynx Women 71, New York Liberty Women 87.",
+          "text": "Highlightly final: Minnesota Lynx Women 71, New York Liberty Women 87.",
+          "entities": [],
+          "occurredAt": "2026-09-30T00:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.53,
+          "freshnessBasis": "Highlightly final: Minnesota Lynx Women 71, New York Liberty Women 87.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-29",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-31d8535518a5befa",
+          "feedRank": 17,
+          "compactHeadline": "New York Liberty Women beat Minnesota Lynx Women 87-71"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-bacd32b2a69a39f2"
           ],
           "type": "NEWS",
@@ -499,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:16:38Z",
           "timePrecision": "exact",
-          "ageHours": 2.25,
+          "ageHours": 2.75,
           "freshnessBasis": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
           "status": "active",
           "sourceUrls": [
@@ -513,37 +566,8 @@
             }
           ],
           "id": "a415-e154a9ca72b9d43a",
-          "feedRank": 17,
-          "compactHeadline": "76ers guard Tyrese Maxey: 'I want to be judged by winning'"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-135cd3aed596a126"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
-          "text": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
-          "entities": [],
-          "occurredAt": "2026-09-30T20:28:13Z",
-          "timePrecision": "exact",
-          "ageHours": 3.06,
-          "freshnessBasis": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50060732/nba-reviewing-finalists-bids-vegas-team-12-13b"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50060732/nba-reviewing-finalists-bids-vegas-team-12-13b"
-            }
-          ],
-          "id": "a415-d86aa184d0eb3bda",
           "feedRank": 18,
-          "compactHeadline": "Sources: NBA reviewing bids from three finalists for Vegas team"
+          "compactHeadline": "76ers guard Tyrese Maxey: 'I want to be judged by winning'"
         }
       ]
     },
@@ -563,7 +587,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:58:15Z",
           "timePrecision": "exact",
-          "ageHours": 2.56,
+          "ageHours": 3.06,
           "freshnessBasis": "The Stars signed backup goaltender Casey DeSmith to a two-year, $5 million contract extension that runs through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -583,6 +607,76 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-970d60153833f1b7"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
+          "text": "Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-30T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Chicago Blackhawks 2, Vegas Golden Knights 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401891775"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401891775"
+            }
+          ],
+          "id": "a415-66f2d6ed53cfba5c",
+          "feedRank": 20,
+          "compactHeadline": "Eichel hits 700 points as Golden Knights beat Blackhawks in Ryan Craig’s first game behind the bench"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-3c7eed6a6ad55a03"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
+          "text": "Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-30T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: Vancouver Canucks 6, Edmonton Oilers 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401891804"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-09-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401891804"
+            }
+          ],
+          "id": "a415-bc6ec19b5d07b67f",
+          "feedRank": 21,
+          "compactHeadline": "Paul Cotter scores in OT as the Canucks beat the Oilers 6-5 in the opener"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-6fe1752f2adf8d32"
           ],
           "type": "CONTRACT",
@@ -592,7 +686,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 4.73,
+          "ageHours": 5.24,
           "freshnessBasis": "After he was set to coach on the final season of his contract, the Avalanche's Jared Bednar is getting a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -606,11 +700,11 @@
             }
           ],
           "id": "a415-cbb1becf44c5a379",
-          "feedRank": 20,
+          "feedRank": 22,
           "compactHeadline": "Avalanche signing coach Jared Bednar to four-year extension"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-f96fd718e254439f"
           ],
@@ -621,7 +715,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:11:32Z",
           "timePrecision": "exact",
-          "ageHours": 6.34,
+          "ageHours": 6.84,
           "freshnessBasis": "Here's a look at the notable goalie mask designs across the NHL for the upcoming season.",
           "status": "active",
           "sourceUrls": [
@@ -635,11 +729,11 @@
             }
           ],
           "id": "a415-538df45811673c62",
-          "feedRank": 21,
+          "feedRank": 23,
           "compactHeadline": "A guide to NHL goalie masks for the 2026-27 season"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-8ead3a7aa6b157be"
           ],
@@ -650,7 +744,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T06:23:38Z",
           "timePrecision": "exact",
-          "ageHours": 17.13,
+          "ageHours": 17.64,
           "freshnessBasis": "No. 1 overall pick Gavin McKenna, 18, made his NHL debut Tuesday night, when the Toronto Maple Leafs fell to the Montreal Canadiens 3-2 in the season opener, and he told reporters after the loss that \"to get that first one under my belt, it feels good.\"",
           "status": "active",
           "sourceUrls": [
@@ -664,66 +758,8 @@
             }
           ],
           "id": "a415-6712c97546e4b9d0",
-          "feedRank": 22,
-          "compactHeadline": "McKenna tops 15 minutes in NHL debut as Maple Leafs fall"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-6ccbf8bae4e66baf"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
-          "text": "Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-30T05:30:33Z",
-          "timePrecision": "exact",
-          "ageHours": 18.02,
-          "freshnessBasis": "— Jack Eichel had a goal and two assists to reach 701 career points, and the Vegas Golden Knights beat the Chicago Blackhawks 5-2 in their season opener Tuesday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401891775"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891775"
-            }
-          ],
-          "id": "a415-a261516ff55345db",
-          "feedRank": 23,
-          "compactHeadline": "Eichel hits 700 points as Golden Knights beat Blackhawks in Ryan Craig’s first game behind the bench"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-59778e430b167f3d"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
-          "text": "Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-30T05:25:31Z",
-          "timePrecision": "exact",
-          "ageHours": 18.1,
-          "freshnessBasis": "— Paul Cotter scored 1:59 into overtime to cap a two-goal game as the Vancouver Canucks got the season off to a strong start with a 6-5 win over the Edmonton Oilers on Tuesday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401891804"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891804"
-            }
-          ],
-          "id": "a415-04f3422a29c3eb81",
           "feedRank": 24,
-          "compactHeadline": "Paul Cotter scores in OT as the Canucks beat the Oilers 6-5 in the opener"
+          "compactHeadline": "McKenna tops 15 minutes in NHL debut as Maple Leafs fall"
         }
       ]
     },
@@ -743,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:52:42Z",
           "timePrecision": "exact",
-          "ageHours": 8.65,
+          "ageHours": 9.15,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +808,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:04:34Z",
           "timePrecision": "exact",
-          "ageHours": 2.45,
+          "ageHours": 2.95,
           "freshnessBasis": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +837,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:16:13Z",
           "timePrecision": "exact",
-          "ageHours": 9.26,
+          "ageHours": 9.76,
           "freshnessBasis": "Fulham boss Alvaro Arbeloa has been charged with misconduct by the FA for claiming officials would \"not let Manchester United lose\" after Michael Carrick's side scored a late equaliser to draw their Premier League match at Craven Cottage.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +866,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:52:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.66,
+          "ageHours": 4.16,
           "freshnessBasis": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +895,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 3.81,
+          "ageHours": 4.32,
           "freshnessBasis": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -888,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:30:16Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
+          "ageHours": 5.53,
           "freshnessBasis": "Norway defender Kristoffer Ajer said football's \"biggest star\" Erling Haaland has been unaffected by Manchester City being found guilty of breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -923,7 +959,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:32:53Z",
           "timePrecision": "exact",
-          "ageHours": 8.98,
+          "ageHours": 9.48,
           "freshnessBasis": "Philadelphia Union and USMNT midfielder Cavan Sullivan became the youngest player in MLS history to be named Player of the Month on Wednesday when he was awarded the honors for September.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +994,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:18:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.21,
+          "ageHours": 4.72,
           "freshnessBasis": "CFP leaders continued to discuss a 24-team model but didn't vote on any calendar or scheduling changes for the 2027 season as negotiations with ESPN continue.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +1023,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 3.87,
+          "ageHours": 4.37,
           "freshnessBasis": "We've seen four weeks of football. How has that changed our opinions about the top quarterbacks.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1052,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:45:24Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.27,
           "freshnessBasis": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1081,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:42:01Z",
           "timePrecision": "exact",
-          "ageHours": 5.83,
+          "ageHours": 6.33,
           "freshnessBasis": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1121,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 111,
+    "freshCandidateCount": 108,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
