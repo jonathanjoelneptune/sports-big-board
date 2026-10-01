@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-01T03:31:33Z",
+  "generatedAt": "2026-10-01T04:01:39Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "b1bea5340f252dda323254e772aa1cfe8e3883c30241f660f52ee088cd5dde5e",
+  "sourceCandidateHash": "a189e1b78c9435bb206f6ee821a9b2ec41b01ba930f580d726e0f615e7bff120",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.53,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: Boston Red Sox 2, New York Yankees 9.",
           "status": "active",
           "sourceUrls": [
@@ -55,6 +55,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-eab9ecf10a5d8a22"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Yankees finished their AL Wild Card series outscoring the Red Sox 18-2 in a dominate display against their division rivals.",
+          "text": "The Yankees finished their AL Wild Card series outscoring the Red Sox 18-2 in a dominate display against their division rivals.",
+          "entities": [],
+          "occurredAt": "2026-10-01T03:51:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "The Yankees finished their AL Wild Card series outscoring the Red Sox 18-2 in a dominate display against their division rivals.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
+            }
+          ],
+          "id": "a415-40e6add4d0839695",
+          "feedRank": 2,
+          "compactHeadline": "Yankees send Red Sox home again, move on to face Rays in ALDS"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-1c2cb56427b5f9b9"
           ],
           "type": "PLAYOFF",
@@ -62,9 +91,9 @@
           "headline": "Here's how the winter looks in Boston and Houston after they were swept out of the playoffs.",
           "text": "Here's how the winter looks in Boston and Houston after they were swept out of the playoffs.",
           "entities": [],
-          "occurredAt": "2026-10-01T03:28:40Z",
+          "occurredAt": "2026-10-01T03:39:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.38,
           "freshnessBasis": "Here's how the winter looks in Boston and Houston after they were swept out of the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +107,11 @@
             }
           ],
           "id": "a415-b8ac8b0563fb1c61",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-016adff5a0e6d51b"
           ],
@@ -93,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T03:27:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
+          "ageHours": 0.57,
           "freshnessBasis": "Just two years removed from a 121-loss season, the White Sox finished off the Astros with a 7-3 win Wednesday to secure their first playoff series win since beating Houston in the 2005 World Series.",
           "status": "active",
           "sourceUrls": [
@@ -107,11 +136,11 @@
             }
           ],
           "id": "a415-5a6d7e270dddbf95",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "White Sox sweep Astros for first playoff series win since 2005"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -122,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T03:17:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.24,
+          "ageHours": 0.74,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -136,11 +165,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-35815d0e47adee91"
           ],
@@ -151,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.76,
+          "ageHours": 1.26,
           "freshnessBasis": "Ethan Salas became the youngest player to catch in a major league postseason game when he started for the Padres in Game 2 of their Wild Card Series with the Cubs.",
           "status": "active",
           "sourceUrls": [
@@ -165,55 +194,8 @@
             }
           ],
           "id": "a415-5e45aad0acbdb26f",
-          "feedRank": 5,
-          "compactHeadline": "Padres' Ethan Salas becomes youngest ever to catch playoff game"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4b856fad7272156c"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
-          "text": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
-          "entities": [],
-          "occurredAt": "2026-09-30T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 9.53,
-          "freshnessBasis": "Highlightly final: Philadelphia Phillies 4, Atlanta Braves 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves",
-            "http://www.espn.com/mlb/recap?gameId=401907972",
-            "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-30",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907972"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50062495/mattingly-call-duran-7th-backfires-phillies-loss"
-            }
-          ],
-          "id": "a415-af536f9ddd8959f1",
           "feedRank": 6,
-          "compactHeadline": "Philadelphia Phillies beat Atlanta Braves 4-3"
+          "compactHeadline": "Padres' Ethan Salas becomes youngest ever to catch playoff game"
         }
       ]
     },
@@ -233,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T00:20:34Z",
           "timePrecision": "exact",
-          "ageHours": 3.18,
+          "ageHours": 3.68,
           "freshnessBasis": "The Falcons signed Gervon Dexter Sr. to a four-year, $78 million contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -262,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:39:03Z",
           "timePrecision": "exact",
-          "ageHours": 6.88,
+          "ageHours": 7.38,
           "freshnessBasis": "The Panthers have placed starting cornerbacks Jaycee Horn (quad) and Mike Jackson (groin) on injured reserve after both were injured in the Week 3 loss to the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -291,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:12:28Z",
           "timePrecision": "exact",
-          "ageHours": 7.32,
+          "ageHours": 7.82,
           "freshnessBasis": "Steelers cornerback Joey Porter will miss his fourth straight game as he has officially been declared out for Thursday night's game against the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -320,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:34:57Z",
           "timePrecision": "exact",
-          "ageHours": 6.94,
+          "ageHours": 7.45,
           "freshnessBasis": "Veteran guard Kevin Zeitler signed a one-year deal with the Packers.",
           "status": "active",
           "sourceUrls": [
@@ -349,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:12:43Z",
           "timePrecision": "exact",
-          "ageHours": 10.31,
+          "ageHours": 10.82,
           "freshnessBasis": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T15:23:09Z",
           "timePrecision": "exact",
-          "ageHours": 12.14,
+          "ageHours": 12.64,
           "freshnessBasis": "The Buccaneers placed wide receiver Jalen McMillan on injured reserve Wednesday, sidelining him for at least the next four games.",
           "status": "active",
           "sourceUrls": [
@@ -413,7 +395,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 8.95,
+          "ageHours": 9.45,
           "freshnessBasis": "Jordan wore the jersey in Game 3 of the 1998 NBA Finals.",
           "status": "active",
           "sourceUrls": [
@@ -442,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 6.42,
+          "ageHours": 6.92,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -471,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 8.09,
+          "ageHours": 8.59,
           "freshnessBasis": "Brandon Ingram, recovering from heel surgery, got in some light shooting and court work ahead of Clippers practice Tuesday in Hawai'i.",
           "status": "active",
           "sourceUrls": [
@@ -500,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T16:33:52Z",
           "timePrecision": "exact",
-          "ageHours": 10.96,
+          "ageHours": 11.46,
           "freshnessBasis": "Suns forward Dillon Brooks was charged Monday with driving under the influence following his March arrest in Scottsdale, Arizona, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -529,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:16:38Z",
           "timePrecision": "exact",
-          "ageHours": 6.25,
+          "ageHours": 6.75,
           "freshnessBasis": "Coming off a career year, Tyrese Maxey said he doesn't want to be judged by how he does individually but by how the 76ers do as a team this year.",
           "status": "active",
           "sourceUrls": [
@@ -558,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:28:13Z",
           "timePrecision": "exact",
-          "ageHours": 7.06,
+          "ageHours": 7.56,
           "freshnessBasis": "The NBA is expected to select the winning bid for owner of the Las Vegas expansion team from among three finalist groups: Nancy Walton Laurie and Bill Laurie; Steve Apostolopoulos and Marc Lasry; and Bill Foley and Jerry Colangelo.",
           "status": "active",
           "sourceUrls": [
@@ -593,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:58:15Z",
           "timePrecision": "exact",
-          "ageHours": 6.56,
+          "ageHours": 7.06,
           "freshnessBasis": "The Stars signed backup goaltender Casey DeSmith to a two-year, $5 million contract extension that runs through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -622,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:36:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.92,
+          "ageHours": 1.42,
           "freshnessBasis": "— Easton Cowan had a goal and an assist in the first period and the Toronto Maple Leafs beat the New York Islanders 2-1 on Wednesday night for their first victory under coach Jim Hiller.",
           "status": "active",
           "sourceUrls": [
@@ -651,7 +633,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:17:42Z",
           "timePrecision": "exact",
-          "ageHours": 1.23,
+          "ageHours": 1.73,
           "freshnessBasis": "— Evgeni Malkin, Hendrix Lapierre and Filip Hallander scored in the second period and Arturs Silovs stopped 19 shots to help the Pittsburgh Penguins steamroll the Philadelphia Flyers 7-0 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -680,7 +662,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 8.73,
+          "ageHours": 9.23,
           "freshnessBasis": "After he was set to coach on the final season of his contract, the Avalanche's Jared Bednar is getting a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -709,7 +691,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:11:32Z",
           "timePrecision": "exact",
-          "ageHours": 10.33,
+          "ageHours": 10.84,
           "freshnessBasis": "Here's a look at the notable goalie mask designs across the NHL for the upcoming season.",
           "status": "active",
           "sourceUrls": [
@@ -744,7 +726,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:52:42Z",
           "timePrecision": "exact",
-          "ageHours": 12.65,
+          "ageHours": 13.15,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -773,7 +755,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:04:34Z",
           "timePrecision": "exact",
-          "ageHours": 6.45,
+          "ageHours": 6.95,
           "freshnessBasis": "Jürgen Klopp said Wednesday he would \"wait and see\" before commenting on the Premier League's announcement yesterday that Manchester City had been found guilty of 114 charges for breaching financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +784,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:16:13Z",
           "timePrecision": "exact",
-          "ageHours": 13.26,
+          "ageHours": 13.76,
           "freshnessBasis": "Fulham boss Alvaro Arbeloa has been charged with misconduct by the FA for claiming officials would \"not let Manchester United lose\" after Michael Carrick's side scored a late equaliser to draw their Premier League match at Craven Cottage.",
           "status": "active",
           "sourceUrls": [
@@ -831,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:52:19Z",
           "timePrecision": "exact",
-          "ageHours": 7.65,
+          "ageHours": 8.16,
           "freshnessBasis": "Pep Guardiola has released his first statement since Manchester City were found guilty of over 100 breaches of Premier League financial rules, saying \"I am behind my club.\"",
           "status": "active",
           "sourceUrls": [
@@ -860,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 7.81,
+          "ageHours": 8.31,
           "freshnessBasis": "The UK Prime Minister Andy Burnham said he \"would be really concerned\" if Manchester City 's owners sell the club following the guilty verdict for breaching Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -895,7 +877,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:19:42Z",
           "timePrecision": "exact",
-          "ageHours": 1.2,
+          "ageHours": 1.7,
           "freshnessBasis": "Simon Becher and Tomas Ostrak each scored late in the second half as St. Louis City SC beat the New York Red Bulls 3-0 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -924,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:32:53Z",
           "timePrecision": "exact",
-          "ageHours": 12.98,
+          "ageHours": 13.48,
           "freshnessBasis": "Philadelphia Union and USMNT midfielder Cavan Sullivan became the youngest player in MLS history to be named Player of the Month on Wednesday when he was awarded the honors for September.",
           "status": "active",
           "sourceUrls": [
@@ -959,7 +941,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T00:48:01Z",
           "timePrecision": "exact",
-          "ageHours": 2.73,
+          "ageHours": 3.23,
           "freshnessBasis": "Tennessee All-SEC offensive guard Wendell Moe Jr. is expected to miss the rest of the season with a lower-body injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -988,7 +970,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:18:48Z",
           "timePrecision": "exact",
-          "ageHours": 8.21,
+          "ageHours": 8.71,
           "freshnessBasis": "CFP leaders continued to discuss a 24-team model but didn't vote on any calendar or scheduling changes for the 2027 season as negotiations with ESPN continue.",
           "status": "active",
           "sourceUrls": [
@@ -1017,7 +999,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 7.87,
+          "ageHours": 8.37,
           "freshnessBasis": "We've seen four weeks of football. How has that changed our opinions about the top quarterbacks.",
           "status": "active",
           "sourceUrls": [
@@ -1046,7 +1028,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:45:24Z",
           "timePrecision": "exact",
-          "ageHours": 9.77,
+          "ageHours": 10.27,
           "freshnessBasis": "Texas athletic director Chris Del Conte apologized for the top-ranked Longhorns' vulgar on-field celebrations during their win over Tennessee and called them \"embarrassing\" for the school.",
           "status": "active",
           "sourceUrls": [
@@ -1075,7 +1057,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:42:01Z",
           "timePrecision": "exact",
-          "ageHours": 9.83,
+          "ageHours": 10.33,
           "freshnessBasis": "Notre Dame coach Marcus Freeman said the defense was \"executing better\" as it faces its biggest test yet against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1115,7 +1097,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 101,
+    "freshCandidateCount": 102,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
