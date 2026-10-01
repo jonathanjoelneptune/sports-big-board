@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-01T12:01:44Z",
+  "generatedAt": "2026-10-01T12:31:44Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "cd3fb95ed54834752265d6b7c66999a17efa5cbdf5995225b1a8610c27c55990",
+  "sourceCandidateHash": "987d38a68de65d6c0be54885a8bb59723dcaf63e405d6106ff3055569e937209",
   "leagues": [
     {
       "league": "MLB",
@@ -14,182 +14,81 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ecc446aab72f151d"
+            "cand-fe1b762a5269b12f"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "text": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "entities": [],
+          "occurredAt": "2026-10-01T11:54:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.62,
+          "freshnessBasis": "Alec Bohm put Philadelphia ahead with a two-out home run in the 10th inning, and the Phillies beat the Braves to force a decisive Game 3 in their National League Wild Card Series.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50071368/alec-bohm-home-run-caps-phillies-rally-forces-game-3-vs-braves"
+            }
+          ],
+          "id": "a415-6187d910fcfb45d7",
+          "feedRank": 1,
+          "compactHeadline": "Harper rebounds from gaffe, Bohm saves Phillies with HR in 10th"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-80846388b4d8d27b"
           ],
           "type": "PLAYOFF",
           "priority": 76,
           "headline": "Five Padres pitchers combined on a five-hitter and Gavin Sheets hit a pinch-hit two-run homer, as the Padres swept the Cubs out of the NL Wild Card Series with a 4-1 win.",
           "text": "Five Padres pitchers combined on a five-hitter and Gavin Sheets hit a pinch-hit two-run homer, as the Padres swept the Cubs out of the NL Wild Card Series with a 4-1 win.",
           "entities": [],
-          "occurredAt": "2026-10-01T02:00:00Z",
+          "occurredAt": "2026-10-01T11:46:18Z",
           "timePrecision": "exact",
-          "ageHours": 10.03,
-          "freshnessBasis": "Highlightly final: Chicago Cubs 1, San Diego Padres 4.",
+          "ageHours": 0.76,
+          "freshnessBasis": "Five Padres pitchers combined on a five-hitter and Gavin Sheets hit a pinch-hit two-run homer, as the Padres swept the Cubs out of the NL Wild Card Series with a 4-1 win.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/50074597/padres-silence-cubs-bats-again-finish-2-game-wild-card-sweep",
-            "https://www.espn.com/mlb/story/_/id/50070369/mlb-playoffs-2026-first-look-preview-division-series-matchups-brewers-dodgers-rays-guardians",
-            "http://www.espn.com/mlb/recap?gameId=401907975"
+            "https://www.espn.com/mlb/story/_/id/50074597/padres-silence-cubs-bats-again-finish-2-game-wild-card-sweep"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-30",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50074597/padres-silence-cubs-bats-again-finish-2-game-wild-card-sweep"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50070369/mlb-playoffs-2026-first-look-preview-division-series-matchups-brewers-dodgers-rays-guardians"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907975"
             }
           ],
-          "id": "a415-5312caa58941e1ea",
-          "feedRank": 1,
-          "compactHeadline": "San Diego Padres beat Chicago Cubs 4-1"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-db1ce6e31ad20fb8"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
-          "text": "One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
-          "entities": [],
-          "occurredAt": "2026-10-01T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 12.03,
-          "freshnessBasis": "Highlightly final: Boston Red Sox 2, New York Yankees 9.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401907963",
-            "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds",
-            "https://www.espn.com/mlb/story/_/id/50064240/schlittler-rice-lead-yankees-rout-red-sox-game-1"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-30",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907963"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50064240/schlittler-rice-lead-yankees-rout-red-sox-game-1"
-            }
-          ],
-          "id": "a415-39d3ac06f671640f",
+          "id": "a415-a3567a50cfc305d5",
           "feedRank": 2,
-          "compactHeadline": "New York Yankees beat Boston Red Sox 9-2"
+          "compactHeadline": "Padres silence Cubs' bats again, finish off 2-game wild-card sweep"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-1c2cb56427b5f9b9"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Here's how the winter looks in Chicago, Boston and Houston after those teams were swept out of the playoffs.",
-          "text": "Here's how the winter looks in Chicago, Boston and Houston after those teams were swept out of the playoffs.",
-          "entities": [],
-          "occurredAt": "2026-10-01T05:35:26Z",
-          "timePrecision": "exact",
-          "ageHours": 6.44,
-          "freshnessBasis": "Here's how the winter looks in Chicago, Boston and Houston after those teams were swept out of the playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions"
-            }
-          ],
-          "id": "a415-b8ac8b0563fb1c61",
-          "feedRank": 3,
-          "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-37fff10359b2f543"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
-          "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
-          "entities": [],
-          "occurredAt": "2026-10-01T05:01:14Z",
-          "timePrecision": "exact",
-          "ageHours": 7.01,
-          "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50022544/2026-mlb-playoffs-schedule-how-watch-postseason-world-series-bracket-standings"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50022544/2026-mlb-playoffs-schedule-how-watch-postseason-world-series-bracket-standings"
-            }
-          ],
-          "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 4,
-          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-39c6e1c367f9b213"
+            "cand-bc6baa0f2e39a915"
           ],
           "type": "PLAYOFF",
           "priority": 76,
           "headline": "From 100 losses to their first playoff series win in two decades, these scrappy Chicago White Sox just keep outdoing themselves.",
           "text": "From 100 losses to their first playoff series win in two decades, these scrappy Chicago White Sox just keep outdoing themselves.",
           "entities": [],
-          "occurredAt": "2026-09-30T21:00:00Z",
+          "occurredAt": "2026-10-01T08:22:43Z",
           "timePrecision": "exact",
-          "ageHours": 15.03,
-          "freshnessBasis": "Highlightly final: Chicago White Sox 7, Houston Astros 3.",
+          "ageHours": 4.15,
+          "freshnessBasis": "— From 100 losses to their first playoff series win in two decades, these scrappy Chicago White Sox just keep outdoing themselves.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/mlb/recap?gameId=401907897",
-            "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005",
-            "https://www.espn.com/mlb/story/_/id/50066623/astros-frustrated-boos-sparse-crowd-wild-card-opener"
+            "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-30",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
@@ -199,45 +98,98 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50072595/white-sox-sweep-astros-first-playoff-series-win-2005"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50066623/astros-frustrated-boos-sparse-crowd-wild-card-opener"
             }
           ],
-          "id": "a415-bef7d4ccb6161067",
-          "feedRank": 5,
-          "compactHeadline": "Chicago White Sox beat Houston Astros 7-3"
+          "id": "a415-da1017df6109c074",
+          "feedRank": 3,
+          "compactHeadline": "White Sox pounce early, finish sweep of Astros for first playoff series win since 2005"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
-            "cand-35815d0e47adee91"
+            "cand-d656c9eb385a24d9"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "Ethan Salas became the youngest player to catch in a major league postseason game when he started for the Padres in Game 2 of their Wild Card Series with the Cubs.",
-          "text": "Ethan Salas became the youngest player to catch in a major league postseason game when he started for the Padres in Game 2 of their Wild Card Series with the Cubs.",
+          "headline": "One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
+          "text": "One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
           "entities": [],
-          "occurredAt": "2026-10-01T02:46:10Z",
+          "occurredAt": "2026-10-01T08:20:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.26,
-          "freshnessBasis": "Ethan Salas became the youngest player to catch in a major league postseason game when he started for the Padres in Game 2 of their Wild Card Series with the Cubs.",
+          "ageHours": 4.19,
+          "freshnessBasis": "— One year after rallying past the Red Sox to win an AL Wild Card Series, the New York Yankees battered Boston.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50071794/padres-salas-set-become-youngest-ever-catch-playoff-game"
+            "http://www.espn.com/mlb/recap?gameId=401907963"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50071794/padres-salas-set-become-youngest-ever-catch-playoff-game"
+              "url": "http://www.espn.com/mlb/recap?gameId=401907963"
             }
           ],
-          "id": "a415-5e45aad0acbdb26f",
+          "id": "a415-3cf9d61492b8008c",
+          "feedRank": 4,
+          "compactHeadline": "Fried, Bellinger and García lead Yankees over Red Sox 9-2 for 2-game Wild Card Series sweep"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-eab9ecf10a5d8a22"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Yankees' homegrown talent such as Ben Rice and Cam Schlittler led the way to help deliver a thorough two-game beatdown of the Red Sox in their AL Wild Card Series, ending with Wednesday's 9-2 win.",
+          "text": "The Yankees' homegrown talent such as Ben Rice and Cam Schlittler led the way to help deliver a thorough two-game beatdown of the Red Sox in their AL Wild Card Series, ending with Wednesday's 9-2 win.",
+          "entities": [],
+          "occurredAt": "2026-10-01T06:42:18Z",
+          "timePrecision": "exact",
+          "ageHours": 5.82,
+          "freshnessBasis": "The Yankees' homegrown talent such as Ben Rice and Cam Schlittler led the way to help deliver a thorough two-game beatdown of the Red Sox in their AL Wild Card Series, ending with Wednesday's 9-2 win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50074123/yankees-send-red-sox-home-again-move-face-rays-alds"
+            }
+          ],
+          "id": "a415-40e6add4d0839695",
+          "feedRank": 5,
+          "compactHeadline": "Yankees send Red Sox home again, move on to face Rays in ALDS"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-2ef384ea8a42e2e3"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Pinch-hitter Gavin Sheets blasted a two-run homer, five Padres pitchers combined on a five-hitter, and San Diego swept the Chicago Cubs out of the NL Wild Card Series with a 4-1 victory in Game 2 on Wednesday night.",
+          "text": "Pinch-hitter Gavin Sheets blasted a two-run homer, five Padres pitchers combined on a five-hitter, and San Diego swept the Chicago Cubs out of the NL Wild Card Series with a 4-1 victory in Game 2 on Wednesday night.",
+          "entities": [],
+          "occurredAt": "2026-10-01T06:10:38Z",
+          "timePrecision": "exact",
+          "ageHours": 6.35,
+          "freshnessBasis": "— Pinch-hitter Gavin Sheets blasted a two-run homer, five Padres pitchers combined on a five-hitter, and San Diego swept the Chicago Cubs out of the NL Wild Card Series with a 4-1 victory in Game 2 on Wednesday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401907975"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907975"
+            }
+          ],
+          "id": "a415-4d2df9e5e1a387da",
           "feedRank": 6,
-          "compactHeadline": "Padres' Ethan Salas becomes youngest ever to catch playoff game"
+          "compactHeadline": "Gavin Sheets' pinch-hit homer propels dominant Padres past Cubs 4-1 for 2-game Wild Card sweep"
         }
       ]
     },
@@ -257,7 +209,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T09:40:31Z",
           "timePrecision": "exact",
-          "ageHours": 2.35,
+          "ageHours": 2.85,
           "freshnessBasis": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
@@ -286,7 +238,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T10:41:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.34,
+          "ageHours": 1.84,
           "freshnessBasis": "Packers wide receiver Jayden Reed will undergo season-ending neck surgery and be placed on injured reserve, coach Matt LaFleur said Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -313,9 +265,9 @@
           "headline": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
           "text": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
           "entities": [],
-          "occurredAt": "2026-10-01T11:19:32Z",
+          "occurredAt": "2026-10-01T12:01:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.7,
+          "ageHours": 0.5,
           "freshnessBasis": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
           "status": "active",
           "sourceUrls": [
@@ -347,9 +299,9 @@
           "headline": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN.",
           "text": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN.",
           "entities": [],
-          "occurredAt": "2026-10-01T11:21:55Z",
+          "occurredAt": "2026-10-01T12:01:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.66,
+          "ageHours": 0.5,
           "freshnessBasis": "The Steelers have agreed to trade cornerback Joey Porter Jr. to the Cowboys for a 2027 sixth-round pick and a 2028 second-rounder, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +330,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T04:21:09Z",
           "timePrecision": "exact",
-          "ageHours": 7.68,
+          "ageHours": 8.18,
           "freshnessBasis": "The Falcons signed Gervon Dexter Sr. to a four-year, $78 million contract extension, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -407,7 +359,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T04:57:54Z",
           "timePrecision": "exact",
-          "ageHours": 7.06,
+          "ageHours": 7.56,
           "freshnessBasis": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including the Steelers sending Joey Porter Jr. to the Cowboys.",
           "status": "active",
           "sourceUrls": [
@@ -442,7 +394,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 17.45,
+          "ageHours": 17.95,
           "freshnessBasis": "Jordan wore the jersey in Game 3 of the 1998 NBA Finals.",
           "status": "active",
           "sourceUrls": [
@@ -471,7 +423,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T21:06:20Z",
           "timePrecision": "exact",
-          "ageHours": 14.92,
+          "ageHours": 15.42,
           "freshnessBasis": "Former NBA champion JR Smith was arrested Monday in Texas on a charge of assault causing \"bodily injury family violence.\"",
           "status": "active",
           "sourceUrls": [
@@ -500,7 +452,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 16.59,
+          "ageHours": 17.09,
           "freshnessBasis": "Brandon Ingram, recovering from heel surgery, got in some light shooting and court work ahead of Clippers practice Tuesday in Hawai'i.",
           "status": "active",
           "sourceUrls": [
@@ -529,7 +481,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T16:33:52Z",
           "timePrecision": "exact",
-          "ageHours": 19.46,
+          "ageHours": 19.96,
           "freshnessBasis": "Suns forward Dillon Brooks was charged Monday with driving under the influence following his March arrest in Scottsdale, Arizona, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -564,7 +516,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T20:58:15Z",
           "timePrecision": "exact",
-          "ageHours": 15.06,
+          "ageHours": 15.56,
           "freshnessBasis": "The Stars signed backup goaltender Casey DeSmith to a two-year, $5 million contract extension that runs through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -593,7 +545,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:36:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.42,
+          "ageHours": 9.92,
           "freshnessBasis": "— Easton Cowan had a goal and an assist in the first period and the Toronto Maple Leafs beat the New York Islanders 2-1 on Wednesday night for their first victory under coach Jim Hiller.",
           "status": "active",
           "sourceUrls": [
@@ -622,7 +574,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:17:42Z",
           "timePrecision": "exact",
-          "ageHours": 9.73,
+          "ageHours": 10.23,
           "freshnessBasis": "— Evgeni Malkin, Hendrix Lapierre and Filip Hallander scored in the second period and Arturs Silovs stopped 19 shots to help the Pittsburgh Penguins steamroll the Philadelphia Flyers 7-0 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -651,7 +603,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T18:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 17.24,
+          "ageHours": 17.74,
           "freshnessBasis": "After he was set to coach on the final season of his contract, the Avalanche's Jared Bednar is getting a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -680,7 +632,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T17:11:32Z",
           "timePrecision": "exact",
-          "ageHours": 18.84,
+          "ageHours": 19.34,
           "freshnessBasis": "Here's a look at the notable goalie mask designs across the NHL for the upcoming season.",
           "status": "active",
           "sourceUrls": [
@@ -715,7 +667,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T07:21:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.68,
+          "ageHours": 5.18,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -744,7 +696,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T07:05:03Z",
           "timePrecision": "exact",
-          "ageHours": 4.94,
+          "ageHours": 5.44,
           "freshnessBasis": "The Premier League is well underway, but with the transfer window closed, where do players stand in their teams? How deep do the squads go?",
           "status": "active",
           "sourceUrls": [
@@ -764,6 +716,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-ff9348bdc7dd40fb"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "A second Hull player has been reported to have flipped his car in an accident close to the club's training ground in Cottingham.",
+          "text": "A second Hull player has been reported to have flipped his car in an accident close to the club's training ground in Cottingham.",
+          "entities": [],
+          "occurredAt": "2026-10-01T12:11:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.35,
+          "freshnessBasis": "A second Hull player has been reported to have flipped his car in an accident close to the club's training ground in Cottingham.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50076311/second-hull-player-flips-car-training-ground-sorba-thomas"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50076311/second-hull-player-flips-car-training-ground-sorba-thomas"
+            }
+          ],
+          "id": "a415-5f01becb6f487533",
+          "feedRank": 24,
+          "compactHeadline": "Second Hull player flips car outside training ground - reports"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-2997b90ccb1927cb"
           ],
           "type": "NEWS",
@@ -773,7 +754,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T11:14:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.8,
+          "ageHours": 1.3,
           "freshnessBasis": "Cristiano Ronaldo walked out of the Portugal national team's camp after being benched. It is far from the first high-profile row of his two decades at the top.",
           "status": "active",
           "sourceUrls": [
@@ -787,11 +768,11 @@
             }
           ],
           "id": "a415-84b6658cf042f2bd",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Portugal, Man United, Real Madrid: Cristiano Ronaldo's long history of rows with coaches"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-3218775e3635f935"
           ],
@@ -802,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T10:56:26Z",
           "timePrecision": "exact",
-          "ageHours": 1.09,
+          "ageHours": 1.59,
           "freshnessBasis": "The Premier League has been \"dragged through the mud\" by the Manchester City guilty verdict, Gary Neville has said.",
           "status": "active",
           "sourceUrls": [
@@ -816,11 +797,11 @@
             }
           ],
           "id": "a415-6879c45e7dd61d6b",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Premier League 'dragged through the mud' by Man City case - Gary Neville"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-3332f1515bf1ea74"
           ],
@@ -831,7 +812,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T04:28:32Z",
           "timePrecision": "exact",
-          "ageHours": 7.55,
+          "ageHours": 8.05,
           "freshnessBasis": "Fulham boss Alvaro Arbeloa has been charged with misconduct by the FA for claiming officials would \"not let Manchester United lose\" after Michael Carrick's side scored a late equaliser to draw their Premier League match at Craven Cottage.",
           "status": "active",
           "sourceUrls": [
@@ -845,37 +826,8 @@
             }
           ],
           "id": "a415-ba92d9aa8c533ecf",
-          "feedRank": 26,
-          "compactHeadline": "FA charges Fulham boss Álvaro Arbeloa with misconduct for comments after Man United draw"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ee549ada49609aef"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chief executive Vinai Venkatesham has offered his backing to Roberto De Zerbi after Tottenham's poor start to the new campaign.",
-          "text": "Chief executive Vinai Venkatesham has offered his backing to Roberto De Zerbi after Tottenham's poor start to the new campaign.",
-          "entities": [],
-          "occurredAt": "2026-10-01T10:27:50Z",
-          "timePrecision": "exact",
-          "ageHours": 1.57,
-          "freshnessBasis": "Chief executive Vinai Venkatesham has offered his backing to Roberto De Zerbi after Tottenham's poor start to the new campaign.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50075848/roberto-de-zerbi-receives-backing-tottenham-chief-executive"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50075848/roberto-de-zerbi-receives-backing-tottenham-chief-executive"
-            }
-          ],
-          "id": "a415-259d6262bbbb3747",
           "feedRank": 27,
-          "compactHeadline": "Roberto De Zerbi receives backing of Tottenham's chief executive"
+          "compactHeadline": "FA charges Fulham boss Álvaro Arbeloa with misconduct for comments after Man United draw"
         }
       ]
     },
@@ -895,7 +847,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T02:19:42Z",
           "timePrecision": "exact",
-          "ageHours": 9.7,
+          "ageHours": 10.2,
           "freshnessBasis": "Simon Becher and Tomas Ostrak each scored late in the second half as St. Louis City SC beat the New York Red Bulls 3-0 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -924,7 +876,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T14:32:53Z",
           "timePrecision": "exact",
-          "ageHours": 21.48,
+          "ageHours": 21.98,
           "freshnessBasis": "Philadelphia Union and USMNT midfielder Cavan Sullivan became the youngest player in MLS history to be named Player of the Month on Wednesday when he was awarded the honors for September.",
           "status": "active",
           "sourceUrls": [
@@ -959,7 +911,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T10:38:04Z",
           "timePrecision": "exact",
-          "ageHours": 1.39,
+          "ageHours": 1.89,
           "freshnessBasis": "Tennessee All-SEC offensive guard Wendell Moe Jr. is expected to miss the rest of the season with a lower-body injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -988,7 +940,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T10:10:44Z",
           "timePrecision": "exact",
-          "ageHours": 1.85,
+          "ageHours": 2.35,
           "freshnessBasis": "So far, internal hires aren't working at a few spots while other coaches have elevated their profiles.",
           "status": "active",
           "sourceUrls": [
@@ -1017,7 +969,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:18:48Z",
           "timePrecision": "exact",
-          "ageHours": 16.72,
+          "ageHours": 17.22,
           "freshnessBasis": "CFP leaders continued to discuss a 24-team model but didn't vote on any calendar or scheduling changes for the 2027 season as negotiations with ESPN continue.",
           "status": "active",
           "sourceUrls": [
@@ -1046,7 +998,7 @@
           "entities": [],
           "occurredAt": "2026-09-30T19:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 16.37,
+          "ageHours": 16.87,
           "freshnessBasis": "We've seen four weeks of football. How has that changed our opinions about the top quarterbacks.",
           "status": "active",
           "sourceUrls": [
@@ -1075,7 +1027,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T11:19:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.7,
+          "ageHours": 1.2,
           "freshnessBasis": "Mississippi State and Kamario Taylor will face their biggest test yet, plus, teams on upset watch and other games to watch.",
           "status": "active",
           "sourceUrls": [
@@ -1104,7 +1056,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T10:32:05Z",
           "timePrecision": "exact",
-          "ageHours": 1.49,
+          "ageHours": 1.99,
           "freshnessBasis": "After his team blew a 20-point fourth-quarter lead at Texas, Ohio State head coach Ryan Day said the Buckeyes would have to find a way to \"get some momentum again.\" Two wins later, Saturday at No. 14 Iowa offers a chance to do just that.",
           "status": "active",
           "sourceUrls": [
@@ -1144,7 +1096,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 98,
+    "freshCandidateCount": 105,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
