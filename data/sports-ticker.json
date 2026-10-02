@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-02T14:01:32Z",
+  "generatedAt": "2026-10-02T14:31:26Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "c9dfde31c6eea55c1ca512a5c58a196ab7c89f10019882bc23acb3d3ecc27a97",
+  "sourceCandidateHash": "63aea971ab4db8908d9b5166244411c8654c0ea5f0a4be2f6f0f48d125f1a2cb",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-57d14fd6195c1581"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Dodgers are still the World Series favorites as they get ready to start the postseason.",
+          "text": "The Dodgers are still the World Series favorites as they get ready to start the postseason.",
+          "entities": [],
+          "occurredAt": "2026-10-02T14:20:45Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "The Dodgers are still the World Series favorites as they get ready to start the postseason.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50084753/dodgers-start-playoffs-world-series-favorites"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50084753/dodgers-start-playoffs-world-series-favorites"
+            }
+          ],
+          "id": "a415-a4ffb9064fca5d74",
+          "feedRank": 1,
+          "compactHeadline": "Dodgers to start playoffs still as World Series favorites"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-c57620e2fb5ec67b"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T13:45:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 0.76,
           "freshnessBasis": "It's not everything you'll need to know. But we strive to provide as strong of an initial primer for a fan returning to the sport for October as you'll find.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-34e15c73e9580acb",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "A casual fan's guide to the MLB postseason"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-122a7338851f7a36"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T11:39:21Z",
           "timePrecision": "exact",
-          "ageHours": 2.37,
+          "ageHours": 2.87,
           "freshnessBasis": "With or without Aaron Judge, the New York superstar's teammates have shown they are built for the October spotlight.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-4c4ba94ff6d56f91",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "MLB playoffs: Judge or no Judge, Yankees will be ready for Rays"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-af234827035fa4de"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T11:36:02Z",
           "timePrecision": "exact",
-          "ageHours": 2.43,
+          "ageHours": 2.92,
           "freshnessBasis": "How big a deal could the Dodgers ace get, and who could sign him? We asked around the sport.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-8302271e7538a87b",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Tarik Skubal's free agency contract, predicted by MLB insiders"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-1c2cb56427b5f9b9"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T03:29:08Z",
           "timePrecision": "exact",
-          "ageHours": 10.54,
+          "ageHours": 11.04,
           "freshnessBasis": "Here's how the winter looks in Philadelphia following a season-ending loss to the Braves.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-b8ac8b0563fb1c61",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T03:10:52Z",
           "timePrecision": "exact",
-          "ageHours": 10.84,
+          "ageHours": 11.34,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 5,
-          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-707c8c5a9e03922c"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Torey Lovullo, the winningest manager in Diamondbacks history over his 10 seasons, is returning on a new contract.",
-          "text": "Torey Lovullo, the winningest manager in Diamondbacks history over his 10 seasons, is returning on a new contract.",
-          "entities": [],
-          "occurredAt": "2026-10-02T00:11:08Z",
-          "timePrecision": "exact",
-          "ageHours": 13.84,
-          "freshnessBasis": "Torey Lovullo, the winningest manager in Diamondbacks history over his 10 seasons, is returning on a new contract.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50078535/source-diamondbacks-retain-torey-lovullo-11th-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50078535/source-diamondbacks-retain-torey-lovullo-11th-season"
-            }
-          ],
-          "id": "a415-b7e18e11724820ea",
           "feedRank": 6,
-          "compactHeadline": "Diamondbacks retaining Torey Lovullo as manager"
+          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         }
       ]
     },
@@ -194,35 +194,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-9c9febacf0bd7d14"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "text": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "entities": [],
-          "occurredAt": "2026-10-02T11:53:05Z",
-          "timePrecision": "exact",
-          "ageHours": 2.14,
-          "freshnessBasis": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
-            }
-          ],
-          "id": "a415-7a75961a3d7042a4",
-          "feedRank": 7,
-          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-487a84a6bf828ba3"
           ],
           "type": "RECORD",
@@ -230,9 +201,9 @@
           "headline": "With multiple sacks and rushing TDs, Rousseau and Allen are on cusp of streaks no one else has done.",
           "text": "With multiple sacks and rushing TDs, Rousseau and Allen are on cusp of streaks no one else has done.",
           "entities": [],
-          "occurredAt": "2026-10-02T10:00:21Z",
+          "occurredAt": "2026-10-02T14:21:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 0.16,
           "freshnessBasis": "With multiple sacks and rushing TDs, Rousseau and Allen are on cusp of streaks no one else has done.",
           "status": "active",
           "sourceUrls": [
@@ -246,8 +217,37 @@
             }
           ],
           "id": "a415-86732ac8c1eae874",
-          "feedRank": 8,
+          "feedRank": 7,
           "compactHeadline": "Greg Rousseau's sacks, Josh Allen's rushing TDs are on record paces"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-9c9febacf0bd7d14"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "text": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "entities": [],
+          "occurredAt": "2026-10-02T11:53:05Z",
+          "timePrecision": "exact",
+          "ageHours": 2.64,
+          "freshnessBasis": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+            }
+          ],
+          "id": "a415-7a75961a3d7042a4",
+          "feedRank": 8,
+          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
         },
         {
           "rank": 3,
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:51:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.16,
+          "ageHours": 3.66,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:00:11Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 4.52,
           "freshnessBasis": "Murray is on a one-year deal with a no-tag clause, so every game counts as both sides assess their future.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T03:51:38Z",
           "timePrecision": "exact",
-          "ageHours": 10.17,
+          "ageHours": 10.66,
           "freshnessBasis": "Cleveland Browns defensive tackle Mason Graham has been ruled out for the remainder of Thursday night's home game against the Pittsburgh Steelers because of a knee injury.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T12:08:05Z",
           "timePrecision": "exact",
-          "ageHours": 1.89,
+          "ageHours": 2.39,
           "freshnessBasis": "Deshaun Watson has the Browns atop the division at 3-1 after directing a winning drive for the third straight game Thursday night in a 27-24 win over the Steelers.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T03:37:38Z",
           "timePrecision": "exact",
-          "ageHours": 10.4,
+          "ageHours": 10.9,
           "freshnessBasis": "Jalen Duren agreed to a five-year, $200 million fully guaranteed contract to return to the Pistons, agent Chafie Fields told ESPN's Shams Charania ahead of a Thursday night deadline the All-NBA center had to accept a 1-year qualifying offer.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T13:34:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.45,
+          "ageHours": 0.95,
           "freshnessBasis": "The Trail Blazers hired then on the same day fired Braiden Bell as their play-by-play announcer after a series of inappropriate social media posts from when he was a teenager came to light.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:52:13Z",
           "timePrecision": "exact",
-          "ageHours": 3.16,
+          "ageHours": 3.65,
           "freshnessBasis": "As NBA training camps begin for 30 teams, here's the latest intel on the potential for the 31st and 32nd teams.",
           "status": "active",
           "sourceUrls": [
@@ -461,35 +461,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-f4968dd50df68436"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Cavaliers star Donovan Mitchell has signed a new multiyear contract extension with Adidas -- a deal that will take him through a 10th signature shoe with the same brand, becoming the seventh active NBA player to accomplish the feat.",
-          "text": "Cavaliers star Donovan Mitchell has signed a new multiyear contract extension with Adidas -- a deal that will take him through a 10th signature shoe with the same brand, becoming the seventh active NBA player to accomplish the feat.",
-          "entities": [],
-          "occurredAt": "2026-10-01T14:31:08Z",
-          "timePrecision": "exact",
-          "ageHours": 23.51,
-          "freshnessBasis": "Cavaliers star Donovan Mitchell has signed a new multiyear contract extension with Adidas -- a deal that will take him through a 10th signature shoe with the same brand, becoming the seventh active NBA player to accomplish the feat.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50076885/cavs-donovan-mitchell-signs-new-multi-year-deal-adidas"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50076885/cavs-donovan-mitchell-signs-new-multi-year-deal-adidas"
-            }
-          ],
-          "id": "a415-a7e4e658a1111c09",
-          "feedRank": 16,
-          "compactHeadline": "Cavs' Donovan Mitchell signs new multiyear deal with Adidas"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-03a846cb4b156636"
           ],
           "type": "CONTRACT",
@@ -499,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T14:55:04Z",
           "timePrecision": "exact",
-          "ageHours": 23.11,
+          "ageHours": 23.61,
           "freshnessBasis": "Raptors guard Jamal Shead has agreed to a three-year, $24 million contract extension with the franchise, his agent, KJ Smith, told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -513,8 +484,37 @@
             }
           ],
           "id": "a415-5428cea1d13b35e0",
-          "feedRank": 17,
+          "feedRank": 16,
           "compactHeadline": "Jamal Shead, Raptors reach 3-year, $24M extension through 2029-30"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-45773bdf9174f320"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Sixers coach Nick Nurse envisions LeBron James setting the table for the offense this season. \"I consider him a great offense creator,\" Nurse said.",
+          "text": "Sixers coach Nick Nurse envisions LeBron James setting the table for the offense this season. \"I consider him a great offense creator,\" Nurse said.",
+          "entities": [],
+          "occurredAt": "2026-10-02T02:31:59Z",
+          "timePrecision": "exact",
+          "ageHours": 11.99,
+          "freshnessBasis": "Sixers coach Nick Nurse envisions LeBron James setting the table for the offense this season. \"I consider him a great offense creator,\" Nurse said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50079853/76ers-envision-lebron-james-role-being-offense-creator"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50079853/76ers-envision-lebron-james-role-being-offense-creator"
+            }
+          ],
+          "id": "a415-90374b334323b427",
+          "feedRank": 17,
+          "compactHeadline": "76ers envision LeBron James' role being 'offense creator'"
         }
       ]
     },
@@ -525,6 +525,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6536f54bcfaf3ec5"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The PWHL's addition of four teams is translating into more games, an expanded playoff format and two six-team conferences as the league enters its fourth season.",
+          "text": "The PWHL's addition of four teams is translating into more games, an expanded playoff format and two six-team conferences as the league enters its fourth season.",
+          "entities": [],
+          "occurredAt": "2026-10-02T14:02:04Z",
+          "timePrecision": "exact",
+          "ageHours": 0.49,
+          "freshnessBasis": "The PWHL's addition of four teams is translating into more games, an expanded playoff format and two six-team conferences as the league enters its fourth season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50084490/pwhl-adds-6-team-conferences-quarterfinal-playoff-round"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50084490/pwhl-adds-6-team-conferences-quarterfinal-playoff-round"
+            }
+          ],
+          "id": "a415-97b287064a9d0da4",
+          "feedRank": 18,
+          "compactHeadline": "PWHL adds 6-team conferences, quarterfinal playoff round"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-5a9b34cf56c7fe55"
           ],
           "type": "INJURY",
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T05:43:19Z",
           "timePrecision": "exact",
-          "ageHours": 8.3,
+          "ageHours": 8.8,
           "freshnessBasis": "Panthers captain Aleksander Barkov left in the second period against San Jose on Thursday night after his left knee appeared to buckle during a scrum.",
           "status": "active",
           "sourceUrls": [
@@ -548,11 +577,11 @@
             }
           ],
           "id": "a415-9f34de2e61c683c1",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Panthers' Aleksander Barkov exits early at Sharks because of injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-45232d181dcfd9df"
           ],
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T05:29:42Z",
           "timePrecision": "exact",
-          "ageHours": 8.53,
+          "ageHours": 9.03,
           "freshnessBasis": "— Connor McDavid scored a goal and had four assists as the Edmonton Oilers built a six-goal lead and held on for a 9-7 victory over the Vancouver Canucks on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +606,11 @@
             }
           ],
           "id": "a415-e0dc81cb752fc5e2",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Connor McDavid has a goal and four assists as the Oilers hang on to beat the Canucks 9-7"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-1ae4fb6cb795d679"
           ],
@@ -592,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T04:18:36Z",
           "timePrecision": "exact",
-          "ageHours": 9.72,
+          "ageHours": 10.21,
           "freshnessBasis": "— Vince Dunn had a goal and two assists, Matty Beniers scored and had an assist, and the Seattle Kraken beat the Calgary Flames 6-1 in the season opener for both teams.",
           "status": "active",
           "sourceUrls": [
@@ -606,11 +635,11 @@
             }
           ],
           "id": "a415-4e1bbdd84ac8a1e2",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Vince Dunn has a three-point night to lift Kraken over Flames, 6-1"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-ef02db7c94afa029"
           ],
@@ -621,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T20:28:26Z",
           "timePrecision": "exact",
-          "ageHours": 17.55,
+          "ageHours": 18.05,
           "freshnessBasis": "The Ducks have signed defenseman Tristan Luneau to a six-year contract extension worth $43.2 million after just 14 career NHL appearances.",
           "status": "active",
           "sourceUrls": [
@@ -635,11 +664,11 @@
             }
           ],
           "id": "a415-501e52d5f08f862a",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Ducks sign Tristan Luneau to $43.2M extension after 14 NHL games"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c65c195b0b5a8acc"
           ],
@@ -650,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T18:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 19.71,
+          "ageHours": 20.21,
           "freshnessBasis": "New York Rangers backup goaltender Joonas Korpisalo is week-to-week with a lower-body injury, according to a person familiar with the situation.",
           "status": "active",
           "sourceUrls": [
@@ -664,37 +693,8 @@
             }
           ],
           "id": "a415-427a90a5dc8de6d2",
-          "feedRank": 22,
-          "compactHeadline": "Report: Rangers goalie Joonas Korpisalo week-to-week"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ebe04473705ae13f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Nick Foligno and Blake Coleman scored first-period goals, and the Minnesota Wild beat the Nashville Predators 3-1 on Thursday night in the...",
-          "text": "Nick Foligno and Blake Coleman scored first-period goals, and the Minnesota Wild beat the Nashville Predators 3-1 on Thursday night in the...",
-          "entities": [],
-          "occurredAt": "2026-10-02T02:49:46Z",
-          "timePrecision": "exact",
-          "ageHours": 11.2,
-          "freshnessBasis": "— Nick Foligno and Blake Coleman scored first-period goals, and the Minnesota Wild beat the Nashville Predators 3-1 on Thursday night in the...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401891816"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891816"
-            }
-          ],
-          "id": "a415-b1ec4e5c1999bcbb",
           "feedRank": 23,
-          "compactHeadline": "A fast first period sets the tone as the Wild open with a 3-1 win over Nashville"
+          "compactHeadline": "Report: Rangers goalie Joonas Korpisalo week-to-week"
         }
       ]
     },
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T06:29:42Z",
           "timePrecision": "exact",
-          "ageHours": 7.53,
+          "ageHours": 8.03,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:40:16Z",
           "timePrecision": "exact",
-          "ageHours": 3.35,
+          "ageHours": 3.85,
           "freshnessBasis": "Which players have impressed since making a move over the summer? Sometimes a £17 million arrival does better than a £117 million one.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T08:55:39Z",
           "timePrecision": "exact",
-          "ageHours": 5.1,
+          "ageHours": 5.6,
           "freshnessBasis": "Sir Alex Ferguson has revealed he was \"terrified\" when returning to Old Trafford for the first time following brain surgery in 2018.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T13:35:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.44,
+          "ageHours": 0.93,
           "freshnessBasis": "Former Manchester City manager and current Italy coach Roberto Mancini says he is unconcerned about being implicated in the financial rule-breaking scandal engulfing the English club, which on Friday said it was appealing the verdict.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T13:28:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
+          "ageHours": 1.05,
           "freshnessBasis": "Manchester City have confirmed the club have lodged a \"comprehensive appeal\" after being found guilty of breaching the Premier League's financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T12:25:15Z",
           "timePrecision": "exact",
-          "ageHours": 1.6,
+          "ageHours": 2.1,
           "freshnessBasis": "Tuesday's news that the Premier League found Man City guilty of 100-plus charges of breaking financial rules is a landmark moment. But what comes next: what punishments are on the table, and how does the appeals process work?",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:17:15Z",
           "timePrecision": "exact",
-          "ageHours": 3.74,
+          "ageHours": 4.24,
           "freshnessBasis": "Where the top 50 classes stand as the latest cycle hits the home stretch.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:16:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 4.25,
           "freshnessBasis": "Alabama, Ohio State and Florida all face ranked road tests. How can they get home with victories?",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T05:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 8.41,
+          "ageHours": 8.91,
           "freshnessBasis": "— Tayven Jackson threw a season-high four touchdown passes and added a 1-yard rushing TD in overtime, Jahiem White had 219 yards rushing and a touchdown, and North Texas beat Tulsa 45-44 on Thursday night in the American Conference opener for both teams.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T03:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 10.27,
+          "ageHours": 10.77,
           "freshnessBasis": "— James Jones had a season-high 155 yards rushing and a touchdown on 20 carries, De’Marcus Peters had a pick-6, and New Mexico State beat Western Kentucky 34-13 on Thursday night in the Conference USA opener for both teams.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:15:36Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.26,
           "freshnessBasis": "After being fired a year ago, Brent Pry is still in Blacksburg and has helped guide the Hokies to their best start in nearly a decade.",
           "status": "active",
           "sourceUrls": [
@@ -1074,7 +1074,7 @@
           "entities": [],
           "occurredAt": "2026-10-01T21:51:16Z",
           "timePrecision": "exact",
-          "ageHours": 16.17,
+          "ageHours": 16.67,
           "freshnessBasis": "Damien Shanklin, an LSU football player whose suspension was overturned in a Title IX case, is now being investigated by campus police and the district attorney for allegedly raping a female student last fall.",
           "status": "active",
           "sourceUrls": [
@@ -1114,7 +1114,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 116,
+    "freshCandidateCount": 117,
     "publishedItemCount": 36,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
