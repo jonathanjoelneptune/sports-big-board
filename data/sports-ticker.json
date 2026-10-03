@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-03T01:31:24Z",
+  "generatedAt": "2026-10-03T02:01:20Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "89392a60b1110a46a8beef100790708b90dde4507f769d82184d3094e84e4f55",
+  "sourceCandidateHash": "3e089bd36e414cedd2909f6b98b5bb226c634519e404a8223173997ce09fff54",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T21:19:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.2,
+          "ageHours": 4.69,
           "freshnessBasis": "The Tampa Bay Rays got new owners, a deal for a “forever home” stadium and finished with the best record in the American League.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-ff67a465bd5327d0"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Dodgers star Shohei Ohtani said the left knee and right bicep ailments that compromised him throughout the summer are issues he's \"just going to have to manage\" in the postseason.",
+          "text": "Dodgers star Shohei Ohtani said the left knee and right bicep ailments that compromised him throughout the summer are issues he's \"just going to have to manage\" in the postseason.",
+          "entities": [],
+          "occurredAt": "2026-10-03T01:55:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "Dodgers star Shohei Ohtani said the left knee and right bicep ailments that compromised him throughout the summer are issues he's \"just going to have to manage\" in the postseason.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50087725/dodgers-ohtani-admits-fully-healthy-playoffs"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50087725/dodgers-ohtani-admits-fully-healthy-playoffs"
+            }
+          ],
+          "id": "a415-2ef70d2564411f2d",
+          "feedRank": 2,
+          "compactHeadline": "Dodgers' Ohtani admits he won't be fully healthy in playoffs"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-91ac7c379d62e8fd"
           ],
           "type": "PLAYOFF",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T17:28:12Z",
           "timePrecision": "exact",
-          "ageHours": 8.05,
+          "ageHours": 8.55,
           "freshnessBasis": "Red Sox first baseman/catcher Mickey Gasper has undergone a repair of his right biceps tendon after he left the team's regular-season finale and did not appear in the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-34d93af85b87146c",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Red Sox's Mickey Gasper has surgery to repair right biceps tendon"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-c57620e2fb5ec67b"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T16:20:17Z",
           "timePrecision": "exact",
-          "ageHours": 9.19,
+          "ageHours": 9.68,
           "freshnessBasis": "It's not everything you'll need to know. But we strive to provide as strong of an initial primer for a fan returning to the sport for October as you'll find.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-34e15c73e9580acb",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "A casual fan's guide to the MLB postseason"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-57d14fd6195c1581"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T15:26:07Z",
           "timePrecision": "exact",
-          "ageHours": 10.09,
+          "ageHours": 10.59,
           "freshnessBasis": "The Dodgers are still the World Series favorites as they get ready to start the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-a4ffb9064fca5d74",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Dodgers to start playoffs still as World Series favorites"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-122a7338851f7a36"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T15:15:51Z",
           "timePrecision": "exact",
-          "ageHours": 10.26,
+          "ageHours": 10.76,
           "freshnessBasis": "With or without Aaron Judge, the New York superstar's teammates have shown they are built for the October spotlight.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-4c4ba94ff6d56f91",
-          "feedRank": 5,
-          "compactHeadline": "MLB playoffs: Judge or no Judge, Yankees will be ready for Rays"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-af234827035fa4de"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "How big a deal could the Dodgers ace get, and who could sign him? We asked around the sport.",
-          "text": "How big a deal could the Dodgers ace get, and who could sign him? We asked around the sport.",
-          "entities": [],
-          "occurredAt": "2026-10-02T11:36:02Z",
-          "timePrecision": "exact",
-          "ageHours": 13.92,
-          "freshnessBasis": "How big a deal could the Dodgers ace get, and who could sign him? We asked around the sport.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50071297/mlb-2026-how-tarik-skubal-free-agency-play-predictions-possible-suitors"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50071297/mlb-2026-how-tarik-skubal-free-agency-play-predictions-possible-suitors"
-            }
-          ],
-          "id": "a415-8302271e7538a87b",
           "feedRank": 6,
-          "compactHeadline": "Tarik Skubal's free agency contract, predicted by MLB insiders"
+          "compactHeadline": "MLB playoffs: Judge or no Judge, Yankees will be ready for Rays"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T00:52:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.65,
+          "ageHours": 1.15,
           "freshnessBasis": "Niners wide receiver Mike Evans is questionable for Sunday, but he said he will give \"my best\" to play against the Broncos as he deals with a rib injury.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T00:08:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.39,
+          "ageHours": 1.88,
           "freshnessBasis": "Rams defensive tackle Aaron Donald will not play against the Eagles as he deals with back soreness, while wide receiver Puka Nacua will return from a hip injury after missing the past two games.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T21:05:11Z",
           "timePrecision": "exact",
-          "ageHours": 4.44,
+          "ageHours": 4.94,
           "freshnessBasis": "Vikings WR Justin Jefferson won't play against the Dolphins because of a sprained left ankle, but coach Kevin O'Connell is hopeful he can return in Week 5 vs. the Saints.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:51:25Z",
           "timePrecision": "exact",
-          "ageHours": 4.67,
+          "ageHours": 5.17,
           "freshnessBasis": "The winless Texans got good news Friday as star wide receiver Nico Collins is set to return Sunday from a hamstring injury that forced him to miss Houston's last two games.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:38:33Z",
           "timePrecision": "exact",
-          "ageHours": 4.88,
+          "ageHours": 5.38,
           "freshnessBasis": "Newly acquired Cowboys cornerback Joey Porter Jr. does not carry an injury designation after practicing the past two days following his trade from the Steelers.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:19:49Z",
           "timePrecision": "exact",
-          "ageHours": 5.19,
+          "ageHours": 5.69,
           "freshnessBasis": "Eagles WR DeVonta Smith will miss Sunday's game due to a lingering hamstring injury and will be joined on the sideline by linebacker Zack Baun (concussion).",
           "status": "active",
           "sourceUrls": [
@@ -374,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-fb6cbbb5f69a54f6"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Memphis Grizzlies and guard Jordan Hawkins have agreed to part ways via waivers, allowing the 2023 lottery pick to find a new home in free agency, sources told ESPN's Shams Charania.",
+          "text": "The Memphis Grizzlies and guard Jordan Hawkins have agreed to part ways via waivers, allowing the 2023 lottery pick to find a new home in free agency, sources told ESPN's Shams Charania.",
+          "entities": [],
+          "occurredAt": "2026-10-03T01:56:57Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "The Memphis Grizzlies and guard Jordan Hawkins have agreed to part ways via waivers, allowing the 2023 lottery pick to find a new home in free agency, sources told ESPN's Shams Charania.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50087727/sources-grizzlies-waive-jordan-hawkins-weeks-pels-trade"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50087727/sources-grizzlies-waive-jordan-hawkins-weeks-pels-trade"
+            }
+          ],
+          "id": "a415-efcd35a6fab0b4e1",
+          "feedRank": 13,
+          "compactHeadline": "Sources: Grizzlies waive Jordan Hawkins weeks after Pels trade"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-9dce946222550e97"
           ],
           "type": "SIGNING",
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:11:47Z",
           "timePrecision": "exact",
-          "ageHours": 5.33,
+          "ageHours": 5.83,
           "freshnessBasis": "Jalen Duren agreed to a five-year, $200 million fully guaranteed contract to return to the Pistons, agent Chafie Fields told ESPN's Shams Charania ahead of a Thursday night deadline the All-NBA center had to accept a 1-year qualifying offer.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +426,11 @@
             }
           ],
           "id": "a415-edeb822b0b23ba66",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Jalen Duren accepts 5-year, $200M deal from Pistons"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-83619e154dc11916"
           ],
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T00:04:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.45,
+          "ageHours": 1.94,
           "freshnessBasis": "As NBA training camps begin for 30 teams, here's the latest intel on the potential for the 31st and 32nd teams.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +455,11 @@
             }
           ],
           "id": "a415-22592794fe862fb0",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Where NBA expansion stands ahead of the 2026-27 season"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-687d2802483c09e8"
           ],
@@ -441,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T23:31:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.0,
+          "ageHours": 2.5,
           "freshnessBasis": "The Trail Blazers hired then on the same day fired Braiden Bell as their play-by-play announcer after a series of inappropriate social media posts from when he was a teenager came to light.",
           "status": "active",
           "sourceUrls": [
@@ -455,11 +484,11 @@
             }
           ],
           "id": "a415-c321799843b2a6be",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Trail Blazers fire new announcer over past inappropriate posts"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-72619486e998d56d"
           ],
@@ -470,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T18:38:51Z",
           "timePrecision": "exact",
-          "ageHours": 6.88,
+          "ageHours": 7.37,
           "freshnessBasis": "With Grand Theft Auto VI's long-awaited release date set for Nov. 19, the Heat are partnering with Rockstar Games to offer a topical lead-up event the night before.",
           "status": "active",
           "sourceUrls": [
@@ -484,37 +513,8 @@
             }
           ],
           "id": "a415-c7510a473135d5c2",
-          "feedRank": 16,
-          "compactHeadline": "Miami Heat announce 'A Night in Vice City' theme ahead of GTA VI release"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-45773bdf9174f320"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Sixers coach Nick Nurse envisions LeBron James setting the table for the offense this season. \"I consider him a great offense creator,\" Nurse said.",
-          "text": "Sixers coach Nick Nurse envisions LeBron James setting the table for the offense this season. \"I consider him a great offense creator,\" Nurse said.",
-          "entities": [],
-          "occurredAt": "2026-10-02T02:31:59Z",
-          "timePrecision": "exact",
-          "ageHours": 22.99,
-          "freshnessBasis": "Sixers coach Nick Nurse envisions LeBron James setting the table for the offense this season. \"I consider him a great offense creator,\" Nurse said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50079853/76ers-envision-lebron-james-role-being-offense-creator"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50079853/76ers-envision-lebron-james-role-being-offense-creator"
-            }
-          ],
-          "id": "a415-90374b334323b427",
           "feedRank": 17,
-          "compactHeadline": "76ers envision LeBron James' role being 'offense creator'"
+          "compactHeadline": "Miami Heat announce 'A Night in Vice City' theme ahead of GTA VI release"
         }
       ]
     },
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T23:54:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.61,
+          "ageHours": 2.11,
           "freshnessBasis": "Hours before the season opener on home ice against the New York Rangers, the Detroit Red Wings moved former captain Dylan Larkin, 30, to a non-roster injured reserve spot, while the organization continues to deal with his lingering trade request.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T22:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 2.79,
+          "ageHours": 3.29,
           "freshnessBasis": "The Seattle Seahawks on Friday ruled out running back Jadarian Price for their game Sunday against the Los Angeles Chargers, as the rookie deals with a chest injury suffered in Week 2 and aggravated in practice Wednesday, according to Mike Macdonald.",
           "status": "active",
           "sourceUrls": [
@@ -583,40 +583,63 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-ffcda97b6fb743f6"
+            "cand-6b6ab7466b30e258"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Connor McDavid scored a goal and had four assists as the Edmonton Oilers built a six-goal lead and held on for a 9-7 victory over the Vancouver Canucks on Thursday night.",
-          "text": "Connor McDavid scored a goal and had four assists as the Edmonton Oilers built a six-goal lead and held on for a 9-7 victory over the Vancouver Canucks on Thursday night.",
+          "headline": "Alex Tuch scored twice in his first game for Washington, Alex Ovechkin opened his 22nd NHL season with an assist and the Capitals beat the Stanley Cup champion Carolina Hurricanes 5-2 on Friday night.",
+          "text": "Alex Tuch scored twice in his first game for Washington, Alex Ovechkin opened his 22nd NHL season with an assist and the Capitals beat the Stanley Cup champion Carolina Hurricanes 5-2 on Friday night.",
           "entities": [],
-          "occurredAt": "2026-10-02T02:00:00Z",
+          "occurredAt": "2026-10-03T01:47:30Z",
           "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Edmonton Oilers 9, Vancouver Canucks 7.",
+          "ageHours": 0.23,
+          "freshnessBasis": "— Alex Tuch scored twice in his first game for Washington, Alex Ovechkin opened his 22nd NHL season with an assist and the Capitals beat the Stanley Cup champion Carolina Hurricanes 5-2 on Friday night.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401891829"
+            "http://www.espn.com/nhl/recap?gameId=401892432"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-01",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891829"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892432"
             }
           ],
-          "id": "a415-dd671f150521ecf9",
+          "id": "a415-b060f0682ef62937",
           "feedRank": 20,
-          "compactHeadline": "Connor McDavid has a goal and four assists as the Oilers hang on to beat the Canucks 9-7"
+          "compactHeadline": "Tuch scores twice in his first game for Washington, helping the Capitals beat the Hurricanes 5-2"
         },
         {
           "rank": 4,
+          "candidateIds": [
+            "cand-99d1ef043dd8104a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Dylan Garand made 23 saves for his first career shutout and the New York Rangers spoiled the Detroit Red Wings' opener with a 2-0 victory on Friday.",
+          "text": "Dylan Garand made 23 saves for his first career shutout and the New York Rangers spoiled the Detroit Red Wings' opener with a 2-0 victory on Friday.",
+          "entities": [],
+          "occurredAt": "2026-10-03T01:32:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.48,
+          "freshnessBasis": "— Dylan Garand made 23 saves for his first career shutout and the New York Rangers spoiled the Detroit Red Wings' opener with a 2-0 victory on Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401891803"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401891803"
+            }
+          ],
+          "id": "a415-fd56d7f10e039be1",
+          "feedRank": 21,
+          "compactHeadline": "Dylan Garand makes 23 saves for 1st career shutout as Rangers beat Red Wings 2-0"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-6536f54bcfaf3ec5"
           ],
@@ -627,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T14:02:04Z",
           "timePrecision": "exact",
-          "ageHours": 11.49,
+          "ageHours": 11.99,
           "freshnessBasis": "The PWHL's addition of four teams is translating into more games, an expanded playoff format and two six-team conferences as the league enters its fourth season.",
           "status": "active",
           "sourceUrls": [
@@ -641,11 +664,11 @@
             }
           ],
           "id": "a415-97b287064a9d0da4",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "PWHL adds 6-team conferences, quarterfinal playoff round"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-5a9b34cf56c7fe55"
           ],
@@ -656,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T05:43:19Z",
           "timePrecision": "exact",
-          "ageHours": 19.8,
+          "ageHours": 20.3,
           "freshnessBasis": "Panthers captain Aleksander Barkov left in the second period against San Jose on Thursday night after his left knee appeared to buckle during a scrum.",
           "status": "active",
           "sourceUrls": [
@@ -670,37 +693,8 @@
             }
           ],
           "id": "a415-9f34de2e61c683c1",
-          "feedRank": 22,
-          "compactHeadline": "Panthers' Aleksander Barkov exits early at Sharks because of injury"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-161ce2aa358ec758"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Penguins forward Andrei Kuzmenko will change his jersey number to 62 in honor of his father, who was killed in a bear attack in Russia last week at age 62.",
-          "text": "Penguins forward Andrei Kuzmenko will change his jersey number to 62 in honor of his father, who was killed in a bear attack in Russia last week at age 62.",
-          "entities": [],
-          "occurredAt": "2026-10-02T23:27:01Z",
-          "timePrecision": "exact",
-          "ageHours": 2.07,
-          "freshnessBasis": "Penguins forward Andrei Kuzmenko will change his jersey number to 62 in honor of his father, who was killed in a bear attack in Russia last week at age 62.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50087030/penguins-kuzmenko-wear-no-62-honor-dad-killed-bear-attack"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50087030/penguins-kuzmenko-wear-no-62-honor-dad-killed-bear-attack"
-            }
-          ],
-          "id": "a415-1c3e312740698067",
           "feedRank": 23,
-          "compactHeadline": "Penguins' Kuzmenko to wear No. 62 to honor dad killed in bear attack"
+          "compactHeadline": "Panthers' Aleksander Barkov exits early at Sharks because of injury"
         }
       ]
     },
@@ -720,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T15:24:58Z",
           "timePrecision": "exact",
-          "ageHours": 10.11,
+          "ageHours": 10.61,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:40:16Z",
           "timePrecision": "exact",
-          "ageHours": 14.85,
+          "ageHours": 15.35,
           "freshnessBasis": "Which players have impressed since making a move over the summer? Sometimes a £17 million arrival does better than a £117 million one.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T08:55:39Z",
           "timePrecision": "exact",
-          "ageHours": 16.6,
+          "ageHours": 17.09,
           "freshnessBasis": "Sir Alex Ferguson has revealed he was \"terrified\" when returning to Old Trafford for the first time following brain surgery in 2018.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T18:31:55Z",
           "timePrecision": "exact",
-          "ageHours": 6.99,
+          "ageHours": 7.49,
           "freshnessBasis": "Carlos Baleba played his first minutes in a Manchester United shirt during a behind-closed-doors friendly on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T17:37:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.89,
+          "ageHours": 8.39,
           "freshnessBasis": "Former Manchester United midfielder Fred has accused ex-boss Erik ten Hag of being a 'piece of crap' when it came to squad management.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T17:10:45Z",
           "timePrecision": "exact",
-          "ageHours": 8.34,
+          "ageHours": 8.84,
           "freshnessBasis": "Former Manchester City manager and current Italy coach Roberto Mancini says he is unconcerned about being implicated in the financial rule-breaking scandal engulfing the English club, which on Friday said it was appealing the verdict.",
           "status": "active",
           "sourceUrls": [
@@ -905,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T16:35:40Z",
           "timePrecision": "exact",
-          "ageHours": 8.93,
+          "ageHours": 9.43,
           "freshnessBasis": "Alabama, Ohio State and Florida all face ranked road tests. How can they get home with victories?",
           "status": "active",
           "sourceUrls": [
@@ -934,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T10:17:15Z",
           "timePrecision": "exact",
-          "ageHours": 15.24,
+          "ageHours": 15.73,
           "freshnessBasis": "Where the top 50 classes stand as the latest cycle hits the home stretch.",
           "status": "active",
           "sourceUrls": [
@@ -963,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T00:31:11Z",
           "timePrecision": "exact",
-          "ageHours": 1.0,
+          "ageHours": 1.5,
           "freshnessBasis": "Former Yale football coach Tony Reno, who stepped down after the 2025 season due to health issues, has died at the age of 52, the university announced.",
           "status": "active",
           "sourceUrls": [
@@ -992,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:13:37Z",
           "timePrecision": "exact",
-          "ageHours": 5.3,
+          "ageHours": 5.8,
           "freshnessBasis": "\"College GameDay\" heads to Iowa City, Iowa for Week 5.",
           "status": "active",
           "sourceUrls": [
@@ -1021,7 +1015,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T05:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 19.91,
+          "ageHours": 20.41,
           "freshnessBasis": "— Tayven Jackson threw a season-high four touchdown passes and added a 1-yard rushing TD in overtime, Jahiem White had 219 yards rushing and a touchdown, and North Texas beat Tulsa 45-44 on Thursday night in the American Conference opener for both teams.",
           "status": "active",
           "sourceUrls": [
@@ -1050,7 +1044,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T03:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 21.77,
+          "ageHours": 22.27,
           "freshnessBasis": "— James Jones had a season-high 155 yards rushing and a touchdown on 20 carries, De’Marcus Peters had a pick-6, and New Mexico State beat Western Kentucky 34-13 on Thursday night in the Conference USA opener for both teams.",
           "status": "active",
           "sourceUrls": [
@@ -1090,7 +1084,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 103,
+    "freshCandidateCount": 104,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
