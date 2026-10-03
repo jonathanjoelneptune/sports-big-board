@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-03T14:02:02Z",
+  "generatedAt": "2026-10-03T14:31:16Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "4bf5e092bb9c84b7a75e99758b749387709b716211b7c9f3f8f9d68f0786a576",
+  "sourceCandidateHash": "b94a5f5f018881912db2225e5b0670ce3f6b1152f35d2b822cc062320d1028e8",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T11:30:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 3.01,
           "freshnessBasis": "Dodgers star Shohei Ohtani says the left knee and right biceps ailments that compromised him throughout the summer are issues he's \"just going to have to manage\" in the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-acfbcdeea94f15e4"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Aaron Judge will not be on the Yankees' ALDS roster against the Rays, a source confirmed to ESPN.",
+          "text": "Aaron Judge will not be on the Yankees' ALDS roster against the Rays, a source confirmed to ESPN.",
+          "entities": [],
+          "occurredAt": "2026-10-03T14:27:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Aaron Judge will not be on the Yankees' ALDS roster against the Rays, a source confirmed to ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50090418/source-aaron-judge-not-yankees-roster-alds-vs-rays"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50090418/source-aaron-judge-not-yankees-roster-alds-vs-rays"
+            }
+          ],
+          "id": "a415-fd2da1f56a8f28cf",
+          "feedRank": 2,
+          "compactHeadline": "Source: Aaron Judge not on Yankees' roster for ALDS vs. Rays"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-91ac7c379d62e8fd"
           ],
           "type": "PLAYOFF",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T17:28:12Z",
           "timePrecision": "exact",
-          "ageHours": 20.56,
+          "ageHours": 21.05,
           "freshnessBasis": "Red Sox first baseman/catcher Mickey Gasper has undergone a repair of his right biceps tendon after he left the team's regular-season finale and did not appear in the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-34d93af85b87146c",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Red Sox's Mickey Gasper has surgery to repair right biceps tendon"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-c57620e2fb5ec67b"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T16:20:17Z",
           "timePrecision": "exact",
-          "ageHours": 21.7,
+          "ageHours": 22.18,
           "freshnessBasis": "It's not everything you'll need to know. But we strive to provide as strong of an initial primer for a fan returning to the sport for October as you'll find.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-34e15c73e9580acb",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "A casual fan's guide to the MLB postseason"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-57d14fd6195c1581"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T15:26:07Z",
           "timePrecision": "exact",
-          "ageHours": 22.6,
+          "ageHours": 23.09,
           "freshnessBasis": "The Dodgers are still the World Series favorites as they get ready to start the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-a4ffb9064fca5d74",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Dodgers to start playoffs still as World Series favorites"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-122a7338851f7a36"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T15:15:51Z",
           "timePrecision": "exact",
-          "ageHours": 22.77,
+          "ageHours": 23.26,
           "freshnessBasis": "With or without Aaron Judge, the New York superstar's teammates have shown they are built for the October spotlight.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-4c4ba94ff6d56f91",
-          "feedRank": 5,
-          "compactHeadline": "MLB playoffs: Judge or no Judge, Yankees will be ready for Rays"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-89f3426763716d0d"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chicago White Sox (84-78, second in the AL Central during the regular season) vs. Cleveland Guardians (85-77, first in the AL Central during the regular season)",
-          "text": "Chicago White Sox (84-78, second in the AL Central during the regular season) vs. Cleveland Guardians (85-77, first in the AL Central during the regular season)",
-          "entities": [],
-          "occurredAt": "2026-10-03T08:01:39Z",
-          "timePrecision": "exact",
-          "ageHours": 6.01,
-          "freshnessBasis": "Chicago White Sox (84-78, second in the AL Central during the regular season) vs. Cleveland Guardians (85-77, first in the AL Central during the regular season)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/preview?gameId=401907990"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401907990"
-            }
-          ],
-          "id": "a415-8027bc09094c637e",
           "feedRank": 6,
-          "compactHeadline": "Guardians and White Sox meet to begin ALDS"
+          "compactHeadline": "MLB playoffs: Judge or no Judge, Yankees will be ready for Rays"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T10:00:17Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.52,
           "freshnessBasis": "This was no small task, but 13 players ended up making more than one all-time SB roster.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T11:12:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.82,
+          "ageHours": 3.31,
           "freshnessBasis": "Niners wide receiver Mike Evans is questionable for Sunday, but he said he will give \"my best\" to play against the Broncos as he deals with a rib injury.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T11:05:37Z",
           "timePrecision": "exact",
-          "ageHours": 2.94,
+          "ageHours": 3.43,
           "freshnessBasis": "The winless Texans got good news Friday as star wide receiver Nico Collins is set to return Sunday from a hamstring injury that forced him to miss Houston's last two games.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T00:08:18Z",
           "timePrecision": "exact",
-          "ageHours": 13.9,
+          "ageHours": 14.38,
           "freshnessBasis": "Rams defensive tackle Aaron Donald will not play against the Eagles as he deals with back soreness, while wide receiver Puka Nacua will return from a hip injury after missing the past two games.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T21:05:11Z",
           "timePrecision": "exact",
-          "ageHours": 16.95,
+          "ageHours": 17.43,
           "freshnessBasis": "Vikings WR Justin Jefferson won't play against the Dolphins because of a sprained left ankle, but coach Kevin O'Connell is hopeful he can return in Week 5 vs. the Saints.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:38:33Z",
           "timePrecision": "exact",
-          "ageHours": 17.39,
+          "ageHours": 17.88,
           "freshnessBasis": "Newly acquired Cowboys cornerback Joey Porter Jr. does not carry an injury designation after practicing the past two days following his trade from the Steelers.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T02:33:07Z",
           "timePrecision": "exact",
-          "ageHours": 11.48,
+          "ageHours": 11.97,
           "freshnessBasis": "The Memphis Grizzlies and guard Jordan Hawkins have agreed to part ways via waivers, allowing the 2023 lottery pick to find a new home in free agency, sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:11:47Z",
           "timePrecision": "exact",
-          "ageHours": 17.84,
+          "ageHours": 18.32,
           "freshnessBasis": "Jalen Duren agreed to a five-year, $200 million fully guaranteed contract to return to the Pistons, agent Chafie Fields told ESPN's Shams Charania ahead of a Thursday night deadline the All-NBA center had to accept a 1-year qualifying offer.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T00:04:41Z",
           "timePrecision": "exact",
-          "ageHours": 13.96,
+          "ageHours": 14.44,
           "freshnessBasis": "As NBA training camps begin for 30 teams, here's the latest intel on the potential for the 31st and 32nd teams.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T23:31:13Z",
           "timePrecision": "exact",
-          "ageHours": 14.51,
+          "ageHours": 15.0,
           "freshnessBasis": "The Trail Blazers hired then on the same day fired Braiden Bell as their play-by-play announcer after a series of inappropriate social media posts from when he was a teenager came to light.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T18:38:51Z",
           "timePrecision": "exact",
-          "ageHours": 19.39,
+          "ageHours": 19.87,
           "freshnessBasis": "With Grand Theft Auto VI's long-awaited release date set for Nov. 19, the Heat are partnering with Rockstar Games to offer a topical lead-up event the night before.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T13:24:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.62,
+          "ageHours": 1.11,
           "freshnessBasis": "As they continue to mull his trade request, the Red Wings moved Dylan Larkin to a non-roster injured reserve spot before their season-opening 2-0 loss to the Rangers, a game the former captain was booed loudly in when he was shown on the video board.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T05:08:06Z",
           "timePrecision": "exact",
-          "ageHours": 8.9,
+          "ageHours": 9.39,
           "freshnessBasis": "St. Louis Blues forward Alexey Toropchenko has exited the season-opening game at Dallas with an apparent shoulder injury.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T22:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 15.3,
+          "ageHours": 15.79,
           "freshnessBasis": "The Seattle Seahawks on Friday ruled out running back Jadarian Price for their game Sunday against the Los Angeles Chargers, as the rookie deals with a chest injury suffered in Week 2 and aggravated in practice Wednesday, according to Mike Macdonald.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T04:47:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.24,
+          "ageHours": 9.73,
           "freshnessBasis": "— Mason McTavish scored only 94 seconds into his first game with the Blues to put them ahead to stay, Joel Hofer stopped 25 shots for his ninth career shutout and St. Louis won 4-0 at...",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T03:43:29Z",
           "timePrecision": "exact",
-          "ageHours": 10.31,
+          "ageHours": 10.8,
           "freshnessBasis": "— Dylan Garand made 22 saves for his first career shutout and the New York Rangers spoiled the Detroit Red Wings' opener with a 2-0 victory on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T01:47:30Z",
           "timePrecision": "exact",
-          "ageHours": 12.24,
+          "ageHours": 12.73,
           "freshnessBasis": "— Alex Tuch scored twice in his first game for Washington, Alex Ovechkin opened his 22nd NHL season with an assist and the Capitals beat the Stanley Cup champion Carolina Hurricanes 5-2 on Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T06:21:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.67,
+          "ageHours": 8.16,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T18:31:55Z",
           "timePrecision": "exact",
-          "ageHours": 19.5,
+          "ageHours": 19.99,
           "freshnessBasis": "Carlos Baleba played his first minutes in a Manchester United shirt during a behind-closed-doors friendly on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T17:37:45Z",
           "timePrecision": "exact",
-          "ageHours": 20.4,
+          "ageHours": 20.89,
           "freshnessBasis": "Former Manchester United midfielder Fred has accused ex-boss Erik ten Hag of being a 'piece of crap' when it came to squad management.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T17:10:45Z",
           "timePrecision": "exact",
-          "ageHours": 20.85,
+          "ageHours": 21.34,
           "freshnessBasis": "Former Manchester City manager and current Italy coach Roberto Mancini says he is unconcerned about being implicated in the financial rule-breaking scandal engulfing the English club, which on Friday said it was appealing the verdict.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T12:06:21Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
+          "ageHours": 2.42,
           "freshnessBasis": "Manchester City striker Erling Haaland favors a move to Spain over Arsenal. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-10-02T20:41:17Z",
           "timePrecision": "exact",
-          "ageHours": 17.35,
+          "ageHours": 17.83,
           "freshnessBasis": "Jadon Sancho is happy to wait to sign for a club. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T12:55:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 1.6,
           "freshnessBasis": "Defending FCS champion Montana State's 19-game win streak is over after Idaho scored a touchdown on the final play of Friday night's game and then scored on a 2-point conversion for a 35-34 victory.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T13:06:43Z",
           "timePrecision": "exact",
-          "ageHours": 0.92,
+          "ageHours": 1.41,
           "freshnessBasis": "Northwestern fans, who eagerly awaited Ryan Field's opening, were rewarded with not only an easy win over a preseason Top 25 team but also a light show and waves of fireworks and flames before kickoff of the Wildcats' 34-13 win over Penn State.",
           "status": "active",
           "sourceUrls": [
@@ -957,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T12:52:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.16,
+          "ageHours": 1.65,
           "freshnessBasis": "As his Panthers improved to 5-0 with a 35-33 victory over Virginia Tech, Pittsburgh coach Pat Narduzzi lobbied for his unranked team, sending a message to AP Top 25 voters that he has \"a hell of a football team.\"",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T06:45:31Z",
           "timePrecision": "exact",
-          "ageHours": 7.28,
+          "ageHours": 7.76,
           "freshnessBasis": "— Joshua Wood threw a 25-yard touchdown pass to Ryan Jezioro with no time left, then ran for a 2-point conversion as Idaho stunned Montana State 35-34 on Friday night to end the defending FCS champion Bobcats’ 19-game winning streak.",
           "status": "active",
           "sourceUrls": [
@@ -1013,9 +1013,9 @@
           "headline": "Vanderbilt quarterback Jared Curtis, a onetime Georgia commit, will attempt to play vs. the No. 2 Bulldogs, who could get star running back Nate Frazier back for Saturday's matchup, sources told ESPN.",
           "text": "Vanderbilt quarterback Jared Curtis, a onetime Georgia commit, will attempt to play vs. the No. 2 Bulldogs, who could get star running back Nate Frazier back for Saturday's matchup, sources told ESPN.",
           "entities": [],
-          "occurredAt": "2026-10-03T13:54:50Z",
+          "occurredAt": "2026-10-03T14:21:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.15,
           "freshnessBasis": "Vanderbilt quarterback Jared Curtis, a onetime Georgia commit, will attempt to play vs. the No. 2 Bulldogs, who could get star running back Nate Frazier back for Saturday's matchup, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -1044,7 +1044,7 @@
           "entities": [],
           "occurredAt": "2026-10-03T13:42:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.82,
           "freshnessBasis": "As a message to starting quarterback LaNorris Sellers to play better, South Carolina backup Cutter Woods received an uptick in first-team snaps this week, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -1084,7 +1084,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 96,
+    "freshCandidateCount": 94,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
