@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-05T04:31:35Z",
+  "generatedAt": "2026-10-05T12:01:41Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "f4a4c1357eca201895863e646602fa21e050e8dbbc3390412f326347d6db00ff",
+  "sourceCandidateHash": "2b0d1ceaf510df3e94489135b69daddcf12514c5fbaa39865e752b3f59486138",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,64 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-f5d17d0536a1e02c"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "In the era of the long ball, the Rays want to win with something a little closer to home.",
+          "text": "In the era of the long ball, the Rays want to win with something a little closer to home.",
+          "entities": [],
+          "occurredAt": "2026-10-05T11:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 0.86,
+          "freshnessBasis": "In the era of the long ball, the Rays want to win with something a little closer to home.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50104564/mlb-playoffs-2026-tampa-bay-rays-bunt"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50104564/mlb-playoffs-2026-tampa-bay-rays-bunt"
+            }
+          ],
+          "id": "a415-e65143e26bd0967b",
+          "feedRank": 1,
+          "compactHeadline": "MLB playoffs 2026: The Tampa Bay Rays can beat you with a bunt"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c384f83bf470ebdf"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
+          "text": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
+          "entities": [],
+          "occurredAt": "2026-10-05T11:07:00Z",
+          "timePrecision": "exact",
+          "ageHours": 0.91,
+          "freshnessBasis": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50103985/mlb-2026-playoffs-ranking-home-field-advantage-yankees-padres-rays-dodgers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50103985/mlb-2026-playoffs-ranking-home-field-advantage-yankees-padres-rays-dodgers"
+            }
+          ],
+          "id": "a415-eb5bd288e30bb9ea",
+          "feedRank": 2,
+          "compactHeadline": "MLB 2026 playoffs: Ranking home-field advantage for every team"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -23,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T03:24:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.12,
+          "ageHours": 8.62,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +95,40 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 2,
+          "rank": 4,
+          "candidateIds": [
+            "cand-3651a3887c04b5d3"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Michael Harris II tripled and scored the go-ahead run on reliever Kris Bubic's wild pitch in the fifth inning, and the Braves beat the Dodgers 3-2 on Sunday night.",
+          "text": "Michael Harris II tripled and scored the go-ahead run on reliever Kris Bubic's wild pitch in the fifth inning, and the Braves beat the Dodgers 3-2 on Sunday night.",
+          "entities": [],
+          "occurredAt": "2026-10-05T06:06:54Z",
+          "timePrecision": "exact",
+          "ageHours": 5.91,
+          "freshnessBasis": "Michael Harris II tripled and scored the go-ahead run on reliever Kris Bubic's wild pitch in the fifth inning, and the Braves beat the Dodgers 3-2 on Sunday night.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50107240/michael-harris-ii-leads-braves-3-2-win-dodgers-game-2-tie-nlds"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50107240/michael-harris-ii-leads-braves-3-2-win-dodgers-game-2-tie-nlds"
+            }
+          ],
+          "id": "a415-30bf8e73b4cb8150",
+          "feedRank": 4,
+          "compactHeadline": "Braves lean on Kerr, Fuentes in lieu of Sale, win NLDS Game 2"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-50d752c340598ee4"
           ],
@@ -50,33 +137,27 @@
           "headline": "Michael Harris II tripled and scored the go-ahead run on reliever Kris Bubic's wild pitch in the fifth inning, and the Atlanta Braves beat the Los Angeles Dodgers 3-2 on Sunday night to even the National League Division Series at a game apiece.",
           "text": "Michael Harris II tripled and scored the go-ahead run on reliever Kris Bubic's wild pitch in the fifth inning, and the Atlanta Braves beat the Los Angeles Dodgers 3-2 on Sunday night to even the National League Division Series at a game apiece.",
           "entities": [],
-          "occurredAt": "2026-10-05T04:21:38Z",
+          "occurredAt": "2026-10-05T05:12:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 6.82,
           "freshnessBasis": "— Michael Harris II tripled and scored the go-ahead run on reliever Kris Bubic's wild pitch in the fifth inning, and the Atlanta Braves beat the Los Angeles Dodgers 3-2 on Sunday night to even the National League Division Series at a game apiece.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908014",
-            "https://www.espn.com/mlb/story/_/id/50107240/michael-harris-ii-leads-braves-3-2-win-dodgers-game-2-tie-nlds"
+            "http://www.espn.com/mlb/recap?gameId=401908014"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401908014"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50107240/michael-harris-ii-leads-braves-3-2-win-dodgers-game-2-tie-nlds"
             }
           ],
           "id": "a415-d33a7634976ff5ba",
-          "feedRank": 2,
+          "feedRank": 5,
           "compactHeadline": "Michael Harris II leads Braves to 3-2 win over Dodgers in Game 2 to tie NLDS"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-ab23451a45763e1d"
           ],
@@ -87,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T02:31:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.0,
+          "ageHours": 9.5,
           "freshnessBasis": "Jackson Chourio hit a two-run single off Padres closer Mason Miller with two outs in the ninth inning as the Brewers rallied past the Padres for a 2-0 NLDS lead.",
           "status": "active",
           "sourceUrls": [
@@ -101,95 +182,8 @@
             }
           ],
           "id": "a415-c4fcb2d5d53283a7",
-          "feedRank": 3,
-          "compactHeadline": "Jackson Chourio walk-off single lifts Brewers to 2-0 NLDS edge"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-3b3efa95d6478a93"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "The Brew Crew dominated the regular season. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
-          "text": "The Brew Crew dominated the regular season. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
-          "entities": [],
-          "occurredAt": "2026-10-04T11:18:09Z",
-          "timePrecision": "exact",
-          "ageHours": 17.22,
-          "freshnessBasis": "The Brew Crew dominated the regular season. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50093592/mlb-2026-playoffs-milwaukee-brewers-postseason-different"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50093592/mlb-2026-playoffs-milwaukee-brewers-postseason-different"
-            }
-          ],
-          "id": "a415-5daaae96deb6d060",
-          "feedRank": 4,
-          "compactHeadline": "MLB playoffs 2026: Is this the Milwaukee Brewers' year?"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-82e566c6c20d16a4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "William Contreras hit a tiebreaking homer in the seventh inning and the Milwaukee Brewers hung on to beat San Diego 3-2 in their NL Division Series opener Saturday night after a potential...",
-          "text": "William Contreras hit a tiebreaking homer in the seventh inning and the Milwaukee Brewers hung on to beat San Diego 3-2 in their NL Division Series opener Saturday night after a potential...",
-          "entities": [],
-          "occurredAt": "2026-10-04T12:19:11Z",
-          "timePrecision": "exact",
-          "ageHours": 16.21,
-          "freshnessBasis": "— William Contreras hit a tiebreaking homer in the seventh inning and the Milwaukee Brewers hung on to beat San Diego 3-2 in their NL Division Series opener Saturday night after a potential...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908002"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908002"
-            }
-          ],
-          "id": "a415-4b391ddea1eaee40",
-          "feedRank": 5,
-          "compactHeadline": "Brewers edge Padres 3-2 in NLDS opener that features bizarre play in 9th inning"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-0812677ad6ed3576"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Drew Rasmussen walked into the interview room while manager Kevin Cash was showering him with praise.",
-          "text": "Drew Rasmussen walked into the interview room while manager Kevin Cash was showering him with praise.",
-          "entities": [],
-          "occurredAt": "2026-10-04T12:18:08Z",
-          "timePrecision": "exact",
-          "ageHours": 16.22,
-          "freshnessBasis": "— Drew Rasmussen walked into the interview room while manager Kevin Cash was showering him with praise.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401907985"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907985"
-            }
-          ],
-          "id": "a415-41109cf32b924866",
           "feedRank": 6,
-          "compactHeadline": "Rasmussen has no-hit bid for 7 2/3 innings, Rays open AL Division Series with a 1-0 win over Yanks"
+          "compactHeadline": "Jackson Chourio walk-off single lifts Brewers to 2-0 NLDS edge"
         }
       ]
     },
@@ -207,9 +201,9 @@
           "headline": "Macdonald laments 'unacceptable' penalties in Seahawks' win",
           "text": "Macdonald laments 'unacceptable' penalties in Seahawks' win",
           "entities": [],
-          "occurredAt": "2026-10-05T04:14:10Z",
+          "occurredAt": "2026-10-05T04:35:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.29,
+          "ageHours": 7.43,
           "freshnessBasis": "Thea Seahawks set a club record with 150 penalty yards in Sunday's win over the Chargers, something coach Mike Macdonald said his team would need to clean up.",
           "status": "active",
           "sourceUrls": [
@@ -229,17 +223,46 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-26b2d98ceeabaa04"
+            "cand-567c8c6934c8012e"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
+          "text": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
+          "entities": [],
+          "occurredAt": "2026-10-05T10:00:21Z",
+          "timePrecision": "exact",
+          "ageHours": 2.02,
+          "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49745176/2026-nfl-playoff-predictions-afc-nfc-odds-super-bowl"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49745176/2026-nfl-playoff-predictions-afc-nfc-odds-super-bowl"
+            }
+          ],
+          "id": "a415-ea96d46825e75c17",
+          "feedRank": 8,
+          "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances to make postseason"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-9c008571c9631669"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Kansas City Chiefs wide receiver Tyquan Thornton, injured in his team in Sunday's 30-27 victory over the Las Vegas Raiders on Sunday afternoon, suffered a dislocated ankle that was put back into place by doctors, sources told NFL Network's Ian Rapoport.",
-          "text": "Kansas City Chiefs wide receiver Tyquan Thornton, injured in his team in Sunday's 30-27 victory over the Las Vegas Raiders on Sunday afternoon, suffered a dislocated ankle that was put back into place by doctors, sources told NFL Network's Ian Rapoport.",
+          "headline": "Kansas City Chiefs wide receiver Tyquan Thornton, injured in Sunday's 30-27 victory over the Las Vegas Raiders, suffered a dislocated ankle that was put back into place by doctors, sources told NFL Network's Ian Rapoport.",
+          "text": "Kansas City Chiefs wide receiver Tyquan Thornton, injured in Sunday's 30-27 victory over the Las Vegas Raiders, suffered a dislocated ankle that was put back into place by doctors, sources told NFL Network's Ian Rapoport.",
           "entities": [],
-          "occurredAt": "2026-10-05T04:24:47Z",
+          "occurredAt": "2026-10-05T06:34:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
-          "freshnessBasis": "Kansas City Chiefs wide receiver Tyquan Thornton, injured in his team in Sunday's 30-27 victory over the Las Vegas Raiders on Sunday afternoon, suffered a dislocated ankle that was put back into place by doctors, sources told NFL Network's Ian Rapoport.",
+          "ageHours": 5.45,
+          "freshnessBasis": "Kansas City Chiefs wide receiver Tyquan Thornton, injured in Sunday's 30-27 victory over the Las Vegas Raiders, suffered a dislocated ankle that was put back into place by doctors, sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50104571/chiefs-rule-rashee-rice-doubtful-return-injury"
@@ -251,38 +274,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/50104571/chiefs-rule-rashee-rice-doubtful-return-injury"
             }
           ],
-          "id": "a415-cf85dd4eb8b4af0f",
-          "feedRank": 8,
-          "compactHeadline": "Chiefs WR Thornton has dislocated ankle injury, sources say"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-725b4a0968a16078"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Broncos cornerback Pat Surtain II, whom defensive coordinator Vance Joseph has said is the starting point for the team's defensive plan each week, left Sunday's game against the 49ers with an ankle injury.",
-          "text": "Broncos cornerback Pat Surtain II, whom defensive coordinator Vance Joseph has said is the starting point for the team's defensive plan each week, left Sunday's game against the 49ers with an ankle injury.",
-          "entities": [],
-          "occurredAt": "2026-10-05T02:14:45Z",
-          "timePrecision": "exact",
-          "ageHours": 2.28,
-          "freshnessBasis": "Broncos cornerback Pat Surtain II, whom defensive coordinator Vance Joseph has said is the starting point for the team's defensive plan each week, left Sunday's game against the 49ers with an ankle injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50104528/pat-surtain-ii-leaves-game-49ers-lower-right-leg-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50104528/pat-surtain-ii-leaves-game-49ers-lower-right-leg-injury"
-            }
-          ],
-          "id": "a415-8166beb70cbd8990",
+          "id": "a415-12ada8e3f783c345",
           "feedRank": 9,
-          "compactHeadline": "Broncos' Pat Surtain II leaves game at 49ers with ankle injury"
+          "compactHeadline": "Chiefs WR Thornton has dislocated ankle, sources say"
         },
         {
           "rank": 4,
@@ -296,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T02:14:22Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 9.79,
           "freshnessBasis": "For the fourth straight week, the 49ers clawed out a victory but were unable to come out of the game against the Broncos without injury concerns.",
           "status": "active",
           "sourceUrls": [
@@ -316,31 +310,31 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-bbedb8915549608a"
+            "cand-aa9940ab51eceb2f"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "In Puka Nacua's first game back from a hip injury, Matthew Stafford said he thought the Rams' wide receiver looked like himself on the field.",
-          "text": "In Puka Nacua's first game back from a hip injury, Matthew Stafford said he thought the Rams' wide receiver looked like himself on the field.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Carolina receiver Tetairoa McMillan was dominant in his team's 32-36 win over Detroit Lions Sunday night, catching 14 passes for 192 yards and two touchdowns from teammate Bryce Young, who threw for 329 yards to help the Panthers even their record at 2-2.",
+          "text": "Carolina receiver Tetairoa McMillan was dominant in his team's 32-36 win over Detroit Lions Sunday night, catching 14 passes for 192 yards and two touchdowns from teammate Bryce Young, who threw for 329 yards to help the Panthers even their record at 2-2.",
           "entities": [],
-          "occurredAt": "2026-10-05T00:37:22Z",
+          "occurredAt": "2026-10-05T06:30:45Z",
           "timePrecision": "exact",
-          "ageHours": 3.9,
-          "freshnessBasis": "In Puka Nacua's first game back from a hip injury, Matthew Stafford said he thought the Rams' wide receiver looked like himself on the field.",
+          "ageHours": 5.52,
+          "freshnessBasis": "Carolina receiver Tetairoa McMillan was dominant in his team's 32-36 win over Detroit Lions Sunday night, catching 14 passes for 192 yards and two touchdowns from teammate Bryce Young, who threw for 329 yards to help the Panthers even their record at 2-2.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50104477/matthew-stafford-says-nacua-played-puka-return-rams"
+            "https://www.espn.com/nfl/story/_/id/50107710/tetairoa-mcmillan-bryce-young-star-panthers-defeat-lions"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50104477/matthew-stafford-says-nacua-played-puka-return-rams"
+              "url": "https://www.espn.com/nfl/story/_/id/50107710/tetairoa-mcmillan-bryce-young-star-panthers-defeat-lions"
             }
           ],
-          "id": "a415-1970c9ef2c91e471",
+          "id": "a415-b963fe81f426e173",
           "feedRank": 11,
-          "compactHeadline": "Matthew Stafford says Nacua 'played like Puka' in return for Rams"
+          "compactHeadline": "Tetairoa McMillan, Bryce Young star as Panthers defeat Lions"
         },
         {
           "rank": 6,
@@ -354,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T01:54:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.62,
+          "ageHours": 10.12,
           "freshnessBasis": "— Patrick Mahomes said he loves playing in Allegiant Stadium, and it's no wonder, given his perfect record in one of the NFL's newer venues.",
           "status": "active",
           "sourceUrls": [
@@ -380,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-00091df77097e5f1"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
+          "text": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
+          "entities": [],
+          "occurredAt": "2026-10-05T10:47:38Z",
+          "timePrecision": "exact",
+          "ageHours": 1.23,
+          "freshnessBasis": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50104877/lebron-james-philadelphia-76ers-training-camp"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50104877/lebron-james-philadelphia-76ers-training-camp"
+            }
+          ],
+          "id": "a415-6aa0a4a0dca9bc0b",
+          "feedRank": 13,
+          "compactHeadline": "Behind the scenes inside LeBron's first 76ers training camp"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-a8478c9945165a75"
           ],
           "type": "NEWS",
@@ -389,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T00:23:59Z",
           "timePrecision": "exact",
-          "ageHours": 4.13,
+          "ageHours": 11.63,
           "freshnessBasis": "Despite a prolonged negotiation that appeared to turn sour at times, Jalen Duren said he is relieved and excited to return to Detroit.",
           "status": "active",
           "sourceUrls": [
@@ -403,11 +426,11 @@
             }
           ],
           "id": "a415-8cc2d2f0e5e43377",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Pistons' Jalen Duren happy to return despite prolonged talks"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-ccad28abad64a046"
           ],
@@ -418,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T23:44:44Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 12.28,
           "freshnessBasis": "Spurs free agent acquisition Tobias Harris sustained a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
           "status": "active",
           "sourceUrls": [
@@ -432,11 +455,11 @@
             }
           ],
           "id": "a415-2bcd52baa23f2413",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Spurs' Tobias Harris to miss preseason with left calf strain"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-86626c77c7661c72"
           ],
@@ -463,35 +486,6 @@
           "id": "a415-4653dd14118cb53f",
           "feedRank": 13,
           "compactHeadline": "Golden State Valkyries Women beat Las Vegas Aces Women 71-60"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2f9637fdeb649890"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: New York Liberty Women 82, Atlanta Dream Women 92.",
-          "text": "Highlightly final: New York Liberty Women 82, Atlanta Dream Women 92.",
-          "entities": [],
-          "occurredAt": "2026-10-04T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 7.03,
-          "freshnessBasis": "Highlightly final: New York Liberty Women 82, Atlanta Dream Women 92.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-ca0ff8b573bf0984",
-          "feedRank": 14,
-          "compactHeadline": "Atlanta Dream Women beat New York Liberty Women 92-82"
         }
       ]
     },
@@ -502,6 +496,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-41bd6f4fdbf503ef"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
+          "text": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
+          "entities": [],
+          "occurredAt": "2026-10-05T08:11:47Z",
+          "timePrecision": "exact",
+          "ageHours": 3.83,
+          "freshnessBasis": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401891779"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401891779"
+            }
+          ],
+          "id": "a415-7ceabe594792ea74",
+          "feedRank": 16,
+          "compactHeadline": "Blackhawks bring losing streak into game against the Blues"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-988e7ecc4a5bd250"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "New York Islanders (1-1, in the Metropolitan Division) vs. New York Rangers (3-1, in the Metropolitan Division)",
+          "text": "New York Islanders (1-1, in the Metropolitan Division) vs. New York Rangers (3-1, in the Metropolitan Division)",
+          "entities": [],
+          "occurredAt": "2026-10-05T08:11:40Z",
+          "timePrecision": "exact",
+          "ageHours": 3.83,
+          "freshnessBasis": "New York Islanders (1-1, in the Metropolitan Division) vs. New York Rangers (3-1, in the Metropolitan Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892452"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892452"
+            }
+          ],
+          "id": "a415-46790b3bee91f2cc",
+          "feedRank": 17,
+          "compactHeadline": "Rangers look to keep win streak alive, host the Islanders"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-64dcf320f1572a90"
           ],
           "type": "INJURY",
@@ -509,9 +561,9 @@
           "headline": "Florida Panthers forward Brad Marchand, out since March 6, made his season debut Sunday night against the Anaheim Ducks following an offseason that included surgery for the 38-year-old left wing, who scored 27 goals last season.",
           "text": "Florida Panthers forward Brad Marchand, out since March 6, made his season debut Sunday night against the Anaheim Ducks following an offseason that included surgery for the 38-year-old left wing, who scored 27 goals last season.",
           "entities": [],
-          "occurredAt": "2026-10-05T03:57:12Z",
+          "occurredAt": "2026-10-05T05:36:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
+          "ageHours": 6.41,
           "freshnessBasis": "Florida Panthers forward Brad Marchand, out since March 6, made his season debut Sunday night against the Anaheim Ducks following an offseason that included surgery for the 38-year-old left wing, who scored 27 goals last season.",
           "status": "active",
           "sourceUrls": [
@@ -525,11 +577,11 @@
             }
           ],
           "id": "a415-c3ef1b5566bfc170",
-          "feedRank": 15,
+          "feedRank": 18,
           "compactHeadline": "Marchand, out since March 6, scores in return to Panthers"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-c3b648180912643b"
           ],
@@ -540,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T04:01:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.5,
+          "ageHours": 8.0,
           "freshnessBasis": "— Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -554,11 +606,11 @@
             }
           ],
           "id": "a415-a13eaf991cd7c526",
-          "feedRank": 16,
+          "feedRank": 19,
           "compactHeadline": "Golden Knights beat the Canucks 3-2 on Gatcomb’s go-ahead goal"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-4cb43aebc45b517f"
           ],
@@ -569,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T03:13:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.3,
+          "ageHours": 8.8,
           "freshnessBasis": "— Berkly Catton, Mackie Samoskevich and Bobby McMann scored within the first eight minutes of the game and the Seattle Kraken cruised to a 6-1 win over the Calgary Flames on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -583,11 +635,11 @@
             }
           ],
           "id": "a415-7eace270c4924d57",
-          "feedRank": 17,
+          "feedRank": 20,
           "compactHeadline": "Samoskevich scores twice and Kraken beat Flames 6-1 in home opener as Calgary stays winless"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-08317d2a03ef2326"
           ],
@@ -598,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T03:09:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.37,
+          "ageHours": 8.87,
           "freshnessBasis": "— Cutter Gauthier scored two power-play goals and captain Mikael Granlund had a power-play goal 4:14 into overtime, sending the Anaheim Ducks to a 3-2 victory over the Florida Panthers on Sunday night...",
           "status": "active",
           "sourceUrls": [
@@ -612,66 +664,8 @@
             }
           ],
           "id": "a415-ac8123d4c7305073",
-          "feedRank": 18,
+          "feedRank": 21,
           "compactHeadline": "Mikael Granlund scores in OT, Cutter Gauthier gets 2 goals in Ducks' 3-2 win over Panthers"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-9cee58ddcef745a1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Igor Shesterkin made 28 saves and had an assist on Eeli Tolvanen's empty-net goal with 1:15 remaining and the New York Rangers beat the Utah Mammoth 4-2 on Sunday night.",
-          "text": "Igor Shesterkin made 28 saves and had an assist on Eeli Tolvanen's empty-net goal with 1:15 remaining and the New York Rangers beat the Utah Mammoth 4-2 on Sunday night.",
-          "entities": [],
-          "occurredAt": "2026-10-05T00:50:38Z",
-          "timePrecision": "exact",
-          "ageHours": 3.68,
-          "freshnessBasis": "— Igor Shesterkin made 28 saves and had an assist on Eeli Tolvanen's empty-net goal with 1:15 remaining and the New York Rangers beat the Utah Mammoth 4-2 on Sunday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892443"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892443"
-            }
-          ],
-          "id": "a415-698700608ffae98d",
-          "feedRank": 19,
-          "compactHeadline": "Shesterkin makes 28 saves and has an assist as Rangers beat Mammoth 4-2 for 3rd straight win"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f908af6921ec1f28"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Kyle Connor scored two of Winnipeg's three power-play goals and added an assist on the third as the Jets held off the Detroit Red Wings 3-2 on Sunday.",
-          "text": "Kyle Connor scored two of Winnipeg's three power-play goals and added an assist on the third as the Jets held off the Detroit Red Wings 3-2 on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-10-04T19:52:31Z",
-          "timePrecision": "exact",
-          "ageHours": 8.65,
-          "freshnessBasis": "— Kyle Connor scored two of Winnipeg's three power-play goals and added an assist on the third as the Jets held off the Detroit Red Wings 3-2 on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892442"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892442"
-            }
-          ],
-          "id": "a415-879d84bbe6e7cfd5",
-          "feedRank": 20,
-          "compactHeadline": "Kyle Connor scores a pair of power-play goals as Jets squeak past Red Wings 3-2"
         }
       ]
     },
@@ -689,9 +683,9 @@
           "headline": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "text": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "entities": [],
-          "occurredAt": "2026-10-04T06:22:36Z",
+          "occurredAt": "2026-10-05T10:51:50Z",
           "timePrecision": "exact",
-          "ageHours": 22.15,
+          "ageHours": 1.16,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -705,11 +699,40 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-53055ef9abe49191"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "If Manchester City are punished by being relegated from the Premier League, then more than £1 billion worth of players would suddenly become available for transfer.",
+          "text": "If Manchester City are punished by being relegated from the Premier League, then more than £1 billion worth of players would suddenly become available for transfer.",
+          "entities": [],
+          "occurredAt": "2026-10-05T11:06:31Z",
+          "timePrecision": "exact",
+          "ageHours": 0.92,
+          "freshnessBasis": "If Manchester City are punished by being relegated from the Premier League, then more than £1 billion worth of players would suddenly become available for transfer.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50108326/how-mass-manchester-city-player-exodus-warp-transfer-market"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50108326/how-mass-manchester-city-player-exodus-warp-transfer-market"
+            }
+          ],
+          "id": "a415-8379c5dbf42e8047",
+          "feedRank": 23,
+          "compactHeadline": "How a mass Man City player exodus would warp the transfer market"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-3b134bba1d01d9ec"
           ],
@@ -720,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T18:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 10.29,
+          "ageHours": 17.79,
           "freshnessBasis": "Arsenal, Real Madrid and Bayern Munich are all chasing Juventus winger Kenan Yildiz. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -734,7 +757,7 @@
             }
           ],
           "id": "a415-7a7d2762bce2850a",
-          "feedRank": 22,
+          "feedRank": 24,
           "compactHeadline": "Transfer rumors, news: Arsenal among clubs chasing winger Yildiz"
         }
       ]
@@ -742,37 +765,7 @@
     {
       "league": "MLS",
       "seasonState": "active",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-963f7d82e3c446cd"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "USMNT coach Mauricio Pochettino said that the number of players performing at a high level is \"a fantastic problem to have\" after teenagers Cavan Sullivan and Julian Hall propelled the USMNT to 3-0 win over rivals Mexico on Saturday.",
-          "text": "USMNT coach Mauricio Pochettino said that the number of players performing at a high level is \"a fantastic problem to have\" after teenagers Cavan Sullivan and Julian Hall propelled the USMNT to 3-0 win over rivals Mexico on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-10-04T06:37:31Z",
-          "timePrecision": "exact",
-          "ageHours": 21.9,
-          "freshnessBasis": "USMNT coach Mauricio Pochettino said that the number of players performing at a high level is \"a fantastic problem to have\" after teenagers Cavan Sullivan and Julian Hall propelled the USMNT to 3-0 win over rivals Mexico on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50097898/usa-mexico-mauricio-pochettino-julian-hall-cavan-sullivan"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50097898/usa-mexico-mauricio-pochettino-julian-hall-cavan-sullivan"
-            }
-          ],
-          "id": "a415-4c098683d3324f38",
-          "feedRank": 23,
-          "compactHeadline": "USMNT's young stars shine to give Pochettino 'fantastic problem'"
-        }
-      ]
+      "items": []
     },
     {
       "league": "NCAAF",
@@ -780,6 +773,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-47084bc503ad8408"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Following dominant victories and a few close calls, here are our postseason projections following Week 5.",
+          "text": "Following dominant victories and a few close calls, here are our postseason projections following Week 5.",
+          "entities": [],
+          "occurredAt": "2026-10-05T11:50:18Z",
+          "timePrecision": "exact",
+          "ageHours": 0.19,
+          "freshnessBasis": "Following dominant victories and a few close calls, here are our postseason projections following Week 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50102185/2026-27-week-5-college-football-playoff-cfp-bowl-projections"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50102185/2026-27-week-5-college-football-playoff-cfp-bowl-projections"
+            }
+          ],
+          "id": "a415-de70b095313615a9",
+          "feedRank": 25,
+          "compactHeadline": "2026-27 Week 5 College Football Playoff, bowl projections"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-da857dd13ec8d381"
           ],
@@ -790,7 +812,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T21:18:18Z",
           "timePrecision": "exact",
-          "ageHours": 7.22,
+          "ageHours": 14.72,
           "freshnessBasis": "While Alabama muddied the SEC waters, the ACC picture got clearer -- or did it?",
           "status": "active",
           "sourceUrls": [
@@ -804,11 +826,11 @@
             }
           ],
           "id": "a415-693964dc1744f499",
-          "feedRank": 24,
+          "feedRank": 26,
           "compactHeadline": "Connelly: Week 5 brought clarity, confusion to conference races"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-43f8fa630e56b065"
           ],
@@ -819,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T19:47:24Z",
           "timePrecision": "exact",
-          "ageHours": 8.74,
+          "ageHours": 16.24,
           "freshnessBasis": "Oklahoma (2-2) vs. No. 1 Texas (4-0), Oct. 10 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -833,11 +855,11 @@
             }
           ],
           "id": "a415-3372b8263c52bc1d",
-          "feedRank": 25,
+          "feedRank": 27,
           "compactHeadline": "No. 1 Texas plays Oklahoma in Dallas, Texas"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-ba25ab6e1a386e84"
           ],
@@ -848,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T19:47:20Z",
           "timePrecision": "exact",
-          "ageHours": 8.74,
+          "ageHours": 16.24,
           "freshnessBasis": "No. 20 Iowa (4-1) at Washington (3-2), Oct. 9 at 9 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -862,11 +884,11 @@
             }
           ],
           "id": "a415-6d8026aa962edd8d",
-          "feedRank": 26,
+          "feedRank": 28,
           "compactHeadline": "Washington and No. 20 Iowa meet in Big Ten play"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-6c7cc445a3f9a431"
           ],
@@ -877,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T19:47:17Z",
           "timePrecision": "exact",
-          "ageHours": 8.74,
+          "ageHours": 16.24,
           "freshnessBasis": "Ball State (1-4) at Northwestern (3-1), Oct. 10 at 12:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -891,11 +913,11 @@
             }
           ],
           "id": "a415-ddc131209106f795",
-          "feedRank": 27,
+          "feedRank": 29,
           "compactHeadline": "Northwestern hosts Ball State"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-7e6031233f8b1ae8"
           ],
@@ -906,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T19:47:13Z",
           "timePrecision": "exact",
-          "ageHours": 8.74,
+          "ageHours": 16.24,
           "freshnessBasis": "Southern Miss (1-3) at Troy (2-2), Oct. 6 at 8 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -920,37 +942,8 @@
             }
           ],
           "id": "a415-f86cb2bdd974e0f0",
-          "feedRank": 28,
+          "feedRank": 30,
           "compactHeadline": "Southern Miss visits Troy in Sun Belt matchup"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-740eb57d5c8f07fb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Eastern Michigan (3-3) at Akron (1-4), Oct. 10 at 3:30 p.m. EDT.",
-          "text": "Eastern Michigan (3-3) at Akron (1-4), Oct. 10 at 3:30 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-04T19:47:09Z",
-          "timePrecision": "exact",
-          "ageHours": 8.74,
-          "freshnessBasis": "Eastern Michigan (3-3) at Akron (1-4), Oct. 10 at 3:30 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401866435"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401866435"
-            }
-          ],
-          "id": "a415-cfbe46373dde41af",
-          "feedRank": 29,
-          "compactHeadline": "Eastern Michigan visits Akron in MAC play"
         }
       ]
     }
@@ -975,7 +968,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 120,
+    "freshCandidateCount": 128,
     "publishedItemCount": 31,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
