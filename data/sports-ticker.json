@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-04T23:31:14Z",
+  "generatedAt": "2026-10-05T00:01:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "08ad19b04ebd3b578b750e867d9658d4d213d9ffe8770f6f75bedcfb528359cd",
+  "sourceCandidateHash": "6fcfbb026b24333dc2d5304b66fa0c88a661a8586d94e5128d5c7baf89c59fba",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,47 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-27c9e791810951ad"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Jackson Chourio delivered the walk-off in the bottom of the 9th inning.",
+          "text": "Jackson Chourio delivered the walk-off in the bottom of the 9th inning.",
+          "entities": [],
+          "occurredAt": "2026-10-04T20:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.03,
+          "freshnessBasis": "Highlightly final: San Diego Padres 3, Milwaukee Brewers 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50105344/jackson-chourio-walk-single-lifts-brewers-2-0-nlds-edge",
+            "http://www.espn.com/mlb/recap?gameId=401908002"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50105344/jackson-chourio-walk-single-lifts-brewers-2-0-nlds-edge"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908002"
+            }
+          ],
+          "id": "a415-5aba3cec0b847c6a",
+          "feedRank": 1,
+          "compactHeadline": "Jackson Chourio delivers walk-off as Milwaukee Brewers beat San Diego Padres 4-3"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -23,7 +64,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T23:24:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.63,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +78,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-3b3efa95d6478a93"
           ],
@@ -52,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T11:18:09Z",
           "timePrecision": "exact",
-          "ageHours": 12.22,
+          "ageHours": 12.73,
           "freshnessBasis": "The Brew Crew dominated the regular season. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +107,8 @@
             }
           ],
           "id": "a415-5daaae96deb6d060",
-          "feedRank": 2,
-          "compactHeadline": "MLB playoffs 2026: Is this the Milwaukee Brewers' year?"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-82e566c6c20d16a4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "William Contreras hit a tiebreaking homer in the seventh inning and the Milwaukee Brewers hung on to beat San Diego 3-2 in their NL Division Series opener Saturday night after a potential...",
-          "text": "William Contreras hit a tiebreaking homer in the seventh inning and the Milwaukee Brewers hung on to beat San Diego 3-2 in their NL Division Series opener Saturday night after a potential...",
-          "entities": [],
-          "occurredAt": "2026-10-04T12:19:11Z",
-          "timePrecision": "exact",
-          "ageHours": 11.2,
-          "freshnessBasis": "— William Contreras hit a tiebreaking homer in the seventh inning and the Milwaukee Brewers hung on to beat San Diego 3-2 in their NL Division Series opener Saturday night after a potential...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908002"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908002"
-            }
-          ],
-          "id": "a415-4b391ddea1eaee40",
           "feedRank": 3,
-          "compactHeadline": "Brewers edge Padres 3-2 in NLDS opener that features bizarre play in 9th inning"
+          "compactHeadline": "MLB playoffs 2026: Is this the Milwaukee Brewers' year?"
         },
         {
           "rank": 4,
@@ -110,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T12:18:08Z",
           "timePrecision": "exact",
-          "ageHours": 11.22,
+          "ageHours": 11.73,
           "freshnessBasis": "— Drew Rasmussen walked into the interview room while manager Kevin Cash was showering him with praise.",
           "status": "active",
           "sourceUrls": [
@@ -137,9 +149,9 @@
           "headline": "Braves manager Walt Weiss has \"zero regrets\" about Chris Sale pitching out of the bullpen in the prior round, even though it kept him from starting Game 2 of the NLDS.",
           "text": "Braves manager Walt Weiss has \"zero regrets\" about Chris Sale pitching out of the bullpen in the prior round, even though it kept him from starting Game 2 of the NLDS.",
           "entities": [],
-          "occurredAt": "2026-10-04T23:11:17Z",
+          "occurredAt": "2026-10-04T23:36:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.43,
           "freshnessBasis": "Braves manager Walt Weiss has \"zero regrets\" about Chris Sale pitching out of the bullpen in the prior round, even though it kept him from starting Game 2 of the NLDS.",
           "status": "active",
           "sourceUrls": [
@@ -159,31 +171,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-06d2e657ddc38932"
+            "cand-820ece00421f735a"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Tarik Skubal allowed one run in six dominant innings, retiring 15 straight batters in one stretch, and the Dodgers beat the Braves 5-3 on Saturday in Game 1 of their NL Division Series.",
-          "text": "Tarik Skubal allowed one run in six dominant innings, retiring 15 straight batters in one stretch, and the Dodgers beat the Braves 5-3 on Saturday in Game 1 of their NL Division Series.",
+          "headline": "Highlightly final: San Diego Padres 2, Milwaukee Brewers 3.",
+          "text": "Highlightly final: San Diego Padres 2, Milwaukee Brewers 3.",
           "entities": [],
-          "occurredAt": "2026-10-04T02:51:33Z",
+          "occurredAt": "2026-10-04T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.66,
-          "freshnessBasis": "Tarik Skubal allowed one run in six dominant innings, retiring 15 straight batters in one stretch, and the Dodgers beat the Braves 5-3 on Saturday in Game 1 of their NL Division Series.",
+          "ageHours": 23.53,
+          "freshnessBasis": "Highlightly final: San Diego Padres 2, Milwaukee Brewers 3.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50094243/skubal-shuts-braves-bats-stakes-dodgers-1-0-nlds-lead"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50094243/skubal-shuts-braves-bats-stakes-dodgers-1-0-nlds-lead"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-03",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-25ed9245fb96f3ed",
+          "id": "a415-b9484903e5558c7d",
           "feedRank": 6,
-          "compactHeadline": "Skubal shuts down Braves' bats, stakes Dodgers to 1-0 NLDS lead"
+          "compactHeadline": "Milwaukee Brewers beat San Diego Padres 3-2"
         }
       ]
     },
@@ -194,176 +206,218 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a5cb0892da133430"
+            "cand-f15dfa621e371ca5"
           ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "The Jets snapped one of the most ignominious droughts in NFL history Sunday when Minkah Fitzpatrick intercepted a pass by Bears quarterback Tyson Bagent.",
-          "text": "The Jets snapped one of the most ignominious droughts in NFL history Sunday when Minkah Fitzpatrick intercepted a pass by Bears quarterback Tyson Bagent.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "After hauling in a 55-yard pass from quarterback Patrick Mahomes, Kansas City Chiefs wide receiver Tyquan Thornton suffered a gruesome-looking injury to his left leg during the fourth quarter of his team's 30-27 win over the Las Vegas Raiders on Sunday.",
+          "text": "After hauling in a 55-yard pass from quarterback Patrick Mahomes, Kansas City Chiefs wide receiver Tyquan Thornton suffered a gruesome-looking injury to his left leg during the fourth quarter of his team's 30-27 win over the Las Vegas Raiders on Sunday.",
           "entities": [],
-          "occurredAt": "2026-10-04T22:56:49Z",
+          "occurredAt": "2026-10-04T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
-          "freshnessBasis": "The Jets snapped one of the most ignominious droughts in NFL history Sunday when Minkah Fitzpatrick intercepted a pass by Bears quarterback Tyson Bagent.",
+          "ageHours": 3.62,
+          "freshnessBasis": "Highlightly final: Kansas City Chiefs 30, Las Vegas Raiders 27.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50101102/minkah-fitzpatrick-records-int-snapping-jets-record-drought"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50101102/minkah-fitzpatrick-records-int-snapping-jets-record-drought"
-            }
-          ],
-          "id": "a415-8abc60a38bb76761",
-          "feedRank": 7,
-          "compactHeadline": "Minkah Fitzpatrick records INT, snapping Jets' record drought"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-8d62a8e4174c4206"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Eagles running back Saquon Barkley has been ruled out of Sunday's game against the Rams with a hamstring injury.",
-          "text": "Eagles running back Saquon Barkley has been ruled out of Sunday's game against the Rams with a hamstring injury.",
-          "entities": [],
-          "occurredAt": "2026-10-04T23:29:01Z",
-          "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "Eagles running back Saquon Barkley has been ruled out of Sunday's game against the Rams with a hamstring injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50101243/eagles-rb-saquon-barkley-leaves-game-hamstring-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50101243/eagles-rb-saquon-barkley-leaves-game-hamstring-injury"
-            }
-          ],
-          "id": "a415-0314bad0ad4fc588",
-          "feedRank": 8,
-          "compactHeadline": "Eagles RB Saquon Barkley leaves loss with hamstring injury"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-725b4a0968a16078"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Broncos cornerback Pat Surtain II, the player defensive coordinator Vance Joseph has said is the starting point for the team's defensive plan each week, left Sunday's game against the 49ers with an ankle injury.",
-          "text": "Broncos cornerback Pat Surtain II, the player defensive coordinator Vance Joseph has said is the starting point for the team's defensive plan each week, left Sunday's game against the 49ers with an ankle injury.",
-          "entities": [],
-          "occurredAt": "2026-10-04T22:53:47Z",
-          "timePrecision": "exact",
-          "ageHours": 0.62,
-          "freshnessBasis": "Broncos cornerback Pat Surtain II, the player defensive coordinator Vance Joseph has said is the starting point for the team's defensive plan each week, left Sunday's game against the 49ers with an ankle injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50104528/pat-surtain-ii-leaves-game-49ers-lower-right-leg-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50104528/pat-surtain-ii-leaves-game-49ers-lower-right-leg-injury"
-            }
-          ],
-          "id": "a415-8166beb70cbd8990",
-          "feedRank": 9,
-          "compactHeadline": "Broncos' Pat Surtain II leaves game at 49ers with ankle injury"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-485c9858251d0333"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Kansas City Chiefs receiver Rashee Rice sustained a right hamstring injury in the first quarter of Sunday's game against the Las Vegas Raiders and was ruled doubtful to return after halftime.",
-          "text": "Kansas City Chiefs receiver Rashee Rice sustained a right hamstring injury in the first quarter of Sunday's game against the Las Vegas Raiders and was ruled doubtful to return after halftime.",
-          "entities": [],
-          "occurredAt": "2026-10-04T22:50:26Z",
-          "timePrecision": "exact",
-          "ageHours": 0.68,
-          "freshnessBasis": "Kansas City Chiefs receiver Rashee Rice sustained a right hamstring injury in the first quarter of Sunday's game against the Las Vegas Raiders and was ruled doubtful to return after halftime.",
-          "status": "active",
-          "sourceUrls": [
+            "https://highlightly.net",
             "https://www.espn.com/nfl/story/_/id/50104571/chiefs-rule-rashee-rice-doubtful-return-injury"
           ],
           "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-04",
+              "url": "https://highlightly.net"
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
               "url": "https://www.espn.com/nfl/story/_/id/50104571/chiefs-rule-rashee-rice-doubtful-return-injury"
             }
           ],
-          "id": "a415-cd4958e924a889a0",
+          "id": "a415-497e609a77b63118",
+          "feedRank": 7,
+          "compactHeadline": "WR Tyquan Thornton suffers leg injury in Chiefs' victory"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-04c78619e133a4d9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Baltimore Ravens could have used a quiet, boring victory as a heavy favorite at home.",
+          "text": "The Baltimore Ravens could have used a quiet, boring victory as a heavy favorite at home.",
+          "entities": [],
+          "occurredAt": "2026-10-04T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Tennessee Titans 18, Baltimore Ravens 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872973"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872973"
+            }
+          ],
+          "id": "a415-72bd4ea49d69aa4d",
+          "feedRank": 8,
+          "compactHeadline": "Ravens beat Titans 24-18 but lose Lamar Jackson to ankle injury. Henry scores against his old team"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-bb7d243494f6bd3b"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Sean McVay had seen enough of a Rams team mired in a funk. Los Angeles' coach huddled the entire offense around him as the clock ticked down toward the end of the third quarter and his team down by 10.",
+          "text": "Sean McVay had seen enough of a Rams team mired in a funk. Los Angeles' coach huddled the entire offense around him as the clock ticked down toward the end of the third quarter and his team down by 10.",
+          "entities": [],
+          "occurredAt": "2026-10-04T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Los Angeles Rams 24, Philadelphia Eagles 20.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872970"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872970"
+            }
+          ],
+          "id": "a415-b38a94c09e7857f3",
+          "feedRank": 9,
+          "compactHeadline": "Rams rally behind Stafford, Williams from 10 points down in 4th quarter to beat Eagles 24-20"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-83b9f8d7d274e924"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Jaguars didn't have a nightmare finish in Cincinnati for the second straight year.",
+          "text": "The Jaguars didn't have a nightmare finish in Cincinnati for the second straight year.",
+          "entities": [],
+          "occurredAt": "2026-10-04T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Jacksonville Jaguars 22, Cincinnati Bengals 17.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872969"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872969"
+            }
+          ],
+          "id": "a415-2b3b083483e07583",
           "feedRank": 10,
-          "compactHeadline": "Chiefs rule Rashee Rice doubtful to return after injury"
+          "compactHeadline": "Trevor Lawrence finally gets 1st win over Bengals as Jaguars hold on for 22-17 victory"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-bbedb8915549608a"
+            "cand-1fe7c58d3f9ff44b"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "In Puka Nacua's first game back from a hip injury, Matthew Stafford said he thought the Rams' wide receiver looked like himself on the field.",
-          "text": "In Puka Nacua's first game back from a hip injury, Matthew Stafford said he thought the Rams' wide receiver looked like himself on the field.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jameis Winston showed off the good, bad and ugly of his football career and it required another late defensive stand to get it done. It was far from a masterpiece, but the New York Giants will take it.",
+          "text": "Jameis Winston showed off the good, bad and ugly of his football career and it required another late defensive stand to get it done. It was far from a masterpiece, but the New York Giants will take it.",
           "entities": [],
-          "occurredAt": "2026-10-04T22:34:28Z",
+          "occurredAt": "2026-10-04T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.95,
-          "freshnessBasis": "In Puka Nacua's first game back from a hip injury, Matthew Stafford said he thought the Rams' wide receiver looked like himself on the field.",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Arizona Cardinals 24, New York Giants 36.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50104477/matthew-stafford-says-nacua-played-puka-return-rams"
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872966"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-04",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50104477/matthew-stafford-says-nacua-played-puka-return-rams"
+              "url": "http://www.espn.com/nfl/recap?gameId=401872966"
             }
           ],
-          "id": "a415-1970c9ef2c91e471",
+          "id": "a415-fe94663b45e38ba6",
           "feedRank": 11,
-          "compactHeadline": "Matthew Stafford says Nacua 'played like Puka' in return for Rams"
+          "compactHeadline": "Winston throws 3 TD passes and Banks' pick-6 seals Giants' 36-24 win over Cardinals"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-d151d7f767b4e5e5"
+            "cand-f8ecf0f82cccf2c1"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Lamar Jackson left the Ravens' game against the Titans on Sunday with an ankle injury.",
-          "text": "Lamar Jackson left the Ravens' game against the Titans on Sunday with an ankle injury.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Drake Maye snapped out of his early-season slide with a clutch performance as the New England Patriots upset the Buffalo Bills 29-26 at Highmark Stadium in a result that coach Mike Vrabel highlighted as critical for the defending AFC champions.",
+          "text": "Drake Maye snapped out of his early-season slide with a clutch performance as the New England Patriots upset the Buffalo Bills 29-26 at Highmark Stadium in a result that coach Mike Vrabel highlighted as critical for the defending AFC champions.",
           "entities": [],
-          "occurredAt": "2026-10-04T22:02:18Z",
+          "occurredAt": "2026-10-04T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.48,
-          "freshnessBasis": "Lamar Jackson left the Ravens' game against the Titans on Sunday with an ankle injury.",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: New England Patriots 29, Buffalo Bills 26.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50102378/ravens-qb-lamar-jackson-leaves-game-vs-titans-ankle-injury"
+            "https://highlightly.net",
+            "https://www.espn.com/nfl/story/_/id/50104577/drake-maye-rebounds-patriots-hand-bills-first-defeat",
+            "http://www.espn.com/nfl/recap?gameId=401872971"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-04",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50102378/ravens-qb-lamar-jackson-leaves-game-vs-titans-ankle-injury"
+              "url": "https://www.espn.com/nfl/story/_/id/50104577/drake-maye-rebounds-patriots-hand-bills-first-defeat"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872971"
             }
           ],
-          "id": "a415-234d161729b35b6d",
+          "id": "a415-c470e6db87727f37",
           "feedRank": 12,
-          "compactHeadline": "Lamar Jackson injures ankle during Ravens' win over Titans"
+          "compactHeadline": "Drake Maye rebounds as Patriots hand Bills first defeat"
         }
       ]
     },
@@ -374,17 +428,75 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-86626c77c7661c72"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Las Vegas Aces Women 60, Golden State Valkyries Women 71.",
+          "text": "Highlightly final: Las Vegas Aces Women 60, Golden State Valkyries Women 71.",
+          "entities": [],
+          "occurredAt": "2026-10-04T20:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.03,
+          "freshnessBasis": "Highlightly final: Las Vegas Aces Women 60, Golden State Valkyries Women 71.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-4653dd14118cb53f",
+          "feedRank": 13,
+          "compactHeadline": "Golden State Valkyries Women beat Las Vegas Aces Women 71-60"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-2f9637fdeb649890"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Liberty Women 82, Atlanta Dream Women 92.",
+          "text": "Highlightly final: New York Liberty Women 82, Atlanta Dream Women 92.",
+          "entities": [],
+          "occurredAt": "2026-10-04T18:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 6.03,
+          "freshnessBasis": "Highlightly final: New York Liberty Women 82, Atlanta Dream Women 92.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-ca0ff8b573bf0984",
+          "feedRank": 14,
+          "compactHeadline": "Atlanta Dream Women beat New York Liberty Women 92-82"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-ccad28abad64a046"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Spurs free-agent acquisition Tobias Harris suffered a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
-          "text": "Spurs free-agent acquisition Tobias Harris suffered a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
+          "headline": "Spurs free agent acquisition Tobias Harris sustained a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
+          "text": "Spurs free agent acquisition Tobias Harris sustained a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
           "entities": [],
-          "occurredAt": "2026-10-04T22:47:46Z",
+          "occurredAt": "2026-10-04T23:44:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.72,
-          "freshnessBasis": "Spurs free-agent acquisition Tobias Harris suffered a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
+          "ageHours": 0.29,
+          "freshnessBasis": "Spurs free agent acquisition Tobias Harris sustained a calf strain during camp that has him questionable for the team's Oct. 20 season opener vs. OKC.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50104825/spurs-tobias-harris-miss-preseason-left-calf-strain"
@@ -397,11 +509,11 @@
             }
           ],
           "id": "a415-2bcd52baa23f2413",
-          "feedRank": 13,
+          "feedRank": 15,
           "compactHeadline": "Spurs' Tobias Harris to miss preseason with left calf strain"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-a8478c9945165a75"
           ],
@@ -412,7 +524,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T22:33:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.95,
+          "ageHours": 1.47,
           "freshnessBasis": "Despite a prolonged negotiation that appeared to turn sour at times, Jalen Duren said he is relieved and excited to return to Detroit.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +538,11 @@
             }
           ],
           "id": "a415-8cc2d2f0e5e43377",
-          "feedRank": 14,
+          "feedRank": 16,
           "compactHeadline": "Pistons' Jalen Duren happy to return despite prolonged talks"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-5e8d1a4b26a47031"
           ],
@@ -441,7 +553,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T00:40:19Z",
           "timePrecision": "exact",
-          "ageHours": 22.85,
+          "ageHours": 23.36,
           "freshnessBasis": "The singer complemented the proposal during his second of five Inglewood shows.",
           "status": "active",
           "sourceUrls": [
@@ -455,7 +567,7 @@
             }
           ],
           "id": "a415-8606b7083d07afbd",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Lakers' Ziaire Williams proposes to longtime girlfriend at Bruno Mars tour"
         }
       ]
@@ -467,6 +579,134 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-48929ad0232a5bdc"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Igor Chernyshov scored his second goal of the game with 1:42 remaining in overtime and the San Jose Sharks beat the Los Angeles Kings 5-4 on Saturday night for their second straight win to open the season.",
+          "text": "Igor Chernyshov scored his second goal of the game with 1:42 remaining in overtime and the San Jose Sharks beat the Los Angeles Kings 5-4 on Saturday night for their second straight win to open the season.",
+          "entities": [],
+          "occurredAt": "2026-10-04T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: Los Angeles Kings 4, San Jose Sharks 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892441"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-03",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892441"
+            }
+          ],
+          "id": "a415-cb45e2eb9db56cbb",
+          "feedRank": 18,
+          "compactHeadline": "Chernyshov's 2nd goal of the game gives the Sharks a 5-4 overtime win over the Kings"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a51dfdcaa007598e"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Nicolas Roy and Martin Necas scored 23 seconds apart in a four-goal second period, and the Colorado Avalanche beat the St. Louis Blues 6-1 on Saturday night.",
+          "text": "Nicolas Roy and Martin Necas scored 23 seconds apart in a four-goal second period, and the Colorado Avalanche beat the St. Louis Blues 6-1 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-10-04T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.03,
+          "freshnessBasis": "Highlightly final: St. Louis Blues 1, Colorado Avalanche 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892439"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-03",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892439"
+            }
+          ],
+          "id": "a415-ff455f36bfb41d79",
+          "feedRank": 19,
+          "compactHeadline": "Necas and Roy score quick goals as the Avalanche rout the Blues 6-1"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-f8d80b809519551d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Winnipeg Jets 3, Detroit Red Wings 2.",
+          "text": "Highlightly final: Winnipeg Jets 3, Detroit Red Wings 2.",
+          "entities": [],
+          "occurredAt": "2026-10-04T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Winnipeg Jets 3, Detroit Red Wings 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-6875387917b7367f",
+          "feedRank": 20,
+          "compactHeadline": "Winnipeg Jets beat Detroit Red Wings 3-2"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-2f53bf06ffeb92d4"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Calgary Flames 1, Vancouver Canucks 4.",
+          "text": "Highlightly final: Calgary Flames 1, Vancouver Canucks 4.",
+          "entities": [],
+          "occurredAt": "2026-10-04T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: Calgary Flames 1, Vancouver Canucks 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-12644feaa8bfa106",
+          "feedRank": 21,
+          "compactHeadline": "Vancouver Canucks beat Calgary Flames 4-1"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-f908af6921ec1f28"
           ],
           "type": "NEWS",
@@ -476,7 +716,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T19:52:31Z",
           "timePrecision": "exact",
-          "ageHours": 3.65,
+          "ageHours": 4.16,
           "freshnessBasis": "— Kyle Connor scored two of Winnipeg's three power-play goals and added an assist on the third as the Jets held off the Detroit Red Wings 3-2 on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -490,69 +730,11 @@
             }
           ],
           "id": "a415-879d84bbe6e7cfd5",
-          "feedRank": 16,
+          "feedRank": 22,
           "compactHeadline": "Kyle Connor scores a pair of power-play goals as Jets squeak past Red Wings 3-2"
         },
         {
-          "rank": 2,
-          "candidateIds": [
-            "cand-4e79887b4b5ddc4f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Igor Chernyshov scored his second goal of the game with 1:42 remaining in overtime and the San Jose Sharks beat the Los Angeles Kings 5-4 on Saturday night for their second straight win to open the season.",
-          "text": "Igor Chernyshov scored his second goal of the game with 1:42 remaining in overtime and the San Jose Sharks beat the Los Angeles Kings 5-4 on Saturday night for their second straight win to open the season.",
-          "entities": [],
-          "occurredAt": "2026-10-04T05:00:35Z",
-          "timePrecision": "exact",
-          "ageHours": 18.51,
-          "freshnessBasis": "— Igor Chernyshov scored his second goal of the game with 1:42 remaining in overtime and the San Jose Sharks beat the Los Angeles Kings 5-4 on Saturday night for their second straight win to open the season.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892441"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892441"
-            }
-          ],
-          "id": "a415-ae567a6e05acac28",
-          "feedRank": 17,
-          "compactHeadline": "Chernyshov's 2nd goal of the game gives the Sharks a 5-4 overtime win over the Kings"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-0f2b8da6231de385"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Nicolas Roy and Martin Necas scored 23 seconds apart in a four-goal second period, and the Colorado Avalanche beat the St. Louis Blues 6-1 on Saturday night.",
-          "text": "Nicolas Roy and Martin Necas scored 23 seconds apart in a four-goal second period, and the Colorado Avalanche beat the St. Louis Blues 6-1 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-10-04T03:47:32Z",
-          "timePrecision": "exact",
-          "ageHours": 19.73,
-          "freshnessBasis": "— Nicolas Roy and Martin Necas scored 23 seconds apart in a four-goal second period, and the Colorado Avalanche beat the St. Louis Blues 6-1 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892439"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892439"
-            }
-          ],
-          "id": "a415-30402cd42ea0f0b4",
-          "feedRank": 18,
-          "compactHeadline": "Necas and Roy score quick goals as the Avalanche rout the Blues 6-1"
-        },
-        {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-8593b9833ebb1285"
           ],
@@ -563,7 +745,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T02:58:31Z",
           "timePrecision": "exact",
-          "ageHours": 20.55,
+          "ageHours": 21.06,
           "freshnessBasis": "— Kirill Kaprizov scored twice, Jesper Wallstedt made 26 saves, and the Minnesota Wild beat the Boston Bruins 4-1 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -577,66 +759,8 @@
             }
           ],
           "id": "a415-0feac8d829f3dd87",
-          "feedRank": 19,
+          "feedRank": 23,
           "compactHeadline": "Kaprizov scores twice as the Wild beat the Bruins 4-1"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-d30a7248472ebca5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Steven Stamkos and Nils Hoglander scored power-play goals in the first period, Juuse Saros made 29 saves and the Nashville Predators beat the Dallas Stars 2-1 on Saturday night.",
-          "text": "Steven Stamkos and Nils Hoglander scored power-play goals in the first period, Juuse Saros made 29 saves and the Nashville Predators beat the Dallas Stars 2-1 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-10-04T02:47:30Z",
-          "timePrecision": "exact",
-          "ageHours": 20.73,
-          "freshnessBasis": "— Steven Stamkos and Nils Hoglander scored power-play goals in the first period, Juuse Saros made 29 saves and the Nashville Predators beat the Dallas Stars 2-1 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892438"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892438"
-            }
-          ],
-          "id": "a415-32b241f967674e09",
-          "feedRank": 20,
-          "compactHeadline": "Saros makes 29 saves as Predators beat Stars 2-1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b0f050a2ca264944"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ilya Sorokin made 36 saves for his 30th career shutout in a 6-0 win over the New Jersey Devils on Saturday.",
-          "text": "Ilya Sorokin made 36 saves for his 30th career shutout in a 6-0 win over the New Jersey Devils on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-10-04T02:29:33Z",
-          "timePrecision": "exact",
-          "ageHours": 21.03,
-          "freshnessBasis": "— Ilya Sorokin made 36 saves for his 30th career shutout in a 6-0 win over the New Jersey Devils on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401891818"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891818"
-            }
-          ],
-          "id": "a415-18d111dd9ea3cde1",
-          "feedRank": 21,
-          "compactHeadline": "Sorokin has 30th career shutout as Islanders blank Devils 6-0"
         }
       ]
     },
@@ -656,7 +780,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T06:22:36Z",
           "timePrecision": "exact",
-          "ageHours": 17.14,
+          "ageHours": 17.66,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -670,7 +794,7 @@
             }
           ],
           "id": "a415-c57e92c8d129edab",
-          "feedRank": 22,
+          "feedRank": 24,
           "compactHeadline": "Which Premier League players got injured in the international break?"
         },
         {
@@ -685,7 +809,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T18:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 5.28,
+          "ageHours": 5.79,
           "freshnessBasis": "Arsenal, Real Madrid and Bayern Munich are all chasing Juventus winger Kenan Yildiz. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +823,7 @@
             }
           ],
           "id": "a415-7a7d2762bce2850a",
-          "feedRank": 23,
+          "feedRank": 25,
           "compactHeadline": "Transfer rumors, news: Arsenal among clubs chasing winger Yildiz"
         }
       ]
@@ -720,7 +844,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T06:37:31Z",
           "timePrecision": "exact",
-          "ageHours": 16.9,
+          "ageHours": 17.41,
           "freshnessBasis": "USMNT coach Mauricio Pochettino said that the number of players performing at a high level is \"a fantastic problem to have\" after teenagers Cavan Sullivan and Julian Hall propelled the USMNT to 3-0 win over rivals Mexico on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -734,7 +858,7 @@
             }
           ],
           "id": "a415-4c098683d3324f38",
-          "feedRank": 24,
+          "feedRank": 26,
           "compactHeadline": "USMNT's young stars shine to give Pochettino 'fantastic problem'"
         }
       ]
@@ -746,6 +870,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-77cfc518d9d8ee51"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: San José State Spartans 20, Hawai'i Rainbow Warriors 16.",
+          "text": "Highlightly final: San José State Spartans 20, Hawai'i Rainbow Warriors 16.",
+          "entities": [],
+          "occurredAt": "2026-10-04T03:59:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.05,
+          "freshnessBasis": "Highlightly final: San José State Spartans 20, Hawai'i Rainbow Warriors 16.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-95b7408733d2a4c8",
+          "feedRank": 27,
+          "compactHeadline": "San José State Spartans beat Hawai'i Rainbow Warriors 20-16"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-da857dd13ec8d381"
           ],
           "type": "NEWS",
@@ -755,7 +908,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T21:18:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.22,
+          "ageHours": 2.73,
           "freshnessBasis": "While Alabama muddied the SEC waters, the ACC picture got clearer -- or did it?",
           "status": "active",
           "sourceUrls": [
@@ -769,11 +922,98 @@
             }
           ],
           "id": "a415-693964dc1744f499",
-          "feedRank": 25,
+          "feedRank": 28,
           "compactHeadline": "Connelly: Week 5 brought clarity, confusion to conference races"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-c7ea50e9b1e85671"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Cincinnati Bearcats 7, Arizona Wildcats 34.",
+          "text": "Highlightly final: Cincinnati Bearcats 7, Arizona Wildcats 34.",
+          "entities": [],
+          "occurredAt": "2026-10-04T03:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.03,
+          "freshnessBasis": "Highlightly final: Cincinnati Bearcats 7, Arizona Wildcats 34.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-170ac5fefe3a5d86",
+          "feedRank": 29,
+          "compactHeadline": "Arizona Wildcats beat Cincinnati Bearcats 34-7"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-d88082322af0f1af"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Texas State Bobcats 29, San Diego State Aztecs 31.",
+          "text": "Highlightly final: Texas State Bobcats 29, San Diego State Aztecs 31.",
+          "entities": [],
+          "occurredAt": "2026-10-04T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Texas State Bobcats 29, San Diego State Aztecs 31.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-6b61f65e7a02cc8e",
+          "feedRank": 30,
+          "compactHeadline": "San Diego State Aztecs beat Texas State Bobcats 31-29"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-07bbab533f7a5c6e"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Baylor Bears 55, Arizona State Sun Devils 19.",
+          "text": "Highlightly final: Baylor Bears 55, Arizona State Sun Devils 19.",
+          "entities": [],
+          "occurredAt": "2026-10-04T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Baylor Bears 55, Arizona State Sun Devils 19.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-e7fe26405805155c",
+          "feedRank": 31,
+          "compactHeadline": "Baylor Bears beat Arizona State Sun Devils 55-19"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-43f8fa630e56b065"
           ],
@@ -784,7 +1024,7 @@
           "entities": [],
           "occurredAt": "2026-10-04T19:47:24Z",
           "timePrecision": "exact",
-          "ageHours": 3.73,
+          "ageHours": 4.24,
           "freshnessBasis": "Oklahoma (2-2) vs. No. 1 Texas (4-0), Oct. 10 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -798,124 +1038,8 @@
             }
           ],
           "id": "a415-3372b8263c52bc1d",
-          "feedRank": 26,
+          "feedRank": 32,
           "compactHeadline": "No. 1 Texas plays Oklahoma in Dallas, Texas"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-ba25ab6e1a386e84"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "No. 20 Iowa (4-1) at Washington (3-2), Oct. 9 at 9 p.m. EDT.",
-          "text": "No. 20 Iowa (4-1) at Washington (3-2), Oct. 9 at 9 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-04T19:47:20Z",
-          "timePrecision": "exact",
-          "ageHours": 3.73,
-          "freshnessBasis": "No. 20 Iowa (4-1) at Washington (3-2), Oct. 9 at 9 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401858487"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401858487"
-            }
-          ],
-          "id": "a415-6d8026aa962edd8d",
-          "feedRank": 27,
-          "compactHeadline": "Washington and No. 20 Iowa meet in Big Ten play"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-6c7cc445a3f9a431"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Ball State (1-4) at Northwestern (3-1), Oct. 10 at 12:30 p.m. EDT.",
-          "text": "Ball State (1-4) at Northwestern (3-1), Oct. 10 at 12:30 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-04T19:47:17Z",
-          "timePrecision": "exact",
-          "ageHours": 3.73,
-          "freshnessBasis": "Ball State (1-4) at Northwestern (3-1), Oct. 10 at 12:30 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401858482"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401858482"
-            }
-          ],
-          "id": "a415-ddc131209106f795",
-          "feedRank": 28,
-          "compactHeadline": "Northwestern hosts Ball State"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-7e6031233f8b1ae8"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Southern Miss (1-3) at Troy (2-2), Oct. 6 at 8 p.m. EDT.",
-          "text": "Southern Miss (1-3) at Troy (2-2), Oct. 6 at 8 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-04T19:47:13Z",
-          "timePrecision": "exact",
-          "ageHours": 3.73,
-          "freshnessBasis": "Southern Miss (1-3) at Troy (2-2), Oct. 6 at 8 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401871090"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401871090"
-            }
-          ],
-          "id": "a415-f86cb2bdd974e0f0",
-          "feedRank": 29,
-          "compactHeadline": "Southern Miss visits Troy in Sun Belt matchup"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-740eb57d5c8f07fb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Eastern Michigan (3-3) at Akron (1-4), Oct. 10 at 3:30 p.m. EDT.",
-          "text": "Eastern Michigan (3-3) at Akron (1-4), Oct. 10 at 3:30 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-04T19:47:09Z",
-          "timePrecision": "exact",
-          "ageHours": 3.73,
-          "freshnessBasis": "Eastern Michigan (3-3) at Akron (1-4), Oct. 10 at 3:30 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401866435"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401866435"
-            }
-          ],
-          "id": "a415-cfbe46373dde41af",
-          "feedRank": 30,
-          "compactHeadline": "Eastern Michigan visits Akron in MAC play"
         }
       ]
     }
@@ -940,8 +1064,8 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 135,
-    "publishedItemCount": 30,
+    "freshCandidateCount": 140,
+    "publishedItemCount": 32,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
