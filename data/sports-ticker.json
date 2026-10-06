@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-06T03:01:45Z",
+  "generatedAt": "2026-10-06T03:31:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5c97e09808cb6f7b7cadeac6cdd8b230f7099560c9bc90e6e3809c671383bce3",
+  "sourceCandidateHash": "6e318554842e04fe5fe6a408d6f68d5a9c7e053c2b0755f00cd67e134c58b188",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-63b7feac982d3b54"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Richie Palacios hit a two-run single in a four-run fifth inning and the Tampa Bay Rays took advantage of New York's sloppy defense, beating Cam Schlittler and the Yankees 5-2 on Monday night to take a 2-0 lead in their AL Division Series.",
+          "text": "Richie Palacios hit a two-run single in a four-run fifth inning and the Tampa Bay Rays took advantage of New York's sloppy defense, beating Cam Schlittler and the Yankees 5-2 on Monday night to take a 2-0 lead in their AL Division Series.",
+          "entities": [],
+          "occurredAt": "2026-10-06T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.53,
+          "freshnessBasis": "Highlightly final: New York Yankees 2, Tampa Bay Rays 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401907986"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-05",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907986"
+            }
+          ],
+          "id": "a415-be2b892ba2d79864",
+          "feedRank": 1,
+          "compactHeadline": "Small-ball Rays beat the sloppy Yankees 5-2 for a 2-0 lead in AL Division Series"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-62ee490bbdf3b1bf"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Chicago White Sox 4, Cleveland Guardians 3.",
           "status": "active",
           "sourceUrls": [
@@ -43,37 +78,8 @@
             }
           ],
           "id": "a415-8eaf32e774b1f19f",
-          "feedRank": 1,
-          "compactHeadline": "White Sox beat Guardians in Game 2, move within 1 win of ALCS"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-6adc4b58ec914c81"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Padres manager Craig Sammen dismissed the notion that Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping, but did note he might not let him pitch multiple innings again this postseason.",
-          "text": "Padres manager Craig Sammen dismissed the notion that Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping, but did note he might not let him pitch multiple innings again this postseason.",
-          "entities": [],
-          "occurredAt": "2026-10-06T02:30:34Z",
-          "timePrecision": "exact",
-          "ageHours": 0.52,
-          "freshnessBasis": "Padres manager Craig Sammen dismissed the notion that Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping, but did note he might not let him pitch multiple innings again this postseason.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50112996/padres-dismiss-miller-pitch-tipping-speculation"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50112996/padres-dismiss-miller-pitch-tipping-speculation"
-            }
-          ],
-          "id": "a415-00a91adad838cb01",
           "feedRank": 2,
-          "compactHeadline": "Padres deny Miller was pitch-tipping, might limit him to 1 inning"
+          "compactHeadline": "White Sox beat Guardians in Game 2, move within 1 win of ALCS"
         },
         {
           "rank": 3,
@@ -85,9 +91,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-06T00:16:42Z",
+          "occurredAt": "2026-10-06T03:22:15Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 0.16,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -107,6 +113,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-6adc4b58ec914c81"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Padres manager Craig Sammen dismissed the notion that Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping, but did note he might not let him pitch multiple innings again this postseason.",
+          "text": "Padres manager Craig Sammen dismissed the notion that Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping, but did note he might not let him pitch multiple innings again this postseason.",
+          "entities": [],
+          "occurredAt": "2026-10-06T02:30:34Z",
+          "timePrecision": "exact",
+          "ageHours": 1.02,
+          "freshnessBasis": "Padres manager Craig Sammen dismissed the notion that Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping, but did note he might not let him pitch multiple innings again this postseason.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50112996/padres-dismiss-miller-pitch-tipping-speculation"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50112996/padres-dismiss-miller-pitch-tipping-speculation"
+            }
+          ],
+          "id": "a415-00a91adad838cb01",
+          "feedRank": 4,
+          "compactHeadline": "Padres deny Miller was pitch-tipping, might limit him to 1 inning"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-8fba57422a9636b5"
           ],
           "type": "PLAYOFF",
@@ -116,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:46:49Z",
           "timePrecision": "exact",
-          "ageHours": 3.25,
+          "ageHours": 3.75,
           "freshnessBasis": "The games are heating up for the MLB postseason, and the foods are following suit. Here are the top dishes across the league for the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +165,11 @@
             }
           ],
           "id": "a415-c5d36b2a3a695909",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Rays' 'Clubhouse Tomahawk' leads new MLB postseason foods"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-f5d17d0536a1e02c"
           ],
@@ -145,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T11:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.86,
+          "ageHours": 16.36,
           "freshnessBasis": "In the era of the long ball, the Rays want to win with something a little closer to home.",
           "status": "active",
           "sourceUrls": [
@@ -159,37 +194,8 @@
             }
           ],
           "id": "a415-e65143e26bd0967b",
-          "feedRank": 5,
-          "compactHeadline": "MLB playoffs 2026: The Tampa Bay Rays can beat you with a bunt"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-c384f83bf470ebdf"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
-          "text": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
-          "entities": [],
-          "occurredAt": "2026-10-05T11:07:00Z",
-          "timePrecision": "exact",
-          "ageHours": 15.91,
-          "freshnessBasis": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50103985/mlb-2026-playoffs-ranking-home-field-advantage-yankees-padres-rays-dodgers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50103985/mlb-2026-playoffs-ranking-home-field-advantage-yankees-padres-rays-dodgers"
-            }
-          ],
-          "id": "a415-eb5bd288e30bb9ea",
           "feedRank": 6,
-          "compactHeadline": "MLB 2026 playoffs: Ranking home-field advantage for every team"
+          "compactHeadline": "MLB playoffs 2026: The Tampa Bay Rays can beat you with a bunt"
         }
       ]
     },
@@ -209,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T01:10:04Z",
           "timePrecision": "exact",
-          "ageHours": 1.86,
+          "ageHours": 2.36,
           "freshnessBasis": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -238,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:56:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.09,
+          "ageHours": 2.59,
           "freshnessBasis": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -267,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:03:22Z",
           "timePrecision": "exact",
-          "ageHours": 3.97,
+          "ageHours": 4.47,
           "freshnessBasis": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:42:17Z",
           "timePrecision": "exact",
-          "ageHours": 4.32,
+          "ageHours": 4.82,
           "freshnessBasis": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:15:51Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.26,
           "freshnessBasis": "With several players out for an extended time (some for the entire season), sportsbooks have reacted quickly.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:08:12Z",
           "timePrecision": "exact",
-          "ageHours": 5.89,
+          "ageHours": 6.39,
           "freshnessBasis": "Broncos star cornerback Pat Surtain II avoided a worst-case scenario on his ankle injury, sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -387,9 +393,9 @@
           "headline": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
           "text": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
           "entities": [],
-          "occurredAt": "2026-10-06T02:15:50Z",
+          "occurredAt": "2026-10-06T03:16:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 0.26,
           "freshnessBasis": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.53,
           "freshnessBasis": "Highlightly final: Minnesota Timberwolves 98, Milwaukee Bucks 116.",
           "status": "active",
           "sourceUrls": [
@@ -438,35 +444,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-781e085e012b362a"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
-          "text": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
-          "entities": [],
-          "occurredAt": "2026-10-05T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-05",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-1efa24b6af249202",
-          "feedRank": 15,
-          "compactHeadline": "New York Knicks beat Philadelphia 76ers 120-97"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-effe82aea4769f8b"
           ],
           "type": "RESULT",
@@ -476,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Memphis Grizzlies 123, Atlanta Hawks 132.",
           "status": "active",
           "sourceUrls": [
@@ -490,8 +467,37 @@
             }
           ],
           "id": "a415-8f7a1ba763616303",
-          "feedRank": 16,
+          "feedRank": 15,
           "compactHeadline": "Atlanta Hawks beat Memphis Grizzlies 132-123"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-781e085e012b362a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
+          "text": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
+          "entities": [],
+          "occurredAt": "2026-10-05T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.53,
+          "freshnessBasis": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-05",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-1efa24b6af249202",
+          "feedRank": 16,
+          "compactHeadline": "New York Knicks beat Philadelphia 76ers 120-97"
         },
         {
           "rank": 5,
@@ -505,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Phoenix Suns 109, Detroit Pistons 107.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:10:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.85,
+          "ageHours": 5.35,
           "freshnessBasis": "Former lottery pick Jordan Hawkins is signing a two-way deal with the Chicago Bulls, sources told ESPN's Shams Charania on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T02:35:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.45,
+          "ageHours": 0.94,
           "freshnessBasis": "San Jose Sharks star center Macklin Celebrini, the franchise's recently named captain, was scratched before his club lost to the Dallas Stars, 5-0, on Monday night because of a lower-body injury.",
           "status": "active",
           "sourceUrls": [
@@ -589,31 +595,31 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-603e4c68d4ec0c8b"
+            "cand-bbb547346fb350ae"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: San Jose Sharks 0, Dallas Stars 5.",
-          "text": "Highlightly final: San Jose Sharks 0, Dallas Stars 5.",
+          "headline": "Jake Oettinger stopped the 14 shots and earned his 17th career shutout as the Dallas Stars beat the San Jose Sharks 5-0 on Monday night for their first victory of the season.",
+          "text": "Jake Oettinger stopped the 14 shots and earned his 17th career shutout as the Dallas Stars beat the San Jose Sharks 5-0 on Monday night for their first victory of the season.",
           "entities": [],
-          "occurredAt": "2026-10-06T00:00:00Z",
+          "occurredAt": "2026-10-06T03:01:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
-          "freshnessBasis": "Highlightly final: San Jose Sharks 0, Dallas Stars 5.",
+          "ageHours": 0.5,
+          "freshnessBasis": "— Jake Oettinger stopped the 14 shots and earned his 17th career shutout as the Dallas Stars beat the San Jose Sharks 5-0 on Monday night for their first victory of the season.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "http://www.espn.com/nhl/recap?gameId=401892448"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-05",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892448"
             }
           ],
-          "id": "a415-c0878ba79e7704b6",
+          "id": "a415-96d2f342724aefd6",
           "feedRank": 20,
-          "compactHeadline": "Dallas Stars beat San Jose Sharks 5-0"
+          "compactHeadline": "Oettinger earns 17th career shutout as Stars beat Sharks 5-0; San Jose's Celebrini scratched"
         },
         {
           "rank": 3,
@@ -627,7 +633,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T02:54:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.62,
           "freshnessBasis": "— Alex Iafallo had a goal and an assist, Clay Stevenson made 29 saves, and the Winnipeg Jets beat the Pittsburgh Penguins 3-2 on Monday night.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +662,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T02:39:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.87,
           "freshnessBasis": "— Tim Stutzle had two goals and an assist and goalies Linus Ullmark and Samuel Ersson combined to stop 18 of 19 shots as the Ottawa Senators defeated the Boston Bruins 4-1 on Monday night.",
           "status": "active",
           "sourceUrls": [
@@ -676,6 +682,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-609f35d2caaaacc0"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Senators goaltender Linus Ullmark exited his team's game at the Bruins after tweaking something when he was crashed into during the second period.",
+          "text": "Senators goaltender Linus Ullmark exited his team's game at the Bruins after tweaking something when he was crashed into during the second period.",
+          "entities": [],
+          "occurredAt": "2026-10-06T03:26:43Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "Senators goaltender Linus Ullmark exited his team's game at the Bruins after tweaking something when he was crashed into during the second period.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50114501/senators-goalie-linus-ullmark-leaves-game-bruins-two-periods"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50114501/senators-goalie-linus-ullmark-leaves-game-bruins-two-periods"
+            }
+          ],
+          "id": "a415-71d700c06e179775",
+          "feedRank": 23,
+          "compactHeadline": "Linus Ullmark exits in 'precautionary' move against Bruins"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-d8ddedf82210e17e"
           ],
           "type": "NEWS",
@@ -685,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T02:14:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.79,
+          "ageHours": 1.29,
           "freshnessBasis": "— Pontus Holmberg and Ilya Mikheyev each had a goal and assist, Andrei Vasilevskiy stopped 13 shots to move into a tie for 20th place on the NHL career wins list,...",
           "status": "active",
           "sourceUrls": [
@@ -699,37 +734,8 @@
             }
           ],
           "id": "a415-ef8107bb2f351e83",
-          "feedRank": 23,
-          "compactHeadline": "Lightning roll past the winless Flyers 4-1 as Vasilevskiy ties Andy Moog on career wins list"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-41bd6f4fdbf503ef"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
-          "text": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
-          "entities": [],
-          "occurredAt": "2026-10-05T08:11:47Z",
-          "timePrecision": "exact",
-          "ageHours": 18.83,
-          "freshnessBasis": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/preview?gameId=401891779"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/preview?gameId=401891779"
-            }
-          ],
-          "id": "a415-7ceabe594792ea74",
           "feedRank": 24,
-          "compactHeadline": "Blackhawks bring losing streak into game against the Blues"
+          "compactHeadline": "Lightning roll past the winless Flyers 4-1 as Vasilevskiy ties Andy Moog on career wins list"
         }
       ]
     },
@@ -749,7 +755,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:01:30Z",
           "timePrecision": "exact",
-          "ageHours": 15.0,
+          "ageHours": 15.5,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +784,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:14:37Z",
           "timePrecision": "exact",
-          "ageHours": 6.79,
+          "ageHours": 7.28,
           "freshnessBasis": "England goalkeeper Jordan Pickford nearly caused a crash with two other cars during a bout of careless driving in his £200,000 Lamborghini supercar, a court has heard.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T16:53:23Z",
           "timePrecision": "exact",
-          "ageHours": 10.14,
+          "ageHours": 10.64,
           "freshnessBasis": "Representatives of JJ Gabriel demanded that the teenager played at least 20 minutes in games against Sabah FK, Brighton and Bournemouth before beginning talks about signing a scholarship with Manchester United, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:46:40Z",
           "timePrecision": "exact",
-          "ageHours": 14.25,
+          "ageHours": 14.75,
           "freshnessBasis": "If Manchester City are punished by being relegated from the Premier League, group of players worth more than £1 billion in transfer fees would suddenly become available.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:36:38Z",
           "timePrecision": "exact",
-          "ageHours": 14.42,
+          "ageHours": 14.92,
           "freshnessBasis": "Ledley King has urged Roberto De Zerbi's team to draw on the experiences of last season to end the club's winless start to the new Premier League campaign.",
           "status": "active",
           "sourceUrls": [
@@ -896,6 +902,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-2fbb719f5038e3f9"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "QB Dante Moore participated in Oregon's practice Monday, two weeks after he sustained a concussion against USC, coach Dan Lanning said.",
+          "text": "QB Dante Moore participated in Oregon's practice Monday, two weeks after he sustained a concussion against USC, coach Dan Lanning said.",
+          "entities": [],
+          "occurredAt": "2026-10-06T03:14:10Z",
+          "timePrecision": "exact",
+          "ageHours": 0.29,
+          "freshnessBasis": "QB Dante Moore participated in Oregon's practice Monday, two weeks after he sustained a concussion against USC, coach Dan Lanning said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50114452/dante-moore-back-ducks-practice-status-vs-bruins-tbd"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50114452/dante-moore-back-ducks-practice-status-vs-bruins-tbd"
+            }
+          ],
+          "id": "a415-bc8a0d6b3aa41e72",
+          "feedRank": 30,
+          "compactHeadline": "Dante Moore back at Ducks practice, status vs. Bruins TBD"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-8d4f2a6bc8690ab8"
           ],
           "type": "INJURY",
@@ -905,7 +940,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:50:04Z",
           "timePrecision": "exact",
-          "ageHours": 6.19,
+          "ageHours": 6.69,
           "freshnessBasis": "Air Force starting quarterback Liam Szarka will miss the rest of the season with a lower leg injury sustained in Saturday's win against Navy.",
           "status": "active",
           "sourceUrls": [
@@ -919,11 +954,11 @@
             }
           ],
           "id": "a415-5b94b0eeac0a6566",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "Air Force QB Liam Szarka lost for season with lower leg injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-4513a6f8246282eb"
           ],
@@ -934,7 +969,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T19:49:54Z",
           "timePrecision": "exact",
-          "ageHours": 7.2,
+          "ageHours": 7.7,
           "freshnessBasis": "Notre Dame might be without All-American cornerback Leonard Moore as he in the concussion protocol and considered questionable for Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -948,11 +983,11 @@
             }
           ],
           "id": "a415-e20b8b27101f0a97",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Notre Dame's Leonard Moore, Kyngstonn Viliamu-Asa listed as questionable"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-5170dd738c261a41"
           ],
@@ -963,7 +998,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:37:51Z",
           "timePrecision": "exact",
-          "ageHours": 4.4,
+          "ageHours": 4.9,
           "freshnessBasis": "Arizona leading receiver Tre Spivey, injured on the final play of the first half of the Wildcats' 34-7 win over the Cincinnati Bearcats, will miss the remainder of the season with a broken foot, coach Brent Brennan told reporters on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -977,11 +1012,11 @@
             }
           ],
           "id": "a415-86d6145b787efe53",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Arizona leading receiver Tre Spivey out for rest of season"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-47084bc503ad8408"
           ],
@@ -992,7 +1027,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T13:47:11Z",
           "timePrecision": "exact",
-          "ageHours": 13.24,
+          "ageHours": 13.74,
           "freshnessBasis": "Following dominant victories and a few close calls in Week 5, here are our postseason projections.",
           "status": "active",
           "sourceUrls": [
@@ -1006,11 +1041,11 @@
             }
           ],
           "id": "a415-de70b095313615a9",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "2026-27 Week 5 College Football Playoff, bowl projections"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-b661d51644002a9a"
           ],
@@ -1021,7 +1056,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:28:27Z",
           "timePrecision": "exact",
-          "ageHours": 2.56,
+          "ageHours": 3.05,
           "freshnessBasis": "The Big Ten acknowledged an officiating error in Saturday's Maryland-Nebraska game that should have resulted in the Huskers retrying a point-after-touchdown attempt.",
           "status": "active",
           "sourceUrls": [
@@ -1035,37 +1070,8 @@
             }
           ],
           "id": "a415-fbe2bc0ae1ccdeb3",
-          "feedRank": 34,
-          "compactHeadline": "Refs incorrectly officiated Nebraska's final PAT attempt, Big Ten says"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-72e594dacf5cb387"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "West Virginia football commit Chris Wilson Jr. was killed in an overnight shooting in Muncie, Indiana, according to local police.",
-          "text": "West Virginia football commit Chris Wilson Jr. was killed in an overnight shooting in Muncie, Indiana, according to local police.",
-          "entities": [],
-          "occurredAt": "2026-10-05T21:38:48Z",
-          "timePrecision": "exact",
-          "ageHours": 5.38,
-          "freshnessBasis": "West Virginia football commit Chris Wilson Jr. was killed in an overnight shooting in Muncie, Indiana, according to local police.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50110947/west-virginia-football-recruit-chris-wilson-jr-killed-shooting"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50110947/west-virginia-football-recruit-chris-wilson-jr-killed-shooting"
-            }
-          ],
-          "id": "a415-669d97bd96f6b1f7",
           "feedRank": 35,
-          "compactHeadline": "West Virginia football recruit Chris Wilson Jr. killed in shooting"
+          "compactHeadline": "Refs incorrectly officiated Nebraska's final PAT attempt, Big Ten says"
         }
       ]
     }
