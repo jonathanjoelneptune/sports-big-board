@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-06T00:31:45Z",
+  "generatedAt": "2026-10-06T01:01:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "81f06233953f93b87a8903fe92b3e14bd11d60e74737d43f3bf57d7ba4570041",
+  "sourceCandidateHash": "a258f7aa538e29f7e2a3ff0ec177b594cd754433156037ff701c528c392661f2",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,47 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-62ee490bbdf3b1bf"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Braden Montgomery lined a two-run double down the right-field line, Sean Burke allowed one hit in 5 1/3 innings of splendid relief and the Chicago White Sox beat the Cleveland Guardians 4-3 on Monday to take a 2-0 lead in their AL Division Series.",
+          "text": "Braden Montgomery lined a two-run double down the right-field line, Sean Burke allowed one hit in 5 1/3 innings of splendid relief and the Chicago White Sox beat the Cleveland Guardians 4-3 on Monday to take a 2-0 lead in their AL Division Series.",
+          "entities": [],
+          "occurredAt": "2026-10-05T21:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.03,
+          "freshnessBasis": "Highlightly final: Chicago White Sox 4, Cleveland Guardians 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401907991",
+            "https://www.espn.com/mlb/story/_/id/50113363/hite-sox-beat-guardians-game-2-move-1-win-alcs"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-05",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907991"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50113363/hite-sox-beat-guardians-game-2-move-1-win-alcs"
+            }
+          ],
+          "id": "a415-8eaf32e774b1f19f",
+          "feedRank": 1,
+          "compactHeadline": "White Sox surge past Guardians 4-3 to take 2-0 lead in ALDS and move within 1 win of ALCS"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-ae5060e2d1c0377f"
           ],
@@ -23,7 +64,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:24:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.62,
           "freshnessBasis": "Although the San Diego Padres have plenty of concerns in the face of playoff elimination, they don't believe Mason Miller tipping his pitches is one of them.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +78,11 @@
             }
           ],
           "id": "a415-f97aff4f79722b24",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Padres dismiss Miller pitch-tipping speculation: 'On top of it'"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -52,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:16:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.75,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +107,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-8fba57422a9636b5"
           ],
@@ -81,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:46:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.25,
           "freshnessBasis": "The games are heating up for the MLB postseason, and the foods are following suit. Here are the top dishes across the league for the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +136,8 @@
             }
           ],
           "id": "a415-c5d36b2a3a695909",
-          "feedRank": 3,
-          "compactHeadline": "Rays' 'Clubhouse Tomahawk' leads new MLB postseason foods"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-62ee490bbdf3b1bf"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Chicago White Sox 4, Cleveland Guardians 3.",
-          "text": "Highlightly final: Chicago White Sox 4, Cleveland Guardians 3.",
-          "entities": [],
-          "occurredAt": "2026-10-05T21:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.53,
-          "freshnessBasis": "Highlightly final: Chicago White Sox 4, Cleveland Guardians 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-10-05",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-8eaf32e774b1f19f",
           "feedRank": 4,
-          "compactHeadline": "Chicago White Sox beat Cleveland Guardians 4-3"
+          "compactHeadline": "Rays' 'Clubhouse Tomahawk' leads new MLB postseason foods"
         },
         {
           "rank": 5,
@@ -139,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T11:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.36,
+          "ageHours": 13.86,
           "freshnessBasis": "In the era of the long ball, the Rays want to win with something a little closer to home.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T11:07:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.41,
+          "ageHours": 13.91,
           "freshnessBasis": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
           "status": "active",
           "sourceUrls": [
@@ -194,93 +206,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-db0aee19e941f675"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
-          "text": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
-          "entities": [],
-          "occurredAt": "2026-10-06T00:17:47Z",
-          "timePrecision": "exact",
-          "ageHours": 0.23,
-          "freshnessBasis": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50111928/sources-eagles-rb-tank-bigsby-surgery-headed-ir"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50111928/sources-eagles-rb-tank-bigsby-surgery-headed-ir"
-            }
-          ],
-          "id": "a415-e9a981bdfb1d0c51",
-          "feedRank": 7,
-          "compactHeadline": "Sources: Eagles RB Tank Bigsby to have surgery, headed to IR"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-af2401bfa2f269e0"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
-          "text": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
-          "entities": [],
-          "occurredAt": "2026-10-05T23:03:22Z",
-          "timePrecision": "exact",
-          "ageHours": 1.47,
-          "freshnessBasis": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50111568/sources-chiefs-wr-tyquan-thornton-expected-back-12-16-weeks"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50111568/sources-chiefs-wr-tyquan-thornton-expected-back-12-16-weeks"
-            }
-          ],
-          "id": "a415-e370ec607e12a4e0",
-          "feedRank": 8,
-          "compactHeadline": "Sources: Chiefs WR Tyquan Thornton expected back in 12-16 weeks"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-7848666e1ec04fef"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
-          "text": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
-          "entities": [],
-          "occurredAt": "2026-10-05T22:42:17Z",
-          "timePrecision": "exact",
-          "ageHours": 1.82,
-          "freshnessBasis": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50111779/bengals-wr-tee-higgins-day-day-adductor-injury-coach-says"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50111779/bengals-wr-tee-higgins-day-day-adductor-injury-coach-says"
-            }
-          ],
-          "id": "a415-7b852de58166e69c",
-          "feedRank": 9,
-          "compactHeadline": "Bengals WR Tee Higgins day-to-day with adductor injury, coach says"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-a1369a1e04b0a59c"
           ],
           "type": "INJURY",
@@ -288,9 +213,9 @@
           "headline": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
           "text": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
           "entities": [],
-          "occurredAt": "2026-10-05T22:28:06Z",
+          "occurredAt": "2026-10-06T00:56:13Z",
           "timePrecision": "exact",
-          "ageHours": 2.06,
+          "ageHours": 0.09,
           "freshnessBasis": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -304,8 +229,95 @@
             }
           ],
           "id": "a415-91ce6f8462133e61",
-          "feedRank": 10,
+          "feedRank": 7,
           "compactHeadline": "Cardinals LT Paris Johnson out for season after tearing biceps"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-3e15153ec1111c58"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
+          "text": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
+          "entities": [],
+          "occurredAt": "2026-10-06T00:51:20Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50111928/sources-eagles-rb-tank-bigsby-surgery-headed-ir"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50111928/sources-eagles-rb-tank-bigsby-surgery-headed-ir"
+            }
+          ],
+          "id": "a415-063e2d92e062cfba",
+          "feedRank": 8,
+          "compactHeadline": "Sources: Eagles RB Bigsby headed to IR, Barkley week-to-week"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-af2401bfa2f269e0"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
+          "text": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-10-05T23:03:22Z",
+          "timePrecision": "exact",
+          "ageHours": 1.97,
+          "freshnessBasis": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50111568/sources-chiefs-wr-tyquan-thornton-expected-back-12-16-weeks"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50111568/sources-chiefs-wr-tyquan-thornton-expected-back-12-16-weeks"
+            }
+          ],
+          "id": "a415-e370ec607e12a4e0",
+          "feedRank": 9,
+          "compactHeadline": "Sources: Chiefs WR Tyquan Thornton expected back in 12-16 weeks"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-7848666e1ec04fef"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
+          "text": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
+          "entities": [],
+          "occurredAt": "2026-10-05T22:42:17Z",
+          "timePrecision": "exact",
+          "ageHours": 2.32,
+          "freshnessBasis": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50111779/bengals-wr-tee-higgins-day-day-adductor-injury-coach-says"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50111779/bengals-wr-tee-higgins-day-day-adductor-injury-coach-says"
+            }
+          ],
+          "id": "a415-7b852de58166e69c",
+          "feedRank": 10,
+          "compactHeadline": "Bengals WR Tee Higgins day-to-day with adductor injury, coach says"
         },
         {
           "rank": 5,
@@ -319,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:15:51Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.76,
           "freshnessBasis": "With several players out for an extended time (some for the entire season), sportsbooks have reacted quickly.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:08:12Z",
           "timePrecision": "exact",
-          "ageHours": 3.39,
+          "ageHours": 3.89,
           "freshnessBasis": "Broncos star cornerback Pat Surtain II avoided a worst-case scenario on his ankle injury, sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +395,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:10:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.35,
+          "ageHours": 2.85,
           "freshnessBasis": "Former lottery pick Jordan Hawkins is signing a two-way deal with the Chicago Bulls, sources told ESPN's Shams Charania on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:50:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.69,
+          "ageHours": 4.19,
           "freshnessBasis": "Karl-Anthony Towns says the chances \"don't look good\" for him getting a new extension with the Knicks before the start of the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:41:42Z",
           "timePrecision": "exact",
-          "ageHours": 1.83,
+          "ageHours": 2.33,
           "freshnessBasis": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:23:55Z",
           "timePrecision": "exact",
-          "ageHours": 3.13,
+          "ageHours": 3.63,
           "freshnessBasis": "Hornets guard Coby White suffered a left calf strain during training camp and will miss the remainder of preseason, the team announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:19:12Z",
           "timePrecision": "exact",
-          "ageHours": 3.21,
+          "ageHours": 3.71,
           "freshnessBasis": "LeBron James, Joel Embiid and Tyrese Maxey will sit out the 76ers' preseason opener against the Knicks on Monday night.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T14:00:47Z",
           "timePrecision": "exact",
-          "ageHours": 10.52,
+          "ageHours": 11.01,
           "freshnessBasis": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
           "status": "active",
           "sourceUrls": [
@@ -554,37 +566,31 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-f5ce0a01b2979b6a"
+            "cand-4c49c4ebf1c37199"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
-          "text": "Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "San Jose Sharks star center Macklin Celebrini, the club's recently named captain, was scratched from the team's lineup at the Dallas Stars on Monday night because of a lower-body injury.",
+          "text": "San Jose Sharks star center Macklin Celebrini, the club's recently named captain, was scratched from the team's lineup at the Dallas Stars on Monday night because of a lower-body injury.",
           "entities": [],
-          "occurredAt": "2026-10-05T01:00:00Z",
+          "occurredAt": "2026-10-06T00:43:11Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Vegas Golden Knights 3, Vancouver Canucks 2.",
+          "ageHours": 0.31,
+          "freshnessBasis": "San Jose Sharks star center Macklin Celebrini, the club's recently named captain, was scratched from the team's lineup at the Dallas Stars on Monday night because of a lower-body injury.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892444"
+            "https://www.espn.com/nhl/story/_/id/50113398/san-jose-sharks-scratch-celebrini-lower-body-injury"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-04",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892444"
+              "url": "https://www.espn.com/nhl/story/_/id/50113398/san-jose-sharks-scratch-celebrini-lower-body-injury"
             }
           ],
-          "id": "a415-eea0264e0c24d6af",
+          "id": "a415-68589fbf5120358e",
           "feedRank": 19,
-          "compactHeadline": "Golden Knights beat the Canucks 3-2 on Gatcomb’s go-ahead goal"
+          "compactHeadline": "San Jose Sharks scratch Celebrini with lower-body injury"
         },
         {
           "rank": 2,
@@ -598,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T08:11:47Z",
           "timePrecision": "exact",
-          "ageHours": 16.33,
+          "ageHours": 16.83,
           "freshnessBasis": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +633,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T08:11:40Z",
           "timePrecision": "exact",
-          "ageHours": 16.33,
+          "ageHours": 16.83,
           "freshnessBasis": "New York Islanders (1-1, in the Metropolitan Division) vs. New York Rangers (3-1, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +662,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T05:36:51Z",
           "timePrecision": "exact",
-          "ageHours": 18.92,
+          "ageHours": 19.41,
           "freshnessBasis": "Florida Panthers forward Brad Marchand, out since March 6, made his season debut Sunday night against the Anaheim Ducks following an offseason that included surgery for the 38-year-old left wing, who scored 27 goals last season.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +691,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T17:31:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.01,
+          "ageHours": 7.5,
           "freshnessBasis": "Washington Capitals star Alex Ovechkin announced Monday that this will be his final season in the NHL.",
           "status": "active",
           "sourceUrls": [
@@ -705,31 +711,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-4cb43aebc45b517f"
+            "cand-c3b648180912643b"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Berkly Catton, Mackie Samoskevich and Bobby McMann scored within the first eight minutes of the game and the Seattle Kraken cruised to a 6-1 win over the Calgary Flames on Sunday night.",
-          "text": "Berkly Catton, Mackie Samoskevich and Bobby McMann scored within the first eight minutes of the game and the Seattle Kraken cruised to a 6-1 win over the Calgary Flames on Sunday night.",
+          "headline": "Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
+          "text": "Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
           "entities": [],
-          "occurredAt": "2026-10-05T03:13:30Z",
+          "occurredAt": "2026-10-05T04:01:31Z",
           "timePrecision": "exact",
-          "ageHours": 21.3,
-          "freshnessBasis": "— Berkly Catton, Mackie Samoskevich and Bobby McMann scored within the first eight minutes of the game and the Seattle Kraken cruised to a 6-1 win over the Calgary Flames on Sunday night.",
+          "ageHours": 21.0,
+          "freshnessBasis": "— Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401891824"
+            "http://www.espn.com/nhl/recap?gameId=401892444"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891824"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892444"
             }
           ],
-          "id": "a415-7eace270c4924d57",
+          "id": "a415-a13eaf991cd7c526",
           "feedRank": 24,
-          "compactHeadline": "Samoskevich scores twice and Kraken beat Flames 6-1 in home opener as Calgary stays winless"
+          "compactHeadline": "Golden Knights beat the Canucks 3-2 on Gatcomb’s go-ahead goal"
         }
       ]
     },
@@ -749,7 +755,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:01:30Z",
           "timePrecision": "exact",
-          "ageHours": 12.5,
+          "ageHours": 13.0,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +784,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:14:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.29,
+          "ageHours": 4.78,
           "freshnessBasis": "England goalkeeper Jordan Pickford nearly caused a crash with two other cars during a bout of careless driving in his £200,000 Lamborghini supercar, a court has heard.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T16:53:23Z",
           "timePrecision": "exact",
-          "ageHours": 7.64,
+          "ageHours": 8.14,
           "freshnessBasis": "Representatives of JJ Gabriel demanded that the teenager played at least 20 minutes in games against Sabah FK, Brighton and Bournemouth before beginning talks about signing a scholarship with Manchester United, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:46:40Z",
           "timePrecision": "exact",
-          "ageHours": 11.75,
+          "ageHours": 12.25,
           "freshnessBasis": "If Manchester City are punished by being relegated from the Premier League, group of players worth more than £1 billion in transfer fees would suddenly become available.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:36:38Z",
           "timePrecision": "exact",
-          "ageHours": 11.92,
+          "ageHours": 12.42,
           "freshnessBasis": "Ledley King has urged Roberto De Zerbi's team to draw on the experiences of last season to end the club's winless start to the new Premier League campaign.",
           "status": "active",
           "sourceUrls": [
@@ -905,7 +911,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:50:04Z",
           "timePrecision": "exact",
-          "ageHours": 3.69,
+          "ageHours": 4.19,
           "freshnessBasis": "Air Force starting quarterback Liam Szarka will miss the rest of the season with a lower leg injury sustained in Saturday's win against Navy.",
           "status": "active",
           "sourceUrls": [
@@ -934,7 +940,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T19:49:54Z",
           "timePrecision": "exact",
-          "ageHours": 4.7,
+          "ageHours": 5.2,
           "freshnessBasis": "Notre Dame might be without All-American cornerback Leonard Moore as he in the concussion protocol and considered questionable for Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -963,7 +969,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:37:51Z",
           "timePrecision": "exact",
-          "ageHours": 1.9,
+          "ageHours": 2.4,
           "freshnessBasis": "Arizona leading receiver Tre Spivey, injured on the final play of the first half of the Wildcats' 34-7 win over the Cincinnati Bearcats, will miss the remainder of the season with a broken foot, coach Brent Brennan told reporters on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -992,7 +998,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T13:47:11Z",
           "timePrecision": "exact",
-          "ageHours": 10.74,
+          "ageHours": 11.24,
           "freshnessBasis": "Following dominant victories and a few close calls in Week 5, here are our postseason projections.",
           "status": "active",
           "sourceUrls": [
@@ -1021,7 +1027,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:28:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.55,
           "freshnessBasis": "The Big Ten acknowledged an officiating error in Saturday's Maryland-Nebraska game that should have resulted in the Huskers retrying a point-after-touchdown attempt.",
           "status": "active",
           "sourceUrls": [
@@ -1050,7 +1056,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:38:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.88,
+          "ageHours": 3.38,
           "freshnessBasis": "West Virginia football commit Chris Wilson Jr. was killed in an overnight shooting in Muncie, Indiana, according to local police.",
           "status": "active",
           "sourceUrls": [
@@ -1090,7 +1096,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 92,
+    "freshCandidateCount": 93,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
