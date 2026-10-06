@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-06T01:01:40Z",
+  "generatedAt": "2026-10-06T01:31:49Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "a258f7aa538e29f7e2a3ff0ec177b594cd754433156037ff701c528c392661f2",
+  "sourceCandidateHash": "503d334ae91cd64267db30b104e69f6be4b388be8691b0dbc26d4544b7c7bb5a",
   "leagues": [
     {
       "league": "MLB",
@@ -18,18 +18,18 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Braden Montgomery lined a two-run double down the right-field line, Sean Burke allowed one hit in 5 1/3 innings of splendid relief and the Chicago White Sox beat the Cleveland Guardians 4-3 on Monday to take a 2-0 lead in their AL Division Series.",
-          "text": "Braden Montgomery lined a two-run double down the right-field line, Sean Burke allowed one hit in 5 1/3 innings of splendid relief and the Chicago White Sox beat the Cleveland Guardians 4-3 on Monday to take a 2-0 lead in their AL Division Series.",
+          "headline": "The White Sox beat the Guardians 4-3 on Monday to take a 2-0 lead in their AL Division Series.",
+          "text": "The White Sox beat the Guardians 4-3 on Monday to take a 2-0 lead in their AL Division Series.",
           "entities": [],
           "occurredAt": "2026-10-05T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Chicago White Sox 4, Cleveland Guardians 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401907991",
-            "https://www.espn.com/mlb/story/_/id/50113363/hite-sox-beat-guardians-game-2-move-1-win-alcs"
+            "https://www.espn.com/mlb/story/_/id/50113363/white-sox-beat-guardians-game-2-move-1-win-alcs",
+            "http://www.espn.com/mlb/recap?gameId=401907991"
           ],
           "sources": [
             {
@@ -40,32 +40,32 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907991"
+              "url": "https://www.espn.com/mlb/story/_/id/50113363/white-sox-beat-guardians-game-2-move-1-win-alcs"
             },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50113363/hite-sox-beat-guardians-game-2-move-1-win-alcs"
+              "url": "http://www.espn.com/mlb/recap?gameId=401907991"
             }
           ],
           "id": "a415-8eaf32e774b1f19f",
           "feedRank": 1,
-          "compactHeadline": "White Sox surge past Guardians 4-3 to take 2-0 lead in ALDS and move within 1 win of ALCS"
+          "compactHeadline": "White Sox beat Guardians in Game 2, move within 1 win of ALCS"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-ae5060e2d1c0377f"
+            "cand-0faee880eabd1928"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "Although the San Diego Padres have plenty of concerns in the face of playoff elimination, they don't believe Mason Miller tipping his pitches is one of them.",
-          "text": "Although the San Diego Padres have plenty of concerns in the face of playoff elimination, they don't believe Mason Miller tipping his pitches is one of them.",
+          "headline": "Padres manager Craig Sammen dismissed the notion Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping but did note he may not let him pitch multiple innings again this postseason.",
+          "text": "Padres manager Craig Sammen dismissed the notion Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping but did note he may not let him pitch multiple innings again this postseason.",
           "entities": [],
-          "occurredAt": "2026-10-06T00:24:30Z",
+          "occurredAt": "2026-10-06T01:12:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.62,
-          "freshnessBasis": "Although the San Diego Padres have plenty of concerns in the face of playoff elimination, they don't believe Mason Miller tipping his pitches is one of them.",
+          "ageHours": 0.33,
+          "freshnessBasis": "Padres manager Craig Sammen dismissed the notion Mason Miller struggled in the ninth inning of Sunday's loss due to pitch-tipping but did note he may not let him pitch multiple innings again this postseason.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50112996/padres-dismiss-miller-pitch-tipping-speculation"
@@ -77,9 +77,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/50112996/padres-dismiss-miller-pitch-tipping-speculation"
             }
           ],
-          "id": "a415-f97aff4f79722b24",
+          "id": "a415-6ce52f47f646b78c",
           "feedRank": 2,
-          "compactHeadline": "Padres dismiss Miller pitch-tipping speculation: 'On top of it'"
+          "compactHeadline": "Padres deny Miller was pitch-tipping; may limit him to 1 inning"
         },
         {
           "rank": 3,
@@ -93,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:16:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.25,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -122,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:46:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.25,
+          "ageHours": 1.75,
           "freshnessBasis": "The games are heating up for the MLB postseason, and the foods are following suit. Here are the top dishes across the league for the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -151,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T11:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.86,
+          "ageHours": 14.36,
           "freshnessBasis": "In the era of the long ball, the Rays want to win with something a little closer to home.",
           "status": "active",
           "sourceUrls": [
@@ -180,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T11:07:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.91,
+          "ageHours": 14.41,
           "freshnessBasis": "From atmosphere to unique structures, some places are harder to play than others. Here are the clubs who benefit the most.",
           "status": "active",
           "sourceUrls": [
@@ -206,35 +206,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a1369a1e04b0a59c"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
-          "text": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-10-06T00:56:13Z",
-          "timePrecision": "exact",
-          "ageHours": 0.09,
-          "freshnessBasis": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50112533/cardinals-lt-paris-johnson-season-tearing-biceps"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50112533/cardinals-lt-paris-johnson-season-tearing-biceps"
-            }
-          ],
-          "id": "a415-91ce6f8462133e61",
-          "feedRank": 7,
-          "compactHeadline": "Cardinals LT Paris Johnson out for season after tearing biceps"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-3e15153ec1111c58"
           ],
           "type": "INJURY",
@@ -242,9 +213,9 @@
           "headline": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
           "text": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
           "entities": [],
-          "occurredAt": "2026-10-06T00:51:20Z",
+          "occurredAt": "2026-10-06T01:10:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.36,
           "freshnessBasis": "Eagles running back Tank Bigsby sustained a core muscle injury Sunday that requires surgery, sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -258,8 +229,37 @@
             }
           ],
           "id": "a415-063e2d92e062cfba",
-          "feedRank": 8,
+          "feedRank": 7,
           "compactHeadline": "Sources: Eagles RB Bigsby headed to IR, Barkley week-to-week"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a1369a1e04b0a59c"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
+          "text": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-10-06T00:56:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.59,
+          "freshnessBasis": "Cardinals starting left tackle Paris Johnson Jr. is out for the season after tearing his left biceps in a 36-24 loss to the New York Giants on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50112533/cardinals-lt-paris-johnson-season-tearing-biceps"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50112533/cardinals-lt-paris-johnson-season-tearing-biceps"
+            }
+          ],
+          "id": "a415-91ce6f8462133e61",
+          "feedRank": 8,
+          "compactHeadline": "Cardinals LT Paris Johnson out for season after tearing biceps"
         },
         {
           "rank": 3,
@@ -273,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T23:03:22Z",
           "timePrecision": "exact",
-          "ageHours": 1.97,
+          "ageHours": 2.47,
           "freshnessBasis": "Chiefs wide receiver Tyquan Thornton is expected back from a dislocated left ankle injury within 12 to 16 weeks, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -302,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:42:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.32,
+          "ageHours": 2.83,
           "freshnessBasis": "Bengals wide receiver Tee Higgins is considered day-to-day with an adductor issue he suffered toward the end of Sunday's 22-17 loss to the Jacksonville Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -331,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:15:51Z",
           "timePrecision": "exact",
-          "ageHours": 3.76,
+          "ageHours": 4.27,
           "freshnessBasis": "With several players out for an extended time (some for the entire season), sportsbooks have reacted quickly.",
           "status": "active",
           "sourceUrls": [
@@ -360,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:08:12Z",
           "timePrecision": "exact",
-          "ageHours": 3.89,
+          "ageHours": 4.39,
           "freshnessBasis": "Broncos star cornerback Pat Surtain II avoided a worst-case scenario on his ankle injury, sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -386,6 +386,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6647dea00f3b67e3"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
+          "text": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
+          "entities": [],
+          "occurredAt": "2026-10-06T01:17:15Z",
+          "timePrecision": "exact",
+          "ageHours": 0.24,
+          "freshnessBasis": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50113626/76ers-backup-center-ariel-hukporti-exits-preseason-opener-early"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50113626/76ers-backup-center-ariel-hukporti-exits-preseason-opener-early"
+            }
+          ],
+          "id": "a415-77308c65abf1c4b6",
+          "feedRank": 13,
+          "compactHeadline": "76ers backup center Ariel Hukporti exits preseason opener early"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-781e085e012b362a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
+          "text": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
+          "entities": [],
+          "occurredAt": "2026-10-05T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.53,
+          "freshnessBasis": "Highlightly final: New York Knicks 120, Philadelphia 76ers 97.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-05",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-1efa24b6af249202",
+          "feedRank": 14,
+          "compactHeadline": "New York Knicks beat Philadelphia 76ers 120-97"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-52b9278b631dca85"
           ],
           "type": "SIGNING",
@@ -395,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:10:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.85,
+          "ageHours": 3.35,
           "freshnessBasis": "Former lottery pick Jordan Hawkins is signing a two-way deal with the Chicago Bulls, sources told ESPN's Shams Charania on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -409,11 +467,11 @@
             }
           ],
           "id": "a415-34411313fdb66f5b",
-          "feedRank": 13,
+          "feedRank": 15,
           "compactHeadline": "Sources: Jordan Hawkins to join Bulls on two-way deal"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-60e6ea94c7d2bf65"
           ],
@@ -424,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:50:17Z",
           "timePrecision": "exact",
-          "ageHours": 4.19,
+          "ageHours": 4.69,
           "freshnessBasis": "Karl-Anthony Towns says the chances \"don't look good\" for him getting a new extension with the Knicks before the start of the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -438,11 +496,11 @@
             }
           ],
           "id": "a415-efd4b7a9e60a7326",
-          "feedRank": 14,
+          "feedRank": 16,
           "compactHeadline": "Knicks' Karl-Anthony Towns not expecting contract extension soon"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-73fd43acce532078"
           ],
@@ -453,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:41:42Z",
           "timePrecision": "exact",
-          "ageHours": 2.33,
+          "ageHours": 2.84,
           "freshnessBasis": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -467,11 +525,11 @@
             }
           ],
           "id": "a415-42a8527353c5b893",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Sources: Clippers' Max Strus (foot) out at least 4 weeks"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-a86d7f43adcb7d9f"
           ],
@@ -482,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:23:55Z",
           "timePrecision": "exact",
-          "ageHours": 3.63,
+          "ageHours": 4.13,
           "freshnessBasis": "Hornets guard Coby White suffered a left calf strain during training camp and will miss the remainder of preseason, the team announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -496,66 +554,8 @@
             }
           ],
           "id": "a415-fa240759bca721e9",
-          "feedRank": 16,
-          "compactHeadline": "Hornets guard Coby White to sit preseason after calf strain"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-f97f0d936b31dca0"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "LeBron James, Joel Embiid and Tyrese Maxey will sit out the 76ers' preseason opener against the Knicks on Monday night.",
-          "text": "LeBron James, Joel Embiid and Tyrese Maxey will sit out the 76ers' preseason opener against the Knicks on Monday night.",
-          "entities": [],
-          "occurredAt": "2026-10-05T21:19:12Z",
-          "timePrecision": "exact",
-          "ageHours": 3.71,
-          "freshnessBasis": "LeBron James, Joel Embiid and Tyrese Maxey will sit out the 76ers' preseason opener against the Knicks on Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50111838/james-embiid-maxey-sit-76ers-preseason-opener-vs-knicks"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50111838/james-embiid-maxey-sit-76ers-preseason-opener-vs-knicks"
-            }
-          ],
-          "id": "a415-d2db15f33bb5485e",
-          "feedRank": 17,
-          "compactHeadline": "James, Embiid, Maxey sit out 76ers' preseason opener vs. Knicks"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-00091df77097e5f1"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
-          "text": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
-          "entities": [],
-          "occurredAt": "2026-10-05T14:00:47Z",
-          "timePrecision": "exact",
-          "ageHours": 11.01,
-          "freshnessBasis": "From on-court schemes to a private team dinner to an attempt at divine intervention, here's what happened in LeBron's first camp with the 76ers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50104877/lebron-james-philadelphia-76ers-training-camp"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50104877/lebron-james-philadelphia-76ers-training-camp"
-            }
-          ],
-          "id": "a415-6aa0a4a0dca9bc0b",
           "feedRank": 18,
-          "compactHeadline": "Behind the scenes inside LeBron's first 76ers training camp"
+          "compactHeadline": "Hornets guard Coby White to sit preseason after calf strain"
         }
       ]
     },
@@ -575,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:43:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.31,
+          "ageHours": 0.81,
           "freshnessBasis": "San Jose Sharks star center Macklin Celebrini, the club's recently named captain, was scratched from the team's lineup at the Dallas Stars on Monday night because of a lower-body injury.",
           "status": "active",
           "sourceUrls": [
@@ -604,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T08:11:47Z",
           "timePrecision": "exact",
-          "ageHours": 16.83,
+          "ageHours": 17.33,
           "freshnessBasis": "St. Louis Blues (1-1, in the Central Division) vs. Chicago Blackhawks (0-3, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -633,7 +633,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T08:11:40Z",
           "timePrecision": "exact",
-          "ageHours": 16.83,
+          "ageHours": 17.34,
           "freshnessBasis": "New York Islanders (1-1, in the Metropolitan Division) vs. New York Rangers (3-1, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -662,7 +662,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T05:36:51Z",
           "timePrecision": "exact",
-          "ageHours": 19.41,
+          "ageHours": 19.92,
           "freshnessBasis": "Florida Panthers forward Brad Marchand, out since March 6, made his season debut Sunday night against the Anaheim Ducks following an offseason that included surgery for the 38-year-old left wing, who scored 27 goals last season.",
           "status": "active",
           "sourceUrls": [
@@ -691,7 +691,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T17:31:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.5,
+          "ageHours": 8.01,
           "freshnessBasis": "Washington Capitals star Alex Ovechkin announced Monday that this will be his final season in the NHL.",
           "status": "active",
           "sourceUrls": [
@@ -720,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T04:01:31Z",
           "timePrecision": "exact",
-          "ageHours": 21.0,
+          "ageHours": 21.51,
           "freshnessBasis": "— Marc Gatcomb scored the go-ahead goal late on the second period and the Vegas Golden Knights downed the Vancouver Canucks 3-2 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -755,7 +755,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:01:30Z",
           "timePrecision": "exact",
-          "ageHours": 13.0,
+          "ageHours": 13.51,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -784,7 +784,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:14:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 5.29,
           "freshnessBasis": "England goalkeeper Jordan Pickford nearly caused a crash with two other cars during a bout of careless driving in his £200,000 Lamborghini supercar, a court has heard.",
           "status": "active",
           "sourceUrls": [
@@ -813,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T16:53:23Z",
           "timePrecision": "exact",
-          "ageHours": 8.14,
+          "ageHours": 8.64,
           "freshnessBasis": "Representatives of JJ Gabriel demanded that the teenager played at least 20 minutes in games against Sabah FK, Brighton and Bournemouth before beginning talks about signing a scholarship with Manchester United, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:46:40Z",
           "timePrecision": "exact",
-          "ageHours": 12.25,
+          "ageHours": 12.75,
           "freshnessBasis": "If Manchester City are punished by being relegated from the Premier League, group of players worth more than £1 billion in transfer fees would suddenly become available.",
           "status": "active",
           "sourceUrls": [
@@ -871,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T12:36:38Z",
           "timePrecision": "exact",
-          "ageHours": 12.42,
+          "ageHours": 12.92,
           "freshnessBasis": "Ledley King has urged Roberto De Zerbi's team to draw on the experiences of last season to end the club's winless start to the new Premier League campaign.",
           "status": "active",
           "sourceUrls": [
@@ -911,7 +911,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T20:50:04Z",
           "timePrecision": "exact",
-          "ageHours": 4.19,
+          "ageHours": 4.7,
           "freshnessBasis": "Air Force starting quarterback Liam Szarka will miss the rest of the season with a lower leg injury sustained in Saturday's win against Navy.",
           "status": "active",
           "sourceUrls": [
@@ -940,7 +940,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T19:49:54Z",
           "timePrecision": "exact",
-          "ageHours": 5.2,
+          "ageHours": 5.7,
           "freshnessBasis": "Notre Dame might be without All-American cornerback Leonard Moore as he in the concussion protocol and considered questionable for Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -969,7 +969,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T22:37:51Z",
           "timePrecision": "exact",
-          "ageHours": 2.4,
+          "ageHours": 2.9,
           "freshnessBasis": "Arizona leading receiver Tre Spivey, injured on the final play of the first half of the Wildcats' 34-7 win over the Cincinnati Bearcats, will miss the remainder of the season with a broken foot, coach Brent Brennan told reporters on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -998,7 +998,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T13:47:11Z",
           "timePrecision": "exact",
-          "ageHours": 11.24,
+          "ageHours": 11.74,
           "freshnessBasis": "Following dominant victories and a few close calls in Week 5, here are our postseason projections.",
           "status": "active",
           "sourceUrls": [
@@ -1027,7 +1027,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T00:28:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
+          "ageHours": 1.06,
           "freshnessBasis": "The Big Ten acknowledged an officiating error in Saturday's Maryland-Nebraska game that should have resulted in the Huskers retrying a point-after-touchdown attempt.",
           "status": "active",
           "sourceUrls": [
@@ -1056,7 +1056,7 @@
           "entities": [],
           "occurredAt": "2026-10-05T21:38:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.38,
+          "ageHours": 3.88,
           "freshnessBasis": "West Virginia football commit Chris Wilson Jr. was killed in an overnight shooting in Muncie, Indiana, according to local police.",
           "status": "active",
           "sourceUrls": [
@@ -1096,7 +1096,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 93,
+    "freshCandidateCount": 95,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
