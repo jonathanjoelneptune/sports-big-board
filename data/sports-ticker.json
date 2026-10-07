@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-07T01:31:36Z",
+  "generatedAt": "2026-10-07T02:01:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "4f5d14025ca810aa7f937f873dd39a102e8e7e9e17b8edae5b0f5c64179bd2e1",
+  "sourceCandidateHash": "f4826dfd3b7e5812ae7d84c9725c5bc829e9501ff79627508cb2c415ac167f64",
   "leagues": [
     {
       "league": "MLB",
@@ -14,6 +14,41 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-64bfe6b47625eb1f"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Yoshinobu Yamamoto dominated the much-anticipated matchup with Atlanta ace Chris Sale, and Kiké Hernández hit a two-run homer as the Dodgers beat the Braves 3-1 to take a 2-1 lead in the NLDS.",
+          "text": "Yoshinobu Yamamoto dominated the much-anticipated matchup with Atlanta ace Chris Sale, and Kiké Hernández hit a two-run homer as the Dodgers beat the Braves 3-1 to take a 2-1 lead in the NLDS.",
+          "entities": [],
+          "occurredAt": "2026-10-06T22:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.03,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 3, Atlanta Braves 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-06",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves"
+            }
+          ],
+          "id": "a415-3837a69fae75ffc7",
+          "feedRank": 1,
+          "compactHeadline": "Yamamoto pitches Dodgers to Game 3 win, 2-1 NLDS lead vs. Braves"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-d7bea86d87f42832"
           ],
           "type": "INJURY",
@@ -21,9 +56,9 @@
           "headline": "The Padres will be without star closer Mason Miller for Tuesday night's elimination game after he was placed on the paternity list shortly before the start of Game 3.",
           "text": "The Padres will be without star closer Mason Miller for Tuesday night's elimination game after he was placed on the paternity list shortly before the start of Game 3.",
           "entities": [],
-          "occurredAt": "2026-10-07T01:14:07Z",
+          "occurredAt": "2026-10-07T01:36:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.29,
+          "ageHours": 0.42,
           "freshnessBasis": "The Padres will be without star closer Mason Miller for Tuesday night's elimination game after he was placed on the paternity list shortly before the start of Game 3.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +72,11 @@
             }
           ],
           "id": "a415-d591ebce32205ee7",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Padres place Mason Miller on paternity list; out for Game 3"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -52,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T01:07:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.39,
+          "ageHours": 0.89,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +101,8 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 2,
-          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-64bfe6b47625eb1f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Los Angeles Dodgers 3, Atlanta Braves 1.",
-          "text": "Highlightly final: Los Angeles Dodgers 3, Atlanta Braves 1.",
-          "entities": [],
-          "occurredAt": "2026-10-06T22:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.53,
-          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 3, Atlanta Braves 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-10-06",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-3837a69fae75ffc7",
           "feedRank": 3,
-          "compactHeadline": "Los Angeles Dodgers beat Atlanta Braves 3-1"
+          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
           "rank": 4,
@@ -110,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T15:35:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.94,
+          "ageHours": 10.44,
           "freshnessBasis": "San Francisco led the major leagues with 2,379 days on the injured list and 44 IL placements, ending the Dodgers streak of 3 consecutive seasons with the most, according to Major League Baseball.",
           "status": "active",
           "sourceUrls": [
@@ -139,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T17:27:47Z",
           "timePrecision": "exact",
-          "ageHours": 8.06,
+          "ageHours": 8.56,
           "freshnessBasis": "If they're going to mount an NLDS comeback, the Pads will need to mirror the perseverance of their biggest star.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T13:00:43Z",
           "timePrecision": "exact",
-          "ageHours": 12.51,
+          "ageHours": 13.02,
           "freshnessBasis": "The Yankees committed four errors, including three in the first inning, among other miscues in a shocking display of postseason baseball, as New York lost 5-2 to the Tampa Bay Rays in Game 2 of the American League Division Series.",
           "status": "active",
           "sourceUrls": [
@@ -201,9 +207,9 @@
           "headline": "Tyreek Hill's wife recounted details of assault and verbal abuse during testimony Tuesday on the first day of a civil assault-and-battery trial in Florida, proceedings that began a day after ESPN reported Hill would potentially sign an NFL contract soon.",
           "text": "Tyreek Hill's wife recounted details of assault and verbal abuse during testimony Tuesday on the first day of a civil assault-and-battery trial in Florida, proceedings that began a day after ESPN reported Hill would potentially sign an NFL contract soon.",
           "entities": [],
-          "occurredAt": "2026-10-07T01:26:47Z",
+          "occurredAt": "2026-10-07T01:36:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
+          "ageHours": 0.43,
           "freshnessBasis": "Tyreek Hill's wife recounted details of assault and verbal abuse during testimony Tuesday on the first day of a civil assault-and-battery trial in Florida, proceedings that began a day after ESPN reported Hill would potentially sign an NFL contract soon.",
           "status": "active",
           "sourceUrls": [
@@ -230,9 +236,9 @@
           "headline": "Giants receiver Braxton Berrios will undergo season-ending surgery on his foot, he announced Tuesday on Instagram.",
           "text": "Giants receiver Braxton Berrios will undergo season-ending surgery on his foot, he announced Tuesday on Instagram.",
           "entities": [],
-          "occurredAt": "2026-10-07T01:22:29Z",
+          "occurredAt": "2026-10-07T01:35:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.15,
+          "ageHours": 0.44,
           "freshnessBasis": "Giants receiver Braxton Berrios will undergo season-ending surgery on his foot, he announced Tuesday on Instagram.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T15:25:24Z",
           "timePrecision": "exact",
-          "ageHours": 10.1,
+          "ageHours": 10.6,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T00:56:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.59,
+          "ageHours": 1.09,
           "freshnessBasis": "Three friends of Nolan Wells, a Black college student who went missing from a Mississippi island during a Fourth of July celebration and was later found dead, are suing Terrell Owens for defamation.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T18:29:03Z",
           "timePrecision": "exact",
-          "ageHours": 7.04,
+          "ageHours": 7.54,
           "freshnessBasis": "The NFL Referees Association said it will challenge the severity of the suspensions of two officials for unprofessional conduct.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T21:28:10Z",
           "timePrecision": "exact",
-          "ageHours": 4.06,
+          "ageHours": 4.56,
           "freshnessBasis": "Eagles two-time All-Pro right tackle Lane Johnson announced his retirement Tuesday, ending a 14-year career spent entirely in Philadelphia.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +389,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.03,
           "freshnessBasis": "Highlightly final: Brooklyn Nets 124, Charlotte Hornets 90.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T18:37:19Z",
           "timePrecision": "exact",
-          "ageHours": 6.9,
+          "ageHours": 7.41,
           "freshnessBasis": "Karl-Anthony Towns and the Knicks are far apart on extension talks. ESPN insiders break down each side, plus project where this saga is headed.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T13:01:23Z",
           "timePrecision": "exact",
-          "ageHours": 12.5,
+          "ageHours": 13.0,
           "freshnessBasis": "Karl-Anthony Towns says the chances \"don't look good\" for him getting a new extension with the Knicks before the start of the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -468,9 +474,9 @@
           "headline": "Tyrese Haliburton purchased tickets for the student section at his alma mater Iowa State for the Pacers' first preseason game Wednesday.",
           "text": "Tyrese Haliburton purchased tickets for the student section at his alma mater Iowa State for the Pacers' first preseason game Wednesday.",
           "entities": [],
-          "occurredAt": "2026-10-07T01:07:48Z",
+          "occurredAt": "2026-10-07T01:35:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.4,
+          "ageHours": 0.44,
           "freshnessBasis": "Tyrese Haliburton purchased tickets for the student section at his alma mater Iowa State for the Pacers' first preseason game Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T03:16:14Z",
           "timePrecision": "exact",
-          "ageHours": 22.26,
+          "ageHours": 22.76,
           "freshnessBasis": "Just five minutes into the preseason opener against the Knicks on Monday, 76ers backup center Ariel Hukporti suffered a right leg injury, causing him to leave the game.",
           "status": "active",
           "sourceUrls": [
@@ -519,31 +525,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-d2d83e661c113369"
+            "cand-fbb685b52f060b69"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Los Angeles Lakers 103, Sacramento Kings 127.",
-          "text": "Highlightly final: Los Angeles Lakers 103, Sacramento Kings 127.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The 76ers' thin frontcourt took a big blow Tuesday after an MRI confirmed backup center Ariel Hukporti suffered a torn right Achilles.",
+          "text": "The 76ers' thin frontcourt took a big blow Tuesday after an MRI confirmed backup center Ariel Hukporti suffered a torn right Achilles.",
           "entities": [],
-          "occurredAt": "2026-10-06T02:00:00Z",
+          "occurredAt": "2026-10-06T19:47:05Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Los Angeles Lakers 103, Sacramento Kings 127.",
+          "ageHours": 6.24,
+          "freshnessBasis": "The 76ers' thin frontcourt took a big blow Tuesday after an MRI confirmed backup center Ariel Hukporti suffered a torn right Achilles.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://www.espn.com/nba/story/_/id/50118908/76ers-lose-backup-center-ariel-hukporti-torn-achilles"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-05",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50118908/76ers-lose-backup-center-ariel-hukporti-torn-achilles"
             }
           ],
-          "id": "a415-d7e0e75188e20607",
+          "id": "a415-1802b5c78a84bde0",
           "feedRank": 18,
-          "compactHeadline": "Sacramento Kings beat Los Angeles Lakers 127-103"
+          "compactHeadline": "76ers lose backup center Ariel Hukporti to torn Achilles"
         }
       ]
     },
@@ -563,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T21:36:56Z",
           "timePrecision": "exact",
-          "ageHours": 3.91,
+          "ageHours": 4.41,
           "freshnessBasis": "Ever since the NHL's all-time goals leader announced his retirement, ticket prices to Capitals games have been soaring -- and not just for home games.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T19:28:48Z",
           "timePrecision": "exact",
-          "ageHours": 6.05,
+          "ageHours": 6.55,
           "freshnessBasis": "Panthers captain Aleksander Barkov got good news on his lower-body injury as he won't need surgery, but will miss six to eight weeks.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T17:27:11Z",
           "timePrecision": "exact",
-          "ageHours": 8.07,
+          "ageHours": 8.57,
           "freshnessBasis": "Red Wings center Dylan Larkin, 30, is expected to make his season debut Tuesday night against the Senators after demanding a trade in the off-season.",
           "status": "active",
           "sourceUrls": [
@@ -641,6 +647,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-238e14963831cae1"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "No. 1 draft pick Gavin McKenna scored his first NHL goal with the Maple Leafs on Tuesday night.",
+          "text": "No. 1 draft pick Gavin McKenna scored his first NHL goal with the Maple Leafs on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-10-07T01:47:23Z",
+          "timePrecision": "exact",
+          "ageHours": 0.24,
+          "freshnessBasis": "No. 1 draft pick Gavin McKenna scored his first NHL goal with the Maple Leafs on Tuesday night.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50121393/maple-leafs-gavin-mckenna-goal-assist-predators"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50121393/maple-leafs-gavin-mckenna-goal-assist-predators"
+            }
+          ],
+          "id": "a415-5692638534dd6b85",
+          "feedRank": 22,
+          "compactHeadline": "Maple Leafs' Gavin McKenna has goal, assist against Predators"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-dd316ff7d87bafe7"
           ],
           "type": "INJURY",
@@ -650,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T03:49:23Z",
           "timePrecision": "exact",
-          "ageHours": 21.7,
+          "ageHours": 22.2,
           "freshnessBasis": "San Jose Sharks star center Macklin Celebrini, the franchise's recently named captain, was scratched before his club lost to the Dallas Stars, 5-0, on Monday night because of a lower-body injury.",
           "status": "active",
           "sourceUrls": [
@@ -664,11 +699,11 @@
             }
           ],
           "id": "a415-a624ea4292c5027e",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Celebrini misses Sharks' 5-0 loss with lower-body injury"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-f2635362e2ad1b81"
           ],
@@ -679,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T22:17:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.24,
+          "ageHours": 3.74,
           "freshnessBasis": "The winless Philadelphia Flyers added to their forward group Tuesday, signing veteran winger Michael Bunting, 30, in the hopes that he can give them a spark following some alarming early season struggles, including scoring just five goals in four games.",
           "status": "active",
           "sourceUrls": [
@@ -693,37 +728,8 @@
             }
           ],
           "id": "a415-bcb681455a711ef5",
-          "feedRank": 23,
-          "compactHeadline": "Winless Philadelphia Flyers add depth in Michael Bunting"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-7897004ad7975091"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Maple Leafs rookie Gavin McKenna is experiencing first-hand the pressure of being a first overall pick -- one who still hasn't scored an NHL point.",
-          "text": "Maple Leafs rookie Gavin McKenna is experiencing first-hand the pressure of being a first overall pick -- one who still hasn't scored an NHL point.",
-          "entities": [],
-          "occurredAt": "2026-10-06T20:20:59Z",
-          "timePrecision": "exact",
-          "ageHours": 5.18,
-          "freshnessBasis": "Maple Leafs rookie Gavin McKenna is experiencing first-hand the pressure of being a first overall pick -- one who still hasn't scored an NHL point.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50119151/scoreless-leafs-rookie-mckenna-slow-start-believe-myself"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50119151/scoreless-leafs-rookie-mckenna-slow-start-believe-myself"
-            }
-          ],
-          "id": "a415-ccdf82ee864e12e5",
           "feedRank": 24,
-          "compactHeadline": "Scoreless Leafs rookie McKenna on slow start: 'Still believe in myself'"
+          "compactHeadline": "Winless Philadelphia Flyers add depth in Michael Bunting"
         }
       ]
     },
@@ -743,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T13:48:19Z",
           "timePrecision": "exact",
-          "ageHours": 11.72,
+          "ageHours": 12.22,
           "freshnessBasis": "Viktor Gyökeres will return to Arsenal in confident mood after setting a new Nations League record with four more goals for Sweden over the international break.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T12:22:37Z",
           "timePrecision": "exact",
-          "ageHours": 13.15,
+          "ageHours": 13.65,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries during the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T20:21:46Z",
           "timePrecision": "exact",
-          "ageHours": 5.16,
+          "ageHours": 5.67,
           "freshnessBasis": "Cristiano Ronaldo walked out of the Portugal national team's camp after being benched. It is far from the first high-profile row of his two decades at the top.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T17:14:58Z",
           "timePrecision": "exact",
-          "ageHours": 8.28,
+          "ageHours": 8.78,
           "freshnessBasis": "ESPN has you covered with everything you need to know about the latest in the Manchester City scandal.",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T13:08:24Z",
           "timePrecision": "exact",
-          "ageHours": 12.39,
+          "ageHours": 12.89,
           "freshnessBasis": "Four clubs -- Arsenal, Liverpool, Man United and Tottenham -- retained their legal rights in the Premier League's case against Man City. Now that a guilty verdict has been issued, what will they do in response?",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +905,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T13:44:16Z",
           "timePrecision": "exact",
-          "ageHours": 11.79,
+          "ageHours": 12.29,
           "freshnessBasis": "Find out which teams our experts think will make this season's CFP.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +934,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T10:05:52Z",
           "timePrecision": "exact",
-          "ageHours": 15.43,
+          "ageHours": 15.93,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -957,7 +963,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T05:15:28Z",
           "timePrecision": "exact",
-          "ageHours": 20.27,
+          "ageHours": 20.77,
           "freshnessBasis": "QB Dante Moore participated in Oregon's practice Monday, two weeks after he sustained a concussion against USC, coach Dan Lanning said.",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +992,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T19:44:05Z",
           "timePrecision": "exact",
-          "ageHours": 5.79,
+          "ageHours": 6.29,
           "freshnessBasis": "South Carolina edge rusher Dylan Stewart returned to practice after being suspended for multiple incidents in a game against Alabama. His status against Florida on Saturday is undecided.",
           "status": "active",
           "sourceUrls": [
@@ -1015,7 +1021,7 @@
           "entities": [],
           "occurredAt": "2026-10-06T19:21:27Z",
           "timePrecision": "exact",
-          "ageHours": 6.17,
+          "ageHours": 6.67,
           "freshnessBasis": "No disciplinary action will be taken against game officials who worked last Saturday's Maryland-Nebraska game or against Cornhuskers coach Matt Rhule for his postgame criticism of the crew.",
           "status": "active",
           "sourceUrls": [
@@ -1044,7 +1050,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T00:00:40Z",
           "timePrecision": "exact",
-          "ageHours": 1.52,
+          "ageHours": 2.02,
           "freshnessBasis": "Tennessee sophomore quarterback George MacIntyre will start over freshman Faizon Brandon on Saturday against Arkansas, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -1084,7 +1090,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 89,
+    "freshCandidateCount": 90,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
