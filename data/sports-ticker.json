@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-08T03:01:34Z",
+  "generatedAt": "2026-10-08T03:31:43Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "fbc04c76a5598c0339a789c77677df9861f28f44e09e19be07f05aaa958c9d22",
+  "sourceCandidateHash": "2de3e975e5035002f35e30188353580783ce9c839764c7d6f98d9b2baed81456",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,53 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-2aa72ff92ae8bb2f"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "The Dodgers beat the Braves 4-1 to clinch the best-of-five matchup in Game 4 and advance to their third straight NLCS.",
+          "text": "The Dodgers beat the Braves 4-1 to clinch the best-of-five matchup in Game 4 and advance to their third straight NLCS.",
+          "entities": [],
+          "occurredAt": "2026-10-07T22:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.53,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Atlanta Braves 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50129200/nonchalant-dodgers-dispatch-braves-advance-5th-straight-nlcs",
+            "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves",
+            "http://www.espn.com/mlb/recap?gameId=401908015"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-07",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50129200/nonchalant-dodgers-dispatch-braves-advance-5th-straight-nlcs"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908015"
+            }
+          ],
+          "id": "a415-c79d3470d173f722",
+          "feedRank": 1,
+          "compactHeadline": "Dodgers dispatch Braves, advance to third straight NLCS"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-754538cbefd78d44"
           ],
@@ -23,7 +70,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Chicago White Sox 3.",
           "status": "active",
           "sourceUrls": [
@@ -43,31 +90,27 @@
             }
           ],
           "id": "a415-caa507ef56d5f56b",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Ramirez does it all as Guardians stay alive in 'do-or-die' Game 3"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
-            "cand-2aa72ff92ae8bb2f"
+            "cand-5515a2b96144e271"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "The Dodgers beat the Braves 4-1 to clinch the best-of-five matchup in Game 4 and advance to their third straight NLCS.",
-          "text": "The Dodgers beat the Braves 4-1 to clinch the best-of-five matchup in Game 4 and advance to their third straight NLCS.",
+          "headline": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
+          "text": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
           "entities": [],
-          "occurredAt": "2026-10-07T22:00:00Z",
+          "occurredAt": "2026-10-08T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
-          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Atlanta Braves 1.",
+          "ageHours": 3.53,
+          "freshnessBasis": "Highlightly final: Tampa Bay Rays 4, New York Yankees 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/50129200/nonchalant-dodgers-dispatch-braves-advance-5th-straight-nlcs",
-            "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions",
-            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
-            "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves",
-            "http://www.espn.com/mlb/recap?gameId=401908015"
+            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
           ],
           "sources": [
             {
@@ -78,35 +121,44 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50129200/nonchalant-dodgers-dispatch-braves-advance-5th-straight-nlcs"
-            },
+              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            }
+          ],
+          "id": "a415-ae422d4db5abd478",
+          "feedRank": 3,
+          "compactHeadline": "Tampa Bay Rays beat New York Yankees 4-3"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-1c2cb56427b5f9b9"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Here's how the winter looks in New York and Atlanta following division series losses.",
+          "text": "Here's how the winter looks in New York and Atlanta following division series losses.",
+          "entities": [],
+          "occurredAt": "2026-10-08T03:20:52Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "Here's how the winter looks in New York and Atlanta following division series losses.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions"
+          ],
+          "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908015"
             }
           ],
-          "id": "a415-c79d3470d173f722",
-          "feedRank": 2,
-          "compactHeadline": "Los Angeles Dodgers beat Atlanta Braves 4-1"
+          "id": "a415-b8ac8b0563fb1c61",
+          "feedRank": 4,
+          "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -115,9 +167,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-08T01:05:25Z",
+          "occurredAt": "2026-10-08T03:15:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.94,
+          "ageHours": 0.27,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -131,11 +183,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-8fba57422a9636b5"
           ],
@@ -146,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T20:27:45Z",
           "timePrecision": "exact",
-          "ageHours": 6.56,
+          "ageHours": 7.07,
           "freshnessBasis": "The games are heating up for the MLB postseason, and the foods are following suit. Here are the top dishes across the league for the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -160,66 +212,8 @@
             }
           ],
           "id": "a415-c5d36b2a3a695909",
-          "feedRank": 4,
-          "compactHeadline": "Rays' 'Clubhouse Tomahawk' leads new MLB postseason foods"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-5612ecc94691fbdc"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Say it ain't so, the Padres won't go (down without a fight), beating the Brewers 4-3 with Tom DeLonge in the house.",
-          "text": "Say it ain't so, the Padres won't go (down without a fight), beating the Brewers 4-3 with Tom DeLonge in the house.",
-          "entities": [],
-          "occurredAt": "2026-10-07T15:36:25Z",
-          "timePrecision": "exact",
-          "ageHours": 11.42,
-          "freshnessBasis": "Say it ain't so, the Padres won't go (down without a fight), beating the Brewers 4-3 with Tom DeLonge in the house.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50124803/san-diego-padres-blink-182-all-small-things-delonge"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50124803/san-diego-padres-blink-182-all-small-things-delonge"
-            }
-          ],
-          "id": "a415-71095f38597786c1",
-          "feedRank": 5,
-          "compactHeadline": "Padres fans' 'All The Small Things' rendition makes Blink-182 front man emotional"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-33bc007b8066f2d0"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Panthers forward Brad Marchand, who just made his season debut Sunday night, sustained a left leg injury in the second period of his club's 2-1 victory over the Kings on Tuesday night and was helped off the ice by his teammates.",
-          "text": "Panthers forward Brad Marchand, who just made his season debut Sunday night, sustained a left leg injury in the second period of his club's 2-1 victory over the Kings on Tuesday night and was helped off the ice by his teammates.",
-          "entities": [],
-          "occurredAt": "2026-10-07T06:12:01Z",
-          "timePrecision": "exact",
-          "ageHours": 20.83,
-          "freshnessBasis": "Panthers forward Brad Marchand, who just made his season debut Sunday night, sustained a left leg injury in the second period of his club's 2-1 victory over the Kings on Tuesday night and was helped off the ice by his teammates.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50122407/marchand-exits-panthers-win-2nd-period-leg-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/mlb/story/_/id/50122407/marchand-exits-panthers-win-2nd-period-leg-injury"
-            }
-          ],
-          "id": "a415-dc537df1940d1cbd",
           "feedRank": 6,
-          "compactHeadline": "Marchand exits Panthers' win in 2nd period with leg injury"
+          "compactHeadline": "Rays' 'Clubhouse Tomahawk' leads new MLB postseason foods"
         }
       ]
     },
@@ -239,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T22:38:43Z",
           "timePrecision": "exact",
-          "ageHours": 4.38,
+          "ageHours": 4.88,
           "freshnessBasis": "Giants star wide receiver Malik Nabers did not practice Wednesday because of a knee injury, saying only he was more \"sore\" than usual.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T23:17:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.74,
+          "ageHours": 4.24,
           "freshnessBasis": "The Ravens acquired two-time Pro Bowl center Cam Jurgens in a trade with the Eagles.",
           "status": "active",
           "sourceUrls": [
@@ -297,7 +291,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T22:27:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.56,
+          "ageHours": 5.07,
           "freshnessBasis": "The Vikings are signing wide receiver Odell Beckham Jr. to their practice squad, a source told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -326,7 +320,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T20:37:40Z",
           "timePrecision": "exact",
-          "ageHours": 6.4,
+          "ageHours": 6.9,
           "freshnessBasis": "The 49ers are again among the most injured teams in the NFL. We answered questions about their injuries and how they will affect the 2026 season.",
           "status": "active",
           "sourceUrls": [
@@ -355,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T22:50:55Z",
           "timePrecision": "exact",
-          "ageHours": 4.18,
+          "ageHours": 4.68,
           "freshnessBasis": "Lions tight end Sam LaPorta is currently focused on the 2026 season but acknowledged for the first time after Wednesday's practice that he has broken off contract talks on an extension.",
           "status": "active",
           "sourceUrls": [
@@ -384,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T10:18:34Z",
           "timePrecision": "exact",
-          "ageHours": 16.72,
+          "ageHours": 17.22,
           "freshnessBasis": "Just how good are the 49ers? Are the Texans and Bucs better than their records? Are the Giants and Browns worse? We put the NFL season's first month in historical context.",
           "status": "active",
           "sourceUrls": [
@@ -410,151 +404,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-d6182b8d93890cdf"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Orlando Magic 122, Memphis Grizzlies 118.",
-          "text": "Highlightly final: Orlando Magic 122, Memphis Grizzlies 118.",
-          "entities": [],
-          "occurredAt": "2026-10-08T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.03,
-          "freshnessBasis": "Highlightly final: Orlando Magic 122, Memphis Grizzlies 118.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-9700e3723ad7d30c",
-          "feedRank": 13,
-          "compactHeadline": "Orlando Magic beat Memphis Grizzlies 122-118"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-030c13b598b6e290"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Phoenix Suns 117, Chicago Bulls 124.",
-          "text": "Highlightly final: Phoenix Suns 117, Chicago Bulls 124.",
-          "entities": [],
-          "occurredAt": "2026-10-08T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.03,
-          "freshnessBasis": "Highlightly final: Phoenix Suns 117, Chicago Bulls 124.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-4429014adb37e8cd",
-          "feedRank": 14,
-          "compactHeadline": "Chicago Bulls beat Phoenix Suns 124-117"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-37da6277498dcd9a"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Milwaukee Bucks 128, Oklahoma City Thunder 126.",
-          "text": "Highlightly final: Milwaukee Bucks 128, Oklahoma City Thunder 126.",
-          "entities": [],
-          "occurredAt": "2026-10-08T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.03,
-          "freshnessBasis": "Highlightly final: Milwaukee Bucks 128, Oklahoma City Thunder 126.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-b15698402dbba789",
-          "feedRank": 15,
-          "compactHeadline": "Milwaukee Bucks beat Oklahoma City Thunder 128-126"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-a83bbd87d66c5740"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: New York Liberty Women 101, Atlanta Dream Women 98.",
-          "text": "Highlightly final: New York Liberty Women 101, Atlanta Dream Women 98.",
-          "entities": [],
-          "occurredAt": "2026-10-07T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.53,
-          "freshnessBasis": "Highlightly final: New York Liberty Women 101, Atlanta Dream Women 98.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-ca805b11fc63ff99",
-          "feedRank": 16,
-          "compactHeadline": "New York Liberty Women beat Atlanta Dream Women 101-98"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-54dffcbc00af08e2"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Minnesota Timberwolves 112, Indiana Pacers 123.",
-          "text": "Highlightly final: Minnesota Timberwolves 112, Indiana Pacers 123.",
-          "entities": [],
-          "occurredAt": "2026-10-07T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "Highlightly final: Minnesota Timberwolves 112, Indiana Pacers 123.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-4b54abd2e54c5c2d",
-          "feedRank": 17,
-          "compactHeadline": "Indiana Pacers beat Minnesota Timberwolves 123-112"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-f4c49129429d2728"
           ],
           "type": "RANKING",
@@ -564,7 +413,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T14:18:28Z",
           "timePrecision": "exact",
-          "ageHours": 12.72,
+          "ageHours": 13.22,
           "freshnessBasis": "ESPN's Basketball Power Index projections for the 2026-27 NBA season are out, including a ranking of all 30 teams.",
           "status": "active",
           "sourceUrls": [
@@ -578,8 +427,124 @@
             }
           ],
           "id": "a415-b926a87fecbea1ab",
-          "feedRank": 18,
+          "feedRank": 13,
           "compactHeadline": "Basketball Power Index: NBA projections, playoff chances for 2026-27 season"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c98cee05dfe6a179"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Pacers star Tyrese Haliburton scored seven points during his 16 minutes of action against the Wolves on Wednesday. It was his first game in more than 16 months, as Haliburton was recovering from a torn Achilles.",
+          "text": "Pacers star Tyrese Haliburton scored seven points during his 16 minutes of action against the Wolves on Wednesday. It was his first game in more than 16 months, as Haliburton was recovering from a torn Achilles.",
+          "entities": [],
+          "occurredAt": "2026-10-08T03:27:14Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Pacers star Tyrese Haliburton scored seven points during his 16 minutes of action against the Wolves on Wednesday. It was his first game in more than 16 months, as Haliburton was recovering from a torn Achilles.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50130092/tyrese-haliburton-scores-7-1st-game-more-16-months"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50130092/tyrese-haliburton-scores-7-1st-game-more-16-months"
+            }
+          ],
+          "id": "a415-a77363382f72b124",
+          "feedRank": 14,
+          "compactHeadline": "Tyrese Haliburton scores 7 in 1st game in more than 16 months"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-73fd43acce532078"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
+          "text": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-10-07T10:51:41Z",
+          "timePrecision": "exact",
+          "ageHours": 16.67,
+          "freshnessBasis": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50112557/sources-clippers-max-strus-foot-least-4-weeks"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50112557/sources-clippers-max-strus-foot-least-4-weeks"
+            }
+          ],
+          "id": "a415-42a8527353c5b893",
+          "feedRank": 15,
+          "compactHeadline": "Sources: Clippers' Max Strus (foot) out at least 4 weeks"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-b871030a2368d0d2"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Broadcaster Mike Breen apologized Wednesday for the reaction to a story he shared about LeBron James calling out Joel Embiid for showing up late, a story James has since disputed.",
+          "text": "Broadcaster Mike Breen apologized Wednesday for the reaction to a story he shared about LeBron James calling out Joel Embiid for showing up late, a story James has since disputed.",
+          "entities": [],
+          "occurredAt": "2026-10-08T00:01:26Z",
+          "timePrecision": "exact",
+          "ageHours": 3.5,
+          "freshnessBasis": "Broadcaster Mike Breen apologized Wednesday for the reaction to a story he shared about LeBron James calling out Joel Embiid for showing up late, a story James has since disputed.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50127138/mike-breen-apologizes-lebron-james-refutes-embiid-story"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50127138/mike-breen-apologizes-lebron-james-refutes-embiid-story"
+            }
+          ],
+          "id": "a415-dab51bb472afddc1",
+          "feedRank": 16,
+          "compactHeadline": "Mike Breen apologizes after LeBron James disputes Embiid story"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-98e5940669f4900d"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The five Buss siblings attempting to sell the family's remaining shares in the Lakers officially filed their case against acting governor Jeanie Buss.",
+          "text": "The five Buss siblings attempting to sell the family's remaining shares in the Lakers officially filed their case against acting governor Jeanie Buss.",
+          "entities": [],
+          "occurredAt": "2026-10-07T23:29:41Z",
+          "timePrecision": "exact",
+          "ageHours": 4.03,
+          "freshnessBasis": "The five Buss siblings attempting to sell the family's remaining shares in the Lakers officially filed their case against acting governor Jeanie Buss.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50128244/buss-siblings-formally-file-jeanie-lakers-sale"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50128244/buss-siblings-formally-file-jeanie-lakers-sale"
+            }
+          ],
+          "id": "a415-0f23f2b856110e56",
+          "feedRank": 17,
+          "compactHeadline": "Buss siblings formally file against Jeanie over Lakers sale"
         }
       ]
     },
@@ -599,7 +564,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T02:46:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.75,
           "freshnessBasis": "— Kyle Connor broke a tie with a minute left with his second goal of game, Stuart Skinner made 32 saves and the Winnipeg Jets beat the Colorado Avalanche 3-2 on Wednesday night for their third straight victory.",
           "status": "active",
           "sourceUrls": [
@@ -613,7 +578,7 @@
             }
           ],
           "id": "a415-875a6537fc5ca4a0",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Kyle Connor scores twice, Jets beat Avalanche 3-2 for 3rd straight victory"
         },
         {
@@ -628,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T02:18:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.72,
+          "ageHours": 1.22,
           "freshnessBasis": "— Tom Wilson had a goal and two assists, and the Washington Capitals held on for a win in Alex Ovechkin's final home opener, 5-3 over the Pittsburgh Penguins on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -642,7 +607,7 @@
             }
           ],
           "id": "a415-1030e4a4580778ba",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Capitals top Penguins 5-3 in Alex Ovechkin's final home opener in Washington"
         },
         {
@@ -657,7 +622,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T17:05:53Z",
           "timePrecision": "exact",
-          "ageHours": 9.93,
+          "ageHours": 10.43,
           "freshnessBasis": "The Penguins have acquired defenseman Spencer Stastney from the Oilers in exchange for forward Filip Hallander.",
           "status": "active",
           "sourceUrls": [
@@ -671,7 +636,7 @@
             }
           ],
           "id": "a415-6db042803e3d8f3e",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Penguins trade Filip Hallander to Oilers for Spencer Stastney"
         },
         {
@@ -686,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T08:33:42Z",
           "timePrecision": "exact",
-          "ageHours": 18.46,
+          "ageHours": 18.97,
           "freshnessBasis": "— Alexis Lafrenière recorded a hat trick, with two goals into an empty net, and had an assist as the New York Rangers extended their winning streak to four by defeating the crosstown...",
           "status": "active",
           "sourceUrls": [
@@ -700,8 +665,66 @@
             }
           ],
           "id": "a415-01eed059067a3627",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "Alexis Lafrenière has a hat trick as the Rangers beat the Islanders for their 4th win in a row"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-7fb031f1b5274e00"
+          ],
+          "type": "SUSPENSION",
+          "priority": 64,
+          "headline": "Mothers of players in the U10 club made jackets with \"Hitmen\" on the front and \"Hitmama Hockey\" on the back.",
+          "text": "Mothers of players in the U10 club made jackets with \"Hitmen\" on the front and \"Hitmama Hockey\" on the back.",
+          "entities": [],
+          "occurredAt": "2026-10-07T19:41:40Z",
+          "timePrecision": "exact",
+          "ageHours": 7.83,
+          "freshnessBasis": "Mothers of players in the U10 club made jackets with \"Hitmen\" on the front and \"Hitmama Hockey\" on the back.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/espn/story/_/id/50126876/u10-hockey-new-jersey-hitmamas-trademark-violation"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/espn/story/_/id/50126876/u10-hockey-new-jersey-hitmamas-trademark-violation"
+            }
+          ],
+          "id": "a415-354977789e9c999d",
+          "feedRank": 22,
+          "compactHeadline": "U10 hockey owner says parents' jackets violate trademark, threatens suspension"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-bbc9bf7ff7582081"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Chicago Blackhawks (1-3, in the Central Division) vs. New York Islanders (1-2, in the Metropolitan Division)",
+          "text": "Chicago Blackhawks (1-3, in the Central Division) vs. New York Islanders (1-2, in the Metropolitan Division)",
+          "entities": [],
+          "occurredAt": "2026-10-07T08:11:29Z",
+          "timePrecision": "exact",
+          "ageHours": 19.34,
+          "freshnessBasis": "Chicago Blackhawks (1-3, in the Central Division) vs. New York Islanders (1-2, in the Metropolitan Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892462"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892462"
+            }
+          ],
+          "id": "a415-21c639aae6e2b36f",
+          "feedRank": 23,
+          "compactHeadline": "Blackhawks visit the Islanders, look to end road losing streak"
         }
       ]
     },
@@ -721,7 +744,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T16:36:08Z",
           "timePrecision": "exact",
-          "ageHours": 10.42,
+          "ageHours": 10.93,
           "freshnessBasis": "Mathys Tel will be hoping to take his goal-scoring exploits with France Under-21s over the international break into Tottenham's fight to turn their Premier League season around.",
           "status": "active",
           "sourceUrls": [
@@ -735,7 +758,7 @@
             }
           ],
           "id": "a415-96be7ae2239954bf",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Tottenham's Mathys Tel equals France under-21 goalscoring record"
         },
         {
@@ -750,7 +773,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T16:18:52Z",
           "timePrecision": "exact",
-          "ageHours": 10.71,
+          "ageHours": 11.21,
           "freshnessBasis": "Mikel Arteta has signed a new contract to extend his stay at Arsenal, the Premier League champions confirmed.",
           "status": "active",
           "sourceUrls": [
@@ -764,7 +787,7 @@
             }
           ],
           "id": "a415-4107e17d9eaf4225",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Mikel Arteta signs new four-year Arsenal contract"
         },
         {
@@ -779,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T17:12:11Z",
           "timePrecision": "exact",
-          "ageHours": 9.82,
+          "ageHours": 10.33,
           "freshnessBasis": "Liverpool head coach Andoni Iraola has cast doubt on the chances of Alexander Isak and Cody Gakpo being fit to face Manchester City this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -793,7 +816,7 @@
             }
           ],
           "id": "a415-2f749d5af809d8bf",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Alexander Isak, Cody Gakpo in doubt for Liverpool vs. Man City clash"
         },
         {
@@ -808,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T11:06:46Z",
           "timePrecision": "exact",
-          "ageHours": 15.91,
+          "ageHours": 16.42,
           "freshnessBasis": "The Manchester City case, which has rocked English football to its core, wouldn't have been possible without Football Leaks and its founder, Rui Pinto. However, he is a complicated figure, with light and dark to his actions.",
           "status": "active",
           "sourceUrls": [
@@ -822,7 +845,7 @@
             }
           ],
           "id": "a415-20066cf5fc564d2c",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "We don't get Man City guilty verdict without hacker Rui Pinto, but it doesn't make him a hero"
         }
       ]
@@ -834,35 +857,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-6c6f1dbf75f9bbdf"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Philip Zinckernagel scored early in the second half and Maren Haile-Selassie had a late goal and an assist as Chicago Fire FC beat the Vancouver Whitecaps 3-1 on Tuesday night.",
-          "text": "Philip Zinckernagel scored early in the second half and Maren Haile-Selassie had a late goal and an assist as Chicago Fire FC beat the Vancouver Whitecaps 3-1 on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-10-07T03:31:27Z",
-          "timePrecision": "exact",
-          "ageHours": 23.5,
-          "freshnessBasis": "Philip Zinckernagel scored early in the second half and Maren Haile-Selassie had a late goal and an assist as Chicago Fire FC beat the Vancouver Whitecaps 3-1 on Tuesday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/761660"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761660"
-            }
-          ],
-          "id": "a415-937af5670de5d4b8",
-          "feedRank": 27,
-          "compactHeadline": "Fire beat Whitecaps in matchup of ex-Bayern teammates Lewandowski, Müller"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-670690ebff10d7ee"
           ],
           "type": "NEWS",
@@ -872,7 +866,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T15:33:46Z",
           "timePrecision": "exact",
-          "ageHours": 11.46,
+          "ageHours": 11.97,
           "freshnessBasis": "The cast of the hit comedy as well as NWSL veterans reflect on bringing authentic stories of women's soccer to a new stage.",
           "status": "active",
           "sourceUrls": [
@@ -890,7 +884,7 @@
           "compactHeadline": "How Jason Sudeikis and 'Ted Lasso' became champions for women's soccer"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-e0d7b53d44cb4cd7"
           ],
@@ -901,7 +895,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T11:17:27Z",
           "timePrecision": "exact",
-          "ageHours": 15.74,
+          "ageHours": 16.24,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -927,31 +921,37 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-05713f0b95e868bb"
+            "cand-b1d09285977cad19"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
-          "text": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Garrison Rippa made a go-ahead field goal in the final minute, and Rob Billings IV intercepted a pass seconds later as Jacksonville State beat Kennesaw State 27-26 on Wednesday night in a rematch of the 2025 Conference USA championship game.",
+          "text": "Garrison Rippa made a go-ahead field goal in the final minute, and Rob Billings IV intercepted a pass seconds later as Jacksonville State beat Kennesaw State 27-26 on Wednesday night in a rematch of the 2025 Conference USA championship game.",
           "entities": [],
-          "occurredAt": "2026-10-08T02:00:09Z",
+          "occurredAt": "2026-10-07T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.02,
-          "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "ageHours": 4.53,
+          "freshnessBasis": "Highlightly final: Jacksonville State Gamecocks 27, Kennesaw State Owls 26.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401871051"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-07",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+              "url": "http://www.espn.com/ncf/recap?gameId=401871051"
             }
           ],
-          "id": "a415-760398e856fefbfe",
+          "id": "a415-d585d6fb4195c3a6",
           "feedRank": 30,
-          "compactHeadline": "Oregon QB Moore ruled out for UCLA game, Raiola to get start"
+          "compactHeadline": "Garrison Rippa makes field goal with 51 seconds left as Jacksonville State tops Kennesaw State 27-26"
         },
         {
           "rank": 2,
@@ -963,9 +963,9 @@
           "headline": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "text": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "entities": [],
-          "occurredAt": "2026-10-08T01:11:47Z",
+          "occurredAt": "2026-10-08T03:13:23Z",
           "timePrecision": "exact",
-          "ageHours": 1.83,
+          "ageHours": 0.31,
           "freshnessBasis": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "status": "active",
           "sourceUrls": [
@@ -985,6 +985,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-05713f0b95e868bb"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "text": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "entities": [],
+          "occurredAt": "2026-10-08T02:00:09Z",
+          "timePrecision": "exact",
+          "ageHours": 1.53,
+          "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+            }
+          ],
+          "id": "a415-760398e856fefbfe",
+          "feedRank": 32,
+          "compactHeadline": "Oregon QB Moore ruled out for UCLA game, Raiola to get start"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-4f75ec3340bf8430"
           ],
           "type": "INJURY",
@@ -994,7 +1023,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T00:29:25Z",
           "timePrecision": "exact",
-          "ageHours": 2.54,
+          "ageHours": 3.04,
           "freshnessBasis": "BYU running back LJ Martin will be sidelined for at least a month with a lower body injury, sources told ESPN's Pete Thamel on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -1008,37 +1037,8 @@
             }
           ],
           "id": "a415-7d3bba2ff7c51c4c",
-          "feedRank": 32,
-          "compactHeadline": "Sources: Brigham Young tailback LJ Martin out for 4 to 6 weeks"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-b1d09285977cad19"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Jacksonville State Gamecocks 27, Kennesaw State Owls 26.",
-          "text": "Highlightly final: Jacksonville State Gamecocks 27, Kennesaw State Owls 26.",
-          "entities": [],
-          "occurredAt": "2026-10-07T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "Highlightly final: Jacksonville State Gamecocks 27, Kennesaw State Owls 26.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-10-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-d585d6fb4195c3a6",
           "feedRank": 33,
-          "compactHeadline": "Jacksonville State Gamecocks beat Kennesaw State Owls 27-26"
+          "compactHeadline": "Sources: Brigham Young tailback LJ Martin out for 4 to 6 weeks"
         },
         {
           "rank": 5,
@@ -1052,7 +1052,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T00:45:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 2.77,
           "freshnessBasis": "Alabama tight end Josh Ford broke his arm during last Saturday's win over Mississippi State, had surgery Sunday and is attempting to play vs No. 2 Georgia.",
           "status": "active",
           "sourceUrls": [
@@ -1081,7 +1081,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T02:27:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
+          "ageHours": 1.07,
           "freshnessBasis": "Iowa coach Kirk Ferentz said QB Hank Brown likely will be medically cleared for Friday's game but hasn't done much in practice.",
           "status": "active",
           "sourceUrls": [
@@ -1121,7 +1121,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 120,
+    "freshCandidateCount": 113,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
