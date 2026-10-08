@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-08T01:01:55Z",
+  "generatedAt": "2026-10-08T01:32:10Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5e7b42b6827df48ec0fcb8cc471727a10d6d9c23d5bc15d8ea55428572d39001",
+  "sourceCandidateHash": "3cc63685070841c1f7de5fe3b223e40ddf389870e1c39369c73abc280fcaffaa",
   "leagues": [
     {
       "league": "MLB",
@@ -16,20 +16,19 @@
           "candidateIds": [
             "cand-754538cbefd78d44"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
+          "type": "RESULT",
+          "priority": 70,
           "headline": "After managing just three runs in the first two games, the Guardians stayed alive in their ALDS series with 11 hits in a 9-3 win over the White Sox in Game 3 on Wednesday.",
           "text": "After managing just three runs in the first two games, the Guardians stayed alive in their ALDS series with 11 hits in a 9-3 win over the White Sox in Game 3 on Wednesday.",
           "entities": [],
           "occurredAt": "2026-10-07T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.54,
           "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Chicago White Sox 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/50128546/guardians-break-bats-season-line-game-3-victory",
-            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            "https://www.espn.com/mlb/story/_/id/50128546/guardians-break-bats-season-line-game-3-victory"
           ],
           "sources": [
             {
@@ -41,19 +40,67 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50128546/guardians-break-bats-season-line-game-3-victory"
+            }
+          ],
+          "id": "a415-caa507ef56d5f56b",
+          "feedRank": 1,
+          "compactHeadline": "Guardians break out bats with season on line in Game 3 victory"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-2aa72ff92ae8bb2f"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Here's how the winter looks in Atlanta following a season-ending loss to the Dodgers.",
+          "text": "Here's how the winter looks in Atlanta following a season-ending loss to the Dodgers.",
+          "entities": [],
+          "occurredAt": "2026-10-07T22:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.54,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Atlanta Braves 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions",
+            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
+            "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves",
+            "http://www.espn.com/mlb/recap?gameId=401908015"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-07",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions"
             },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50121334/yoshinobu-yamamoto-enrique-hernandez-freddie-freeman-lead-dodgers-2-1-nlds-lead-vs-braves"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908015"
             }
           ],
-          "id": "a415-caa507ef56d5f56b",
-          "feedRank": 1,
-          "compactHeadline": "Cleveland Guardians beat Chicago White Sox 9-3"
+          "id": "a415-c79d3470d173f722",
+          "feedRank": 2,
+          "compactHeadline": "Los Angeles Dodgers beat Atlanta Braves 4-1"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -62,9 +109,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-07T23:27:14Z",
+          "occurredAt": "2026-10-08T01:05:25Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
+          "ageHours": 0.45,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +125,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-8fba57422a9636b5"
           ],
@@ -93,7 +140,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T20:27:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.57,
+          "ageHours": 5.07,
           "freshnessBasis": "The games are heating up for the MLB postseason, and the foods are following suit. Here are the top dishes across the league for the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -107,52 +154,40 @@
             }
           ],
           "id": "a415-c5d36b2a3a695909",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Rays' 'Clubhouse Tomahawk' leads new MLB postseason foods"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
-            "cand-6fec89b1f2a0dedb"
+            "cand-5612ecc94691fbdc"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Say it ain't so, the Padres won't go (down without a fight), beating the Brewers 4-3 with Tom DeLonge in the house.",
           "text": "Say it ain't so, the Padres won't go (down without a fight), beating the Brewers 4-3 with Tom DeLonge in the house.",
           "entities": [],
-          "occurredAt": "2026-10-07T01:30:00Z",
+          "occurredAt": "2026-10-07T15:36:25Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Milwaukee Brewers 3, San Diego Padres 4.",
+          "ageHours": 9.93,
+          "freshnessBasis": "Say it ain't so, the Padres won't go (down without a fight), beating the Brewers 4-3 with Tom DeLonge in the house.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/50124803/san-diego-padres-blink-182-all-small-things-delonge",
-            "http://www.espn.com/mlb/recap?gameId=401908004"
+            "https://www.espn.com/mlb/story/_/id/50124803/san-diego-padres-blink-182-all-small-things-delonge"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-10-06",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50124803/san-diego-padres-blink-182-all-small-things-delonge"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908004"
             }
           ],
-          "id": "a415-00c48c96da178a12",
-          "feedRank": 4,
+          "id": "a415-71095f38597786c1",
+          "feedRank": 5,
           "compactHeadline": "Padres fans' 'All The Small Things' rendition makes Blink-182 front man emotional"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-33bc007b8066f2d0"
           ],
@@ -163,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T06:12:01Z",
           "timePrecision": "exact",
-          "ageHours": 18.83,
+          "ageHours": 19.34,
           "freshnessBasis": "Panthers forward Brad Marchand, who just made his season debut Sunday night, sustained a left leg injury in the second period of his club's 2-1 victory over the Kings on Tuesday night and was helped off the ice by his teammates.",
           "status": "active",
           "sourceUrls": [
@@ -177,37 +212,8 @@
             }
           ],
           "id": "a415-dc537df1940d1cbd",
-          "feedRank": 5,
-          "compactHeadline": "Marchand exits Panthers' win in 2nd period with leg injury"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d7bea86d87f42832"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Padres will be without star closer Mason Miller for Tuesday night's elimination game after he was placed on the paternity list shortly before the start of Game 3.",
-          "text": "The Padres will be without star closer Mason Miller for Tuesday night's elimination game after he was placed on the paternity list shortly before the start of Game 3.",
-          "entities": [],
-          "occurredAt": "2026-10-07T02:10:24Z",
-          "timePrecision": "exact",
-          "ageHours": 22.86,
-          "freshnessBasis": "The Padres will be without star closer Mason Miller for Tuesday night's elimination game after he was placed on the paternity list shortly before the start of Game 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50121217/padres-place-mason-miller-paternity-list-game-3"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50121217/padres-place-mason-miller-paternity-list-game-3"
-            }
-          ],
-          "id": "a415-d591ebce32205ee7",
           "feedRank": 6,
-          "compactHeadline": "Padres place Mason Miller on paternity list; out for Game 3"
+          "compactHeadline": "Marchand exits Panthers' win in 2nd period with leg injury"
         }
       ]
     },
@@ -227,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T22:38:43Z",
           "timePrecision": "exact",
-          "ageHours": 2.39,
+          "ageHours": 2.89,
           "freshnessBasis": "Giants star wide receiver Malik Nabers did not practice Wednesday because of a knee injury, saying only he was more \"sore\" than usual.",
           "status": "active",
           "sourceUrls": [
@@ -256,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T23:17:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.74,
+          "ageHours": 2.25,
           "freshnessBasis": "The Ravens acquired two-time Pro Bowl center Cam Jurgens in a trade with the Eagles.",
           "status": "active",
           "sourceUrls": [
@@ -285,7 +291,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T22:27:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.57,
+          "ageHours": 3.07,
           "freshnessBasis": "The Vikings are signing wide receiver Odell Beckham Jr. to their practice squad, a source told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -314,7 +320,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T20:37:40Z",
           "timePrecision": "exact",
-          "ageHours": 4.4,
+          "ageHours": 4.91,
           "freshnessBasis": "The 49ers are again among the most injured teams in the NFL. We answered questions about their injuries and how they will affect the 2026 season.",
           "status": "active",
           "sourceUrls": [
@@ -343,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T22:50:55Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.69,
           "freshnessBasis": "Lions tight end Sam LaPorta is currently focused on the 2026 season but acknowledged for the first time after Wednesday's practice that he has broken off contract talks on an extension.",
           "status": "active",
           "sourceUrls": [
@@ -372,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T10:18:34Z",
           "timePrecision": "exact",
-          "ageHours": 14.72,
+          "ageHours": 15.23,
           "freshnessBasis": "Just how good are the 49ers? Are the Texans and Bucs better than their records? Are the Giants and Browns worse? We put the NFL season's first month in historical context.",
           "status": "active",
           "sourceUrls": [
@@ -398,6 +404,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-54dffcbc00af08e2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Minnesota Timberwolves 112, Indiana Pacers 123.",
+          "text": "Highlightly final: Minnesota Timberwolves 112, Indiana Pacers 123.",
+          "entities": [],
+          "occurredAt": "2026-10-07T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.54,
+          "freshnessBasis": "Highlightly final: Minnesota Timberwolves 112, Indiana Pacers 123.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-07",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-4b54abd2e54c5c2d",
+          "feedRank": 13,
+          "compactHeadline": "Indiana Pacers beat Minnesota Timberwolves 123-112"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-f4c49129429d2728"
           ],
           "type": "RANKING",
@@ -407,7 +442,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T14:18:28Z",
           "timePrecision": "exact",
-          "ageHours": 10.72,
+          "ageHours": 11.23,
           "freshnessBasis": "ESPN's Basketball Power Index projections for the 2026-27 NBA season are out, including a ranking of all 30 teams.",
           "status": "active",
           "sourceUrls": [
@@ -421,11 +456,11 @@
             }
           ],
           "id": "a415-b926a87fecbea1ab",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Basketball Power Index: NBA projections, playoff chances for 2026-27 season"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-73fd43acce532078"
           ],
@@ -436,7 +471,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T10:51:41Z",
           "timePrecision": "exact",
-          "ageHours": 14.17,
+          "ageHours": 14.67,
           "freshnessBasis": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -450,11 +485,11 @@
             }
           ],
           "id": "a415-42a8527353c5b893",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Sources: Clippers' Max Strus (foot) out at least 4 weeks"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-b871030a2368d0d2"
           ],
@@ -465,7 +500,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T00:01:26Z",
           "timePrecision": "exact",
-          "ageHours": 1.01,
+          "ageHours": 1.51,
           "freshnessBasis": "Broadcaster Mike Breen apologized Wednesday for the reaction to a story he shared about LeBron James calling out Joel Embiid for showing up late, a story James has since disputed.",
           "status": "active",
           "sourceUrls": [
@@ -479,11 +514,11 @@
             }
           ],
           "id": "a415-dab51bb472afddc1",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Mike Breen apologizes after LeBron James disputes Embiid story"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-98e5940669f4900d"
           ],
@@ -494,7 +529,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T23:29:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.54,
+          "ageHours": 2.04,
           "freshnessBasis": "The five Buss siblings attempting to sell the family's remaining shares in the Lakers officially filed their case against acting governor Jeanie Buss.",
           "status": "active",
           "sourceUrls": [
@@ -508,11 +543,11 @@
             }
           ],
           "id": "a415-0f23f2b856110e56",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Buss siblings formally file against Jeanie over Lakers sale"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-2783782300177ad4"
           ],
@@ -523,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.54,
           "freshnessBasis": "Highlightly final: Los Angeles Lakers 98, Golden State Warriors 124.",
           "status": "active",
           "sourceUrls": [
@@ -537,37 +572,8 @@
             }
           ],
           "id": "a415-bc55050db5f37dc4",
-          "feedRank": 17,
-          "compactHeadline": "Golden State Warriors beat Los Angeles Lakers 124-98"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-5d1622fe426b79f3"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "New Trail Blazers owner Tom Dundon told season-ticket holders he intends to bring a championship to Portland.",
-          "text": "New Trail Blazers owner Tom Dundon told season-ticket holders he intends to bring a championship to Portland.",
-          "entities": [],
-          "occurredAt": "2026-10-07T21:59:02Z",
-          "timePrecision": "exact",
-          "ageHours": 3.05,
-          "freshnessBasis": "New Trail Blazers owner Tom Dundon told season-ticket holders he intends to bring a championship to Portland.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50127764/trail-blazers-dundon-says-intends-bring-title-portland"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50127764/trail-blazers-dundon-says-intends-bring-title-portland"
-            }
-          ],
-          "id": "a415-b1ec13971748378f",
           "feedRank": 18,
-          "compactHeadline": "Trail Blazers' Dundon says he intends to bring title to Portland"
+          "compactHeadline": "Golden State Warriors beat Los Angeles Lakers 124-98"
         }
       ]
     },
@@ -587,7 +593,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.37,
+          "ageHours": 23.87,
           "freshnessBasis": "Highlightly final: Vegas Golden Knights 6, Seattle Kraken 2.",
           "status": "active",
           "sourceUrls": [
@@ -622,7 +628,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.54,
           "freshnessBasis": "Highlightly final: Florida Panthers 2, Los Angeles Kings 1.",
           "status": "active",
           "sourceUrls": [
@@ -657,7 +663,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T17:05:53Z",
           "timePrecision": "exact",
-          "ageHours": 7.93,
+          "ageHours": 8.44,
           "freshnessBasis": "The Penguins have acquired defenseman Spencer Stastney from the Oilers in exchange for forward Filip Hallander.",
           "status": "active",
           "sourceUrls": [
@@ -686,7 +692,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T08:33:42Z",
           "timePrecision": "exact",
-          "ageHours": 16.47,
+          "ageHours": 16.97,
           "freshnessBasis": "— Alexis Lafrenière recorded a hat trick, with two goals into an empty net, and had an assist as the New York Rangers extended their winning streak to four by defeating the crosstown...",
           "status": "active",
           "sourceUrls": [
@@ -715,7 +721,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T19:41:40Z",
           "timePrecision": "exact",
-          "ageHours": 5.34,
+          "ageHours": 5.84,
           "freshnessBasis": "Mothers of players in the U10 club made jackets with \"Hitmen\" on the front and \"Hitmama Hockey\" on the back.",
           "status": "active",
           "sourceUrls": [
@@ -744,7 +750,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T08:11:29Z",
           "timePrecision": "exact",
-          "ageHours": 16.84,
+          "ageHours": 17.34,
           "freshnessBasis": "Chicago Blackhawks (1-3, in the Central Division) vs. New York Islanders (1-2, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -779,7 +785,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T16:36:08Z",
           "timePrecision": "exact",
-          "ageHours": 8.43,
+          "ageHours": 8.93,
           "freshnessBasis": "Mathys Tel will be hoping to take his goal-scoring exploits with France Under-21s over the international break into Tottenham's fight to turn their Premier League season around.",
           "status": "active",
           "sourceUrls": [
@@ -808,7 +814,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T16:18:52Z",
           "timePrecision": "exact",
-          "ageHours": 8.72,
+          "ageHours": 9.22,
           "freshnessBasis": "Mikel Arteta has signed a new contract to extend his stay at Arsenal, the Premier League champions confirmed.",
           "status": "active",
           "sourceUrls": [
@@ -837,7 +843,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T17:12:11Z",
           "timePrecision": "exact",
-          "ageHours": 7.83,
+          "ageHours": 8.33,
           "freshnessBasis": "Liverpool head coach Andoni Iraola has cast doubt on the chances of Alexander Isak and Cody Gakpo being fit to face Manchester City this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -866,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T11:06:46Z",
           "timePrecision": "exact",
-          "ageHours": 13.92,
+          "ageHours": 14.42,
           "freshnessBasis": "The Manchester City case, which has rocked English football to its core, wouldn't have been possible without Football Leaks and its founder, Rui Pinto. However, he is a complicated figure, with light and dark to his actions.",
           "status": "active",
           "sourceUrls": [
@@ -901,7 +907,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T03:31:27Z",
           "timePrecision": "exact",
-          "ageHours": 21.51,
+          "ageHours": 22.01,
           "freshnessBasis": "Philip Zinckernagel scored early in the second half and Maren Haile-Selassie had a late goal and an assist as Chicago Fire FC beat the Vancouver Whitecaps 3-1 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -930,7 +936,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T15:33:46Z",
           "timePrecision": "exact",
-          "ageHours": 9.47,
+          "ageHours": 9.97,
           "freshnessBasis": "The cast of the hit comedy as well as NWSL veterans reflect on bringing authentic stories of women's soccer to a new stage.",
           "status": "active",
           "sourceUrls": [
@@ -959,7 +965,7 @@
           "entities": [],
           "occurredAt": "2026-10-07T11:17:27Z",
           "timePrecision": "exact",
-          "ageHours": 13.74,
+          "ageHours": 14.25,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -992,9 +998,9 @@
           "headline": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "text": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "entities": [],
-          "occurredAt": "2026-10-08T00:57:09Z",
+          "occurredAt": "2026-10-08T01:11:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
+          "ageHours": 0.34,
           "freshnessBasis": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "status": "active",
           "sourceUrls": [
@@ -1023,7 +1029,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T00:29:25Z",
           "timePrecision": "exact",
-          "ageHours": 0.54,
+          "ageHours": 1.05,
           "freshnessBasis": "BYU running back LJ Martin will be sidelined for at least a month with a lower body injury, sources told ESPN's Pete Thamel on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -1052,7 +1058,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T00:45:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
+          "ageHours": 0.78,
           "freshnessBasis": "Alabama tight end Josh Ford broke his arm during last Saturday's win over Mississippi State, had surgery Sunday and is attempting to play vs No. 2 Georgia.",
           "status": "active",
           "sourceUrls": [
@@ -1081,7 +1087,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T00:46:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 0.77,
           "freshnessBasis": "Alabama and Georgia are preparing for a big storm to hit Tuscaloosa this weekend.",
           "status": "active",
           "sourceUrls": [
@@ -1121,7 +1127,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 115,
+    "freshCandidateCount": 116,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
