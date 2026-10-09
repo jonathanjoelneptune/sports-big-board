@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-09T04:01:45Z",
+  "generatedAt": "2026-10-09T04:31:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "d828423d0e003550a59d893cf2deac1aea6ecf7d0cf07cac8d7568aa97fe4184",
+  "sourceCandidateHash": "e45bcccd95affee5563e5ecc219eb27032427a70ad22e2fe5242e19b4234c0dd",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
+          "ageHours": 0.69,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-8bf2e884a9ff368a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
+          "text": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
+          "entities": [],
+          "occurredAt": "2026-10-09T04:25:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50137741/ramirez-guardians-top-white-sox-force-decisive-game-5-alds"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50137741/ramirez-guardians-top-white-sox-force-decisive-game-5-alds"
+            }
+          ],
+          "id": "a415-f4efb1ae3a0eab41",
+          "feedRank": 2,
+          "compactHeadline": "Ramirez, Guardians top White Sox, force decisive Game 5 in ALDS"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-1c2cb56427b5f9b9"
           ],
           "type": "PLAYOFF",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:14:54Z",
           "timePrecision": "exact",
-          "ageHours": 7.78,
+          "ageHours": 8.28,
           "freshnessBasis": "Here's how the winter will look in New York, Atlanta and San Diego following their division series losses.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-b8ac8b0563fb1c61",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-3b3efa95d6478a93"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T13:42:11Z",
           "timePrecision": "exact",
-          "ageHours": 14.33,
+          "ageHours": 14.83,
           "freshnessBasis": "The Brew Crew is back in the NLCS. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-5daaae96deb6d060",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "MLB playoffs 2026: Is this the Milwaukee Brewers' year?"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-92c67242cb9f5540"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T15:14:43Z",
           "timePrecision": "exact",
-          "ageHours": 12.78,
+          "ageHours": 13.28,
           "freshnessBasis": "Someone in the Rays' clubhouse had a certain song ready to go after the team's 4-3 win over the Yankees at Yankee Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-d93e97f0c41391c1",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Tampa Bay Rays troll New York Yankees with signature Sinatra song after ALDS win"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-b0d8e4da65b78a14"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T11:40:41Z",
           "timePrecision": "exact",
-          "ageHours": 16.35,
+          "ageHours": 16.85,
           "freshnessBasis": "For all the stars the Dodgers boast, it was No. 9 hitter Andy Pages who came through with the big hit, sending Los Angeles to a 4-1 win over the Braves that clinched its third straight NLCS appearance.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-4ee3cd9469165aca",
-          "feedRank": 5,
-          "compactHeadline": "Andy Pages lifts Dodgers past Braves, into third straight NLCS"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8ecf589feebe7f8c"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "With the Guardians' season on the line, Jose Ramirez was a one-man wrecking crew Wednesday, hitting a two-run triple and making a series-saving play with his glove in Wednesday's 9-3 win over the White Sox in Game 3 of the ALDS.",
-          "text": "With the Guardians' season on the line, Jose Ramirez was a one-man wrecking crew Wednesday, hitting a two-run triple and making a series-saving play with his glove in Wednesday's 9-3 win over the White Sox in Game 3 of the ALDS.",
-          "entities": [],
-          "occurredAt": "2026-10-08T11:08:05Z",
-          "timePrecision": "exact",
-          "ageHours": 16.89,
-          "freshnessBasis": "With the Guardians' season on the line, Jose Ramirez was a one-man wrecking crew Wednesday, hitting a two-run triple and making a series-saving play with his glove in Wednesday's 9-3 win over the White Sox in Game 3 of the ALDS.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50128546/guardians-break-bats-season-line-game-3-victory"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50128546/guardians-break-bats-season-line-game-3-victory"
-            }
-          ],
-          "id": "a415-cec908cd69b3e817",
           "feedRank": 6,
-          "compactHeadline": "Ramirez does it all as Guardians stay alive in 'do-or-die' Game 3"
+          "compactHeadline": "Andy Pages lifts Dodgers past Braves, into third straight NLCS"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T23:03:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.97,
+          "ageHours": 5.47,
           "freshnessBasis": "— After beating the Green Bay Packers for the NFC North title and knocking them out of the playoffs last season, the Chicago Bears have one more opportunity to show definitively that a new chapter has started in the NFL’s most-played rivalry.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T21:51:28Z",
           "timePrecision": "exact",
-          "ageHours": 6.17,
+          "ageHours": 6.67,
           "freshnessBasis": "Games between the San Francisco 49ers and Seattle Seahawks are typically intense with the two rivals often competing for NFC West supremacy.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:33:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.47,
+          "ageHours": 0.97,
           "freshnessBasis": "— Bucky Irving ran for a career-high 165 yards, including a 72-yard run to set up the touchdown that put Tampa Bay ahead for good while scoring twice himself, and the Buccaneers beat the...",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T00:51:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.16,
+          "ageHours": 3.66,
           "freshnessBasis": "Sources said the Cardinals are not shopping Marvin Harrison Jr. but other teams are still doing their due diligence on the receiver, including the Colts.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T17:17:35Z",
           "timePrecision": "exact",
-          "ageHours": 10.74,
+          "ageHours": 11.24,
           "freshnessBasis": "Steelers receiver Michael Pittman Jr. aggravated a foot injury and is out multiple weeks.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T18:54:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.12,
+          "ageHours": 9.62,
           "freshnessBasis": "— Deshaun Watson is making plays in the clutch, the Cleveland Browns are winning and they're doing it...",
           "status": "active",
           "sourceUrls": [
@@ -374,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9311ee0791e174b5"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
+          "text": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
+          "entities": [],
+          "occurredAt": "2026-10-09T04:16:24Z",
+          "timePrecision": "exact",
+          "ageHours": 0.26,
+          "freshnessBasis": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50137673/lebron-james-scores-10-points-18-minutes-76ers-debut"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50137673/lebron-james-scores-10-points-18-minutes-76ers-debut"
+            }
+          ],
+          "id": "a415-87840400f24ac412",
+          "feedRank": 13,
+          "compactHeadline": "LeBron James scores 10 points in 18 minutes in 76ers debut"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-29141beeeeaa6e13"
           ],
           "type": "DEPTH_CHART",
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:15:04Z",
           "timePrecision": "exact",
-          "ageHours": 7.78,
+          "ageHours": 8.28,
           "freshnessBasis": "The 76ers plan to play their starters Thursday against the Nets, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -397,37 +426,8 @@
             }
           ],
           "id": "a415-fd21b5538f200410",
-          "feedRank": 13,
-          "compactHeadline": "Sources: 76ers plan to play starters in preseason game vs. Nets"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-73fd43acce532078"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
-          "text": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-10-08T11:15:51Z",
-          "timePrecision": "exact",
-          "ageHours": 16.77,
-          "freshnessBasis": "Clippers wing Max Strus suffered a partial tear of the plantar fascia in his right foot and will be reevaluated in four weeks, league sources told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50112557/sources-clippers-max-strus-foot-least-4-weeks"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50112557/sources-clippers-max-strus-foot-least-4-weeks"
-            }
-          ],
-          "id": "a415-42a8527353c5b893",
           "feedRank": 14,
-          "compactHeadline": "Sources: Clippers' Max Strus (foot) out at least 4 weeks"
+          "compactHeadline": "Sources: 76ers plan to play starters in preseason game vs. Nets"
         },
         {
           "rank": 3,
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:47:07Z",
           "timePrecision": "exact",
-          "ageHours": 7.24,
+          "ageHours": 7.74,
           "freshnessBasis": "\"Abbott Elementary\" continues to embrace Philadelphia sports culture with its latest instance starring the 76ers.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T13:24:48Z",
           "timePrecision": "exact",
-          "ageHours": 14.62,
+          "ageHours": 15.12,
           "freshnessBasis": "The top sights and sounds from the Dallas Mavericks and Houston Rockets' preseason trip to China.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T01:42:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.31,
+          "ageHours": 2.81,
           "freshnessBasis": "Panthers forward Brad Marchand, who injured his left leg in Tuesday's win over the Kings, will miss only \"a few weeks,\" The Associated Press reported.",
           "status": "active",
           "sourceUrls": [
@@ -525,6 +525,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-65ee64dbe62f34b9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Cale Makar had two goals and an assist, Devon Toews and Jaden Schwartz also each scored twice and the Colorado Avalanche beat the winless Calgary Flames 7-3 on Thursday night.",
+          "text": "Cale Makar had two goals and an assist, Devon Toews and Jaden Schwartz also each scored twice and the Colorado Avalanche beat the winless Calgary Flames 7-3 on Thursday night.",
+          "entities": [],
+          "occurredAt": "2026-10-09T04:23:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.14,
+          "freshnessBasis": "— Cale Makar had two goals and an assist, Devon Toews and Jaden Schwartz also each scored twice and the Colorado Avalanche beat the winless Calgary Flames 7-3 on Thursday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892463"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892463"
+            }
+          ],
+          "id": "a415-831f6a60b9a2017b",
+          "feedRank": 18,
+          "compactHeadline": "Makar has 2 goals and an assist in the Avs' 7-3 victory over the winless Flames"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-952b0945795bd03b"
           ],
           "type": "RESULT",
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:05:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.94,
+          "ageHours": 1.44,
           "freshnessBasis": "— Darnell Nurse scored 1:03 into overtime and the San Jose Sharks beat the St. Louis Blues 3-2 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -548,11 +577,11 @@
             }
           ],
           "id": "a415-382457bf19880a57",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Darnell Nurse scores in OT to give Sharks 3-2 win over Blues"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-adf33d430be0bd55"
           ],
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.59,
+          "ageHours": 2.09,
           "freshnessBasis": "— Bo Horvat scored twice and the New York Islanders beat the Chicago Blackhawks 4-1 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +606,11 @@
             }
           ],
           "id": "a415-1013468b07740fb6",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Bo Horvat scores twice as Islanders beat Blackhawks 4-1"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-0aeb1f019e1fb658"
           ],
@@ -592,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:15:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.77,
+          "ageHours": 2.27,
           "freshnessBasis": "— Ryan O’Reilly scored the go-ahead goal with 3:16 remaining, and the Nashville Predators rallied from a 2-0 deficit to beat the Montreal Canadiens 5-2 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -606,11 +635,11 @@
             }
           ],
           "id": "a415-0b6e9c050c42f555",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Ryan O'Reilly scores go-ahead goal as Predators rally for 5-2 win over Canadiens"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-ccb87ab922f88a17"
           ],
@@ -621,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:08:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.89,
+          "ageHours": 2.39,
           "freshnessBasis": "— Carter Yakemchuk broke a tie on a power play with 6:59 left and the Ottawa Senators held on to beat the winless Philadelphia Flyers 2-1 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -635,37 +664,8 @@
             }
           ],
           "id": "a415-e6ebdb5246e72ba6",
-          "feedRank": 21,
-          "compactHeadline": "Yakemchuk breaks late tie in the Senators' 2-1 victory over the Flyers"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d3217d95782818c6"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "David Pastrnak scored his first two goals of the season and added two assists as the Boston Bruins routed the Utah Mammoth 6-1 in Thursday night.",
-          "text": "David Pastrnak scored his first two goals of the season and added two assists as the Boston Bruins routed the Utah Mammoth 6-1 in Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-10-09T02:02:27Z",
-          "timePrecision": "exact",
-          "ageHours": 1.99,
-          "freshnessBasis": "— David Pastrnak scored his first two goals of the season and added two assists as the Boston Bruins routed the Utah Mammoth 6-1 in Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892457"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892457"
-            }
-          ],
-          "id": "a415-50533ee174a663d2",
           "feedRank": 22,
-          "compactHeadline": "Pastrnak scores 2 goals, adds 2 assists in the Bruins' 6-1 rout of the Mammoth"
+          "compactHeadline": "Yakemchuk breaks late tie in the Senators' 2-1 victory over the Flyers"
         }
       ]
     },
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T16:16:58Z",
           "timePrecision": "exact",
-          "ageHours": 11.75,
+          "ageHours": 12.25,
           "freshnessBasis": "Max Dowman has added three Guinness World Records to his growing list of achievements despite not turning 17 until this coming December.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T06:35:51Z",
           "timePrecision": "exact",
-          "ageHours": 21.43,
+          "ageHours": 21.93,
           "freshnessBasis": "All the latest news and updates on Premier League stars injuries after the first international break of the 2026-2027 club season",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:32:05Z",
           "timePrecision": "exact",
-          "ageHours": 7.49,
+          "ageHours": 7.99,
           "freshnessBasis": "Enzo Maresca has said he \"trusts the club completely\" in his first interview since Manchester City were found guilty of breaking financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:01:22Z",
           "timePrecision": "exact",
-          "ageHours": 8.01,
+          "ageHours": 8.51,
           "freshnessBasis": "Real Madrid coach José Mourinho joked that he'll be lucky to still be around to see the final verdict in the Premier League's case against Manchester City.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T19:19:43Z",
           "timePrecision": "exact",
-          "ageHours": 8.7,
+          "ageHours": 9.2,
           "freshnessBasis": "Tottenham Hotspur's Xavi Simons has revealed he has enrolled for an online course at Harvard Business School.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T17:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 10.76,
+          "ageHours": 11.26,
           "freshnessBasis": "Erling Haaland has said that everyone at Manchester City has to \"stay positive\" as the team prepares to play their first matches since being found guilty of breaching Premier League regulations.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T16:13:02Z",
           "timePrecision": "exact",
-          "ageHours": 11.81,
+          "ageHours": 12.31,
           "freshnessBasis": "MLS commissioner Don Garber would love Harry Kane to follow Lionel Messi across the pond and says the England skipper's interest helps fulfil a dream that Sir David Beckham kept alive.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "— Keenan Phillips ran for 157 yards and three touchdowns, and he added a 100-yard kickoff return as South Alabama beat Arkansas State 56-49 on Thursday night for the most combined...",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:49:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.21,
+          "ageHours": 1.71,
           "freshnessBasis": "— Brock Glenn threw for a touchdown and ran for another, Ajay Allen rushed for 105 yards and two touchdowns, and Western Kentucky beat Missouri State 34-13 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T12:01:34Z",
           "timePrecision": "exact",
-          "ageHours": 16.0,
+          "ageHours": 16.5,
           "freshnessBasis": "BYU running back LJ Martin will be sidelined for at least a month with a lower body injury, sources told ESPN's Pete Thamel on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T12:00:30Z",
           "timePrecision": "exact",
-          "ageHours": 16.02,
+          "ageHours": 16.52,
           "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T11:59:54Z",
           "timePrecision": "exact",
-          "ageHours": 16.03,
+          "ageHours": 16.53,
           "freshnessBasis": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
           "status": "active",
           "sourceUrls": [
@@ -1043,9 +1043,9 @@
           "headline": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
           "text": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
           "entities": [],
-          "occurredAt": "2026-10-09T03:50:50Z",
+          "occurredAt": "2026-10-09T04:07:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.4,
           "freshnessBasis": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 119,
+    "freshCandidateCount": 120,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
