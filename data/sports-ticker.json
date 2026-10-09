@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-09T20:31:50Z",
+  "generatedAt": "2026-10-09T21:01:34Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5f31cd43a9800499bcbab873ca7ca78fed0c11b5ff9f5e3e0ef35a942b209b11",
+  "sourceCandidateHash": "f070ecf4706d6a484f271cb27322bd2264701b8107584850c7d493f6032a1c85",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:14:45Z",
           "timePrecision": "exact",
-          "ageHours": 3.28,
+          "ageHours": 3.78,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T10:34:48Z",
           "timePrecision": "exact",
-          "ageHours": 9.95,
+          "ageHours": 10.45,
           "freshnessBasis": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T13:55:51Z",
           "timePrecision": "exact",
-          "ageHours": 6.6,
+          "ageHours": 7.1,
           "freshnessBasis": "- Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
           "status": "active",
           "sourceUrls": [
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 16.7,
+          "ageHours": 17.19,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -130,6 +130,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-529e71c6cf19ddab"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "After finishing Game 4 of the ALDS on the mound, Guardians right-hander Gavin Williams will get the ball to start Game 5, while the White Sox will go with righty Sean Burke.",
+          "text": "After finishing Game 4 of the ALDS on the mound, Guardians right-hander Gavin Williams will get the ball to start Game 5, while the White Sox will go with righty Sean Burke.",
+          "entities": [],
+          "occurredAt": "2026-10-09T21:00:01Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "After finishing Game 4 of the ALDS on the mound, Guardians right-hander Gavin Williams will get the ball to start Game 5, while the White Sox will go with righty Sean Burke.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50142587/guardians-williams-white-sox-burke-start-alcs-bid"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50142587/guardians-williams-white-sox-burke-start-alcs-bid"
+            }
+          ],
+          "id": "a415-00f38506483b52b0",
+          "feedRank": 5,
+          "compactHeadline": "Guardians' Williams, White Sox's Burke to start for ALCS bid"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-92f3d61b0cde16db"
           ],
           "type": "RESULT",
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T05:59:28Z",
           "timePrecision": "exact",
-          "ageHours": 14.54,
+          "ageHours": 15.04,
           "freshnessBasis": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-36f737b4ce837ed3",
-          "feedRank": 5,
-          "compactHeadline": "Guardians survive in Chicago, head home with chance to advance"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-187cfe0a1c7fd07f"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Will the last holdout in Wrigleyville be able to stand up to the Chicago Cubs?",
-          "text": "Will the last holdout in Wrigleyville be able to stand up to the Chicago Cubs?",
-          "entities": [],
-          "occurredAt": "2026-10-09T12:17:36Z",
-          "timePrecision": "exact",
-          "ageHours": 8.24,
-          "freshnessBasis": "Will the last holdout in Wrigleyville be able to stand up to the Chicago Cubs?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50136089/wrigleyville-rooftop-owner-fight-chicago-cubs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50136089/wrigleyville-rooftop-owner-fight-chicago-cubs"
-            }
-          ],
-          "id": "a415-ceac4a0dffb1aaee",
           "feedRank": 6,
-          "compactHeadline": "Inside a Wrigleyville rooftop owner's fight with the Cubs"
+          "compactHeadline": "Guardians survive in Chicago, head home with chance to advance"
         }
       ]
     },
@@ -194,35 +194,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c49a9455cacff901"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
-          "text": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
-          "entities": [],
-          "occurredAt": "2026-10-09T19:50:08Z",
-          "timePrecision": "exact",
-          "ageHours": 0.7,
-          "freshnessBasis": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50142254/jeremiyah-love-trending-well-play-ankle-reinjury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50142254/jeremiyah-love-trending-well-play-ankle-reinjury"
-            }
-          ],
-          "id": "a415-62e591950d8c857d",
-          "feedRank": 7,
-          "compactHeadline": "Jeremiyah Love 'trending well' to play despite ankle reinjury"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-71648b87f43a8783"
           ],
           "type": "INJURY",
@@ -230,9 +201,9 @@
           "headline": "The Chargers are placing Rashawn Slater on injured reserve after the left tackle had surgery for a high ankle sprain. Los Angeles will be without three of its starting offensive linemen against the Broncos on Sunday.",
           "text": "The Chargers are placing Rashawn Slater on injured reserve after the left tackle had surgery for a high ankle sprain. Los Angeles will be without three of its starting offensive linemen against the Broncos on Sunday.",
           "entities": [],
-          "occurredAt": "2026-10-09T19:45:44Z",
+          "occurredAt": "2026-10-09T20:59:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 0.04,
           "freshnessBasis": "The Chargers are placing Rashawn Slater on injured reserve after the left tackle had surgery for a high ankle sprain. Los Angeles will be without three of its starting offensive linemen against the Broncos on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +217,69 @@
             }
           ],
           "id": "a415-6bf919830a99e512",
-          "feedRank": 8,
+          "feedRank": 7,
           "compactHeadline": "Chargers LT Rashawn Slater on IR following ankle surgery"
         },
         {
+          "rank": 2,
+          "candidateIds": [
+            "cand-dec7812454fd4e7a"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Eagles running back Saquon Barkley, receiver DeVonta Smith, new starting center Drew Kendall, safety Marcus Epps and receiver Hollywood Brown were all ruled out for Sunday's game in London against the Jaguars.",
+          "text": "Eagles running back Saquon Barkley, receiver DeVonta Smith, new starting center Drew Kendall, safety Marcus Epps and receiver Hollywood Brown were all ruled out for Sunday's game in London against the Jaguars.",
+          "entities": [],
+          "occurredAt": "2026-10-09T20:56:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "Eagles running back Saquon Barkley, receiver DeVonta Smith, new starting center Drew Kendall, safety Marcus Epps and receiver Hollywood Brown were all ruled out for Sunday's game in London against the Jaguars.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50142553/saquon-barkley-devonta-smith-eagles-players-ruled-london-game-vs-jaguars"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50142553/saquon-barkley-devonta-smith-eagles-players-ruled-london-game-vs-jaguars"
+            }
+          ],
+          "id": "a415-bf75d58e8a206268",
+          "feedRank": 8,
+          "compactHeadline": "Saquon Barkley, DeVonta Smith among Eagles ruled out vs. Jaguars"
+        },
+        {
           "rank": 3,
+          "candidateIds": [
+            "cand-c49a9455cacff901"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
+          "text": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
+          "entities": [],
+          "occurredAt": "2026-10-09T19:50:08Z",
+          "timePrecision": "exact",
+          "ageHours": 1.19,
+          "freshnessBasis": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50142254/jeremiyah-love-trending-well-play-ankle-reinjury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50142254/jeremiyah-love-trending-well-play-ankle-reinjury"
+            }
+          ],
+          "id": "a415-62e591950d8c857d",
+          "feedRank": 9,
+          "compactHeadline": "Jeremiyah Love 'trending well' to play despite ankle reinjury"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-7e4abf82c51534d6"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:36:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.92,
+          "ageHours": 1.42,
           "freshnessBasis": "The Bears have ruled RB Kyle Monangai out for Sunday's matchup against the Packers, while QB Caleb Williams is questionable after being a limited participant in Friday's practice.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-ffe3cc69047cf6c4",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Bears RB Monangai out, QB Williams now questionable vs. Packers"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-2ecf8155c5407cb4"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:32:49Z",
           "timePrecision": "exact",
-          "ageHours": 2.98,
+          "ageHours": 3.48,
           "freshnessBasis": "Commanders quarterback Jayden Daniels will start Sunday in his return from an elbow injury, but wide receiver Stefon Diggs will not play against the Giants due to a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -304,13 +333,13 @@
             }
           ],
           "id": "a415-b2da13d8574e983c",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Commanders QB Daniels will play, WR Diggs out against Giants"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
-            "cand-686d182eddb88f3b"
+            "cand-de82ee463f0f9b50"
           ],
           "type": "RANKING",
           "priority": 72,
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T12:14:09Z",
           "timePrecision": "exact",
-          "ageHours": 8.29,
+          "ageHours": 8.79,
           "freshnessBasis": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
           "status": "active",
           "sourceUrls": [
@@ -328,47 +357,13 @@
           "sources": [
             {
               "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50117790/2027-nfl-draft-quarterbacks-ranking-strengths-weaknesses"
-            },
-            {
-              "provider": "ESPN",
               "sourceId": "espn-ncaaf",
               "url": "https://www.espn.com/nfl/draft2027/story/_/id/50117790/2027-nfl-draft-quarterbacks-ranking-strengths-weaknesses"
             }
           ],
-          "id": "a415-b8f957e4d9906eb1",
-          "feedRank": 11,
-          "compactHeadline": "2027 NFL draft QB rankings: Arch Manning, Dante Moore, Drew Mestemaker in top 15"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-14fffbff94b157ac"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 64,
-          "headline": "Andy Dalton, who lost his spot as the Eagles' backup quarterback following a costly interception against the Bears, has been released, sources told NFL Network.",
-          "text": "Andy Dalton, who lost his spot as the Eagles' backup quarterback following a costly interception against the Bears, has been released, sources told NFL Network.",
-          "entities": [],
-          "occurredAt": "2026-10-09T20:02:13Z",
-          "timePrecision": "exact",
-          "ageHours": 0.49,
-          "freshnessBasis": "Andy Dalton, who lost his spot as the Eagles' backup quarterback following a costly interception against the Bears, has been released, sources told NFL Network.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50142134/sources-eagles-release-andy-dalton-costly-pick-demotion"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50142134/sources-eagles-release-andy-dalton-costly-pick-demotion"
-            }
-          ],
-          "id": "a415-85c4066d7f0d0289",
+          "id": "a415-74722aea8d744f52",
           "feedRank": 12,
-          "compactHeadline": "Sources: Eagles release Andy Dalton after costly pick, demotion"
+          "compactHeadline": "2027 NFL draft QB rankings: Arch Manning, Dante Moore, Drew Mestemaker in top 15"
         }
       ]
     },
@@ -388,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T15:41:06Z",
           "timePrecision": "exact",
-          "ageHours": 4.85,
+          "ageHours": 5.34,
           "freshnessBasis": "The Knicks have said they are tabling contract extension talks with Karl-Anthony Towns and Josh Hart \"until later in the season and will remain solely focused on preparing for the start of the season.\"",
           "status": "active",
           "sourceUrls": [
@@ -417,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T20:22:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.15,
+          "ageHours": 0.65,
           "freshnessBasis": "Retired NBA player and Olympic gold medal winner Russell Westbrook said he wants to carry the torch when his native Los Angeles hosts the 2028 Games.",
           "status": "active",
           "sourceUrls": [
@@ -446,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T18:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.08,
+          "ageHours": 2.58,
           "freshnessBasis": "Tyrese Haliburton said he wishes his relationship with Damian Lillard could be repaired after the Pacers star stole Lillard's Dame Time celebration during the 2023 in-season tournament.",
           "status": "active",
           "sourceUrls": [
@@ -475,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T11:39:06Z",
           "timePrecision": "exact",
-          "ageHours": 8.88,
+          "ageHours": 9.37,
           "freshnessBasis": "After agreeing to a five-year, $200 million deal, how will Duren and Detroit move forward after a monthslong saga?",
           "status": "active",
           "sourceUrls": [
@@ -510,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:15:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.77,
           "freshnessBasis": "The Panthers are expecting forward Brad Marchand to miss about six weeks with his left leg injury, a timeline that coincides with Aleksander Barkov being out six to eight weeks.",
           "status": "active",
           "sourceUrls": [
@@ -539,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T11:12:59Z",
           "timePrecision": "exact",
-          "ageHours": 9.31,
+          "ageHours": 9.81,
           "freshnessBasis": "From players with new linemates to young stars set to hit superstardom to enticing rookies, watch out for this group.",
           "status": "active",
           "sourceUrls": [
@@ -568,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T08:11:33Z",
           "timePrecision": "exact",
-          "ageHours": 12.34,
+          "ageHours": 12.83,
           "freshnessBasis": "Edmonton Oilers (3-0-1, in the Pacific Division) vs. San Jose Sharks (3-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -597,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T08:11:30Z",
           "timePrecision": "exact",
-          "ageHours": 12.34,
+          "ageHours": 12.83,
           "freshnessBasis": "Carolina Hurricanes (3-1-1, in the Metropolitan Division) vs. Chicago Blackhawks (1-4, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -626,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T01:42:59Z",
           "timePrecision": "exact",
-          "ageHours": 18.81,
+          "ageHours": 19.31,
           "freshnessBasis": "Panthers forward Brad Marchand, who injured his left leg in Tuesday's win over the Kings, will miss only \"a few weeks,\" The Associated Press reported.",
           "status": "active",
           "sourceUrls": [
@@ -655,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T04:23:27Z",
           "timePrecision": "exact",
-          "ageHours": 16.14,
+          "ageHours": 16.64,
           "freshnessBasis": "— Cale Makar had two goals and an assist, Devon Toews and Jaden Schwartz also each scored twice and the Colorado Avalanche beat the winless Calgary Flames 7-3 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -690,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:48:12Z",
           "timePrecision": "exact",
-          "ageHours": 2.73,
+          "ageHours": 3.22,
           "freshnessBasis": "Alexander Isak and Cody Gakpo are out of Liverpool's match against Manchester City this weekend due to injury, Andoni Iraola confirmed.",
           "status": "active",
           "sourceUrls": [
@@ -719,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:38:44Z",
           "timePrecision": "exact",
-          "ageHours": 2.89,
+          "ageHours": 3.38,
           "freshnessBasis": "Dejan Kulusevski will travel with Tottenham to Manchester United on Saturday but he is only set to offer support along with injured defender Pedro Porro.",
           "status": "active",
           "sourceUrls": [
@@ -748,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:59:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.54,
+          "ageHours": 3.03,
           "freshnessBasis": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -777,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:58:06Z",
           "timePrecision": "exact",
-          "ageHours": 2.56,
+          "ageHours": 3.06,
           "freshnessBasis": "Everton's owners are exploring \"the potential sale of a controlling interest\" in the club.",
           "status": "active",
           "sourceUrls": [
@@ -806,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:51:04Z",
           "timePrecision": "exact",
-          "ageHours": 2.68,
+          "ageHours": 3.18,
           "freshnessBasis": "Mikel Arteta has said the Premier League is still the best league in the world despite Manchester City's guilty verdict on breaching financial regulations.",
           "status": "active",
           "sourceUrls": [
@@ -835,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:39:54Z",
           "timePrecision": "exact",
-          "ageHours": 2.87,
+          "ageHours": 3.36,
           "freshnessBasis": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -870,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:44:02Z",
           "timePrecision": "exact",
-          "ageHours": 2.8,
+          "ageHours": 3.29,
           "freshnessBasis": "Inter Miami coach Cristian \"Kily\" González said Argentina will miss Lionel Messi following the captain's international retirement before urging fans to enjoy his time with the MLS club.",
           "status": "active",
           "sourceUrls": [
@@ -905,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T13:50:39Z",
           "timePrecision": "exact",
-          "ageHours": 6.69,
+          "ageHours": 7.18,
           "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
           "status": "active",
           "sourceUrls": [
@@ -934,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:11:42Z",
           "timePrecision": "exact",
-          "ageHours": 1.34,
+          "ageHours": 1.83,
           "freshnessBasis": "South Carolina edge rusher Dylan Stewart will play Saturday against Florida after completing his one-game suspension, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -954,6 +949,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-c37b4a101cf70640"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "President Trump will no longer attend Saturday's SEC clash between Georgia and Alabama, which remains on schedule despite approaching Hurricane Isaias.",
+          "text": "President Trump will no longer attend Saturday's SEC clash between Georgia and Alabama, which remains on schedule despite approaching Hurricane Isaias.",
+          "entities": [],
+          "occurredAt": "2026-10-09T20:56:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "President Trump will no longer attend Saturday's SEC clash between Georgia and Alabama, which remains on schedule despite approaching Hurricane Isaias.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50142513/trump-not-attend-georgia-alabama-game-due-hurricane-isaias"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50142513/trump-not-attend-georgia-alabama-game-due-hurricane-isaias"
+            }
+          ],
+          "id": "a415-146db91990fd226e",
+          "feedRank": 32,
+          "compactHeadline": "Trump will not attend Georgia-Alabama game due to Hurricane Isaias"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-53ab95d5e11c3b1d"
           ],
           "type": "NEWS",
@@ -961,9 +985,9 @@
           "headline": "The College Sports Commission is looking into possible rules violations at between five and 10 Power 4 schools regarding payments to players, according to multiple reports.",
           "text": "The College Sports Commission is looking into possible rules violations at between five and 10 Power 4 schools regarding payments to players, according to multiple reports.",
           "entities": [],
-          "occurredAt": "2026-10-09T19:57:10Z",
+          "occurredAt": "2026-10-09T20:30:43Z",
           "timePrecision": "exact",
-          "ageHours": 0.58,
+          "ageHours": 0.51,
           "freshnessBasis": "The College Sports Commission is looking into possible rules violations at between five and 10 Power 4 schools regarding payments to players, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -977,11 +1001,11 @@
             }
           ],
           "id": "a415-a50fcb239cbd5781",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Reports - Watchdog eyes NIL violations at 5-10 Power 4 schools"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-9cfb156ef1d83958"
           ],
@@ -992,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:18:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.22,
+          "ageHours": 1.71,
           "freshnessBasis": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "status": "active",
           "sourceUrls": [
@@ -1006,11 +1030,11 @@
             }
           ],
           "id": "a415-ff28334fee4bc052",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "How Bob Chesney has completely turned around UCLA"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-e0d08fb088863a05"
           ],
@@ -1021,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 16.67,
+          "ageHours": 17.17,
           "freshnessBasis": "— Keenan Phillips ran for 157 yards and three touchdowns, and he added a 100-yard kickoff return as South Alabama beat Arkansas State 56-49 on Thursday night for the most combined...",
           "status": "active",
           "sourceUrls": [
@@ -1035,37 +1059,8 @@
             }
           ],
           "id": "a415-363bd3067dc8cc01",
-          "feedRank": 34,
-          "compactHeadline": "South Alabama beats Arkansas State 56-49 in the highest scoring FBS game this season"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-1a73a54fb5983c2f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Brock Glenn threw for a touchdown and ran for another, Ajay Allen rushed for 105 yards and two touchdowns, and Western Kentucky beat Missouri State 34-13 on Thursday night.",
-          "text": "Brock Glenn threw for a touchdown and ran for another, Ajay Allen rushed for 105 yards and two touchdowns, and Western Kentucky beat Missouri State 34-13 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-10-09T02:49:27Z",
-          "timePrecision": "exact",
-          "ageHours": 17.71,
-          "freshnessBasis": "— Brock Glenn threw for a touchdown and ran for another, Ajay Allen rushed for 105 yards and two touchdowns, and Western Kentucky beat Missouri State 34-13 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401871052"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401871052"
-            }
-          ],
-          "id": "a415-339895b9fc98da34",
           "feedRank": 35,
-          "compactHeadline": "Ajay Allen rushes for 105 yards and 2 touchdowns as Western Kentucky beats Missouri State 34-13"
+          "compactHeadline": "South Alabama beats Arkansas State 56-49 in the highest scoring FBS game this season"
         }
       ]
     }
