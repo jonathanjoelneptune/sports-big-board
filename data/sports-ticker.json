@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-09T04:31:45Z",
+  "generatedAt": "2026-10-09T12:01:43Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e45bcccd95affee5563e5ecc219eb27032427a70ad22e2fe5242e19b4234c0dd",
+  "sourceCandidateHash": "4292382f1a54ff463700c55b7fd1e18c11519e4d1460bb6cdacb06694da740fc",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,64 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-346bee7c72503978"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
+          "text": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
+          "entities": [],
+          "occurredAt": "2026-10-09T10:34:48Z",
+          "timePrecision": "exact",
+          "ageHours": 1.45,
+          "freshnessBasis": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50135639/mlb-2026-playoffs-brewers-jackson-chourio-historic-stats-rank-comp"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50135639/mlb-2026-playoffs-brewers-jackson-chourio-historic-stats-rank-comp"
+            }
+          ],
+          "id": "a415-2b230aad6ef695d4",
+          "feedRank": 1,
+          "compactHeadline": "MLB 2026: Breaking down Jackson Chourio's young playoff career"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-331e0fe372dc3776"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We go inside the numbers on the players doing the most to help their teams win.",
+          "text": "We go inside the numbers on the players doing the most to help their teams win.",
+          "entities": [],
+          "occurredAt": "2026-10-09T10:35:17Z",
+          "timePrecision": "exact",
+          "ageHours": 1.44,
+          "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
+            }
+          ],
+          "id": "a415-544a7dd93364ed09",
+          "feedRank": 2,
+          "compactHeadline": "2026 MLB playoffs: October MVP tracker"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -23,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.69,
+          "ageHours": 8.19,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -37,22 +95,51 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
-            "cand-8bf2e884a9ff368a"
+            "cand-b654b43401cad5f5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jos Ram rez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "text": "Jos Ram rez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "entities": [],
+          "occurredAt": "2026-10-09T08:05:17Z",
+          "timePrecision": "exact",
+          "ageHours": 3.94,
+          "freshnessBasis": "— Jos Ram rez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401907993"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907993"
+            }
+          ],
+          "id": "a415-d09a67076df1adff",
+          "feedRank": 4,
+          "compactHeadline": "Jos Ram rez homers as the Guardians beat the White Sox 9-5 to force a decisive Game 5 in ALDS"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-92f3d61b0cde16db"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
           "text": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
           "entities": [],
-          "occurredAt": "2026-10-09T04:25:17Z",
+          "occurredAt": "2026-10-09T05:59:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 6.04,
           "freshnessBasis": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
           "status": "active",
           "sourceUrls": [
@@ -65,12 +152,12 @@
               "url": "https://www.espn.com/mlb/story/_/id/50137741/ramirez-guardians-top-white-sox-force-decisive-game-5-alds"
             }
           ],
-          "id": "a415-f4efb1ae3a0eab41",
-          "feedRank": 2,
-          "compactHeadline": "Ramirez, Guardians top White Sox, force decisive Game 5 in ALDS"
+          "id": "a415-36f737b4ce837ed3",
+          "feedRank": 5,
+          "compactHeadline": "Guardians survive in Chicago, head home with chance to advance"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-1c2cb56427b5f9b9"
           ],
@@ -81,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:14:54Z",
           "timePrecision": "exact",
-          "ageHours": 8.28,
+          "ageHours": 15.78,
           "freshnessBasis": "Here's how the winter will look in New York, Atlanta and San Diego following their division series losses.",
           "status": "active",
           "sourceUrls": [
@@ -95,95 +182,8 @@
             }
           ],
           "id": "a415-b8ac8b0563fb1c61",
-          "feedRank": 3,
-          "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-3b3efa95d6478a93"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "The Brew Crew is back in the NLCS. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
-          "text": "The Brew Crew is back in the NLCS. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
-          "entities": [],
-          "occurredAt": "2026-10-08T13:42:11Z",
-          "timePrecision": "exact",
-          "ageHours": 14.83,
-          "freshnessBasis": "The Brew Crew is back in the NLCS. But will the lack of power that has doomed Milwaukee before dash its World Series dreams?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50093592/mlb-2026-playoffs-milwaukee-brewers-postseason-different"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50093592/mlb-2026-playoffs-milwaukee-brewers-postseason-different"
-            }
-          ],
-          "id": "a415-5daaae96deb6d060",
-          "feedRank": 4,
-          "compactHeadline": "MLB playoffs 2026: Is this the Milwaukee Brewers' year?"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-92c67242cb9f5540"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Someone in the Rays' clubhouse had a certain song ready to go after the team's 4-3 win over the Yankees at Yankee Stadium.",
-          "text": "Someone in the Rays' clubhouse had a certain song ready to go after the team's 4-3 win over the Yankees at Yankee Stadium.",
-          "entities": [],
-          "occurredAt": "2026-10-08T15:14:43Z",
-          "timePrecision": "exact",
-          "ageHours": 13.28,
-          "freshnessBasis": "Someone in the Rays' clubhouse had a certain song ready to go after the team's 4-3 win over the Yankees at Yankee Stadium.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50132928/rays-yankees-sinatra-song-alds-troll"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50132928/rays-yankees-sinatra-song-alds-troll"
-            }
-          ],
-          "id": "a415-d93e97f0c41391c1",
-          "feedRank": 5,
-          "compactHeadline": "Tampa Bay Rays troll New York Yankees with signature Sinatra song after ALDS win"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b0d8e4da65b78a14"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "For all the stars the Dodgers boast, it was No. 9 hitter Andy Pages who came through with the big hit, sending Los Angeles to a 4-1 win over the Braves that clinched its third straight NLCS appearance.",
-          "text": "For all the stars the Dodgers boast, it was No. 9 hitter Andy Pages who came through with the big hit, sending Los Angeles to a 4-1 win over the Braves that clinched its third straight NLCS appearance.",
-          "entities": [],
-          "occurredAt": "2026-10-08T11:40:41Z",
-          "timePrecision": "exact",
-          "ageHours": 16.85,
-          "freshnessBasis": "For all the stars the Dodgers boast, it was No. 9 hitter Andy Pages who came through with the big hit, sending Los Angeles to a 4-1 win over the Braves that clinched its third straight NLCS appearance.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50129200/dodgers-dispatch-braves-advance-third-straight-nlcs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50129200/dodgers-dispatch-braves-advance-third-straight-nlcs"
-            }
-          ],
-          "id": "a415-4ee3cd9469165aca",
           "feedRank": 6,
-          "compactHeadline": "Andy Pages lifts Dodgers past Braves, into third straight NLCS"
+          "compactHeadline": "2026 MLB playoffs: Offseason questions for eliminated teams"
         }
       ]
     },
@@ -194,6 +194,69 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-686d182eddb88f3b"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
+          "text": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
+          "entities": [],
+          "occurredAt": "2026-10-09T10:53:58Z",
+          "timePrecision": "exact",
+          "ageHours": 1.13,
+          "freshnessBasis": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/draft2027/story/_/id/50117790/2027-nfl-draft-quarterbacks-ranking-strengths-weaknesses"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50117790/2027-nfl-draft-quarterbacks-ranking-strengths-weaknesses"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50117790/2027-nfl-draft-quarterbacks-ranking-strengths-weaknesses"
+            }
+          ],
+          "id": "a415-b8f957e4d9906eb1",
+          "feedRank": 7,
+          "compactHeadline": "2027 NFL draft QB rankings: Arch Manning, Dante Moore, Drew Mestemaker in top 15"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a0353e8dc81e7113"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jalon Daniels became the first undrafted rookie starting QB in the common draft era to win a game for a team that entered winless, leading the Bucs to a 24-16 win over the Cowboys.",
+          "text": "Jalon Daniels became the first undrafted rookie starting QB in the common draft era to win a game for a team that entered winless, leading the Bucs to a 24-16 win over the Cowboys.",
+          "entities": [],
+          "occurredAt": "2026-10-09T06:55:56Z",
+          "timePrecision": "exact",
+          "ageHours": 5.1,
+          "freshnessBasis": "Jalon Daniels became the first undrafted rookie starting QB in the common draft era to win a game for a team that entered winless, leading the Bucs to a 24-16 win over the Cowboys.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50138218/undrafted-rookie-qb-daniels-savors-thursday-night-win-vs-cowboys"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50138218/undrafted-rookie-qb-daniels-savors-thursday-night-win-vs-cowboys"
+            }
+          ],
+          "id": "a415-b542387e9fc41b1d",
+          "feedRank": 8,
+          "compactHeadline": "Undrafted rookie QB Daniels savors Thursday night win vs. Cowboys"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-598f83f2f4d289de"
           ],
           "type": "PLAYOFF",
@@ -203,7 +266,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T23:03:45Z",
           "timePrecision": "exact",
-          "ageHours": 5.47,
+          "ageHours": 12.97,
           "freshnessBasis": "— After beating the Green Bay Packers for the NFC North title and knocking them out of the playoffs last season, the Chicago Bears have one more opportunity to show definitively that a new chapter has started in the NFL’s most-played rivalry.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +280,40 @@
             }
           ],
           "id": "a415-74050879c0764ab2",
-          "feedRank": 7,
+          "feedRank": 9,
           "compactHeadline": "Bears have opportunity to show again they've gained the upper hand in their rivalry with Packers"
         },
         {
-          "rank": 2,
+          "rank": 4,
+          "candidateIds": [
+            "cand-15bdd21685e40e1b"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Bucky Irving already had his first 100-yard game since his rookie year in 2024 when the Tampa Bay running back finished off the Dallas Cowboys with a run that gave him a career high.",
+          "text": "Bucky Irving already had his first 100-yard game since his rookie year in 2024 when the Tampa Bay running back finished off the Dallas Cowboys with a run that gave him a career high.",
+          "entities": [],
+          "occurredAt": "2026-10-09T04:32:27Z",
+          "timePrecision": "exact",
+          "ageHours": 7.49,
+          "freshnessBasis": "— Bucky Irving already had his first 100-yard game since his rookie year in 2024 when the Tampa Bay running back finished off the Dallas Cowboys with a run that gave him a career high.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/recap?gameId=401872980"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872980"
+            }
+          ],
+          "id": "a415-8b549e94f4547d43",
+          "feedRank": 10,
+          "compactHeadline": "Bucky Irving and rookie QB Jalon Daniels help Bucs beat sloppy Cowboys 24-16 for 1st win of season"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-1750b2df696e5b6b"
           ],
@@ -232,7 +324,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T21:51:28Z",
           "timePrecision": "exact",
-          "ageHours": 6.67,
+          "ageHours": 14.17,
           "freshnessBasis": "Games between the San Francisco 49ers and Seattle Seahawks are typically intense with the two rivals often competing for NFC West supremacy.",
           "status": "active",
           "sourceUrls": [
@@ -246,40 +338,11 @@
             }
           ],
           "id": "a415-06b4b60014773045",
-          "feedRank": 8,
+          "feedRank": 11,
           "compactHeadline": "The 49ers travel to face the Seahawks in their 1st meeting since last season's playoff loss"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-15bdd21685e40e1b"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Bucky Irving ran for a career-high 165 yards, including a 72-yard run to set up the touchdown that put Tampa Bay ahead for good while scoring twice himself, and the Buccaneers beat the...",
-          "text": "Bucky Irving ran for a career-high 165 yards, including a 72-yard run to set up the touchdown that put Tampa Bay ahead for good while scoring twice himself, and the Buccaneers beat the...",
-          "entities": [],
-          "occurredAt": "2026-10-09T03:33:40Z",
-          "timePrecision": "exact",
-          "ageHours": 0.97,
-          "freshnessBasis": "— Bucky Irving ran for a career-high 165 yards, including a 72-yard run to set up the touchdown that put Tampa Bay ahead for good while scoring twice himself, and the Buccaneers beat the...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/recap?gameId=401872980"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401872980"
-            }
-          ],
-          "id": "a415-8b549e94f4547d43",
-          "feedRank": 9,
-          "compactHeadline": "Bucky Irving and rookie QB Jalon Daniels help Bucs beat sloppy Cowboys 24-16 for 1st win of season"
-        },
-        {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-5dfc201ea1612f61"
           ],
@@ -290,7 +353,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T00:51:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.66,
+          "ageHours": 11.16,
           "freshnessBasis": "Sources said the Cardinals are not shopping Marvin Harrison Jr. but other teams are still doing their due diligence on the receiver, including the Colts.",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +367,8 @@
             }
           ],
           "id": "a415-eaf097ddbccadfe1",
-          "feedRank": 10,
-          "compactHeadline": "Cards' Marvin Harrison Jr. paying 'no mind' to trade rumors"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-94b058fd1c4308fa"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Steelers receiver Michael Pittman Jr. aggravated a foot injury and is out multiple weeks.",
-          "text": "Steelers receiver Michael Pittman Jr. aggravated a foot injury and is out multiple weeks.",
-          "entities": [],
-          "occurredAt": "2026-10-08T17:17:35Z",
-          "timePrecision": "exact",
-          "ageHours": 11.24,
-          "freshnessBasis": "Steelers receiver Michael Pittman Jr. aggravated a foot injury and is out multiple weeks.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50133939/steelers-receiver-michael-pittman-aggravates-foot-weeks"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50133939/steelers-receiver-michael-pittman-aggravates-foot-weeks"
-            }
-          ],
-          "id": "a415-e8cf80950c588961",
-          "feedRank": 11,
-          "compactHeadline": "Steelers receiver Michael Pittman aggravates foot, out weeks"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-5bc5ba552cb44334"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Deshaun Watson is making plays in the clutch, the Cleveland Browns are winning and they're doing it...",
-          "text": "Deshaun Watson is making plays in the clutch, the Cleveland Browns are winning and they're doing it...",
-          "entities": [],
-          "occurredAt": "2026-10-08T18:54:29Z",
-          "timePrecision": "exact",
-          "ageHours": 9.62,
-          "freshnessBasis": "— Deshaun Watson is making plays in the clutch, the Cleveland Browns are winning and they're doing it...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401872983"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401872983"
-            }
-          ],
-          "id": "a415-4dbeddc0654e6724",
           "feedRank": 12,
-          "compactHeadline": "Deshaun Watson and surprising Browns are on a 3-game winning streak and set to face struggling Jets"
+          "compactHeadline": "Cards' Marvin Harrison Jr. paying 'no mind' to trade rumors"
         }
       ]
     },
@@ -374,6 +379,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-78b65de4128306d3"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "After agreeing to a five-year, $200 million deal, how will Duren and Detroit move forward after a monthslong saga?",
+          "text": "After agreeing to a five-year, $200 million deal, how will Duren and Detroit move forward after a monthslong saga?",
+          "entities": [],
+          "occurredAt": "2026-10-09T11:39:06Z",
+          "timePrecision": "exact",
+          "ageHours": 0.38,
+          "freshnessBasis": "After agreeing to a five-year, $200 million deal, how will Duren and Detroit move forward after a monthslong saga?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50118254/detroit-pistons-jalen-duren-new-contract"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50118254/detroit-pistons-jalen-duren-new-contract"
+            }
+          ],
+          "id": "a415-6b68bef9a24695db",
+          "feedRank": 13,
+          "compactHeadline": "Jalen Duren, Pistons need each other -- for better or worse"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-9311ee0791e174b5"
           ],
           "type": "NEWS",
@@ -381,9 +415,9 @@
           "headline": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
           "text": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
           "entities": [],
-          "occurredAt": "2026-10-09T04:16:24Z",
+          "occurredAt": "2026-10-09T05:49:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 6.2,
           "freshnessBasis": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +431,40 @@
             }
           ],
           "id": "a415-87840400f24ac412",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "LeBron James scores 10 points in 18 minutes in 76ers debut"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-83aced5ea7d0c8cc"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Joel Embiid said a recent report about LeBron James getting on him about being late to practice \"is not true\" and caused him to wonder why he was targeted.",
+          "text": "Joel Embiid said a recent report about LeBron James getting on him about being late to practice \"is not true\" and caused him to wonder why he was targeted.",
+          "entities": [],
+          "occurredAt": "2026-10-09T05:27:05Z",
+          "timePrecision": "exact",
+          "ageHours": 6.58,
+          "freshnessBasis": "Joel Embiid said a recent report about LeBron James getting on him about being late to practice \"is not true\" and caused him to wonder why he was targeted.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50137826/76ers-embiid-calls-not-true-lebron-report-unfortunate"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50137826/76ers-embiid-calls-not-true-lebron-report-unfortunate"
+            }
+          ],
+          "id": "a415-c47dc559a54f919e",
+          "feedRank": 15,
+          "compactHeadline": "76ers' Embiid calls 'not true' LeBron report 'unfortunate'"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-29141beeeeaa6e13"
           ],
@@ -412,7 +475,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:15:04Z",
           "timePrecision": "exact",
-          "ageHours": 8.28,
+          "ageHours": 15.78,
           "freshnessBasis": "The 76ers plan to play their starters Thursday against the Nets, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -426,66 +489,8 @@
             }
           ],
           "id": "a415-fd21b5538f200410",
-          "feedRank": 14,
-          "compactHeadline": "Sources: 76ers plan to play starters in preseason game vs. Nets"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-e42904d003d56278"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "\"Abbott Elementary\" continues to embrace Philadelphia sports culture with its latest instance starring the 76ers.",
-          "text": "\"Abbott Elementary\" continues to embrace Philadelphia sports culture with its latest instance starring the 76ers.",
-          "entities": [],
-          "occurredAt": "2026-10-08T20:47:07Z",
-          "timePrecision": "exact",
-          "ageHours": 7.74,
-          "freshnessBasis": "\"Abbott Elementary\" continues to embrace Philadelphia sports culture with its latest instance starring the 76ers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50134809/abbott-elementary-season-six-premiere-sixers-cameo"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50134809/abbott-elementary-season-six-premiere-sixers-cameo"
-            }
-          ],
-          "id": "a415-4d100b0185b54add",
-          "feedRank": 15,
-          "compactHeadline": "Tyrese Maxey, Jaylen Brown, VJ Edgecombe make 'Abbott Elementary' cameos"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f0bc93e9c6b5d439"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The top sights and sounds from the Dallas Mavericks and Houston Rockets' preseason trip to China.",
-          "text": "The top sights and sounds from the Dallas Mavericks and Houston Rockets' preseason trip to China.",
-          "entities": [],
-          "occurredAt": "2026-10-08T13:24:48Z",
-          "timePrecision": "exact",
-          "ageHours": 15.12,
-          "freshnessBasis": "The top sights and sounds from the Dallas Mavericks and Houston Rockets' preseason trip to China.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50119633/rockets-mavs-nba-china-highlights"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50119633/rockets-mavs-nba-china-highlights"
-            }
-          ],
-          "id": "a415-ed7e7fd262001725",
           "feedRank": 16,
-          "compactHeadline": "Rockets, Mavs take China: Highlights, top scenes from off the court"
+          "compactHeadline": "Sources: 76ers plan to play starters in preseason game vs. Nets"
         }
       ]
     },
@@ -496,6 +501,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-74ac0e7e1b42b08f"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Edmonton Oilers (3-0-1, in the Pacific Division) vs. San Jose Sharks (3-1, in the Pacific Division)",
+          "text": "Edmonton Oilers (3-0-1, in the Pacific Division) vs. San Jose Sharks (3-1, in the Pacific Division)",
+          "entities": [],
+          "occurredAt": "2026-10-09T08:11:33Z",
+          "timePrecision": "exact",
+          "ageHours": 3.84,
+          "freshnessBasis": "Edmonton Oilers (3-0-1, in the Pacific Division) vs. San Jose Sharks (3-1, in the Pacific Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892471"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892471"
+            }
+          ],
+          "id": "a415-3099ef104ba27525",
+          "feedRank": 17,
+          "compactHeadline": "Oilers bring win streak into matchup against the Sharks"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-94ded9df05fcd351"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Carolina Hurricanes (3-1-1, in the Metropolitan Division) vs. Chicago Blackhawks (1-4, in the Central Division)",
+          "text": "Carolina Hurricanes (3-1-1, in the Metropolitan Division) vs. Chicago Blackhawks (1-4, in the Central Division)",
+          "entities": [],
+          "occurredAt": "2026-10-09T08:11:30Z",
+          "timePrecision": "exact",
+          "ageHours": 3.84,
+          "freshnessBasis": "Carolina Hurricanes (3-1-1, in the Metropolitan Division) vs. Chicago Blackhawks (1-4, in the Central Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892476"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892476"
+            }
+          ],
+          "id": "a415-4f3db86fafb77975",
+          "feedRank": 18,
+          "compactHeadline": "Hurricanes try to keep win streak alive, visit the Blackhawks"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-0b06f227d81dc9e2"
           ],
           "type": "INJURY",
@@ -505,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T01:42:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.81,
+          "ageHours": 10.31,
           "freshnessBasis": "Panthers forward Brad Marchand, who injured his left leg in Tuesday's win over the Kings, will miss only \"a few weeks,\" The Associated Press reported.",
           "status": "active",
           "sourceUrls": [
@@ -519,11 +582,11 @@
             }
           ],
           "id": "a415-df981b81995ae605",
-          "feedRank": 17,
+          "feedRank": 19,
           "compactHeadline": "Report: Panthers' Marchand out 'a few weeks' with leg injury"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-65ee64dbe62f34b9"
           ],
@@ -534,7 +597,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T04:23:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 7.64,
           "freshnessBasis": "— Cale Makar had two goals and an assist, Devon Toews and Jaden Schwartz also each scored twice and the Colorado Avalanche beat the winless Calgary Flames 7-3 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -548,11 +611,11 @@
             }
           ],
           "id": "a415-831f6a60b9a2017b",
-          "feedRank": 18,
+          "feedRank": 20,
           "compactHeadline": "Makar has 2 goals and an assist in the Avs' 7-3 victory over the winless Flames"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-952b0945795bd03b"
           ],
@@ -563,7 +626,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:05:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.44,
+          "ageHours": 8.94,
           "freshnessBasis": "— Darnell Nurse scored 1:03 into overtime and the San Jose Sharks beat the St. Louis Blues 3-2 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +640,11 @@
             }
           ],
           "id": "a415-382457bf19880a57",
-          "feedRank": 19,
+          "feedRank": 21,
           "compactHeadline": "Darnell Nurse scores in OT to give Sharks 3-2 win over Blues"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-adf33d430be0bd55"
           ],
@@ -592,7 +655,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 2.09,
+          "ageHours": 9.59,
           "freshnessBasis": "— Bo Horvat scored twice and the New York Islanders beat the Chicago Blackhawks 4-1 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -606,66 +669,8 @@
             }
           ],
           "id": "a415-1013468b07740fb6",
-          "feedRank": 20,
-          "compactHeadline": "Bo Horvat scores twice as Islanders beat Blackhawks 4-1"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0aeb1f019e1fb658"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ryan O’Reilly scored the go-ahead goal with 3:16 remaining, and the Nashville Predators rallied from a 2-0 deficit to beat the Montreal Canadiens 5-2 on Thursday night.",
-          "text": "Ryan O’Reilly scored the go-ahead goal with 3:16 remaining, and the Nashville Predators rallied from a 2-0 deficit to beat the Montreal Canadiens 5-2 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-10-09T02:15:34Z",
-          "timePrecision": "exact",
-          "ageHours": 2.27,
-          "freshnessBasis": "— Ryan O’Reilly scored the go-ahead goal with 3:16 remaining, and the Nashville Predators rallied from a 2-0 deficit to beat the Montreal Canadiens 5-2 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892459"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892459"
-            }
-          ],
-          "id": "a415-0b6e9c050c42f555",
-          "feedRank": 21,
-          "compactHeadline": "Ryan O'Reilly scores go-ahead goal as Predators rally for 5-2 win over Canadiens"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ccb87ab922f88a17"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Carter Yakemchuk broke a tie on a power play with 6:59 left and the Ottawa Senators held on to beat the winless Philadelphia Flyers 2-1 on Thursday night.",
-          "text": "Carter Yakemchuk broke a tie on a power play with 6:59 left and the Ottawa Senators held on to beat the winless Philadelphia Flyers 2-1 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-10-09T02:08:28Z",
-          "timePrecision": "exact",
-          "ageHours": 2.39,
-          "freshnessBasis": "— Carter Yakemchuk broke a tie on a power play with 6:59 left and the Ottawa Senators held on to beat the winless Philadelphia Flyers 2-1 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401891820"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401891820"
-            }
-          ],
-          "id": "a415-e6ebdb5246e72ba6",
           "feedRank": 22,
-          "compactHeadline": "Yakemchuk breaks late tie in the Senators' 2-1 victory over the Flyers"
+          "compactHeadline": "Bo Horvat scores twice as Islanders beat Blackhawks 4-1"
         }
       ]
     },
@@ -685,7 +690,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T16:16:58Z",
           "timePrecision": "exact",
-          "ageHours": 12.25,
+          "ageHours": 19.75,
           "freshnessBasis": "Max Dowman has added three Guinness World Records to his growing list of achievements despite not turning 17 until this coming December.",
           "status": "active",
           "sourceUrls": [
@@ -705,147 +710,147 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-683f43be2305000c"
+            "cand-7c50f35d70653650"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "All the latest news and updates on Premier League stars injuries after the first international break of the 2026-2027 club season",
-          "text": "All the latest news and updates on Premier League stars injuries after the first international break of the 2026-2027 club season",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
+          "text": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
           "entities": [],
-          "occurredAt": "2026-10-08T06:35:51Z",
+          "occurredAt": "2026-10-09T11:23:25Z",
           "timePrecision": "exact",
-          "ageHours": 21.93,
-          "freshnessBasis": "All the latest news and updates on Premier League stars injuries after the first international break of the 2026-2027 club season",
+          "ageHours": 0.64,
+          "freshnessBasis": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/football/story/_/id/50026166/premier-league-international-break-arsenal-chelsea-manchester-united"
+            "https://www.espn.com/soccer/story/_/id/50138434/man-city-charges-live-reaction-latest-updates-arteta-carrick-iraola-maresca-speak"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/football/story/_/id/50026166/premier-league-international-break-arsenal-chelsea-manchester-united"
+              "url": "https://www.espn.com/soccer/story/_/id/50138434/man-city-charges-live-reaction-latest-updates-arteta-carrick-iraola-maresca-speak"
             }
           ],
-          "id": "a415-986df8fdd1abe3fd",
+          "id": "a415-10e9f7c39050cd08",
           "feedRank": 24,
-          "compactHeadline": "Premier League injury concerns from the international break"
+          "compactHeadline": "Man City charges LIVE reaction: Latest updates as Arteta, Carrick, Iraola, Maresca speak"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-6611a235caa66d27"
+            "cand-f95b37b37464f995"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Enzo Maresca has said he \"trusts the club completely\" in his first interview since Manchester City were found guilty of breaking financial rules.",
-          "text": "Enzo Maresca has said he \"trusts the club completely\" in his first interview since Manchester City were found guilty of breaking financial rules.",
+          "headline": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
+          "text": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
           "entities": [],
-          "occurredAt": "2026-10-08T20:32:05Z",
+          "occurredAt": "2026-10-09T11:14:49Z",
           "timePrecision": "exact",
-          "ageHours": 7.99,
-          "freshnessBasis": "Enzo Maresca has said he \"trusts the club completely\" in his first interview since Manchester City were found guilty of breaking financial rules.",
+          "ageHours": 0.78,
+          "freshnessBasis": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50134137/manchester-city-manager-enzo-maresca-says-trusts-club-completely"
+            "https://www.espn.com/soccer/story/_/id/50139079/uefa-member-nations-call-fifa-international-break-disaster"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50134137/manchester-city-manager-enzo-maresca-says-trusts-club-completely"
+              "url": "https://www.espn.com/soccer/story/_/id/50139079/uefa-member-nations-call-fifa-international-break-disaster"
             }
           ],
-          "id": "a415-a891c5f1e0d38de0",
+          "id": "a415-ddd8fdc84d6dffe3",
           "feedRank": 25,
-          "compactHeadline": "Man City manager Enzo Maresca says he 'trusts the club completely'"
+          "compactHeadline": "UEFA member nations call FIFA's international break a 'disaster'"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-13ab1c3a2174045b"
+            "cand-dbc867787020f4c6"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Real Madrid coach José Mourinho joked that he'll be lucky to still be around to see the final verdict in the Premier League's case against Manchester City.",
-          "text": "Real Madrid coach José Mourinho joked that he'll be lucky to still be around to see the final verdict in the Premier League's case against Manchester City.",
+          "headline": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
+          "text": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
           "entities": [],
-          "occurredAt": "2026-10-08T20:01:22Z",
+          "occurredAt": "2026-10-09T10:53:14Z",
           "timePrecision": "exact",
-          "ageHours": 8.51,
-          "freshnessBasis": "Real Madrid coach José Mourinho joked that he'll be lucky to still be around to see the final verdict in the Premier League's case against Manchester City.",
+          "ageHours": 1.14,
+          "freshnessBasis": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50134523/jose-mourinho-manchester-city-charges-punishment-case"
+            "https://www.espn.com/soccer/story/_/id/50138770/enzo-maresca-joined-man-city-even-knew-guilty-verdict"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50134523/jose-mourinho-manchester-city-charges-punishment-case"
+              "url": "https://www.espn.com/soccer/story/_/id/50138770/enzo-maresca-joined-man-city-even-knew-guilty-verdict"
             }
           ],
-          "id": "a415-2b89bbc69894d272",
+          "id": "a415-f7a26edf24489af9",
           "feedRank": 26,
-          "compactHeadline": "Mourinho jokes he'll be lucky to still be around when Man City case ends"
+          "compactHeadline": "Enzo Maresca: Man City titles not tainted by guilty verdict"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-147d65c4a15cad3c"
+            "cand-f2e372be798ac194"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Tottenham Hotspur's Xavi Simons has revealed he has enrolled for an online course at Harvard Business School.",
-          "text": "Tottenham Hotspur's Xavi Simons has revealed he has enrolled for an online course at Harvard Business School.",
+          "headline": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
+          "text": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
           "entities": [],
-          "occurredAt": "2026-10-08T19:19:43Z",
+          "occurredAt": "2026-10-09T09:30:18Z",
           "timePrecision": "exact",
-          "ageHours": 9.2,
-          "freshnessBasis": "Tottenham Hotspur's Xavi Simons has revealed he has enrolled for an online course at Harvard Business School.",
+          "ageHours": 2.52,
+          "freshnessBasis": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50134572/tottenham-hotspur-xavi-simons-enrolls-student-harvard-business-school"
+            "https://www.espn.com/soccer/story/_/id/50138814/vincent-kompany-proud-man-city-achievements-guilty-verdict-premier-league-breaches"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50134572/tottenham-hotspur-xavi-simons-enrolls-student-harvard-business-school"
+              "url": "https://www.espn.com/soccer/story/_/id/50138814/vincent-kompany-proud-man-city-achievements-guilty-verdict-premier-league-breaches"
             }
           ],
-          "id": "a415-06aadf84b9e33636",
+          "id": "a415-9392161bcfc7eed3",
           "feedRank": 27,
-          "compactHeadline": "Tottenham's Xavi Simons enrolls at Harvard Business School"
+          "compactHeadline": "Vincent Kompany 'proud' of Man City achievements despite guilty verdict over Premier League breaches"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-cb5aefab14c75264"
+            "cand-094c0e3b7972e0c2"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Erling Haaland has said that everyone at Manchester City has to \"stay positive\" as the team prepares to play their first matches since being found guilty of breaching Premier League regulations.",
-          "text": "Erling Haaland has said that everyone at Manchester City has to \"stay positive\" as the team prepares to play their first matches since being found guilty of breaching Premier League regulations.",
+          "headline": "Everton's owners are exploring \"the potential sale of a controlling interest\" in the club.",
+          "text": "Everton's owners are exploring \"the potential sale of a controlling interest\" in the club.",
           "entities": [],
-          "occurredAt": "2026-10-08T17:16:16Z",
+          "occurredAt": "2026-10-09T08:21:53Z",
           "timePrecision": "exact",
-          "ageHours": 11.26,
-          "freshnessBasis": "Erling Haaland has said that everyone at Manchester City has to \"stay positive\" as the team prepares to play their first matches since being found guilty of breaching Premier League regulations.",
+          "ageHours": 3.66,
+          "freshnessBasis": "Everton's owners are exploring \"the potential sale of a controlling interest\" in the club.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50133420/erling-haaland-calls-man-city-stay-positive-amid-premier-league-charges-case"
+            "https://www.espn.com/soccer/story/_/id/50138355/everton-put-sale-friedkin-group"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50133420/erling-haaland-calls-man-city-stay-positive-amid-premier-league-charges-case"
+              "url": "https://www.espn.com/soccer/story/_/id/50138355/everton-put-sale-friedkin-group"
             }
           ],
-          "id": "a415-b1e64022543f2d5a",
+          "id": "a415-5b49c79efad2b470",
           "feedRank": 28,
-          "compactHeadline": "Erling Haaland calls on Man City to 'stay positive' amid Premier League charges case"
+          "compactHeadline": "Everton put up for sale by Friedkin Group"
         }
       ]
     },
@@ -865,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T16:13:02Z",
           "timePrecision": "exact",
-          "ageHours": 12.31,
+          "ageHours": 19.81,
           "freshnessBasis": "MLS commissioner Don Garber would love Harry Kane to follow Lionel Messi across the pond and says the England skipper's interest helps fulfil a dream that Sir David Beckham kept alive.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +905,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.67,
+          "ageHours": 8.17,
           "freshnessBasis": "— Keenan Phillips ran for 157 yards and three touchdowns, and he added a 100-yard kickoff return as South Alabama beat Arkansas State 56-49 on Thursday night for the most combined...",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +934,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:49:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.71,
+          "ageHours": 9.2,
           "freshnessBasis": "— Brock Glenn threw for a touchdown and ran for another, Ajay Allen rushed for 105 yards and two touchdowns, and Western Kentucky beat Missouri State 34-13 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -949,89 +954,89 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-4f75ec3340bf8430"
+            "cand-9cf374cd20a5db37"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "BYU running back LJ Martin will be sidelined for at least a month with a lower body injury, sources told ESPN's Pete Thamel on Wednesday.",
-          "text": "BYU running back LJ Martin will be sidelined for at least a month with a lower body injury, sources told ESPN's Pete Thamel on Wednesday.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
+          "text": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
           "entities": [],
-          "occurredAt": "2026-10-08T12:01:34Z",
+          "occurredAt": "2026-10-09T10:25:09Z",
           "timePrecision": "exact",
-          "ageHours": 16.5,
-          "freshnessBasis": "BYU running back LJ Martin will be sidelined for at least a month with a lower body injury, sources told ESPN's Pete Thamel on Wednesday.",
+          "ageHours": 1.61,
+          "freshnessBasis": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50128461/brigham-young-tailback-lj-martin-least-month"
+            "https://www.espn.com/college-football/story/_/id/50126123/gunner-stockton-back-spotlight-georgia-faces-alabama"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50128461/brigham-young-tailback-lj-martin-least-month"
+              "url": "https://www.espn.com/college-football/story/_/id/50126123/gunner-stockton-back-spotlight-georgia-faces-alabama"
             }
           ],
-          "id": "a415-7d3bba2ff7c51c4c",
+          "id": "a415-c14e62560bb82232",
           "feedRank": 32,
-          "compactHeadline": "Sources: Brigham Young tailback LJ Martin out for 4 to 6 weeks"
+          "compactHeadline": "Hometown hero Gunner Stockton back in spotlight for Georgia"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-93caf241adf32d0c"
+            "cand-bc85a31aa5c43286"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
-          "text": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
+          "text": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
           "entities": [],
-          "occurredAt": "2026-10-08T12:00:30Z",
+          "occurredAt": "2026-10-09T10:24:31Z",
           "timePrecision": "exact",
-          "ageHours": 16.52,
-          "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "ageHours": 1.62,
+          "freshnessBasis": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+            "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+              "url": "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
             }
           ],
-          "id": "a415-41a85254b776fd5e",
+          "id": "a415-040796ec3a387b93",
           "feedRank": 33,
-          "compactHeadline": "Oregon QB Dante Moore ruled out vs. UCLA; Dylan Raiola to start"
+          "compactHeadline": "Alabama thinks it has found and fixed Ryan Coleman-Williams' drop issues"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-469e632cac530ef2"
+            "cand-9cfb156ef1d83958"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
-          "text": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
+          "text": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "entities": [],
-          "occurredAt": "2026-10-08T11:59:54Z",
+          "occurredAt": "2026-10-09T10:21:06Z",
           "timePrecision": "exact",
-          "ageHours": 16.53,
-          "freshnessBasis": "Georgia running back Chauncey Bowens, who leads the No. 2 Bulldogs with six rushing touchdowns in five games, will miss Saturday's game at No. 6 Alabama. Meanwhile, Nate Frazier is poised to return after missing most of the past two games.",
+          "ageHours": 1.68,
+          "freshnessBasis": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50128870/georgia-bulldogs-chauncey-bowens-vs-alabama-crimson-tide"
+            "https://www.espn.com/college-football/story/_/id/50125661/2026-bob-chesney-ucla-winning-turnaround"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50128870/georgia-bulldogs-chauncey-bowens-vs-alabama-crimson-tide"
+              "url": "https://www.espn.com/college-football/story/_/id/50125661/2026-bob-chesney-ucla-winning-turnaround"
             }
           ],
-          "id": "a415-2995e8bad599f141",
+          "id": "a415-ff28334fee4bc052",
           "feedRank": 34,
-          "compactHeadline": "Georgia's Chauncey Bowens out vs. Alabama; Nate Frazier off injury report"
+          "compactHeadline": "How Bob Chesney has completely turned around UCLA"
         },
         {
           "rank": 6,
@@ -1045,7 +1050,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T04:07:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.4,
+          "ageHours": 7.9,
           "freshnessBasis": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1090,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 120,
+    "freshCandidateCount": 118,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
