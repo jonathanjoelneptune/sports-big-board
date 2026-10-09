@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-09T13:31:36Z",
+  "generatedAt": "2026-10-09T14:01:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "0ec3ab66665524e67d93ef94f2a3f0f0c904bbe0e80ceb6e5ad91c2d254b1b9d",
+  "sourceCandidateHash": "aa6f054db93e151e06ae03b67e7736786aeb784e3a64c816a7cd2e79b39a58fc",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T10:34:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.95,
+          "ageHours": 3.45,
           "freshnessBasis": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T10:35:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.94,
+          "ageHours": 3.44,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-e98daa53050f4415"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "text": "Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "entities": [],
+          "occurredAt": "2026-10-09T13:55:51Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "- Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401907993"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907993"
+            }
+          ],
+          "id": "a415-82ff1a5130cdfb29",
+          "feedRank": 3,
+          "compactHeadline": "Jose Ramirez homers as the Guardians beat the White Sox 9-5 to force a decisive Game 5 in ALDS"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-37fff10359b2f543"
           ],
           "type": "PLAYOFF",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 9.69,
+          "ageHours": 10.19,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +124,8 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 3,
-          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-b654b43401cad5f5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jos Ram rez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
-          "text": "Jos Ram rez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
-          "entities": [],
-          "occurredAt": "2026-10-09T08:05:17Z",
-          "timePrecision": "exact",
-          "ageHours": 5.44,
-          "freshnessBasis": "— Jos Ram rez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401907993"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907993"
-            }
-          ],
-          "id": "a415-d09a67076df1adff",
           "feedRank": 4,
-          "compactHeadline": "Jos Ram rez homers as the Guardians beat the White Sox 9-5 to force a decisive Game 5 in ALDS"
+          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
           "rank": 5,
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T05:59:28Z",
           "timePrecision": "exact",
-          "ageHours": 7.54,
+          "ageHours": 8.04,
           "freshnessBasis": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T20:14:54Z",
           "timePrecision": "exact",
-          "ageHours": 17.28,
+          "ageHours": 17.78,
           "freshnessBasis": "Here's how the winter will look in New York, Atlanta and San Diego following their division series losses.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T12:14:09Z",
           "timePrecision": "exact",
-          "ageHours": 1.29,
+          "ageHours": 1.79,
           "freshnessBasis": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
           "status": "active",
           "sourceUrls": [
@@ -235,9 +235,9 @@
           "headline": "Jalon Daniels became the first undrafted rookie starting QB in the common draft era to win a game for a team that entered winless, leading the Bucs to a 24-16 win over the Cowboys.",
           "text": "Jalon Daniels became the first undrafted rookie starting QB in the common draft era to win a game for a team that entered winless, leading the Bucs to a 24-16 win over the Cowboys.",
           "entities": [],
-          "occurredAt": "2026-10-09T06:55:56Z",
+          "occurredAt": "2026-10-09T13:37:48Z",
           "timePrecision": "exact",
-          "ageHours": 6.59,
+          "ageHours": 0.4,
           "freshnessBasis": "Jalon Daniels became the first undrafted rookie starting QB in the common draft era to win a game for a team that entered winless, leading the Bucs to a 24-16 win over the Cowboys.",
           "status": "active",
           "sourceUrls": [
@@ -266,7 +266,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T23:03:45Z",
           "timePrecision": "exact",
-          "ageHours": 14.46,
+          "ageHours": 14.97,
           "freshnessBasis": "— After beating the Green Bay Packers for the NFC North title and knocking them out of the playoffs last season, the Chicago Bears have one more opportunity to show definitively that a new chapter has started in the NFL’s most-played rivalry.",
           "status": "active",
           "sourceUrls": [
@@ -295,7 +295,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T04:32:27Z",
           "timePrecision": "exact",
-          "ageHours": 8.99,
+          "ageHours": 9.49,
           "freshnessBasis": "— Bucky Irving already had his first 100-yard game since his rookie year in 2024 when the Tampa Bay running back finished off the Dallas Cowboys with a run that gave him a career high.",
           "status": "active",
           "sourceUrls": [
@@ -324,7 +324,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T21:51:28Z",
           "timePrecision": "exact",
-          "ageHours": 15.67,
+          "ageHours": 16.17,
           "freshnessBasis": "Games between the San Francisco 49ers and Seattle Seahawks are typically intense with the two rivals often competing for NFC West supremacy.",
           "status": "active",
           "sourceUrls": [
@@ -353,7 +353,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T00:51:53Z",
           "timePrecision": "exact",
-          "ageHours": 12.66,
+          "ageHours": 13.16,
           "freshnessBasis": "Sources said the Cardinals are not shopping Marvin Harrison Jr. but other teams are still doing their due diligence on the receiver, including the Colts.",
           "status": "active",
           "sourceUrls": [
@@ -379,6 +379,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-288b31f7a479ab06"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "The Knicks have said they are tabling contract extension talks with Karl-Anthony Towns and Josh Hart \"until later in the season and will remain solely focused on preparing for the start of the season.\"",
+          "text": "The Knicks have said they are tabling contract extension talks with Karl-Anthony Towns and Josh Hart \"until later in the season and will remain solely focused on preparing for the start of the season.\"",
+          "entities": [],
+          "occurredAt": "2026-10-09T13:40:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.35,
+          "freshnessBasis": "The Knicks have said they are tabling contract extension talks with Karl-Anthony Towns and Josh Hart \"until later in the season and will remain solely focused on preparing for the start of the season.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50140136/knicks-tabling-karl-anthony-towns-josh-hart-contract-talks"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50140136/knicks-tabling-karl-anthony-towns-josh-hart-contract-talks"
+            }
+          ],
+          "id": "a415-da836813293179ce",
+          "feedRank": 13,
+          "compactHeadline": "Knicks tabling Karl-Anthony Towns, Josh Hart contract talks"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-78b65de4128306d3"
           ],
           "type": "NEWS",
@@ -388,7 +417,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T11:39:06Z",
           "timePrecision": "exact",
-          "ageHours": 1.88,
+          "ageHours": 2.38,
           "freshnessBasis": "After agreeing to a five-year, $200 million deal, how will Duren and Detroit move forward after a monthslong saga?",
           "status": "active",
           "sourceUrls": [
@@ -402,11 +431,11 @@
             }
           ],
           "id": "a415-6b68bef9a24695db",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Jalen Duren, Pistons need each other -- for better or worse"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-9311ee0791e174b5"
           ],
@@ -417,7 +446,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T05:49:34Z",
           "timePrecision": "exact",
-          "ageHours": 7.7,
+          "ageHours": 8.2,
           "freshnessBasis": "LeBron James, who joined the 76ers this summer, had 10 points, five assists and four rebounds in the first half of his debut with Philadelphia.",
           "status": "active",
           "sourceUrls": [
@@ -431,11 +460,11 @@
             }
           ],
           "id": "a415-87840400f24ac412",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "LeBron James scores 10 points in 18 minutes in 76ers debut"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-83aced5ea7d0c8cc"
           ],
@@ -446,7 +475,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T05:27:05Z",
           "timePrecision": "exact",
-          "ageHours": 8.08,
+          "ageHours": 8.58,
           "freshnessBasis": "Joel Embiid said a recent report about LeBron James getting on him about being late to practice \"is not true\" and caused him to wonder why he was targeted.",
           "status": "active",
           "sourceUrls": [
@@ -460,37 +489,8 @@
             }
           ],
           "id": "a415-c47dc559a54f919e",
-          "feedRank": 15,
-          "compactHeadline": "76ers' Embiid calls 'not true' LeBron report 'unfortunate'"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-29141beeeeaa6e13"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 64,
-          "headline": "The 76ers plan to play their starters Thursday against the Nets, sources told ESPN.",
-          "text": "The 76ers plan to play their starters Thursday against the Nets, sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-10-08T20:15:04Z",
-          "timePrecision": "exact",
-          "ageHours": 17.28,
-          "freshnessBasis": "The 76ers plan to play their starters Thursday against the Nets, sources told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50134832/sources-76ers-plan-play-starters-preseason-game-vs-nets"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50134832/sources-76ers-plan-play-starters-preseason-game-vs-nets"
-            }
-          ],
-          "id": "a415-fd21b5538f200410",
           "feedRank": 16,
-          "compactHeadline": "Sources: 76ers plan to play starters in preseason game vs. Nets"
+          "compactHeadline": "76ers' Embiid calls 'not true' LeBron report 'unfortunate'"
         }
       ]
     },
@@ -510,7 +510,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T11:12:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.31,
+          "ageHours": 2.81,
           "freshnessBasis": "From players with new linemates to young stars set to hit superstardom to enticing rookies, watch out for this group.",
           "status": "active",
           "sourceUrls": [
@@ -539,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T08:11:33Z",
           "timePrecision": "exact",
-          "ageHours": 5.33,
+          "ageHours": 5.84,
           "freshnessBasis": "Edmonton Oilers (3-0-1, in the Pacific Division) vs. San Jose Sharks (3-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -568,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T08:11:30Z",
           "timePrecision": "exact",
-          "ageHours": 5.34,
+          "ageHours": 5.84,
           "freshnessBasis": "Carolina Hurricanes (3-1-1, in the Metropolitan Division) vs. Chicago Blackhawks (1-4, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -597,7 +597,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T01:42:59Z",
           "timePrecision": "exact",
-          "ageHours": 11.81,
+          "ageHours": 12.31,
           "freshnessBasis": "Panthers forward Brad Marchand, who injured his left leg in Tuesday's win over the Kings, will miss only \"a few weeks,\" The Associated Press reported.",
           "status": "active",
           "sourceUrls": [
@@ -626,7 +626,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T04:23:27Z",
           "timePrecision": "exact",
-          "ageHours": 9.14,
+          "ageHours": 9.64,
           "freshnessBasis": "— Cale Makar had two goals and an assist, Devon Toews and Jaden Schwartz also each scored twice and the Colorado Avalanche beat the winless Calgary Flames 7-3 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -655,7 +655,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:05:28Z",
           "timePrecision": "exact",
-          "ageHours": 10.44,
+          "ageHours": 10.94,
           "freshnessBasis": "— Darnell Nurse scored 1:03 into overtime and the San Jose Sharks beat the St. Louis Blues 3-2 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -690,7 +690,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T13:21:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "Alexander Isak and Cody Gakpo are out of Liverpool's match against Manchester City this weekend due to injury, Andoni Iraola confirmed.",
           "status": "active",
           "sourceUrls": [
@@ -719,7 +719,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T16:16:58Z",
           "timePrecision": "exact",
-          "ageHours": 21.24,
+          "ageHours": 21.75,
           "freshnessBasis": "Max Dowman has added three Guinness World Records to his growing list of achievements despite not turning 17 until this coming December.",
           "status": "active",
           "sourceUrls": [
@@ -739,64 +739,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-7c50f35d70653650"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
-          "text": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
-          "entities": [],
-          "occurredAt": "2026-10-09T13:27:50Z",
-          "timePrecision": "exact",
-          "ageHours": 0.06,
-          "freshnessBasis": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50138434/man-city-charges-live-reaction-latest-updates-arteta-carrick-iraola-maresca-speak"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50138434/man-city-charges-live-reaction-latest-updates-arteta-carrick-iraola-maresca-speak"
-            }
-          ],
-          "id": "a415-10e9f7c39050cd08",
-          "feedRank": 25,
-          "compactHeadline": "Man City charges LIVE reaction: Latest updates as Arteta, Carrick, Iraola, Maresca speak"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f95b37b37464f995"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
-          "text": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
-          "entities": [],
-          "occurredAt": "2026-10-09T11:14:49Z",
-          "timePrecision": "exact",
-          "ageHours": 2.28,
-          "freshnessBasis": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50139079/uefa-member-nations-call-fifa-international-break-disaster"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50139079/uefa-member-nations-call-fifa-international-break-disaster"
-            }
-          ],
-          "id": "a415-ddd8fdc84d6dffe3",
-          "feedRank": 26,
-          "compactHeadline": "UEFA member nations call FIFA's international break a 'disaster'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-dbc867787020f4c6"
           ],
           "type": "NEWS",
@@ -804,9 +746,9 @@
           "headline": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
           "text": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
           "entities": [],
-          "occurredAt": "2026-10-09T10:53:14Z",
+          "occurredAt": "2026-10-09T13:40:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.64,
+          "ageHours": 0.35,
           "freshnessBasis": "Enzo Maresca has said he would still have joined Manchester City as manager if he had known the club had been found guilty of breaching financial rules.",
           "status": "active",
           "sourceUrls": [
@@ -820,37 +762,95 @@
             }
           ],
           "id": "a415-f7a26edf24489af9",
-          "feedRank": 27,
+          "feedRank": 25,
           "compactHeadline": "Enzo Maresca: Man City titles not tainted by guilty verdict"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
-            "cand-f2e372be798ac194"
+            "cand-c0cbfc09579d1c8c"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
-          "text": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
+          "headline": "Michael Carrick has said being awarded medals retrospectively as a consequence of Manchester City's financial rule breaking will not replace the winning \"moments\" he was denied.",
+          "text": "Michael Carrick has said being awarded medals retrospectively as a consequence of Manchester City's financial rule breaking will not replace the winning \"moments\" he was denied.",
           "entities": [],
-          "occurredAt": "2026-10-09T09:30:18Z",
+          "occurredAt": "2026-10-09T13:37:28Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
-          "freshnessBasis": "Former Manchester City captain Vincent Kompany said he remains \"proud\" of the club's achievements during his time there despite the club being found guilty of more than 100 breaches of Premier League financial rules.",
+          "ageHours": 0.4,
+          "freshnessBasis": "Michael Carrick has said being awarded medals retrospectively as a consequence of Manchester City's financial rule breaking will not replace the winning \"moments\" he was denied.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50138814/vincent-kompany-proud-man-city-achievements-guilty-verdict-premier-league-breaches"
+            "https://www.espn.com/soccer/story/_/id/50138792/michael-carrick-man-city-retrospective-medals-cant-replace-moments"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50138814/vincent-kompany-proud-man-city-achievements-guilty-verdict-premier-league-breaches"
+              "url": "https://www.espn.com/soccer/story/_/id/50138792/michael-carrick-man-city-retrospective-medals-cant-replace-moments"
             }
           ],
-          "id": "a415-9392161bcfc7eed3",
+          "id": "a415-1c05a67db77645b2",
+          "feedRank": 26,
+          "compactHeadline": "Michael Carrick on Man City: Retrospective medals can't replace 'moments'"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-7c50f35d70653650"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
+          "text": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
+          "entities": [],
+          "occurredAt": "2026-10-09T13:27:50Z",
+          "timePrecision": "exact",
+          "ageHours": 0.56,
+          "freshnessBasis": "The Premier League is back for its first weekend of fixtures since Manchester City were found guilty of breaching its financial rules, a verdict they are appealing.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50138434/man-city-charges-live-reaction-latest-updates-arteta-carrick-iraola-maresca-speak"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50138434/man-city-charges-live-reaction-latest-updates-arteta-carrick-iraola-maresca-speak"
+            }
+          ],
+          "id": "a415-10e9f7c39050cd08",
+          "feedRank": 27,
+          "compactHeadline": "Man City charges LIVE reaction: Latest updates as Arteta, Carrick, Iraola, Maresca speak"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-f95b37b37464f995"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
+          "text": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
+          "entities": [],
+          "occurredAt": "2026-10-09T11:14:49Z",
+          "timePrecision": "exact",
+          "ageHours": 2.78,
+          "freshnessBasis": "European soccer federations told UEFA they are not happy with the new extended four-game blocks of international matches that finished this week.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50139079/uefa-member-nations-call-fifa-international-break-disaster"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50139079/uefa-member-nations-call-fifa-international-break-disaster"
+            }
+          ],
+          "id": "a415-ddd8fdc84d6dffe3",
           "feedRank": 28,
-          "compactHeadline": "Vincent Kompany 'proud' of Man City achievements despite guilty verdict over Premier League breaches"
+          "compactHeadline": "UEFA member nations call FIFA's international break a 'disaster'"
         }
       ]
     },
@@ -870,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-10-08T16:13:02Z",
           "timePrecision": "exact",
-          "ageHours": 21.31,
+          "ageHours": 21.81,
           "freshnessBasis": "MLS commissioner Don Garber would love Harry Kane to follow Lionel Messi across the pond and says the England skipper's interest helps fulfil a dream that Sir David Beckham kept alive.",
           "status": "active",
           "sourceUrls": [
@@ -896,6 +896,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-93caf241adf32d0c"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "text": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "entities": [],
+          "occurredAt": "2026-10-09T13:50:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50129251/oregon-qb-moore-ruled-ucla-game-raiola-start"
+            }
+          ],
+          "id": "a415-41a85254b776fd5e",
+          "feedRank": 30,
+          "compactHeadline": "Oregon QB Dante Moore ruled out vs. UCLA; Dylan Raiola to start"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-e0d08fb088863a05"
           ],
           "type": "RESULT",
@@ -905,7 +934,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 9.67,
+          "ageHours": 10.17,
           "freshnessBasis": "— Keenan Phillips ran for 157 yards and three touchdowns, and he added a 100-yard kickoff return as South Alabama beat Arkansas State 56-49 on Thursday night for the most combined...",
           "status": "active",
           "sourceUrls": [
@@ -919,11 +948,11 @@
             }
           ],
           "id": "a415-363bd3067dc8cc01",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "South Alabama beats Arkansas State 56-49 in the highest scoring FBS game this season"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-1a73a54fb5983c2f"
           ],
@@ -934,7 +963,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T02:49:27Z",
           "timePrecision": "exact",
-          "ageHours": 10.7,
+          "ageHours": 11.2,
           "freshnessBasis": "— Brock Glenn threw for a touchdown and ran for another, Ajay Allen rushed for 105 yards and two touchdowns, and Western Kentucky beat Missouri State 34-13 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -948,69 +977,11 @@
             }
           ],
           "id": "a415-339895b9fc98da34",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Ajay Allen rushes for 105 yards and 2 touchdowns as Western Kentucky beats Missouri State 34-13"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-9cf374cd20a5db37"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
-          "text": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
-          "entities": [],
-          "occurredAt": "2026-10-09T10:25:09Z",
-          "timePrecision": "exact",
-          "ageHours": 3.11,
-          "freshnessBasis": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50126123/gunner-stockton-back-spotlight-georgia-faces-alabama"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50126123/gunner-stockton-back-spotlight-georgia-faces-alabama"
-            }
-          ],
-          "id": "a415-c14e62560bb82232",
-          "feedRank": 32,
-          "compactHeadline": "Hometown hero Gunner Stockton back in spotlight for Georgia"
-        },
-        {
           "rank": 4,
-          "candidateIds": [
-            "cand-bc85a31aa5c43286"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
-          "text": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
-          "entities": [],
-          "occurredAt": "2026-10-09T10:24:31Z",
-          "timePrecision": "exact",
-          "ageHours": 3.12,
-          "freshnessBasis": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
-            }
-          ],
-          "id": "a415-040796ec3a387b93",
-          "feedRank": 33,
-          "compactHeadline": "Alabama thinks it has found and fixed Ryan Coleman-Williams' drop issues"
-        },
-        {
-          "rank": 5,
           "candidateIds": [
             "cand-9cfb156ef1d83958"
           ],
@@ -1019,9 +990,9 @@
           "headline": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "text": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "entities": [],
-          "occurredAt": "2026-10-09T10:21:06Z",
+          "occurredAt": "2026-10-09T13:55:47Z",
           "timePrecision": "exact",
-          "ageHours": 3.18,
+          "ageHours": 0.1,
           "freshnessBasis": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "status": "active",
           "sourceUrls": [
@@ -1035,37 +1006,66 @@
             }
           ],
           "id": "a415-ff28334fee4bc052",
-          "feedRank": 34,
+          "feedRank": 33,
           "compactHeadline": "How Bob Chesney has completely turned around UCLA"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
-            "cand-0e7ae26b9e590a90"
+            "cand-bc85a31aa5c43286"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
-          "text": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
+          "headline": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
+          "text": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
           "entities": [],
-          "occurredAt": "2026-10-09T04:07:46Z",
+          "occurredAt": "2026-10-09T13:55:11Z",
           "timePrecision": "exact",
-          "ageHours": 9.4,
-          "freshnessBasis": "From Lincoln Riley to Deion Sanders, these hefty buyouts will dictate the market.",
+          "ageHours": 0.11,
+          "freshnessBasis": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50136127/college-football-coaching-carousel-buyouts"
+            "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50136127/college-football-coaching-carousel-buyouts"
+              "url": "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
             }
           ],
-          "id": "a415-da730dc47ebc7e3b",
+          "id": "a415-040796ec3a387b93",
+          "feedRank": 34,
+          "compactHeadline": "Alabama thinks it has found and fixed Ryan Coleman-Williams' drop issues"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-9cf374cd20a5db37"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
+          "text": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
+          "entities": [],
+          "occurredAt": "2026-10-09T10:25:09Z",
+          "timePrecision": "exact",
+          "ageHours": 3.61,
+          "freshnessBasis": "The Bulldogs QB is a quiet leader, but those who have known him over the years eagerly sing his praises.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50126123/gunner-stockton-back-spotlight-georgia-faces-alabama"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50126123/gunner-stockton-back-spotlight-georgia-faces-alabama"
+            }
+          ],
+          "id": "a415-c14e62560bb82232",
           "feedRank": 35,
-          "compactHeadline": "Six college football buyouts that will determine the coaching carousel"
+          "compactHeadline": "Hometown hero Gunner Stockton back in spotlight for Georgia"
         }
       ]
     }
@@ -1090,7 +1090,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 112,
+    "freshCandidateCount": 113,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
