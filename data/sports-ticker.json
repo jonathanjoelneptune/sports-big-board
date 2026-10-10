@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-10T01:02:04Z",
+  "generatedAt": "2026-10-10T01:31:37Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "eec4231eec37c716d51e2bd88fb6feb1ca7edfbdd68520a7f2eefca928348378",
+  "sourceCandidateHash": "c98984114e8e99d07f273988e415b6af372d92a54084c99686ecd54188db0e65",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:14:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.79,
+          "ageHours": 8.28,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T10:34:48Z",
           "timePrecision": "exact",
-          "ageHours": 14.45,
+          "ageHours": 14.95,
           "freshnessBasis": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T13:55:51Z",
           "timePrecision": "exact",
-          "ageHours": 11.1,
+          "ageHours": 11.6,
           "freshnessBasis": "- Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
           "status": "active",
           "sourceUrls": [
@@ -101,6 +101,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-aafc858865146e9a"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Tarik Skubal will start Game 1 of the NLCS for the Dodgers, followed by Yoshinobu Yamamoto in Game 2.",
+          "text": "Tarik Skubal will start Game 1 of the NLCS for the Dodgers, followed by Yoshinobu Yamamoto in Game 2.",
+          "entities": [],
+          "occurredAt": "2026-10-10T01:27:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Tarik Skubal will start Game 1 of the NLCS for the Dodgers, followed by Yoshinobu Yamamoto in Game 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50143689/dodgers-tarik-skubal-start-game-1-nlcs-vs-brewers-yoshinobu-yamamoto-game-2"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50143689/dodgers-tarik-skubal-start-game-1-nlcs-vs-brewers-yoshinobu-yamamoto-game-2"
+            }
+          ],
+          "id": "a415-77cf2a8579f4d0df",
+          "feedRank": 4,
+          "compactHeadline": "Tarik Skubal, Yoshinobu Yamamoto to start first 2 NLCS games"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-37fff10359b2f543"
           ],
           "type": "PLAYOFF",
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 21.2,
+          "ageHours": 21.69,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-529e71c6cf19ddab"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T21:20:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.7,
+          "ageHours": 4.19,
           "freshnessBasis": "After finishing Game 4 of the ALDS on the mound, Guardians right-hander Gavin Williams will get the ball to start Game 5, while the White Sox will go with righty Sean Burke.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-00f38506483b52b0",
-          "feedRank": 5,
-          "compactHeadline": "Guardians' Williams, White Sox's Burke to start for ALCS bid"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-92f3d61b0cde16db"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
-          "text": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
-          "entities": [],
-          "occurredAt": "2026-10-09T05:59:28Z",
-          "timePrecision": "exact",
-          "ageHours": 19.04,
-          "freshnessBasis": "Jose Ramirez delivered again, homering and driving in three runs Thursday night to help the Guardians beat the White Sox 9-5 to send their ALDS to a decisive Game 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50137741/ramirez-guardians-top-white-sox-force-decisive-game-5-alds"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50137741/ramirez-guardians-top-white-sox-force-decisive-game-5-alds"
-            }
-          ],
-          "id": "a415-36f737b4ce837ed3",
           "feedRank": 6,
-          "compactHeadline": "Guardians survive in Chicago, head home with chance to advance"
+          "compactHeadline": "Guardians' Williams, White Sox's Burke to start for ALCS bid"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T20:59:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.05,
+          "ageHours": 4.54,
           "freshnessBasis": "The Chargers are placing Rashawn Slater on injured reserve after the left tackle had surgery for a high ankle sprain. Los Angeles will be without three of its starting offensive linemen against the Broncos on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T20:56:39Z",
           "timePrecision": "exact",
-          "ageHours": 4.09,
+          "ageHours": 4.58,
           "freshnessBasis": "Eagles running back Saquon Barkley, receiver DeVonta Smith, new starting center Drew Kendall, safety Marcus Epps and receiver Hollywood Brown were all ruled out for Sunday's game in London against the Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 5.2,
+          "ageHours": 5.69,
           "freshnessBasis": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:36:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.43,
+          "ageHours": 5.92,
           "freshnessBasis": "The Bears have ruled RB Kyle Monangai out for Sunday's matchup against the Packers, while QB Caleb Williams is questionable after being a limited participant in Friday's practice.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:32:49Z",
           "timePrecision": "exact",
-          "ageHours": 7.49,
+          "ageHours": 7.98,
           "freshnessBasis": "Commanders quarterback Jayden Daniels will start Sunday in his return from an elbow injury, but wide receiver Stefon Diggs will not play against the Giants due to a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T12:14:09Z",
           "timePrecision": "exact",
-          "ageHours": 12.8,
+          "ageHours": 13.29,
           "freshnessBasis": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T15:41:06Z",
           "timePrecision": "exact",
-          "ageHours": 9.35,
+          "ageHours": 9.84,
           "freshnessBasis": "The Knicks have said they are tabling contract extension talks with Karl-Anthony Towns and Josh Hart \"until later in the season and will remain solely focused on preparing for the start of the season.\"",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T12:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.03,
+          "ageHours": 13.53,
           "freshnessBasis": "Highlightly final: Houston Rockets 135, Dallas Mavericks 117.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:17:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.74,
+          "ageHours": 1.23,
           "freshnessBasis": "Retired NBA player and Olympic gold medal winner Russell Westbrook said he wants to carry the torch when his native Los Angeles hosts the 2028 Games.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T18:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 6.59,
+          "ageHours": 7.08,
           "freshnessBasis": "Tyrese Haliburton said he wishes his relationship with Damian Lillard could be repaired after the Pacers star stole Lillard's Dame Time celebration during the 2023 in-season tournament.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:54:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.62,
           "freshnessBasis": "The Nashville Predators bolstered their blue line on Friday night, adding defenseman Jayden Struble, 25, in a trade with the Montreal Canadiens, in exchange for a second-round draft pick in 2027.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:02:06Z",
           "timePrecision": "exact",
-          "ageHours": 1.0,
+          "ageHours": 1.49,
           "freshnessBasis": "Senators forward William Eklund, who left Thursday's win over the Flyers after taking a hit, will miss an \"extended\" period of time with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:15:35Z",
           "timePrecision": "exact",
-          "ageHours": 7.77,
+          "ageHours": 8.27,
           "freshnessBasis": "The Panthers are expecting forward Brad Marchand to miss about six weeks with his left leg injury, a timeline that coincides with Aleksander Barkov being out six to eight weeks.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T11:12:59Z",
           "timePrecision": "exact",
-          "ageHours": 13.82,
+          "ageHours": 14.31,
           "freshnessBasis": "From players with new linemates to young stars set to hit superstardom to enticing rookies, watch out for this group.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T08:11:33Z",
           "timePrecision": "exact",
-          "ageHours": 16.84,
+          "ageHours": 17.33,
           "freshnessBasis": "Edmonton Oilers (3-0-1, in the Pacific Division) vs. San Jose Sharks (3-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T08:11:30Z",
           "timePrecision": "exact",
-          "ageHours": 16.84,
+          "ageHours": 17.34,
           "freshnessBasis": "Carolina Hurricanes (3-1-1, in the Metropolitan Division) vs. Chicago Blackhawks (1-4, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T21:30:09Z",
           "timePrecision": "exact",
-          "ageHours": 3.53,
+          "ageHours": 4.02,
           "freshnessBasis": "Michael Carrick has said there is no timeline for Benjamin Sesko's return after the Manchester United striker suffered a second shin injury.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T22:26:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.6,
+          "ageHours": 3.09,
           "freshnessBasis": "Declan Rice has said that Arsenal are \"very lucky\" to have the \"best\" coach in Mikel Arteta after the Spaniard signed a four-year contract, committing his future at the club.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:48:12Z",
           "timePrecision": "exact",
-          "ageHours": 7.23,
+          "ageHours": 7.72,
           "freshnessBasis": "Alexander Isak and Cody Gakpo are out of Liverpool's match against Manchester City this weekend due to injury, Andoni Iraola confirmed.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:38:44Z",
           "timePrecision": "exact",
-          "ageHours": 7.39,
+          "ageHours": 7.88,
           "freshnessBasis": "Dejan Kulusevski will travel with Tottenham to Manchester United on Saturday but he is only set to offer support along with injured defender Pedro Porro.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: Stockport County U21 1, Leeds United U21 3.",
           "status": "active",
           "sourceUrls": [
@@ -821,17 +821,17 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-fc8ca09f205d26ac"
+            "cand-9bad2dd31cda051b"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: West Ham United U21 0, Millwall U21 1.",
-          "text": "Highlightly final: West Ham United U21 0, Millwall U21 1.",
+          "headline": "Highlightly final: Fleetwood Town U21 1, Wolves U21 1.",
+          "text": "Highlightly final: Fleetwood Town U21 1, Wolves U21 1.",
           "entities": [],
           "occurredAt": "2026-10-09T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
-          "freshnessBasis": "Highlightly final: West Ham United U21 0, Millwall U21 1.",
+          "ageHours": 7.53,
+          "freshnessBasis": "Highlightly final: Fleetwood Town U21 1, Wolves U21 1.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -843,9 +843,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-4af62284906babf7",
+          "id": "a415-bed17c400746602b",
           "feedRank": 28,
-          "compactHeadline": "Millwall U21 beat West Ham United U21 1-0"
+          "compactHeadline": "Wolves U21 and Fleetwood Town U21 finished tied 1-1"
         }
       ]
     },
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:44:02Z",
           "timePrecision": "exact",
-          "ageHours": 7.3,
+          "ageHours": 7.79,
           "freshnessBasis": "Inter Miami coach Cristian \"Kily\" González said Argentina will miss Lionel Messi following the captain's international retirement before urging fans to enjoy his time with the MLS club.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T13:50:39Z",
           "timePrecision": "exact",
-          "ageHours": 11.19,
+          "ageHours": 11.68,
           "freshnessBasis": "Quarterback Dante Moore is officially out for Saturday's matchup between No. 13 Oregon and No. 21 UCLA, according to Wednesday's official Big Ten injury report.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:11:42Z",
           "timePrecision": "exact",
-          "ageHours": 5.84,
+          "ageHours": 6.33,
           "freshnessBasis": "South Carolina edge rusher Dylan Stewart will play Saturday against Florida after completing his one-game suspension, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:25:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.62,
+          "ageHours": 1.11,
           "freshnessBasis": "President Trump will no longer attend Saturday's SEC clash between Georgia and Alabama, which remains on schedule despite approaching Hurricane Isaias.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T22:48:19Z",
           "timePrecision": "exact",
-          "ageHours": 2.23,
+          "ageHours": 2.72,
           "freshnessBasis": "The College Sports Commission is looking into possible rules violations at between five and 10 Power 4 schools regarding payments to players, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T21:52:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.16,
+          "ageHours": 3.65,
           "freshnessBasis": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 21.18,
+          "ageHours": 21.67,
           "freshnessBasis": "— Keenan Phillips ran for 157 yards and three touchdowns, and he added a 100-yard kickoff return as South Alabama beat Arkansas State 56-49 on Thursday night for the most combined...",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 107,
+    "freshCandidateCount": 110,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
