@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-10T03:01:44Z",
+  "generatedAt": "2026-10-10T03:31:33Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "9af2d54bb6e90721cf9151e86d91b3460655f9a6625b410546b877e3bb9d17f1",
+  "sourceCandidateHash": "df84a17ddc6e060e2f5c779f4ddfb95c68101b49f616a53b5f1e2e232596a330",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T01:30:50Z",
           "timePrecision": "exact",
-          "ageHours": 1.52,
+          "ageHours": 2.01,
           "freshnessBasis": "- Jo Adell and Jose Ramirez powered Cleveland with a pair of two-out triples, and the Guardians avoided an AL Division Series sweep by cooling off the Chicago White Sox with a 9-3 victory in Game 3 on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:14:45Z",
           "timePrecision": "exact",
-          "ageHours": 9.78,
+          "ageHours": 10.28,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T10:34:48Z",
           "timePrecision": "exact",
-          "ageHours": 16.45,
+          "ageHours": 16.95,
           "freshnessBasis": "The Brewers' 22-year-old star is having a record-setting October already. We put his young postseason career into context compared to baseball's greats.",
           "status": "active",
           "sourceUrls": [
@@ -101,35 +101,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-e98daa53050f4415"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
-          "text": "Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
-          "entities": [],
-          "occurredAt": "2026-10-09T13:55:51Z",
-          "timePrecision": "exact",
-          "ageHours": 13.1,
-          "freshnessBasis": "- Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401907993"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401907993"
-            }
-          ],
-          "id": "a415-82ff1a5130cdfb29",
-          "feedRank": 4,
-          "compactHeadline": "Jose Ramirez homers as the Guardians beat the White Sox 9-5 to force a decisive Game 5 in ALDS"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-aafc858865146e9a"
           ],
           "type": "NEWS",
@@ -137,9 +108,9 @@
           "headline": "Tarik Skubal will start Game 1 of the NLCS for the Dodgers, followed by Yoshinobu Yamamoto in Game 2.",
           "text": "Tarik Skubal will start Game 1 of the NLCS for the Dodgers, followed by Yoshinobu Yamamoto in Game 2.",
           "entities": [],
-          "occurredAt": "2026-10-10T01:27:36Z",
+          "occurredAt": "2026-10-10T03:10:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.57,
+          "ageHours": 0.35,
           "freshnessBasis": "Tarik Skubal will start Game 1 of the NLCS for the Dodgers, followed by Yoshinobu Yamamoto in Game 2.",
           "status": "active",
           "sourceUrls": [
@@ -153,8 +124,37 @@
             }
           ],
           "id": "a415-77cf2a8579f4d0df",
-          "feedRank": 5,
+          "feedRank": 4,
           "compactHeadline": "Tarik Skubal, Yoshinobu Yamamoto to start first 2 NLCS games"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-e98daa53050f4415"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "text": "Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "entities": [],
+          "occurredAt": "2026-10-09T13:55:51Z",
+          "timePrecision": "exact",
+          "ageHours": 13.6,
+          "freshnessBasis": "- Jos Ramirez homered and drove in three runs, and the Cleveland Guardians beat the Chicago White Sox 9-5 on Thursday night to send their AL Division Series to a winner-take-all Game 5.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401907993"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401907993"
+            }
+          ],
+          "id": "a415-82ff1a5130cdfb29",
+          "feedRank": 5,
+          "compactHeadline": "Jose Ramirez homers as the Guardians beat the White Sox 9-5 to force a decisive Game 5 in ALDS"
         },
         {
           "rank": 6,
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 23.19,
+          "ageHours": 23.69,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T02:31:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.51,
+          "ageHours": 1.01,
           "freshnessBasis": "Eagles running back Saquon Barkley, receiver DeVonta Smith, new starting center Drew Kendall, safety Marcus Epps and receiver Hollywood Brown were all ruled out for Sunday's game in London against the Jaguars.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T20:59:14Z",
           "timePrecision": "exact",
-          "ageHours": 6.04,
+          "ageHours": 6.54,
           "freshnessBasis": "The Chargers are placing Rashawn Slater on injured reserve after the left tackle had surgery for a high ankle sprain. Los Angeles will be without three of its starting offensive linemen against the Broncos on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:50:08Z",
           "timePrecision": "exact",
-          "ageHours": 7.19,
+          "ageHours": 7.69,
           "freshnessBasis": "Cardinals rookie running back Jeremiyah Love aggravated his ankle injury last week against the Giants. He was limited in practice this week but is trending to play against the Lions.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:36:31Z",
           "timePrecision": "exact",
-          "ageHours": 7.42,
+          "ageHours": 7.92,
           "freshnessBasis": "The Bears have ruled RB Kyle Monangai out for Sunday's matchup against the Packers, while QB Caleb Williams is questionable after being a limited participant in Friday's practice.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:32:49Z",
           "timePrecision": "exact",
-          "ageHours": 9.48,
+          "ageHours": 9.98,
           "freshnessBasis": "Commanders quarterback Jayden Daniels will start Sunday in his return from an elbow injury, but wide receiver Stefon Diggs will not play against the Giants due to a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T12:14:09Z",
           "timePrecision": "exact",
-          "ageHours": 14.79,
+          "ageHours": 15.29,
           "freshnessBasis": "Who are the best quarterbacks in the 2027 draft class? We sized up the top 15, including Arch Manning, Dante Moore, Trinidad Chambliss and Darian Mensah.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T15:41:06Z",
           "timePrecision": "exact",
-          "ageHours": 11.34,
+          "ageHours": 11.84,
           "freshnessBasis": "The Knicks have said they are tabling contract extension talks with Karl-Anthony Towns and Josh Hart \"until later in the season and will remain solely focused on preparing for the start of the season.\"",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:17:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.73,
+          "ageHours": 3.23,
           "freshnessBasis": "Retired NBA player and Olympic gold medal winner Russell Westbrook said he wants to carry the torch when his native Los Angeles hosts the 2028 Games.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T18:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 8.58,
+          "ageHours": 9.08,
           "freshnessBasis": "Tyrese Haliburton said he wishes his relationship with Damian Lillard could be repaired after the Pacers star stole Lillard's Dame Time celebration during the 2023 in-season tournament.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T11:39:06Z",
           "timePrecision": "exact",
-          "ageHours": 15.38,
+          "ageHours": 15.87,
           "freshnessBasis": "After agreeing to a five-year, $200 million deal, how will Duren and Detroit move forward after a monthslong saga?",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:54:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.12,
+          "ageHours": 2.61,
           "freshnessBasis": "The Nashville Predators bolstered their blue line on Friday night, adding defenseman Jayden Struble, 25, in a trade with the Montreal Canadiens, in exchange for a second-round draft pick in 2027.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:02:06Z",
           "timePrecision": "exact",
-          "ageHours": 2.99,
+          "ageHours": 3.49,
           "freshnessBasis": "Senators forward William Eklund, who left Thursday's win over the Flyers after taking a hit, will miss an \"extended\" period of time with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -554,35 +554,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-a0fe7e96df6dc683"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Rookie Judd Caulfield scored his first NHL goal and added an assist to help the Anaheim Ducks beat Winnipeg 5-1 on Friday night for the Jets' first regulation loss of the season.",
-          "text": "Rookie Judd Caulfield scored his first NHL goal and added an assist to help the Anaheim Ducks beat Winnipeg 5-1 on Friday night for the Jets' first regulation loss of the season.",
-          "entities": [],
-          "occurredAt": "2026-10-10T02:58:43Z",
-          "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "— Rookie Judd Caulfield scored his first NHL goal and added an assist to help the Anaheim Ducks beat Winnipeg 5-1 on Friday night for the Jets' first regulation loss of the season.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892468"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892468"
-            }
-          ],
-          "id": "a415-8395049a16fed189",
-          "feedRank": 19,
-          "compactHeadline": "Judd Caulfield scores first NHL goal to help the Ducks beat the Jets 5-1"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-559a9ce203cc57f4"
           ],
           "type": "RESULT",
@@ -590,9 +561,9 @@
           "headline": "New York Rangers goaltender Igor Shesterkin, the 30-year-old Russian who won the 2022 Vezina Trophy as the league's top netminder, had to be helped off the ice after an awkward fall into his own net in a 3-1 loss to the Washington Capitals Friday night.",
           "text": "New York Rangers goaltender Igor Shesterkin, the 30-year-old Russian who won the 2022 Vezina Trophy as the league's top netminder, had to be helped off the ice after an awkward fall into his own net in a 3-1 loss to the Washington Capitals Friday night.",
           "entities": [],
-          "occurredAt": "2026-10-10T02:25:15Z",
+          "occurredAt": "2026-10-10T03:29:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.61,
+          "ageHours": 0.03,
           "freshnessBasis": "New York Rangers goaltender Igor Shesterkin, the 30-year-old Russian who won the 2022 Vezina Trophy as the league's top netminder, had to be helped off the ice after an awkward fall into his own net in a 3-1 loss to the Washington Capitals Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -606,11 +577,69 @@
             }
           ],
           "id": "a415-63a2fd4459217b19",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Igor Shesterkin helped off ice after fall in Rangers' loss"
         },
         {
+          "rank": 4,
+          "candidateIds": [
+            "cand-1171c1ea24339a22"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Boone Jenner scored the tiebreaking goal late in the second period and the Washington Capitals beat the Rangers 3-1 on Friday night after New York goaltender Igor Shesterkin was",
+          "text": "Boone Jenner scored the tiebreaking goal late in the second period and the Washington Capitals beat the Rangers 3-1 on Friday night after New York goaltender Igor Shesterkin was",
+          "entities": [],
+          "occurredAt": "2026-10-10T03:13:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.3,
+          "freshnessBasis": "— Boone Jenner scored the tiebreaking goal late in the second period and the Washington Capitals beat the Rangers 3-1 on Friday night after New York goaltender Igor Shesterkin was",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892466"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892466"
+            }
+          ],
+          "id": "a415-653c526f2814568e",
+          "feedRank": 20,
+          "compactHeadline": "Capitals beat Rangers 3-1 after New York goalie Igor Shesterkin is helped off the ice with an injury"
+        },
+        {
           "rank": 5,
+          "candidateIds": [
+            "cand-a0fe7e96df6dc683"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Rookie Judd Caulfield scored his first NHL goal and added an assist to help the Anaheim Ducks beat Winnipeg 5-1 on Friday night for the Jets' first regulation loss of the season.",
+          "text": "Rookie Judd Caulfield scored his first NHL goal and added an assist to help the Anaheim Ducks beat Winnipeg 5-1 on Friday night for the Jets' first regulation loss of the season.",
+          "entities": [],
+          "occurredAt": "2026-10-10T02:58:43Z",
+          "timePrecision": "exact",
+          "ageHours": 0.55,
+          "freshnessBasis": "— Rookie Judd Caulfield scored his first NHL goal and added an assist to help the Anaheim Ducks beat Winnipeg 5-1 on Friday night for the Jets' first regulation loss of the season.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892468"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892468"
+            }
+          ],
+          "id": "a415-8395049a16fed189",
+          "feedRank": 21,
+          "compactHeadline": "Judd Caulfield scores first NHL goal to help the Ducks beat the Jets 5-1"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-1cc59e3707441272"
           ],
@@ -621,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T02:20:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.69,
+          "ageHours": 1.18,
           "freshnessBasis": "— Kent Johnson scored the only goal in a shootout to lift the Columbus Blue Jackets over the Pittsburgh Penguins 3-2 on Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -635,37 +664,8 @@
             }
           ],
           "id": "a415-1cc264c5fae453b0",
-          "feedRank": 21,
-          "compactHeadline": "Kent Johnson scores lone goal in shootout to give Blue Jackets 3-2 win over Penguins"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a3c718676e0e14c2"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Boone Jenner's goal in the second period proved to be the winner as the Washington Capitals beat the Rangers 3-1 on Friday night after New York goaltender Igor Shesterkin had to be helped from the ice after being injured.",
-          "text": "Boone Jenner's goal in the second period proved to be the winner as the Washington Capitals beat the Rangers 3-1 on Friday night after New York goaltender Igor Shesterkin had to be helped from the ice after being injured.",
-          "entities": [],
-          "occurredAt": "2026-10-10T02:06:28Z",
-          "timePrecision": "exact",
-          "ageHours": 0.92,
-          "freshnessBasis": "— Boone Jenner's goal in the second period proved to be the winner as the Washington Capitals beat the Rangers 3-1 on Friday night after New York goaltender Igor Shesterkin had to be helped from the ice after being injured.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892466"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892466"
-            }
-          ],
-          "id": "a415-d3c19c2532181344",
           "feedRank": 22,
-          "compactHeadline": "Capitals beat Rangers 3-1 as New York goaltender Igor Shesterkin is helped off the ice"
+          "compactHeadline": "Kent Johnson scores lone goal in shootout to give Blue Jackets 3-2 win over Penguins"
         }
       ]
     },
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T21:30:09Z",
           "timePrecision": "exact",
-          "ageHours": 5.53,
+          "ageHours": 6.02,
           "freshnessBasis": "Michael Carrick has said there is no timeline for Benjamin Sesko's return after the Manchester United striker suffered a second shin injury.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T22:26:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.6,
+          "ageHours": 5.09,
           "freshnessBasis": "Declan Rice has said that Arsenal are \"very lucky\" to have the \"best\" coach in Mikel Arteta after the Spaniard signed a four-year contract, committing his future at the club.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:48:12Z",
           "timePrecision": "exact",
-          "ageHours": 9.23,
+          "ageHours": 9.72,
           "freshnessBasis": "Alexander Isak and Cody Gakpo are out of Liverpool's match against Manchester City this weekend due to injury, Andoni Iraola confirmed.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:38:44Z",
           "timePrecision": "exact",
-          "ageHours": 9.38,
+          "ageHours": 9.88,
           "freshnessBasis": "Dejan Kulusevski will travel with Tottenham to Manchester United on Saturday but he is only set to offer support along with injured defender Pedro Porro.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T22:56:55Z",
           "timePrecision": "exact",
-          "ageHours": 4.08,
+          "ageHours": 4.58,
           "freshnessBasis": "Roberto De Zerbi has urged winless Tottenham to draw inspiration from Dejan Kulusevski's comeback ahead of Saturday's trip to Manchester United.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T21:49:41Z",
           "timePrecision": "exact",
-          "ageHours": 5.2,
+          "ageHours": 5.7,
           "freshnessBasis": "Arsenal manager Mikel Arteta has insisted his conscience is clear after former club Manchester City were found guilty of breaking Premier League rules.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T17:44:02Z",
           "timePrecision": "exact",
-          "ageHours": 9.3,
+          "ageHours": 9.79,
           "freshnessBasis": "Inter Miami coach Cristian \"Kily\" González said Argentina will miss Lionel Messi following the captain's international retirement before urging fans to enjoy his time with the MLS club.",
           "status": "active",
           "sourceUrls": [
@@ -891,6 +891,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-c60824d0f679eb4a"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Isaac Brown ran for a career-high 235 yards and two touchdowns on just 17 carries, including a game-changing 97-yard score, as Louisville rallied to take down Florida State 44-20 on Friday night.",
+          "text": "Isaac Brown ran for a career-high 235 yards and two touchdowns on just 17 carries, including a game-changing 97-yard score, as Louisville rallied to take down Florida State 44-20 on Friday night.",
+          "entities": [],
+          "occurredAt": "2026-10-10T03:02:28Z",
+          "timePrecision": "exact",
+          "ageHours": 0.48,
+          "freshnessBasis": "— Isaac Brown ran for a career-high 235 yards and two touchdowns on just 17 carries, including a game-changing 97-yard score, as Louisville rallied to take down Florida State 44-20 on Friday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858254"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858254"
+            }
+          ],
+          "id": "a415-805c84f41a9e6074",
+          "feedRank": 30,
+          "compactHeadline": "Isaac Brown brings Louisville back from the brink as Cardinals pummel Florida State 44-20"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-e453e59597fd3d91"
           ],
           "type": "SUSPENSION",
@@ -900,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T19:11:42Z",
           "timePrecision": "exact",
-          "ageHours": 7.83,
+          "ageHours": 8.33,
           "freshnessBasis": "South Carolina edge rusher Dylan Stewart will play Saturday against Florida after completing his one-game suspension, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +943,11 @@
             }
           ],
           "id": "a415-9af9c2fdfd50ff72",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "Sources: South Carolina's Dylan Stewart to return against Florida"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-c37b4a101cf70640"
           ],
@@ -929,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-10-10T00:25:03Z",
           "timePrecision": "exact",
-          "ageHours": 2.61,
+          "ageHours": 3.11,
           "freshnessBasis": "President Trump will no longer attend Saturday's SEC clash between Georgia and Alabama, which remains on schedule despite approaching Hurricane Isaias.",
           "status": "active",
           "sourceUrls": [
@@ -943,11 +972,11 @@
             }
           ],
           "id": "a415-146db91990fd226e",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Trump will not attend Georgia-Alabama game due to Hurricane Isaias"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-53ab95d5e11c3b1d"
           ],
@@ -958,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T22:48:19Z",
           "timePrecision": "exact",
-          "ageHours": 4.22,
+          "ageHours": 4.72,
           "freshnessBasis": "The College Sports Commission is looking into possible rules violations at between five and 10 Power 4 schools regarding payments to players, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1001,11 @@
             }
           ],
           "id": "a415-a50fcb239cbd5781",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Reports - Watchdog eyes NIL violations at 5-10 Power 4 schools"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-9cfb156ef1d83958"
           ],
@@ -987,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T21:52:20Z",
           "timePrecision": "exact",
-          "ageHours": 5.16,
+          "ageHours": 5.65,
           "freshnessBasis": "The Bruins are off to a 4-0 start, and it doesn't seem as if Bob Chesney is stepping off the gas any time soon.",
           "status": "active",
           "sourceUrls": [
@@ -1001,11 +1030,11 @@
             }
           ],
           "id": "a415-ff28334fee4bc052",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "How Bob Chesney has completely turned around UCLA"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-e0d08fb088863a05"
           ],
@@ -1016,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-09T03:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 23.17,
+          "ageHours": 23.67,
           "freshnessBasis": "— Keenan Phillips ran for 157 yards and three touchdowns, and he added a 100-yard kickoff return as South Alabama beat Arkansas State 56-49 on Thursday night for the most combined...",
           "status": "active",
           "sourceUrls": [
@@ -1030,37 +1059,8 @@
             }
           ],
           "id": "a415-363bd3067dc8cc01",
-          "feedRank": 34,
-          "compactHeadline": "South Alabama beats Arkansas State 56-49 in the highest scoring FBS game this season"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-bc85a31aa5c43286"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
-          "text": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
-          "entities": [],
-          "occurredAt": "2026-10-09T13:55:11Z",
-          "timePrecision": "exact",
-          "ageHours": 13.11,
-          "freshnessBasis": "Using VR technology, the staff discovered a depth perception issue, and the drops have disappeared.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50133938/college-football-alabama-ryan-coleman-williams-drops"
-            }
-          ],
-          "id": "a415-040796ec3a387b93",
           "feedRank": 35,
-          "compactHeadline": "Alabama thinks it has found and fixed Ryan Coleman-Williams' drop issues"
+          "compactHeadline": "South Alabama beats Arkansas State 56-49 in the highest scoring FBS game this season"
         }
       ]
     }
