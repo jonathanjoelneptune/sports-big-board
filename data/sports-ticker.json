@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-13T03:01:54Z",
+  "generatedAt": "2026-10-13T03:31:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e725b9d5618358a2bb703970ea5799ce70123bed79d60ef07b10aa4b443925b6",
+  "sourceCandidateHash": "21d738c9ef7f029848f145f8ec8126cecfeb52f1c452f9c068f094744f526382",
   "leagues": [
     {
       "league": "MLB",
@@ -16,21 +16,20 @@
           "candidateIds": [
             "cand-45a5c1a24f0fe540"
           ],
-          "type": "PLAYOFF",
-          "priority": 76,
+          "type": "RESULT",
+          "priority": 70,
           "headline": "Getting to the Los Angeles bullpen in the later innings, the Milwaukee Brewers posted 12 hits, including 10 singles, in Game 2 on Monday, scoring four runs in the final four frames en route to a 7-4 win over the Dodgers to take a 2-0 series lead.",
           "text": "Getting to the Los Angeles bullpen in the later innings, the Milwaukee Brewers posted 12 hits, including 10 singles, in Game 2 on Monday, scoring four runs in the final four frames en route to a 7-4 win over the Dodgers to take a 2-0 series lead.",
           "entities": [],
           "occurredAt": "2026-10-12T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Milwaukee Brewers 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
             "https://www.espn.com/mlb/story/_/id/50170174/brewers-use-small-ball-game-2-take-2-0-lead-dodgers",
             "http://www.espn.com/mlb/recap?gameId=401908031",
-            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
             "http://www.espn.com/mlb/recap?gameId=401908030"
           ],
           "sources": [
@@ -52,20 +51,50 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401908030"
             }
           ],
           "id": "a415-01cc6ea81ae7f105",
           "feedRank": 1,
-          "compactHeadline": "Milwaukee Brewers beat Los Angeles Dodgers 7-4"
+          "compactHeadline": "Bold Brewers 'won't be denied,' take 2-0 NLCS lead over Dodgers"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-34356c586b77325a"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
+          "text": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
+          "entities": [],
+          "occurredAt": "2026-10-13T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.53,
+          "freshnessBasis": "Highlightly final: Cleveland Guardians 7, Tampa Bay Rays 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            }
+          ],
+          "id": "a415-8f8bd71bf42b285f",
+          "feedRank": 2,
+          "compactHeadline": "Cleveland Guardians beat Tampa Bay Rays 7-3"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -76,7 +105,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T02:25:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.61,
+          "ageHours": 1.1,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -90,11 +119,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-416f32eec9cc9aa8"
           ],
@@ -105,7 +134,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:17:16Z",
           "timePrecision": "exact",
-          "ageHours": 8.74,
+          "ageHours": 9.24,
           "freshnessBasis": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
           "status": "active",
           "sourceUrls": [
@@ -119,11 +148,11 @@
             }
           ],
           "id": "a415-50ea4be806c99819",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "MLB playoffs: How Rays, Guardians, Brewers, Dodgers were built"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-502d4173eacfd9a5"
           ],
@@ -134,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T14:00:05Z",
           "timePrecision": "exact",
-          "ageHours": 13.03,
+          "ageHours": 13.53,
           "freshnessBasis": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +177,11 @@
             }
           ],
           "id": "a415-fcd54c832bccf083",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "MLB teams using ABS challenges more frequently in postseason"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-331e0fe372dc3776"
           ],
@@ -163,7 +192,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T13:23:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.64,
+          "ageHours": 14.14,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -177,37 +206,8 @@
             }
           ],
           "id": "a415-544a7dd93364ed09",
-          "feedRank": 5,
-          "compactHeadline": "2026 MLB playoffs: October MVP tracker"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b8ff4925e230570b"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Guardians announced Monday that Tampa Bay area native Parker Messick will start Game 2 of the ALCS on Tuesday.",
-          "text": "The Guardians announced Monday that Tampa Bay area native Parker Messick will start Game 2 of the ALCS on Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-10-12T23:19:19Z",
-          "timePrecision": "exact",
-          "ageHours": 3.71,
-          "freshnessBasis": "The Guardians announced Monday that Tampa Bay area native Parker Messick will start Game 2 of the ALCS on Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50169465/guardians-parker-messick-start-game-2-alcs-vs-rays"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50169465/guardians-parker-messick-start-game-2-alcs-vs-rays"
-            }
-          ],
-          "id": "a415-711b15b659cb193e",
           "feedRank": 6,
-          "compactHeadline": "Guardians LHP Parker Messick to start Game 2 of ALCS vs. Rays"
+          "compactHeadline": "2026 MLB playoffs: October MVP tracker"
         }
       ]
     },
@@ -227,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:42:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.32,
+          "ageHours": 6.82,
           "freshnessBasis": "49ers WR Deebo Samuel is expected to miss \"at least a couple of weeks\" with the hamstring injury he suffered Sunday in Seattle, coach Kyle Shanahan said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -256,7 +256,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:14:32Z",
           "timePrecision": "exact",
-          "ageHours": 6.79,
+          "ageHours": 7.29,
           "freshnessBasis": "Roman Wilson will miss multiple weeks because of a finger injury, a source told ESPN, joining the growing list of injured Steelers receivers.",
           "status": "active",
           "sourceUrls": [
@@ -285,7 +285,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:10:16Z",
           "timePrecision": "exact",
-          "ageHours": 6.86,
+          "ageHours": 7.36,
           "freshnessBasis": "Falcons quarterback Michael Penix Jr.'s rib injury is not considered serious, sources told ESPN's Adam Schefter.",
           "status": "active",
           "sourceUrls": [
@@ -314,7 +314,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:00:05Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.53,
           "freshnessBasis": "Browns RB Quinshon Judkins and LB Carson Schwesinger are day-to-day after injuring their ankles against the Jets on Sunday. The Browns next host the Ravens.",
           "status": "active",
           "sourceUrls": [
@@ -343,7 +343,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T15:58:39Z",
           "timePrecision": "exact",
-          "ageHours": 11.05,
+          "ageHours": 11.55,
           "freshnessBasis": "What were the Commanders doing in the final minute of OT? Why did the 1-4 Texans make an aggressive trade for Marvin Harrison Jr.? Let's try to find the logic.",
           "status": "active",
           "sourceUrls": [
@@ -372,7 +372,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:25:40Z",
           "timePrecision": "exact",
-          "ageHours": 2.6,
+          "ageHours": 3.1,
           "freshnessBasis": "49ers linebacker Dre Greenlaw has been suspended for one game without pay for unsportsmanlike conduct during Sunday's game against the Seahawks.",
           "status": "active",
           "sourceUrls": [
@@ -398,35 +398,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ac9206da50d5855f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Minnesota Timberwolves 122, New York Knicks 104.",
-          "text": "Highlightly final: Minnesota Timberwolves 122, New York Knicks 104.",
-          "entities": [],
-          "occurredAt": "2026-10-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.53,
-          "freshnessBasis": "Highlightly final: Minnesota Timberwolves 122, New York Knicks 104.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-7ca107d19072c7b9",
-          "feedRank": 13,
-          "compactHeadline": "Minnesota Timberwolves beat New York Knicks 122-104"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-8f497fe73e60a977"
           ],
           "type": "CONTRACT",
@@ -436,7 +407,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:46:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.26,
+          "ageHours": 2.76,
           "freshnessBasis": "Former Knicks great Carmelo Anthony said the team is making the right decision in halting contract negotiations with players to focus solely on basketball.",
           "status": "active",
           "sourceUrls": [
@@ -450,69 +421,11 @@
             }
           ],
           "id": "a415-598e798bf145ccff",
-          "feedRank": 14,
+          "feedRank": 13,
           "compactHeadline": "Carmelo Anthony thinks Knicks right to halt contract talks to focus on season"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-be77abb51bfacda8"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Brooklyn Nets 131, Washington Wizards 122.",
-          "text": "Highlightly final: Brooklyn Nets 131, Washington Wizards 122.",
-          "entities": [],
-          "occurredAt": "2026-10-12T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "Highlightly final: Brooklyn Nets 131, Washington Wizards 122.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-e60ca7cfd97d7575",
-          "feedRank": 15,
-          "compactHeadline": "Brooklyn Nets beat Washington Wizards 131-122"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-3865a9d5bdeb2892"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Oklahoma City Thunder 110, Atlanta Hawks 113.",
-          "text": "Highlightly final: Oklahoma City Thunder 110, Atlanta Hawks 113.",
-          "entities": [],
-          "occurredAt": "2026-10-12T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "Highlightly final: Oklahoma City Thunder 110, Atlanta Hawks 113.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-c9cdc71ce9de1a41",
-          "feedRank": 16,
-          "compactHeadline": "Atlanta Hawks beat Oklahoma City Thunder 113-110"
-        },
-        {
-          "rank": 5,
+          "rank": 2,
           "candidateIds": [
             "cand-6ea31c66aca1ff77"
           ],
@@ -523,7 +436,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T02:10:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.85,
+          "ageHours": 1.35,
           "freshnessBasis": "A game-worn, autographed Michael Jordan road jersey from the 1998 NBA Finals has been privately sold for $14 million.",
           "status": "active",
           "sourceUrls": [
@@ -537,8 +450,95 @@
             }
           ],
           "id": "a415-de9920e657547135",
-          "feedRank": 17,
+          "feedRank": 14,
           "compactHeadline": "Jordan game-worn 1998 NBA Finals jersey sells for $14 million"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-855f111a678cd0a4"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Veteran center Kristaps Porzingis is expected to return to the Golden State Warriors practice facility Tuesday afternoon, according to head coach Steve Kerr.",
+          "text": "Veteran center Kristaps Porzingis is expected to return to the Golden State Warriors practice facility Tuesday afternoon, according to head coach Steve Kerr.",
+          "entities": [],
+          "occurredAt": "2026-10-12T22:02:52Z",
+          "timePrecision": "exact",
+          "ageHours": 5.48,
+          "freshnessBasis": "Veteran center Kristaps Porzingis is expected to return to the Golden State Warriors practice facility Tuesday afternoon, according to head coach Steve Kerr.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50168743/kristaps-porzingis-expected-warriors-facility-tue"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50168743/kristaps-porzingis-expected-warriors-facility-tue"
+            }
+          ],
+          "id": "a415-e846dd1739ea6d33",
+          "feedRank": 15,
+          "compactHeadline": "Kristaps Porzingis expected to be at Warriors' facility on Tuesday"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-1b2a36322756af70"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Kentavious Caldwell-Pope says the 76ers' success this season depends on how well the team's diverse personalities mesh.",
+          "text": "Kentavious Caldwell-Pope says the 76ers' success this season depends on how well the team's diverse personalities mesh.",
+          "entities": [],
+          "occurredAt": "2026-10-12T19:20:44Z",
+          "timePrecision": "exact",
+          "ageHours": 8.18,
+          "freshnessBasis": "Kentavious Caldwell-Pope says the 76ers' success this season depends on how well the team's diverse personalities mesh.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50168000/kentavious-caldwell-pope-cites-team-chemistry-key-76ers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50168000/kentavious-caldwell-pope-cites-team-chemistry-key-76ers"
+            }
+          ],
+          "id": "a415-5ed9724a7d02de22",
+          "feedRank": 16,
+          "compactHeadline": "Kentavious Caldwell-Pope cites team chemistry as key to 76ers' success"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-462edd8ce27852bb"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
+          "text": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
+          "entities": [],
+          "occurredAt": "2026-10-12T17:26:21Z",
+          "timePrecision": "exact",
+          "ageHours": 10.09,
+          "freshnessBasis": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50163354/cooper-flagg-kyrie-irving-mavericks-china"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50163354/cooper-flagg-kyrie-irving-mavericks-china"
+            }
+          ],
+          "id": "a415-e494f58df4b63a31",
+          "feedRank": 17,
+          "compactHeadline": "Windhorst: Why Cooper Flagg's ascension is starting to feel inevitable"
         }
       ]
     },
@@ -549,70 +549,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-80e3448eaedcb6f2"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Noah Ostlund scored the go-ahead goal on the power play 7:15 into the third period, and the Buffalo Sabres defeated the Florida Panthers 5-3 on Monday in an outing both teams lost key players to injury.",
-          "text": "Noah Ostlund scored the go-ahead goal on the power play 7:15 into the third period, and the Buffalo Sabres defeated the Florida Panthers 5-3 on Monday in an outing both teams lost key players to injury.",
-          "entities": [],
-          "occurredAt": "2026-10-12T17:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 10.03,
-          "freshnessBasis": "Highlightly final: Florida Panthers 3, Buffalo Sabres 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892485"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892485"
-            }
-          ],
-          "id": "a415-d8a94b41d2975839",
-          "feedRank": 18,
-          "compactHeadline": "Noah Ostlund scores go-ahead goal in third period in Sabres' 5-3 win over Panthers"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-79d93ac36c0790e4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Vegas Golden Knights 2, Minnesota Wild 4.",
-          "text": "Highlightly final: Vegas Golden Knights 2, Minnesota Wild 4.",
-          "entities": [],
-          "occurredAt": "2026-10-13T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.03,
-          "freshnessBasis": "Highlightly final: Vegas Golden Knights 2, Minnesota Wild 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-abd58c2f4de04f70",
-          "feedRank": 19,
-          "compactHeadline": "Minnesota Wild beat Vegas Golden Knights 4-2"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-a32f9f7d6c0dbe86"
           ],
           "type": "INJURY",
@@ -622,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:17:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.75,
+          "ageHours": 6.25,
           "freshnessBasis": "Sabres captain Rasmus Dahlin will miss Tuesday's matchup against the Canadiens and is day-to-day after suffering an upper-body injury in Monday's win over the Panthers.",
           "status": "active",
           "sourceUrls": [
@@ -636,11 +572,40 @@
             }
           ],
           "id": "a415-99ebf68c3519010b",
-          "feedRank": 20,
+          "feedRank": 18,
           "compactHeadline": "Sabres' Dahlin out Tuesday vs. Canadiens due to upper-body injury"
         },
         {
-          "rank": 4,
+          "rank": 2,
+          "candidateIds": [
+            "cand-f34eaee3036bbf74"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Max Shabanov scored on a power play during a three-goal first period as the Minnesota Wild held on to beat the Vegas Golden Knights 4-2 on...",
+          "text": "Max Shabanov scored on a power play during a three-goal first period as the Minnesota Wild held on to beat the Vegas Golden Knights 4-2 on...",
+          "entities": [],
+          "occurredAt": "2026-10-13T03:05:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "— Max Shabanov scored on a power play during a three-goal first period as the Minnesota Wild held on to beat the Vegas Golden Knights 4-2 on...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892487"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892487"
+            }
+          ],
+          "id": "a415-e245af2336c2081d",
+          "feedRank": 19,
+          "compactHeadline": "Wild beat the Golden Knights 4-2 behind another stellar special teams performance"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-ac2a47c0e6e35eaf"
           ],
@@ -651,7 +616,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T17:28:48Z",
           "timePrecision": "exact",
-          "ageHours": 9.55,
+          "ageHours": 10.05,
           "freshnessBasis": "Dallas Stars forward Matt Duchene will be out for up to three months after having core muscle surgery, the team said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -665,11 +630,11 @@
             }
           ],
           "id": "a415-5813f0b62546dbf1",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Stars' Matt Duchene to miss 3 months after core muscle surgery"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-5339ad2bcd0ef581"
           ],
@@ -680,7 +645,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T01:46:31Z",
           "timePrecision": "exact",
-          "ageHours": 1.26,
+          "ageHours": 1.75,
           "freshnessBasis": "— Tim Stützle had a goal and an assist, Shane Pinto and Stephen Halliday scored and the Ottawa Senators defeated the New Jersey Devils 4-1 on Monday night to keep their hot start going.",
           "status": "active",
           "sourceUrls": [
@@ -694,8 +659,37 @@
             }
           ],
           "id": "a415-ca787c219d53f53c",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "Tim Stützle and the Senators beat the Devils 4-1 to keep their hot start going"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-04c953b4b3a1e230"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Noah Ostlund scored the go-ahead goal on the power play 7:15 into the third period, and the Buffalo Sabres defeated the Florida Panthers 5-3 on Monday in an outing both teams lost key players to injury.",
+          "text": "Noah Ostlund scored the go-ahead goal on the power play 7:15 into the third period, and the Buffalo Sabres defeated the Florida Panthers 5-3 on Monday in an outing both teams lost key players to injury.",
+          "entities": [],
+          "occurredAt": "2026-10-12T21:18:27Z",
+          "timePrecision": "exact",
+          "ageHours": 6.22,
+          "freshnessBasis": "— Noah Ostlund scored the go-ahead goal on the power play 7:15 into the third period, and the Buffalo Sabres defeated the Florida Panthers 5-3 on Monday in an outing both teams lost key players to injury.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892485"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892485"
+            }
+          ],
+          "id": "a415-b13f522a6c795936",
+          "feedRank": 22,
+          "compactHeadline": "Noah Ostlund scores go-ahead goal in third period in Sabres' 5-3 win over Panthers"
         },
         {
           "rank": 6,
@@ -709,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:06:07Z",
           "timePrecision": "exact",
-          "ageHours": 2.93,
+          "ageHours": 3.43,
           "freshnessBasis": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
           "status": "active",
           "sourceUrls": [
@@ -735,127 +729,34 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0b3dec71f2d16841"
+            "cand-11e75cba146aad98"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Coventry City picked up their first home victory in the Premier League for 25 years with an emphatic 4-1 win over Newcastle United on Monday.",
           "text": "Coventry City picked up their first home victory in the Premier League for 25 years with an emphatic 4-1 win over Newcastle United on Monday.",
           "entities": [],
-          "occurredAt": "2026-10-12T19:00:00Z",
+          "occurredAt": "2026-10-12T21:31:19Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
-          "freshnessBasis": "Highlightly final: Newcastle United 1, Coventry 4.",
+          "ageHours": 6.01,
+          "freshnessBasis": "Coventry City picked up their first home victory in the Premier League for 25 years with an emphatic 4-1 win over Newcastle United on Monday.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/soccer/report/_/gameId/401879267"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-10-12",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
               "url": "http://www.espn.com/soccer/report/_/gameId/401879267"
             }
           ],
-          "id": "a415-cb4e3d064aa41ca3",
+          "id": "a415-1a8a5334a7ae19d7",
           "feedRank": 24,
           "compactHeadline": "Coventry put four past Newcastle to climb out of relegation zone"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-06d51a7715672b18"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Plymouth U21 1, AFC Bournemouth U21 6.",
-          "text": "Highlightly final: Plymouth U21 1, AFC Bournemouth U21 6.",
-          "entities": [],
-          "occurredAt": "2026-10-12T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 9.03,
-          "freshnessBasis": "Highlightly final: Plymouth U21 1, AFC Bournemouth U21 6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-ba361188a7ca3693",
-          "feedRank": 25,
-          "compactHeadline": "AFC Bournemouth U21 beat Plymouth U21 6-1"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-e672a4bc1b6d680e"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Exeter U21 5, Bristol City U21 3.",
-          "text": "Highlightly final: Exeter U21 5, Bristol City U21 3.",
-          "entities": [],
-          "occurredAt": "2026-10-12T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 9.03,
-          "freshnessBasis": "Highlightly final: Exeter U21 5, Bristol City U21 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-3231401868b104d7",
-          "feedRank": 26,
-          "compactHeadline": "Exeter U21 beat Bristol City U21 5-3"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-fe503518204cb329"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Bolton Wanderers Res. 3, Blackburn Rovers U21 3.",
-          "text": "Highlightly final: Bolton Wanderers Res. 3, Blackburn Rovers U21 3.",
-          "entities": [],
-          "occurredAt": "2026-10-12T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 9.03,
-          "freshnessBasis": "Highlightly final: Bolton Wanderers Res. 3, Blackburn Rovers U21 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-10-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-120ae13322b1b271",
-          "feedRank": 27,
-          "compactHeadline": "Blackburn Rovers U21 and Bolton Wanderers Res. finished tied 3-3"
-        },
-        {
-          "rank": 5,
           "candidateIds": [
             "cand-be41486d7a95eaae"
           ],
@@ -866,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T11:53:49Z",
           "timePrecision": "exact",
-          "ageHours": 15.13,
+          "ageHours": 15.63,
           "freshnessBasis": "Merseyside Police have confirmed that 10 people were arrested and an officer sustained a serious injury during the policing operation for Manchester City's clash at Liverpool.",
           "status": "active",
           "sourceUrls": [
@@ -880,11 +781,11 @@
             }
           ],
           "id": "a415-a942a0cb9e1116d7",
-          "feedRank": 28,
+          "feedRank": 25,
           "compactHeadline": "Ten arrests, police officer injured, after Liverpool vs. Man City"
         },
         {
-          "rank": 6,
+          "rank": 3,
           "candidateIds": [
             "cand-77606896b64dd611"
           ],
@@ -895,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T23:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 3.72,
+          "ageHours": 4.22,
           "freshnessBasis": "Coventry City boss Frank Lampard is not allowing his side to get carried away after they earned a thumping 4-1 home victory over Newcastle United on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -909,8 +810,66 @@
             }
           ],
           "id": "a415-05a0738eb84b683c",
-          "feedRank": 29,
+          "feedRank": 26,
           "compactHeadline": "Lampard: Coventry 'feet on the ground' after Newcastle win"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-44114da1b2fe54cb"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Steven Gerrard has said that Manchester City \"have to be stripped\" of their titles after the club were found guilty of 100+ charges of financial misconduct by the Premier League.",
+          "text": "Steven Gerrard has said that Manchester City \"have to be stripped\" of their titles after the club were found guilty of 100+ charges of financial misconduct by the Premier League.",
+          "entities": [],
+          "occurredAt": "2026-10-12T16:06:53Z",
+          "timePrecision": "exact",
+          "ageHours": 11.41,
+          "freshnessBasis": "Steven Gerrard has said that Manchester City \"have to be stripped\" of their titles after the club were found guilty of 100+ charges of financial misconduct by the Premier League.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50166551/steven-gerrard-says-man-city-stripped-titles-guilty-verdict-make-suffer"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50166551/steven-gerrard-says-man-city-stripped-titles-guilty-verdict-make-suffer"
+            }
+          ],
+          "id": "a415-c5fca382f79e479b",
+          "feedRank": 27,
+          "compactHeadline": "Steven Gerrard says Man City must be stripped of titles after guilty verdict: 'Make them suffer'"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-17cd209d3319f0f1"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Mikel Arteta has defended Arsenal's training programme after confirming Piero Hincapié and Martín Zubimendi suffered \"far from ideal\" injuries in a post-match session on Saturday.",
+          "text": "Mikel Arteta has defended Arsenal's training programme after confirming Piero Hincapié and Martín Zubimendi suffered \"far from ideal\" injuries in a post-match session on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-10-12T15:08:33Z",
+          "timePrecision": "exact",
+          "ageHours": 12.39,
+          "freshnessBasis": "Mikel Arteta has defended Arsenal's training programme after confirming Piero Hincapié and Martín Zubimendi suffered \"far from ideal\" injuries in a post-match session on Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50165976/mikel-arteta-defends-arsenal-piero-hincapie-martin-zubimendi-injuries"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50165976/mikel-arteta-defends-arsenal-piero-hincapie-martin-zubimendi-injuries"
+            }
+          ],
+          "id": "a415-ea46248a61c592f5",
+          "feedRank": 28,
+          "compactHeadline": "Mikel Arteta defends Arsenal after Piero Hincapié, Martin Zubimendi injuries"
         }
       ]
     },
@@ -930,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 8.18,
+          "ageHours": 8.67,
           "freshnessBasis": "Carlo Holse's hat trick helped St. Louis City SC beat the LA Galaxy 6-2 on Sunday night to extend their unbeaten streak across all competitions to 20 games.",
           "status": "active",
           "sourceUrls": [
@@ -944,7 +903,7 @@
             }
           ],
           "id": "a415-47e1fead010eb56f",
-          "feedRank": 30,
+          "feedRank": 29,
           "compactHeadline": "St. Louis unbeaten run up to 20 games, tying Red Bulls' MLS record"
         }
       ]
@@ -965,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T02:15:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.27,
           "freshnessBasis": "No. 16 Mississippi State star quarterback Kamario Taylor's status for Saturday's game at No. 22 LSU is in flux as he deals with a foot injury.",
           "status": "active",
           "sourceUrls": [
@@ -979,7 +938,7 @@
             }
           ],
           "id": "a415-54a4320a9f0ccd74",
-          "feedRank": 31,
+          "feedRank": 30,
           "compactHeadline": "Sources: Mississippi State star QB Kamario Taylor's status vs. LSU uncertain"
         },
         {
@@ -994,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:14:24Z",
           "timePrecision": "exact",
-          "ageHours": 2.79,
+          "ageHours": 3.29,
           "freshnessBasis": "Washington quarterback Demond Williams Jr. seems unlikely to return this week from a rib injury he suffered during the Huskies' loss to Iowa Friday, but coach Jedd Fisch said Monday that \"we still have four days before we'll have to make that decision.\"",
           "status": "active",
           "sourceUrls": [
@@ -1008,7 +967,7 @@
             }
           ],
           "id": "a415-76d6be572c0add9f",
-          "feedRank": 32,
+          "feedRank": 31,
           "compactHeadline": "Washington QB Williams unlikely to return vs. Purdue"
         },
         {
@@ -1023,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T22:22:12Z",
           "timePrecision": "exact",
-          "ageHours": 4.66,
+          "ageHours": 5.16,
           "freshnessBasis": "UCLA has ''serious concern'' over the knee injury quarterback Nico Iamaleava sustained during Saturday's win at Oregon, coach Bob Chesney said.",
           "status": "active",
           "sourceUrls": [
@@ -1037,7 +996,7 @@
             }
           ],
           "id": "a415-aa15ce1aa6a540be",
-          "feedRank": 33,
+          "feedRank": 32,
           "compactHeadline": "UCLA has 'serious concern' over QB Iamaleava's knee injury"
         },
         {
@@ -1052,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T11:50:47Z",
           "timePrecision": "exact",
-          "ageHours": 15.19,
+          "ageHours": 15.68,
           "freshnessBasis": "Following big wins and multiple upsets in Week 6, here are our postseason projections.",
           "status": "active",
           "sourceUrls": [
@@ -1066,7 +1025,7 @@
             }
           ],
           "id": "a415-ba6576edbac92099",
-          "feedRank": 34,
+          "feedRank": 33,
           "compactHeadline": "2026-27 Week 6 College Football Playoff, bowl projections"
         },
         {
@@ -1081,7 +1040,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T22:16:38Z",
           "timePrecision": "exact",
-          "ageHours": 4.75,
+          "ageHours": 5.25,
           "freshnessBasis": "Mike Elko said his viral remark after the Aggies' loss to Missouri was made in the heat of the moment.",
           "status": "active",
           "sourceUrls": [
@@ -1095,8 +1054,37 @@
             }
           ],
           "id": "a415-a4f032106a0d9417",
-          "feedRank": 35,
+          "feedRank": 34,
           "compactHeadline": "Texas A&M coach Elko says he regrets 'cesspool' comments"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-d2c3361bcad7e146"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
+          "text": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
+          "entities": [],
+          "occurredAt": "2026-10-12T21:41:50Z",
+          "timePrecision": "exact",
+          "ageHours": 5.83,
+          "freshnessBasis": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/recruiting/story/_/id/48543549/college-football-recruiting-2027-prospects-five-star-scouts-take"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/recruiting/story/_/id/48543549/college-football-recruiting-2027-prospects-five-star-scouts-take"
+            }
+          ],
+          "id": "a415-9819fdcebe2aa754",
+          "feedRank": 35,
+          "compactHeadline": "How every 2027 five-star college football prospect will fit"
         }
       ]
     }
@@ -1121,7 +1109,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 106,
+    "freshCandidateCount": 101,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
