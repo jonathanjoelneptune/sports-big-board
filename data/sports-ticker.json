@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-13T21:02:06Z",
+  "generatedAt": "2026-10-13T21:32:39Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "1e944f5aa42a4c89198bd94b08c99bfe6f1c8488ff402aa924f2c23d4509aa9d",
+  "sourceCandidateHash": "f39a68087251b4fbacd4a22cf4a991ca7ce15fb2cb4c92def08e5ab198327aba",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:34:50Z",
           "timePrecision": "exact",
-          "ageHours": 4.45,
+          "ageHours": 4.96,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:37:29Z",
           "timePrecision": "exact",
-          "ageHours": 5.41,
+          "ageHours": 5.92,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:35:15Z",
           "timePrecision": "exact",
-          "ageHours": 5.45,
+          "ageHours": 5.96,
           "freshnessBasis": "Here's how the winter looks in Chicago after squandering a 2-0 series lead against the Guardians.",
           "status": "active",
           "sourceUrls": [
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T14:19:55Z",
           "timePrecision": "exact",
-          "ageHours": 6.7,
+          "ageHours": 7.21,
           "freshnessBasis": "- The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
           "status": "active",
           "sourceUrls": [
@@ -136,6 +136,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-01fee24a26e228ac"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Seattle Mariners have received permission to interview current Houston Astros manager Joe Espada about their vacancy, a source confirmed to ESPN.",
+          "text": "The Seattle Mariners have received permission to interview current Houston Astros manager Joe Espada about their vacancy, a source confirmed to ESPN.",
+          "entities": [],
+          "occurredAt": "2026-10-13T21:14:23Z",
+          "timePrecision": "exact",
+          "ageHours": 0.3,
+          "freshnessBasis": "The Seattle Mariners have received permission to interview current Houston Astros manager Joe Espada about their vacancy, a source confirmed to ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50176901/source-mariners-get-ok-interview-astros-joe-espada"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50176901/source-mariners-get-ok-interview-astros-joe-espada"
+            }
+          ],
+          "id": "a415-bc604ffed096ede3",
+          "feedRank": 5,
+          "compactHeadline": "Source: Mariners get OK to interview Astros' Joe Espada"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-549e3bb3432557e8"
           ],
           "type": "RESULT",
@@ -145,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T07:16:50Z",
           "timePrecision": "exact",
-          "ageHours": 13.75,
+          "ageHours": 14.26,
           "freshnessBasis": "— Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first...",
           "status": "active",
           "sourceUrls": [
@@ -159,37 +188,8 @@
             }
           ],
           "id": "a415-774969115ce815ab",
-          "feedRank": 5,
-          "compactHeadline": "Contreras delivers and Milwaukee's bullpen shines as the Brewers top the Dodgers 7-4 in NLCS Game 2"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-6c1d6d45dc0dfbbc"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Dodgers will gauge whether Shohei Ohtani's lingering injuries warrant him sitting out but will keep playing him if he deems himself healthy, a source said.",
-          "text": "The Dodgers will gauge whether Shohei Ohtani's lingering injuries warrant him sitting out but will keep playing him if he deems himself healthy, a source said.",
-          "entities": [],
-          "occurredAt": "2026-10-13T18:39:39Z",
-          "timePrecision": "exact",
-          "ageHours": 2.37,
-          "freshnessBasis": "The Dodgers will gauge whether Shohei Ohtani's lingering injuries warrant him sitting out but will keep playing him if he deems himself healthy, a source said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50171187/dodgers-shohei-ohtani-nlcs-game-3-playing-status-health"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50171187/dodgers-shohei-ohtani-nlcs-game-3-playing-status-health"
-            }
-          ],
-          "id": "a415-ec819982732a1561",
           "feedRank": 6,
-          "compactHeadline": "Source: Dodgers' decision on sitting Ohtani hinges on health"
+          "compactHeadline": "Contreras delivers and Milwaukee's bullpen shines as the Brewers top the Dodgers 7-4 in NLCS Game 2"
         }
       ]
     },
@@ -209,7 +209,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:43:38Z",
           "timePrecision": "exact",
-          "ageHours": 4.31,
+          "ageHours": 4.82,
           "freshnessBasis": "Bengals TE Tanner Hudson suffered a torn pectoral in last Sunday's win over the Dolphins that will sideline him for the season, his agent told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -238,7 +238,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:00:15Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.54,
           "freshnessBasis": "Houston has traded and drafted receivers, hoping to complement No. 1 wideout Nico Collins and QB C.J. Stroud.",
           "status": "active",
           "sourceUrls": [
@@ -258,35 +258,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-59f2891d7d3dac27"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Jaguars left tackle Anton Harrison will have arthroscopic surgery on his right knee when the team returns from London next week, league sources told NFL Network's Ian Rapoport and ESPN's Jeremy Fowler.",
-          "text": "Jaguars left tackle Anton Harrison will have arthroscopic surgery on his right knee when the team returns from London next week, league sources told NFL Network's Ian Rapoport and ESPN's Jeremy Fowler.",
-          "entities": [],
-          "occurredAt": "2026-10-13T20:02:17Z",
-          "timePrecision": "exact",
-          "ageHours": 1.0,
-          "freshnessBasis": "Jaguars left tackle Anton Harrison will have arthroscopic surgery on his right knee when the team returns from London next week, league sources told NFL Network's Ian Rapoport and ESPN's Jeremy Fowler.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50172717/sources-jaguars-lt-anton-harrison-undergo-knee-surgery"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50172717/sources-jaguars-lt-anton-harrison-undergo-knee-surgery"
-            }
-          ],
-          "id": "a415-ba4d0b03fe3ac335",
-          "feedRank": 9,
-          "compactHeadline": "Sources: Jaguars LT Anton Harrison to undergo knee surgery"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-567c8c6934c8012e"
           ],
           "type": "PLAYOFF",
@@ -296,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:02:42Z",
           "timePrecision": "exact",
-          "ageHours": 5.99,
+          "ageHours": 6.5,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -310,40 +281,11 @@
             }
           ],
           "id": "a415-ea96d46825e75c17",
-          "feedRank": 10,
+          "feedRank": 9,
           "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances to make postseason"
         },
         {
-          "rank": 5,
-          "candidateIds": [
-            "cand-29679030ed4d0dd1"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "text": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "entities": [],
-          "occurredAt": "2026-10-13T13:46:24Z",
-          "timePrecision": "exact",
-          "ageHours": 7.26,
-          "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-            }
-          ],
-          "id": "a415-dcde4a422d8ea634",
-          "feedRank": 11,
-          "compactHeadline": "2026 NFL pass rush, run stop, blocking win rate rankings"
-        },
-        {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
             "cand-b1133d13c9189ce4"
           ],
@@ -352,9 +294,9 @@
           "headline": "The NFL has issued a two-game suspension to Bears defensive end Montez Sweat for violating the league's policy on performance-enhancing substances.",
           "text": "The NFL has issued a two-game suspension to Bears defensive end Montez Sweat for violating the league's policy on performance-enhancing substances.",
           "entities": [],
-          "occurredAt": "2026-10-13T20:27:40Z",
+          "occurredAt": "2026-10-13T21:17:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
+          "ageHours": 0.26,
           "freshnessBasis": "The NFL has issued a two-game suspension to Bears defensive end Montez Sweat for violating the league's policy on performance-enhancing substances.",
           "status": "active",
           "sourceUrls": [
@@ -368,8 +310,66 @@
             }
           ],
           "id": "a415-8018738723b0f332",
-          "feedRank": 12,
+          "feedRank": 10,
           "compactHeadline": "Bears DE Montez Sweat suspended two games for violating NFL's PED policy"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-46e9c4a141183773"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The NFL is expected to suspend Rams left tackle Alaric Jackson for two games without pay, sources told ESPN's Adam Schefter.",
+          "text": "The NFL is expected to suspend Rams left tackle Alaric Jackson for two games without pay, sources told ESPN's Adam Schefter.",
+          "entities": [],
+          "occurredAt": "2026-10-13T21:29:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "The NFL is expected to suspend Rams left tackle Alaric Jackson for two games without pay, sources told ESPN's Adam Schefter.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50173615/nfl-suspends-rams-lt-jackson-punching-bills-chubb"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50173615/nfl-suspends-rams-lt-jackson-punching-bills-chubb"
+            }
+          ],
+          "id": "a415-fdf12b0e20c48935",
+          "feedRank": 11,
+          "compactHeadline": "Sources: NFL expected to suspend Rams' Alaric Jackson for two games for punch"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-163b6f840f820c03"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Rams are releasing kicker Harrison Mevis and signing Blake Grupe off the Jets' practice squad, sources told NFL Network's Ian Rapoport and Mike Garafolo on Tuesday.",
+          "text": "The Rams are releasing kicker Harrison Mevis and signing Blake Grupe off the Jets' practice squad, sources told NFL Network's Ian Rapoport and Mike Garafolo on Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-10-13T21:12:56Z",
+          "timePrecision": "exact",
+          "ageHours": 0.33,
+          "freshnessBasis": "The Rams are releasing kicker Harrison Mevis and signing Blake Grupe off the Jets' practice squad, sources told NFL Network's Ian Rapoport and Mike Garafolo on Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50175234/rams-release-kicker-mevis-miscues-ot-loss"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50175234/rams-release-kicker-mevis-miscues-ot-loss"
+            }
+          ],
+          "id": "a415-7339144dcbf827b6",
+          "feedRank": 12,
+          "compactHeadline": "Sources: Rams release kicker Mevis after miscues in loss, sign Grupe from Jets"
         }
       ]
     },
@@ -389,7 +389,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T20:42:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.84,
           "freshnessBasis": "Celtics guard Payton Pritchard has agreed to a two-year, $44.2 million extension with a mutual option for the 2029-30 season.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T19:51:07Z",
           "timePrecision": "exact",
-          "ageHours": 1.18,
+          "ageHours": 1.69,
           "freshnessBasis": "With Monday's extension deadline looming, Bobby Marks breaks down the biggest decisions around the league.",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T17:35:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.44,
+          "ageHours": 3.95,
           "freshnessBasis": "Teams will be competing on these courts for the NBA Cup from Oct. 30 to Dec. 11.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:46:18Z",
           "timePrecision": "exact",
-          "ageHours": 20.26,
+          "ageHours": 20.77,
           "freshnessBasis": "Former Knicks great Carmelo Anthony said the team is making the right decision in halting contract negotiations with players to focus solely on basketball.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T17:10:32Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
+          "ageHours": 4.37,
           "freshnessBasis": "Nearly 16 months ago, a torn Achilles cost Tyrese Haliburton -- and the Pacers -- the 2025-26 season. Now, he returns to help them reclaim their spot in the East.",
           "status": "active",
           "sourceUrls": [
@@ -540,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:29:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.54,
+          "ageHours": 5.05,
           "freshnessBasis": "Hurricanes captain Jordan Staal, the playoff MVP in their Stanley Cup championship run last season, will miss one to two months with a torn calf muscle.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T20:07:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.92,
+          "ageHours": 1.43,
           "freshnessBasis": "Blackhawks captain Connor Bedard said he's \"happy\" to finally make his season debut Tuesday night against the Penguins following offseason shoulder surgery.",
           "status": "active",
           "sourceUrls": [
@@ -589,35 +589,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-a32f9f7d6c0dbe86"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Sabres captain Rasmus Dahlin will miss Tuesday's matchup against the Canadiens and is day-to-day after suffering an upper-body injury in Monday's win over the Panthers.",
-          "text": "Sabres captain Rasmus Dahlin will miss Tuesday's matchup against the Canadiens and is day-to-day after suffering an upper-body injury in Monday's win over the Panthers.",
-          "entities": [],
-          "occurredAt": "2026-10-12T21:17:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.75,
-          "freshnessBasis": "Sabres captain Rasmus Dahlin will miss Tuesday's matchup against the Canadiens and is day-to-day after suffering an upper-body injury in Monday's win over the Panthers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50168195/sabres-dahlin-leaves-game-vs-panthers-upper-body-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50168195/sabres-dahlin-leaves-game-vs-panthers-upper-body-injury"
-            }
-          ],
-          "id": "a415-99ebf68c3519010b",
-          "feedRank": 20,
-          "compactHeadline": "Sabres' Dahlin out Tuesday vs. Canadiens due to upper-body injury"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-f34eaee3036bbf74"
           ],
           "type": "RESULT",
@@ -627,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T03:05:27Z",
           "timePrecision": "exact",
-          "ageHours": 17.94,
+          "ageHours": 18.45,
           "freshnessBasis": "— Max Shabanov scored on a power play during a three-goal first period as the Minnesota Wild held on to beat the Vegas Golden Knights 4-2 on...",
           "status": "active",
           "sourceUrls": [
@@ -641,11 +612,11 @@
             }
           ],
           "id": "a415-e245af2336c2081d",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Wild beat the Golden Knights 4-2 behind another stellar special teams performance"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-ae4430de54d1ed30"
           ],
@@ -656,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:31:58Z",
           "timePrecision": "exact",
-          "ageHours": 5.5,
+          "ageHours": 6.01,
           "freshnessBasis": "From elite scorers to exciting rookies to legit drama, here's what we love about all 32.",
           "status": "active",
           "sourceUrls": [
@@ -670,11 +641,11 @@
             }
           ],
           "id": "a415-98173fc586f1d223",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "The top reason to watch every NHL team in the Frozen Frenzy"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-714cf77744fdf1bc"
           ],
@@ -685,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:13:42Z",
           "timePrecision": "exact",
-          "ageHours": 5.81,
+          "ageHours": 6.32,
           "freshnessBasis": "It's the busiest night of the NHL season.",
           "status": "active",
           "sourceUrls": [
@@ -699,8 +670,37 @@
             }
           ],
           "id": "a415-844e1cca970d06f4",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Where to watch 2026 NHL Frozen Frenzy"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-5339ad2bcd0ef581"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Tim Stützle had a goal and an assist, Shane Pinto and Stephen Halliday scored and the Ottawa Senators defeated the New Jersey Devils 4-1 on Monday night to keep their hot start going.",
+          "text": "Tim Stützle had a goal and an assist, Shane Pinto and Stephen Halliday scored and the Ottawa Senators defeated the New Jersey Devils 4-1 on Monday night to keep their hot start going.",
+          "entities": [],
+          "occurredAt": "2026-10-13T01:46:31Z",
+          "timePrecision": "exact",
+          "ageHours": 19.77,
+          "freshnessBasis": "— Tim Stützle had a goal and an assist, Shane Pinto and Stephen Halliday scored and the Ottawa Senators defeated the New Jersey Devils 4-1 on Monday night to keep their hot start going.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892486"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892486"
+            }
+          ],
+          "id": "a415-ca787c219d53f53c",
+          "feedRank": 23,
+          "compactHeadline": "Tim Stützle and the Senators beat the Devils 4-1 to keep their hot start going"
         }
       ]
     },
@@ -720,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T17:39:16Z",
           "timePrecision": "exact",
-          "ageHours": 3.38,
+          "ageHours": 3.89,
           "freshnessBasis": "Paris Saint-Germain boss Luis Enrique has said Manchester City deserve to keep the trophies won during the period in which they have been found guilty of breaching Premier League rules.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:54:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.13,
+          "ageHours": 4.64,
           "freshnessBasis": "The chair of the Independent Football Regulator says the English game must \"act before it is too late\" to tackle the financial dangers facing it.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:45:58Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.78,
           "freshnessBasis": "The chair of the Independent Football Regulator (IFR) has said he will quit if there is political interference in any future investigation launched into Manchester City.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:57:17Z",
           "timePrecision": "exact",
-          "ageHours": 5.08,
+          "ageHours": 5.59,
           "freshnessBasis": "Liverpool are set to be without Alexander Isak, Cody Gakpo and Dominik Szoboszlai for Wednesday's UEFA Champions League clash with LASK.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T14:30:42Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.03,
           "freshnessBasis": "Aston Villa boss Unai Emery wants his side to enjoy their home comforts once again when they host Fenerbahce in the Champions League.",
           "status": "active",
           "sourceUrls": [
@@ -871,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T19:19:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.71,
+          "ageHours": 2.22,
           "freshnessBasis": "Don Garber has addressed his September confrontation with Lionel Messi, and the MLS commissioner said he admired the exchange.",
           "status": "active",
           "sourceUrls": [
@@ -906,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T14:25:06Z",
           "timePrecision": "exact",
-          "ageHours": 6.62,
+          "ageHours": 7.13,
           "freshnessBasis": "A conference-by-conference look at who is contending for the playoff, who's close and who's out.",
           "status": "active",
           "sourceUrls": [
@@ -935,7 +935,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T10:36:33Z",
           "timePrecision": "exact",
-          "ageHours": 10.43,
+          "ageHours": 10.94,
           "freshnessBasis": "Three years, three signal-callers. It's not easy, but some College Football Playoff contenders have found a way.",
           "status": "active",
           "sourceUrls": [
@@ -964,7 +964,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T19:35:37Z",
           "timePrecision": "exact",
-          "ageHours": 1.44,
+          "ageHours": 1.95,
           "freshnessBasis": "Florida State CB Chuck Kennon, the Seminoles' top-rated recruit in this year's class, has been dismissed from the program after being arrested near Tampa.",
           "status": "active",
           "sourceUrls": [
@@ -993,7 +993,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T03:46:28Z",
           "timePrecision": "exact",
-          "ageHours": 17.26,
+          "ageHours": 17.77,
           "freshnessBasis": "UCLA has ''serious concern'' over the knee injury quarterback Nico Iamaleava sustained during Saturday's win at Oregon, coach Bob Chesney said.",
           "status": "active",
           "sourceUrls": [
@@ -1022,7 +1022,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T02:15:34Z",
           "timePrecision": "exact",
-          "ageHours": 18.78,
+          "ageHours": 19.28,
           "freshnessBasis": "No. 16 Mississippi State star quarterback Kamario Taylor's status for Saturday's game at No. 22 LSU is in flux as he deals with a foot injury.",
           "status": "active",
           "sourceUrls": [
@@ -1051,7 +1051,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:14:24Z",
           "timePrecision": "exact",
-          "ageHours": 20.8,
+          "ageHours": 21.3,
           "freshnessBasis": "Washington quarterback Demond Williams Jr. seems unlikely to return this week from a rib injury he suffered during the Huskies' loss to Iowa Friday, but coach Jedd Fisch said Monday that \"we still have four days before we'll have to make that decision.\"",
           "status": "active",
           "sourceUrls": [
@@ -1091,7 +1091,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 81,
+    "freshCandidateCount": 77,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
