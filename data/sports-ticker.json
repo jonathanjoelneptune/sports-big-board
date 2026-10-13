@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-13T04:31:29Z",
+  "generatedAt": "2026-10-13T12:01:36Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "856c2fa90aa70379022cee3a08e141495721dca62a23fbd156d65a9005cd1bd0",
+  "sourceCandidateHash": "a0e7a58b82d07ed9e90e8449e05984e250b0d974bb2a17a3e506ba9f3584d5c0",
   "leagues": [
     {
       "league": "MLB",
@@ -21,9 +21,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-13T02:25:32Z",
+          "occurredAt": "2026-10-13T06:25:49Z",
           "timePrecision": "exact",
-          "ageHours": 2.1,
+          "ageHours": 5.6,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -43,34 +43,69 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-e1dae79173187d72"
+            "cand-2c340a0f84d42335"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Nathaniel Lowe hit a tiebreaking, two-run single in the eighth inning, Chase DeLauter and Patrick Bailey hit solo homers off Drew Rasmussen, and the Guardians beat the Rays 7-3 in Game 1 of the American League Championship Series on Monday night.",
-          "text": "Nathaniel Lowe hit a tiebreaking, two-run single in the eighth inning, Chase DeLauter and Patrick Bailey hit solo homers off Drew Rasmussen, and the Guardians beat the Rays 7-3 in Game 1 of the American League Championship Series on Monday night.",
+          "headline": "The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
+          "text": "The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
           "entities": [],
-          "occurredAt": "2026-10-13T04:12:58Z",
+          "occurredAt": "2026-10-13T11:37:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.31,
-          "freshnessBasis": "Nathaniel Lowe hit a tiebreaking, two-run single in the eighth inning, Chase DeLauter and Patrick Bailey hit solo homers off Drew Rasmussen, and the Guardians beat the Rays 7-3 in Game 1 of the American League Championship Series on Monday night.",
+          "ageHours": 0.41,
+          "freshnessBasis": "- The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
           "status": "active",
           "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401908023",
             "https://www.espn.com/mlb/story/_/id/50170936/guardians-come-beat-rays-game-1-alcs"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908023"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50170936/guardians-come-beat-rays-game-1-alcs"
             }
           ],
-          "id": "a415-6fea5328ad8f309b",
+          "id": "a415-90e05ee91bcf806a",
           "feedRank": 2,
-          "compactHeadline": "Guardians come from behind to beat Rays in Game 1 of ALCS"
+          "compactHeadline": "Chase DeLauter and Jose Ramírez lead the Guardians to a 7-3 win over the Rays in Game 1 of the ALCS"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-549e3bb3432557e8"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first...",
+          "text": "Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first...",
+          "entities": [],
+          "occurredAt": "2026-10-13T07:16:50Z",
+          "timePrecision": "exact",
+          "ageHours": 4.75,
+          "freshnessBasis": "— Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401908031"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908031"
+            }
+          ],
+          "id": "a415-774969115ce815ab",
+          "feedRank": 3,
+          "compactHeadline": "Contreras delivers and Milwaukee's bullpen shines as the Brewers top the Dodgers 7-4 in NLCS Game 2"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-8454d13e9317fafe"
           ],
@@ -79,9 +114,9 @@
           "headline": "Getting to the Los Angeles bullpen in the later innings, the Milwaukee Brewers posted 12 hits, including 10 singles, in Game 2 on Monday, scoring four runs in the final four frames en route to a 7-4 win over the Dodgers to take a 2-0 series lead.",
           "text": "Getting to the Los Angeles bullpen in the later innings, the Milwaukee Brewers posted 12 hits, including 10 singles, in Game 2 on Monday, scoring four runs in the final four frames en route to a 7-4 win over the Dodgers to take a 2-0 series lead.",
           "entities": [],
-          "occurredAt": "2026-10-13T03:53:24Z",
+          "occurredAt": "2026-10-13T04:30:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.63,
+          "ageHours": 7.52,
           "freshnessBasis": "Getting to the Los Angeles bullpen in the later innings, the Milwaukee Brewers posted 12 hits, including 10 singles, in Game 2 on Monday, scoring four runs in the final four frames en route to a 7-4 win over the Dodgers to take a 2-0 series lead.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +130,8 @@
             }
           ],
           "id": "a415-8a40c4be3484aa2a",
-          "feedRank": 3,
-          "compactHeadline": "Bold Brewers 'won't be denied,' take 2-0 NLCS lead over Dodgers"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-549e3bb3432557e8"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first National League pennant and end the Los Angeles Dodgers' championship reign.",
-          "text": "Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first National League pennant and end the Los Angeles Dodgers' championship reign.",
-          "entities": [],
-          "occurredAt": "2026-10-13T02:07:27Z",
-          "timePrecision": "exact",
-          "ageHours": 2.4,
-          "freshnessBasis": "— Thanks to a couple of big swings from William Contreras, the Milwaukee Brewers need just a couple more wins to earn their first National League pennant and end the Los Angeles Dodgers' championship reign.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908031"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908031"
-            }
-          ],
-          "id": "a415-774969115ce815ab",
           "feedRank": 4,
-          "compactHeadline": "Contreras delivers and Milwaukee's bullpen shines as the Brewers top the Dodgers 7-4 in NLCS Game 2"
+          "compactHeadline": "Bold Brewers 'won't be denied,' take 2-0 NLCS lead over Dodgers"
         },
         {
           "rank": 5,
@@ -139,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:17:16Z",
           "timePrecision": "exact",
-          "ageHours": 10.24,
+          "ageHours": 17.74,
           "freshnessBasis": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T14:00:05Z",
           "timePrecision": "exact",
-          "ageHours": 14.52,
+          "ageHours": 22.03,
           "freshnessBasis": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
           "status": "active",
           "sourceUrls": [
@@ -194,6 +200,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-59f2891d7d3dac27"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Jaguars left tackle Anton Harrison will have arthroscopic surgery on his right knee when the team returns from London next week, league sources told NFL Network's Ian Rapoport and ESPN's Jeremy Fowler.",
+          "text": "Jaguars left tackle Anton Harrison will have arthroscopic surgery on his right knee when the team returns from London next week, league sources told NFL Network's Ian Rapoport and ESPN's Jeremy Fowler.",
+          "entities": [],
+          "occurredAt": "2026-10-13T11:41:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.34,
+          "freshnessBasis": "Jaguars left tackle Anton Harrison will have arthroscopic surgery on his right knee when the team returns from London next week, league sources told NFL Network's Ian Rapoport and ESPN's Jeremy Fowler.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50172717/sources-jaguars-lt-anton-harrison-undergo-knee-surgery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50172717/sources-jaguars-lt-anton-harrison-undergo-knee-surgery"
+            }
+          ],
+          "id": "a415-ba4d0b03fe3ac335",
+          "feedRank": 7,
+          "compactHeadline": "Sources: Jaguars LT Anton Harrison to undergo knee surgery"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-9985bd9de62d4c7f"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Baltimore became the first team to win a game down by eight or more points in the final minute in four years.",
+          "text": "Baltimore became the first team to win a game down by eight or more points in the final minute in four years.",
+          "entities": [],
+          "occurredAt": "2026-10-13T10:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.03,
+          "freshnessBasis": "Baltimore became the first team to win a game down by eight or more points in the final minute in four years.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50168194/baltimore-ravens-clutch-play-falcons-remove-dark-cloud"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50168194/baltimore-ravens-clutch-play-falcons-remove-dark-cloud"
+            }
+          ],
+          "id": "a415-9fd8e20d507f5082",
+          "feedRank": 8,
+          "compactHeadline": "Removing 'a dark cloud': How the Ravens' clutch play ended a 581-game streak"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-f7ff820cf7c9a363"
           ],
           "type": "INJURY",
@@ -203,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:42:41Z",
           "timePrecision": "exact",
-          "ageHours": 7.81,
+          "ageHours": 15.32,
           "freshnessBasis": "49ers WR Deebo Samuel is expected to miss \"at least a couple of weeks\" with the hamstring injury he suffered Sunday in Seattle, coach Kyle Shanahan said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -217,40 +281,40 @@
             }
           ],
           "id": "a415-14ff12d58c1d5dad",
-          "feedRank": 7,
+          "feedRank": 9,
           "compactHeadline": "Shanahan says 49ers WR Deebo Samuel to miss time with hamstring injury"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
-            "cand-e8329746d4d16798"
+            "cand-83dfd940578d4750"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Roman Wilson will miss multiple weeks because of a finger injury, a source told ESPN, joining the growing list of injured Steelers receivers.",
-          "text": "Roman Wilson will miss multiple weeks because of a finger injury, a source told ESPN, joining the growing list of injured Steelers receivers.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Josh Allen came through with his usual late-game theatrics in leading the Bills to a 37-34 overtime win against the Rams on \"Monday Night Football,\" breaking his careerlong winless streak in OT.",
+          "text": "Josh Allen came through with his usual late-game theatrics in leading the Bills to a 37-34 overtime win against the Rams on \"Monday Night Football,\" breaking his careerlong winless streak in OT.",
           "entities": [],
-          "occurredAt": "2026-10-12T20:14:32Z",
+          "occurredAt": "2026-10-13T06:43:34Z",
           "timePrecision": "exact",
-          "ageHours": 8.28,
-          "freshnessBasis": "Roman Wilson will miss multiple weeks because of a finger injury, a source told ESPN, joining the growing list of injured Steelers receivers.",
+          "ageHours": 5.3,
+          "freshnessBasis": "Josh Allen came through with his usual late-game theatrics in leading the Bills to a 37-34 overtime win against the Rams on \"Monday Night Football,\" breaking his careerlong winless streak in OT.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50165164/source-steelers-roman-wilson-expected-miss-multiple-weeks"
+            "https://www.espn.com/nfl/story/_/id/50171513/bills-josh-allen-earns-first-career-win-vs-rams-mnf"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50165164/source-steelers-roman-wilson-expected-miss-multiple-weeks"
+              "url": "https://www.espn.com/nfl/story/_/id/50171513/bills-josh-allen-earns-first-career-win-vs-rams-mnf"
             }
           ],
-          "id": "a415-36ba500e7a1029f3",
-          "feedRank": 8,
-          "compactHeadline": "Source: Steelers' Roman Wilson expected to miss multiple weeks"
+          "id": "a415-63007783fd8dd791",
+          "feedRank": 10,
+          "compactHeadline": "Bills QB Josh Allen earns first overtime win of career vs. Rams on MNF"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-e422c925845118e6"
           ],
@@ -261,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:10:16Z",
           "timePrecision": "exact",
-          "ageHours": 8.35,
+          "ageHours": 15.86,
           "freshnessBasis": "Falcons quarterback Michael Penix Jr.'s rib injury is not considered serious, sources told ESPN's Adam Schefter.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +339,11 @@
             }
           ],
           "id": "a415-eb50d9cf22836260",
-          "feedRank": 9,
+          "feedRank": 11,
           "compactHeadline": "Sources: Falcons QB Michael Penix's rib injury not considered serious"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-92847cd623c67e08"
           ],
@@ -290,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:00:05Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
+          "ageHours": 17.03,
           "freshnessBasis": "Browns RB Quinshon Judkins and LB Carson Schwesinger are day-to-day after injuring their ankles against the Jets on Sunday. The Browns next host the Ravens.",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +368,8 @@
             }
           ],
           "id": "a415-6257eb34f86ca1f9",
-          "feedRank": 10,
-          "compactHeadline": "Judkins, Schwesinger (ankles) add to injury woes for Browns"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-1eec96b733455bcd"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "What were the Commanders doing in the final minute of OT? Why did the 1-4 Texans make an aggressive trade for Marvin Harrison Jr.? Let's try to find the logic.",
-          "text": "What were the Commanders doing in the final minute of OT? Why did the 1-4 Texans make an aggressive trade for Marvin Harrison Jr.? Let's try to find the logic.",
-          "entities": [],
-          "occurredAt": "2026-10-12T15:58:39Z",
-          "timePrecision": "exact",
-          "ageHours": 12.55,
-          "freshnessBasis": "What were the Commanders doing in the final minute of OT? Why did the 1-4 Texans make an aggressive trade for Marvin Harrison Jr.? Let's try to find the logic.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50158326/week-5-commanders-tie-texans-marvin-harrison-jr-trade"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50158326/week-5-commanders-tie-texans-marvin-harrison-jr-trade"
-            }
-          ],
-          "id": "a415-9682c25e9538756a",
-          "feedRank": 11,
-          "compactHeadline": "Making sense of the Giants-Commanders tie, the Texans' Marvin Harrison Jr. trade"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-1e9675f319b89f2f"
-          ],
-          "type": "SUSPENSION",
-          "priority": 64,
-          "headline": "49ers linebacker Dre Greenlaw has been suspended for one game without pay for unsportsmanlike conduct during Sunday's game against the Seahawks.",
-          "text": "49ers linebacker Dre Greenlaw has been suspended for one game without pay for unsportsmanlike conduct during Sunday's game against the Seahawks.",
-          "entities": [],
-          "occurredAt": "2026-10-13T00:25:40Z",
-          "timePrecision": "exact",
-          "ageHours": 4.1,
-          "freshnessBasis": "49ers linebacker Dre Greenlaw has been suspended for one game without pay for unsportsmanlike conduct during Sunday's game against the Seahawks.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50167745/49ers-greenlaw-suspended-head-butting-helmetless-jones"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50167745/49ers-greenlaw-suspended-head-butting-helmetless-jones"
-            }
-          ],
-          "id": "a415-fea74f477df20d98",
           "feedRank": 12,
-          "compactHeadline": "49ers' Dre Greenlaw suspended one game for head-butting helmetless Seahawks LB"
+          "compactHeadline": "Judkins, Schwesinger (ankles) add to injury woes for Browns"
         }
       ]
     },
@@ -374,6 +380,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-369a0119ecdad2cd"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "With Monday's extension deadline looming, Bobby Marks breaks down the biggest decisions around the league.",
+          "text": "With Monday's extension deadline looming, Bobby Marks breaks down the biggest decisions around the league.",
+          "entities": [],
+          "occurredAt": "2026-10-13T11:00:04Z",
+          "timePrecision": "exact",
+          "ageHours": 1.03,
+          "freshnessBasis": "With Monday's extension deadline looming, Bobby Marks breaks down the biggest decisions around the league.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50166436/rookie-veteran-contract-extensions-towns-giannis-jokic"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50166436/rookie-veteran-contract-extensions-towns-giannis-jokic"
+            }
+          ],
+          "id": "a415-fefdc587f9f1c5b0",
+          "feedRank": 13,
+          "compactHeadline": "Which NBA deals will get done? Bobby Marks' biggest extension decisions to watch"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-8f497fe73e60a977"
           ],
           "type": "CONTRACT",
@@ -383,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:46:18Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 11.26,
           "freshnessBasis": "Former Knicks great Carmelo Anthony said the team is making the right decision in halting contract negotiations with players to focus solely on basketball.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +432,40 @@
             }
           ],
           "id": "a415-598e798bf145ccff",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Carmelo Anthony thinks Knicks right to halt contract talks to focus on season"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-193c70553187ffff"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Nearly 16 months ago, a torn Achilles cost Tyrese Haliburton -- and the Pacers -- the 2025-26 season. Now, he returns to help them reclaim their spot in the East.",
+          "text": "Nearly 16 months ago, a torn Achilles cost Tyrese Haliburton -- and the Pacers -- the 2025-26 season. Now, he returns to help them reclaim their spot in the East.",
+          "entities": [],
+          "occurredAt": "2026-10-13T10:57:49Z",
+          "timePrecision": "exact",
+          "ageHours": 1.06,
+          "freshnessBasis": "Nearly 16 months ago, a torn Achilles cost Tyrese Haliburton -- and the Pacers -- the 2025-26 season. Now, he returns to help them reclaim their spot in the East.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50168604/tyrese-haliburton-indiana-pacers-return-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50168604/tyrese-haliburton-indiana-pacers-return-injury"
+            }
+          ],
+          "id": "a415-3545e18149025c7c",
+          "feedRank": 15,
+          "compactHeadline": "Tyrese Haliburton's return brings hope and expectations in Indiana"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-6ea31c66aca1ff77"
           ],
@@ -412,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T02:10:53Z",
           "timePrecision": "exact",
-          "ageHours": 2.34,
+          "ageHours": 9.85,
           "freshnessBasis": "A game-worn, autographed Michael Jordan road jersey from the 1998 NBA Finals has been privately sold for $14 million.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +490,11 @@
             }
           ],
           "id": "a415-de9920e657547135",
-          "feedRank": 14,
+          "feedRank": 16,
           "compactHeadline": "Jordan game-worn 1998 NBA Finals jersey sells for $14 million"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-855f111a678cd0a4"
           ],
@@ -441,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T22:02:52Z",
           "timePrecision": "exact",
-          "ageHours": 6.48,
+          "ageHours": 13.98,
           "freshnessBasis": "Veteran center Kristaps Porzingis is expected to return to the Golden State Warriors practice facility Tuesday afternoon, according to head coach Steve Kerr.",
           "status": "active",
           "sourceUrls": [
@@ -455,11 +519,11 @@
             }
           ],
           "id": "a415-e846dd1739ea6d33",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Kristaps Porzingis expected to be at Warriors' facility on Tuesday"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-1b2a36322756af70"
           ],
@@ -470,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:20:44Z",
           "timePrecision": "exact",
-          "ageHours": 9.18,
+          "ageHours": 16.68,
           "freshnessBasis": "Kentavious Caldwell-Pope says the 76ers' success this season depends on how well the team's diverse personalities mesh.",
           "status": "active",
           "sourceUrls": [
@@ -484,37 +548,8 @@
             }
           ],
           "id": "a415-5ed9724a7d02de22",
-          "feedRank": 16,
+          "feedRank": 18,
           "compactHeadline": "Kentavious Caldwell-Pope cites team chemistry as key to 76ers' success"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-462edd8ce27852bb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
-          "text": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
-          "entities": [],
-          "occurredAt": "2026-10-12T17:26:21Z",
-          "timePrecision": "exact",
-          "ageHours": 11.09,
-          "freshnessBasis": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50163354/cooper-flagg-kyrie-irving-mavericks-china"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50163354/cooper-flagg-kyrie-irving-mavericks-china"
-            }
-          ],
-          "id": "a415-e494f58df4b63a31",
-          "feedRank": 17,
-          "compactHeadline": "Windhorst: Why Cooper Flagg's ascension is starting to feel inevitable"
         }
       ]
     },
@@ -534,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:17:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.24,
+          "ageHours": 14.74,
           "freshnessBasis": "Sabres captain Rasmus Dahlin will miss Tuesday's matchup against the Canadiens and is day-to-day after suffering an upper-body injury in Monday's win over the Panthers.",
           "status": "active",
           "sourceUrls": [
@@ -548,7 +583,7 @@
             }
           ],
           "id": "a415-99ebf68c3519010b",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Sabres' Dahlin out Tuesday vs. Canadiens due to upper-body injury"
         },
         {
@@ -563,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T03:05:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.43,
+          "ageHours": 8.94,
           "freshnessBasis": "— Max Shabanov scored on a power play during a three-goal first period as the Minnesota Wild held on to beat the Vegas Golden Knights 4-2 on...",
           "status": "active",
           "sourceUrls": [
@@ -577,7 +612,7 @@
             }
           ],
           "id": "a415-e245af2336c2081d",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Wild beat the Golden Knights 4-2 behind another stellar special teams performance"
         },
         {
@@ -592,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T17:28:48Z",
           "timePrecision": "exact",
-          "ageHours": 11.04,
+          "ageHours": 18.55,
           "freshnessBasis": "Dallas Stars forward Matt Duchene will be out for up to three months after having core muscle surgery, the team said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -606,7 +641,7 @@
             }
           ],
           "id": "a415-5813f0b62546dbf1",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Stars' Matt Duchene to miss 3 months after core muscle surgery"
         },
         {
@@ -621,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T01:46:31Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 10.25,
           "freshnessBasis": "— Tim Stützle had a goal and an assist, Shane Pinto and Stephen Halliday scored and the Ottawa Senators defeated the New Jersey Devils 4-1 on Monday night to keep their hot start going.",
           "status": "active",
           "sourceUrls": [
@@ -635,7 +670,7 @@
             }
           ],
           "id": "a415-ca787c219d53f53c",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Tim Stützle and the Senators beat the Devils 4-1 to keep their hot start going"
         },
         {
@@ -650,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:18:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.22,
+          "ageHours": 14.72,
           "freshnessBasis": "— Noah Ostlund scored the go-ahead goal on the power play 7:15 into the third period, and the Buffalo Sabres defeated the Florida Panthers 5-3 on Monday in an outing both teams lost key players to injury.",
           "status": "active",
           "sourceUrls": [
@@ -664,37 +699,37 @@
             }
           ],
           "id": "a415-b13f522a6c795936",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Noah Ostlund scores go-ahead goal in third period in Sabres' 5-3 win over Panthers"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-6f99b43d0d10b2e6"
+            "cand-727d3d8ed94993ec"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
-          "text": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
+          "headline": "St. Louis Blues (2-2-1, in the Central Division) vs. Ottawa Senators (5-1, in the Atlantic Division)",
+          "text": "St. Louis Blues (2-2-1, in the Central Division) vs. Ottawa Senators (5-1, in the Atlantic Division)",
           "entities": [],
-          "occurredAt": "2026-10-13T04:29:25Z",
+          "occurredAt": "2026-10-13T08:12:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.03,
-          "freshnessBasis": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
+          "ageHours": 3.82,
+          "freshnessBasis": "St. Louis Blues (2-2-1, in the Central Division) vs. Ottawa Senators (5-1, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-sports/story/_/id/50168628/arizona-state-talks-dave-hakstol-coach-hockey-team"
+            "http://www.espn.com/nhl/preview?gameId=401892494"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/college-sports/story/_/id/50168628/arizona-state-talks-dave-hakstol-coach-hockey-team"
+              "url": "http://www.espn.com/nhl/preview?gameId=401892494"
             }
           ],
-          "id": "a415-2a6250820ea0731b",
-          "feedRank": 23,
-          "compactHeadline": "Arizona State in talks with Avalanche's Dave Hakstol to coach hockey team"
+          "id": "a415-a30c3bcfcc188b9a",
+          "feedRank": 24,
+          "compactHeadline": "Blues visit the Senators after Snuggerud's 2-goal game"
         }
       ]
     },
@@ -714,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:31:19Z",
           "timePrecision": "exact",
-          "ageHours": 7.0,
+          "ageHours": 14.5,
           "freshnessBasis": "Coventry City picked up their first home victory in the Premier League for 25 years with an emphatic 4-1 win over Newcastle United on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -728,40 +763,69 @@
             }
           ],
           "id": "a415-1a8a5334a7ae19d7",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Coventry put four past Newcastle to climb out of relegation zone"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-be41486d7a95eaae"
+            "cand-f0fe5a3108b24c6e"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Merseyside Police have confirmed that 10 people were arrested and an officer sustained a serious injury during the policing operation for Manchester City's clash at Liverpool.",
-          "text": "Merseyside Police have confirmed that 10 people were arrested and an officer sustained a serious injury during the policing operation for Manchester City's clash at Liverpool.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Man United fans go from thinking the team will win the Premier League to thinking the sky is falling. The truth is in the middle and it's unlikely to shift.",
+          "text": "Man United fans go from thinking the team will win the Premier League to thinking the sky is falling. The truth is in the middle and it's unlikely to shift.",
           "entities": [],
-          "occurredAt": "2026-10-12T11:53:49Z",
+          "occurredAt": "2026-10-13T08:28:35Z",
           "timePrecision": "exact",
-          "ageHours": 16.63,
-          "freshnessBasis": "Merseyside Police have confirmed that 10 people were arrested and an officer sustained a serious injury during the policing operation for Manchester City's clash at Liverpool.",
+          "ageHours": 3.55,
+          "freshnessBasis": "Man United fans go from thinking the team will win the Premier League to thinking the sky is falling. The truth is in the middle and it's unlikely to shift.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50165375/ten-arrests-police-officer-injured-liverpool-vs-man-city"
+            "https://www.espn.com/soccer/story/_/id/50168830/man-united-never-contend-premier-league-title-bad-either"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50165375/ten-arrests-police-officer-injured-liverpool-vs-man-city"
+              "url": "https://www.espn.com/soccer/story/_/id/50168830/man-united-never-contend-premier-league-title-bad-either"
             }
           ],
-          "id": "a415-a942a0cb9e1116d7",
-          "feedRank": 25,
-          "compactHeadline": "Ten arrests, police officer injured, after Liverpool vs. Man City"
+          "id": "a415-f7c13319e75c0018",
+          "feedRank": 26,
+          "compactHeadline": "Man United could never contend for the Premier League title -- but they aren't so bad either"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-2df142e3d7480bcf"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Mohamed Belloumi may have been the brunt of some studio jokes during the Premier League weekend, but the winger again proved why he could be the man to keep Hull City in the top flight this season.",
+          "text": "Mohamed Belloumi may have been the brunt of some studio jokes during the Premier League weekend, but the winger again proved why he could be the man to keep Hull City in the top flight this season.",
+          "entities": [],
+          "occurredAt": "2026-10-13T07:07:22Z",
+          "timePrecision": "exact",
+          "ageHours": 4.9,
+          "freshnessBasis": "Mohamed Belloumi may have been the brunt of some studio jokes during the Premier League weekend, but the winger again proved why he could be the man to keep Hull City in the top flight this season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/espn/story/_/id/50171697/hull-winger-mohamed-belloumi-last-laugh-pundits-mockery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/espn/story/_/id/50171697/hull-winger-mohamed-belloumi-last-laugh-pundits-mockery"
+            }
+          ],
+          "id": "a415-59317ae3255bfb70",
+          "feedRank": 27,
+          "compactHeadline": "Hull winger Mohamed Belloumi has the last laugh after pundits' mockery"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-77606896b64dd611"
           ],
@@ -770,9 +834,9 @@
           "headline": "Coventry City boss Frank Lampard is not allowing his side to get carried away after they earned a thumping 4-1 home victory over Newcastle United on Monday.",
           "text": "Coventry City boss Frank Lampard is not allowing his side to get carried away after they earned a thumping 4-1 home victory over Newcastle United on Monday.",
           "entities": [],
-          "occurredAt": "2026-10-12T23:18:51Z",
+          "occurredAt": "2026-10-13T06:40:13Z",
           "timePrecision": "exact",
-          "ageHours": 5.21,
+          "ageHours": 5.36,
           "freshnessBasis": "Coventry City boss Frank Lampard is not allowing his side to get carried away after they earned a thumping 4-1 home victory over Newcastle United on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -786,66 +850,8 @@
             }
           ],
           "id": "a415-05a0738eb84b683c",
-          "feedRank": 26,
-          "compactHeadline": "Lampard: Coventry 'feet on the ground' after Newcastle win"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-44114da1b2fe54cb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Steven Gerrard has said that Manchester City \"have to be stripped\" of their titles after the club were found guilty of 100+ charges of financial misconduct by the Premier League.",
-          "text": "Steven Gerrard has said that Manchester City \"have to be stripped\" of their titles after the club were found guilty of 100+ charges of financial misconduct by the Premier League.",
-          "entities": [],
-          "occurredAt": "2026-10-12T16:06:53Z",
-          "timePrecision": "exact",
-          "ageHours": 12.41,
-          "freshnessBasis": "Steven Gerrard has said that Manchester City \"have to be stripped\" of their titles after the club were found guilty of 100+ charges of financial misconduct by the Premier League.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50166551/steven-gerrard-says-man-city-stripped-titles-guilty-verdict-make-suffer"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50166551/steven-gerrard-says-man-city-stripped-titles-guilty-verdict-make-suffer"
-            }
-          ],
-          "id": "a415-c5fca382f79e479b",
-          "feedRank": 27,
-          "compactHeadline": "Steven Gerrard says Man City must be stripped of titles after guilty verdict: 'Make them suffer'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-17cd209d3319f0f1"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Mikel Arteta has defended Arsenal's training programme after confirming Piero Hincapié and Martín Zubimendi suffered \"far from ideal\" injuries in a post-match session on Saturday.",
-          "text": "Mikel Arteta has defended Arsenal's training programme after confirming Piero Hincapié and Martín Zubimendi suffered \"far from ideal\" injuries in a post-match session on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-10-12T15:08:33Z",
-          "timePrecision": "exact",
-          "ageHours": 13.38,
-          "freshnessBasis": "Mikel Arteta has defended Arsenal's training programme after confirming Piero Hincapié and Martín Zubimendi suffered \"far from ideal\" injuries in a post-match session on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50165976/mikel-arteta-defends-arsenal-piero-hincapie-martin-zubimendi-injuries"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50165976/mikel-arteta-defends-arsenal-piero-hincapie-martin-zubimendi-injuries"
-            }
-          ],
-          "id": "a415-ea46248a61c592f5",
           "feedRank": 28,
-          "compactHeadline": "Mikel Arteta defends Arsenal after Piero Hincapié, Martin Zubimendi injuries"
+          "compactHeadline": "Lampard: Coventry 'feet on the ground' after Newcastle win"
         }
       ]
     },
@@ -865,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 9.67,
+          "ageHours": 17.17,
           "freshnessBasis": "Carlo Holse's hat trick helped St. Louis City SC beat the LA Galaxy 6-2 on Sunday night to extend their unbeaten streak across all competitions to 20 games.",
           "status": "active",
           "sourceUrls": [
@@ -891,6 +897,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-0ca8cfe6a20b839f"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "A conference-by-conference look at who is contending for the playoff, who's close and who's out.",
+          "text": "A conference-by-conference look at who is contending for the playoff, who's close and who's out.",
+          "entities": [],
+          "occurredAt": "2026-10-13T10:43:23Z",
+          "timePrecision": "exact",
+          "ageHours": 1.3,
+          "freshnessBasis": "A conference-by-conference look at who is contending for the playoff, who's close and who's out.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50167792/college-football-playoff-2026-week-6-bubble-watch"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50167792/college-football-playoff-2026-week-6-bubble-watch"
+            }
+          ],
+          "id": "a415-ca7f79dc07551fd1",
+          "feedRank": 30,
+          "compactHeadline": "College Football Playoff 2026: Bubble Watch after Week 6"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-15fe000e26932b62"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Three years, three signal-callers. It's not easy, but some College Football Playoff contenders have found a way.",
+          "text": "Three years, three signal-callers. It's not easy, but some College Football Playoff contenders have found a way.",
+          "entities": [],
+          "occurredAt": "2026-10-13T10:36:33Z",
+          "timePrecision": "exact",
+          "ageHours": 1.42,
+          "freshnessBasis": "Three years, three signal-callers. It's not easy, but some College Football Playoff contenders have found a way.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50168372/transfer-qb-success-college-football-miami-indiana"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50168372/transfer-qb-success-college-football-miami-indiana"
+            }
+          ],
+          "id": "a415-41b4b2f82671416c",
+          "feedRank": 31,
+          "compactHeadline": "How transfer QBs keep working for Miami, Indiana and others"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-e1345609876d270f"
           ],
           "type": "INJURY",
@@ -900,7 +964,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T03:46:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 8.25,
           "freshnessBasis": "UCLA has ''serious concern'' over the knee injury quarterback Nico Iamaleava sustained during Saturday's win at Oregon, coach Bob Chesney said.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +978,11 @@
             }
           ],
           "id": "a415-aa15ce1aa6a540be",
-          "feedRank": 30,
+          "feedRank": 32,
           "compactHeadline": "UCLA has 'serious concern' over QB Iamaleava's knee injury"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-dd1e1f1bcd274b1c"
           ],
@@ -929,7 +993,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T02:15:34Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 9.77,
           "freshnessBasis": "No. 16 Mississippi State star quarterback Kamario Taylor's status for Saturday's game at No. 22 LSU is in flux as he deals with a foot injury.",
           "status": "active",
           "sourceUrls": [
@@ -943,11 +1007,11 @@
             }
           ],
           "id": "a415-54a4320a9f0ccd74",
-          "feedRank": 31,
+          "feedRank": 33,
           "compactHeadline": "Sources: Mississippi State star QB Kamario Taylor's status vs. LSU uncertain"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-314628dd4fec619b"
           ],
@@ -958,7 +1022,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T00:14:24Z",
           "timePrecision": "exact",
-          "ageHours": 4.28,
+          "ageHours": 11.79,
           "freshnessBasis": "Washington quarterback Demond Williams Jr. seems unlikely to return this week from a rib injury he suffered during the Huskies' loss to Iowa Friday, but coach Jedd Fisch said Monday that \"we still have four days before we'll have to make that decision.\"",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1036,11 @@
             }
           ],
           "id": "a415-76d6be572c0add9f",
-          "feedRank": 32,
+          "feedRank": 34,
           "compactHeadline": "Washington QB Williams unlikely to return vs. Purdue"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-685f20bc23c7b9bd"
           ],
@@ -987,7 +1051,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T04:22:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 7.64,
           "freshnessBasis": "Oregon coach Dan Lanning said defensive tackle Bear Alexander didn't mean to injure UCLA QB Nico Iamaleava with his attempt to punch at the football.",
           "status": "active",
           "sourceUrls": [
@@ -1001,66 +1065,8 @@
             }
           ],
           "id": "a415-a6dc1c6d3798485d",
-          "feedRank": 33,
-          "compactHeadline": "Oregon DT Alexander won't face discipline for Iamaleava punch"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-c6260e272ae355c3"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Following big wins and multiple upsets in Week 6, here are our postseason projections.",
-          "text": "Following big wins and multiple upsets in Week 6, here are our postseason projections.",
-          "entities": [],
-          "occurredAt": "2026-10-12T11:50:47Z",
-          "timePrecision": "exact",
-          "ageHours": 16.68,
-          "freshnessBasis": "Following big wins and multiple upsets in Week 6, here are our postseason projections.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50159751/2026-27-week-6-college-football-playoff-cfp-bowl-projections"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50159751/2026-27-week-6-college-football-playoff-cfp-bowl-projections"
-            }
-          ],
-          "id": "a415-ba6576edbac92099",
-          "feedRank": 34,
-          "compactHeadline": "2026-27 Week 6 College Football Playoff, bowl projections"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-192f8205fa32c4e0"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Mike Elko said his viral remark after the Aggies' loss to Missouri was made in the heat of the moment.",
-          "text": "Mike Elko said his viral remark after the Aggies' loss to Missouri was made in the heat of the moment.",
-          "entities": [],
-          "occurredAt": "2026-10-13T04:21:45Z",
-          "timePrecision": "exact",
-          "ageHours": 0.16,
-          "freshnessBasis": "Mike Elko said his viral remark after the Aggies' loss to Missouri was made in the heat of the moment.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50168753/texas-coach-mike-elko-regrets-cesspool-comments"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50168753/texas-coach-mike-elko-regrets-cesspool-comments"
-            }
-          ],
-          "id": "a415-a4f032106a0d9417",
           "feedRank": 35,
-          "compactHeadline": "Texas A&M coach Elko says he regrets 'cesspool' comments"
+          "compactHeadline": "Oregon DT Alexander won't face discipline for Iamaleava punch"
         }
       ]
     }
@@ -1085,7 +1091,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 102,
+    "freshCandidateCount": 98,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
