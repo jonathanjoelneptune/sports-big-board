@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-13T00:01:52Z",
+  "generatedAt": "2026-10-13T00:31:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5387ebda1a66b90f66fa1883093261141bafc8276659759fbf3f3d9049b6fe7c",
+  "sourceCandidateHash": "f71f6244c6e9132cfbcf820c9c8d4734cb01cb98831ee1b237a136a285e07ad1",
   "leagues": [
     {
       "league": "MLB",
@@ -14,92 +14,46 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-416f32eec9cc9aa8"
+            "cand-45a5c1a24f0fe540"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
-          "text": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
+          "headline": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
+          "text": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
           "entities": [],
-          "occurredAt": "2026-10-12T18:17:16Z",
+          "occurredAt": "2026-10-12T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.74,
-          "freshnessBasis": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
+          "ageHours": 3.53,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Milwaukee Brewers 7.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50163013/mlb-playoffs-2026-rays-guardians-brewers-dodgers-built-signings-trades-payroll"
+            "https://highlightly.net",
+            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
+            "http://www.espn.com/mlb/recap?gameId=401908030"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-12",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50163013/mlb-playoffs-2026-rays-guardians-brewers-dodgers-built-signings-trades-payroll"
+              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908030"
             }
           ],
-          "id": "a415-50ea4be806c99819",
+          "id": "a415-01cc6ea81ae7f105",
           "feedRank": 1,
-          "compactHeadline": "MLB playoffs: How Rays, Guardians, Brewers, Dodgers were built"
+          "compactHeadline": "Milwaukee Brewers beat Los Angeles Dodgers 7-4"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-502d4173eacfd9a5"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
-          "text": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
-          "entities": [],
-          "occurredAt": "2026-10-12T14:00:05Z",
-          "timePrecision": "exact",
-          "ageHours": 10.03,
-          "freshnessBasis": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50165958/mlb-teams-using-abs-challenges-more-frequently-postseason"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50165958/mlb-teams-using-abs-challenges-more-frequently-postseason"
-            }
-          ],
-          "id": "a415-fcd54c832bccf083",
-          "feedRank": 2,
-          "compactHeadline": "MLB teams using ABS challenges more frequently in postseason"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-331e0fe372dc3776"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "We go inside the numbers on the players doing the most to help their teams win.",
-          "text": "We go inside the numbers on the players doing the most to help their teams win.",
-          "entities": [],
-          "occurredAt": "2026-10-12T13:23:35Z",
-          "timePrecision": "exact",
-          "ageHours": 10.64,
-          "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
-            }
-          ],
-          "id": "a415-544a7dd93364ed09",
-          "feedRank": 3,
-          "compactHeadline": "2026 MLB playoffs: October MVP tracker"
-        },
-        {
-          "rank": 4,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -108,9 +62,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-12T10:37:34Z",
+          "occurredAt": "2026-10-13T00:26:42Z",
           "timePrecision": "exact",
-          "ageHours": 13.41,
+          "ageHours": 0.09,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -124,37 +78,95 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 4,
+          "feedRank": 2,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
-            "cand-a6a15c78f932170c"
+            "cand-416f32eec9cc9aa8"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Dodgers look to even up the NLCS in Game 2, while the ALCS begins at the Trop. Here's the latest.",
-          "text": "The Dodgers look to even up the NLCS in Game 2, while the ALCS begins at the Trop. Here's the latest.",
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
+          "text": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
           "entities": [],
-          "occurredAt": "2026-10-12T23:57:07Z",
+          "occurredAt": "2026-10-12T18:17:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
-          "freshnessBasis": "The Dodgers look to even up the NLCS in Game 2, while the ALCS begins at the Trop. Here's the latest.",
+          "ageHours": 6.24,
+          "freshnessBasis": "How homegrown is each team? What were their signature moves? We break down each club's roster blueprints.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50166341/mlb-2026-nlcs-game-2-alcs-game-1-dodgers-brewers-rays-guardians-lineups-updates-analysis-takeaways"
+            "https://www.espn.com/mlb/story/_/id/50163013/mlb-playoffs-2026-rays-guardians-brewers-dodgers-built-signings-trades-payroll"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50166341/mlb-2026-nlcs-game-2-alcs-game-1-dodgers-brewers-rays-guardians-lineups-updates-analysis-takeaways"
+              "url": "https://www.espn.com/mlb/story/_/id/50163013/mlb-playoffs-2026-rays-guardians-brewers-dodgers-built-signings-trades-payroll"
             }
           ],
-          "id": "a415-ae9ea10f3d53ab4d",
+          "id": "a415-50ea4be806c99819",
+          "feedRank": 3,
+          "compactHeadline": "MLB playoffs: How Rays, Guardians, Brewers, Dodgers were built"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-502d4173eacfd9a5"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
+          "text": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
+          "entities": [],
+          "occurredAt": "2026-10-12T14:00:05Z",
+          "timePrecision": "exact",
+          "ageHours": 10.53,
+          "freshnessBasis": "Batters have been more successful on robot umpire challenges in the playoffs than during the regular season, and teams are utilizing the Automated Ball-Strike System more overall in its postseason debut.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50165958/mlb-teams-using-abs-challenges-more-frequently-postseason"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50165958/mlb-teams-using-abs-challenges-more-frequently-postseason"
+            }
+          ],
+          "id": "a415-fcd54c832bccf083",
+          "feedRank": 4,
+          "compactHeadline": "MLB teams using ABS challenges more frequently in postseason"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-331e0fe372dc3776"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We go inside the numbers on the players doing the most to help their teams win.",
+          "text": "We go inside the numbers on the players doing the most to help their teams win.",
+          "entities": [],
+          "occurredAt": "2026-10-12T13:23:35Z",
+          "timePrecision": "exact",
+          "ageHours": 11.14,
+          "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
+            }
+          ],
+          "id": "a415-544a7dd93364ed09",
           "feedRank": 5,
-          "compactHeadline": "LCS Day 2: Lineups, updates from Dodgers-Brewers, Guardians-Rays"
+          "compactHeadline": "2026 MLB playoffs: October MVP tracker"
         },
         {
           "rank": 6,
@@ -168,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T23:19:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "The Guardians announced Monday that Tampa Bay area native Parker Messick will start Game 2 of the ALCS on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:42:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.32,
+          "ageHours": 3.82,
           "freshnessBasis": "49ers WR Deebo Samuel is expected to miss \"at least a couple of weeks\" with the hamstring injury he suffered Sunday in Seattle, coach Kyle Shanahan said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:14:32Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.29,
           "freshnessBasis": "Roman Wilson will miss multiple weeks because of a finger injury, a source told ESPN, joining the growing list of injured Steelers receivers.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T20:10:16Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
+          "ageHours": 4.36,
           "freshnessBasis": "Falcons quarterback Michael Penix Jr.'s rib injury is not considered serious, sources told ESPN's Adam Schefter.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:00:05Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.53,
           "freshnessBasis": "Browns RB Quinshon Judkins and LB Carson Schwesinger are day-to-day after injuring their ankles against the Jets on Sunday. The Browns next host the Ravens.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T15:58:39Z",
           "timePrecision": "exact",
-          "ageHours": 8.05,
+          "ageHours": 8.55,
           "freshnessBasis": "What were the Commanders doing in the final minute of OT? Why did the 1-4 Texans make an aggressive trade for Marvin Harrison Jr.? Let's try to find the logic.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T16:41:14Z",
           "timePrecision": "exact",
-          "ageHours": 7.34,
+          "ageHours": 7.85,
           "freshnessBasis": "Overtime periods can have a pivotal impact on game results. Here are key facts on regular-season and postseason overtime rules in the NFL.",
           "status": "active",
           "sourceUrls": [
@@ -374,6 +386,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-8f497fe73e60a977"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "Former Knicks great Carmelo Anthony said the team is making the right decision in halting contract negotiations with players to focus solely on basketball.",
+          "text": "Former Knicks great Carmelo Anthony said the team is making the right decision in halting contract negotiations with players to focus solely on basketball.",
+          "entities": [],
+          "occurredAt": "2026-10-13T00:29:28Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "Former Knicks great Carmelo Anthony said the team is making the right decision in halting contract negotiations with players to focus solely on basketball.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50169786/carmelo-anthony-thinks-knicks-right-halt-contract-talks-focus-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50169786/carmelo-anthony-thinks-knicks-right-halt-contract-talks-focus-season"
+            }
+          ],
+          "id": "a415-598e798bf145ccff",
+          "feedRank": 13,
+          "compactHeadline": "Carmelo Anthony thinks Knicks right to halt contract talks to focus on season"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-855f111a678cd0a4"
           ],
           "type": "NEWS",
@@ -383,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T22:02:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.98,
+          "ageHours": 2.48,
           "freshnessBasis": "Veteran center Kristaps Porzingis is expected to return to the Golden State Warriors practice facility Tuesday afternoon, according to head coach Steve Kerr.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +438,11 @@
             }
           ],
           "id": "a415-e846dd1739ea6d33",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Kristaps Porzingis expected to be at Warriors' facility on Tuesday"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-8fa16863f951c398"
           ],
@@ -412,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.53,
           "freshnessBasis": "Highlightly final: Chicago Bulls 128, Denver Nuggets 133.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +467,11 @@
             }
           ],
           "id": "a415-c1591c381306f29e",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Denver Nuggets beat Chicago Bulls 133-128"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-1b2a36322756af70"
           ],
@@ -441,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:20:44Z",
           "timePrecision": "exact",
-          "ageHours": 4.69,
+          "ageHours": 5.19,
           "freshnessBasis": "Kentavious Caldwell-Pope says the 76ers' success this season depends on how well the team's diverse personalities mesh.",
           "status": "active",
           "sourceUrls": [
@@ -455,37 +496,8 @@
             }
           ],
           "id": "a415-5ed9724a7d02de22",
-          "feedRank": 15,
-          "compactHeadline": "Kentavious Caldwell-Pope cites team chemistry as key to 76ers' success"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-462edd8ce27852bb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
-          "text": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
-          "entities": [],
-          "occurredAt": "2026-10-12T17:26:21Z",
-          "timePrecision": "exact",
-          "ageHours": 6.59,
-          "freshnessBasis": "The NBA China Games showcased Cooper Flagg's evolving game, leadership and, perhaps most impressive, his franchise-savior ceiling.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50163354/cooper-flagg-kyrie-irving-mavericks-china"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50163354/cooper-flagg-kyrie-irving-mavericks-china"
-            }
-          ],
-          "id": "a415-e494f58df4b63a31",
           "feedRank": 16,
-          "compactHeadline": "Windhorst: Why Cooper Flagg's ascension is starting to feel inevitable"
+          "compactHeadline": "Kentavious Caldwell-Pope cites team chemistry as key to 76ers' success"
         }
       ]
     },
@@ -505,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: Florida Panthers 3, Buffalo Sabres 5.",
           "status": "active",
           "sourceUrls": [
@@ -540,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:17:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 3.25,
           "freshnessBasis": "Sabres captain Rasmus Dahlin will miss Tuesday's matchup against the Canadiens and is day-to-day after suffering an upper-body injury in Monday's win over the Panthers.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T17:28:48Z",
           "timePrecision": "exact",
-          "ageHours": 6.55,
+          "ageHours": 7.05,
           "freshnessBasis": "Dallas Stars forward Matt Duchene will be out for up to three months after having core muscle surgery, the team said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -589,29 +601,29 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-a83c4ac98260e73f"
+            "cand-6f99b43d0d10b2e6"
           ],
           "type": "NEWS",
           "priority": 64,
           "headline": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
           "text": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
           "entities": [],
-          "occurredAt": "2026-10-12T21:04:05Z",
+          "occurredAt": "2026-10-13T00:06:07Z",
           "timePrecision": "exact",
-          "ageHours": 2.96,
+          "ageHours": 0.43,
           "freshnessBasis": "Arizona State University is in talks with Colorado Avalanche assistant coach Dave Hakstol to become the next head coach of their men's hockey program.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-sports/blog/college_sports/story/_/id/50168628/arizona-state-talks-dave-hakstol-coach-hockey-team"
+            "https://www.espn.com/college-sports/story/_/id/50168628/arizona-state-talks-dave-hakstol-coach-hockey-team"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/college-sports/blog/college_sports/story/_/id/50168628/arizona-state-talks-dave-hakstol-coach-hockey-team"
+              "url": "https://www.espn.com/college-sports/story/_/id/50168628/arizona-state-talks-dave-hakstol-coach-hockey-team"
             }
           ],
-          "id": "a415-4942a91abba263a8",
+          "id": "a415-2a6250820ea0731b",
           "feedRank": 20,
           "compactHeadline": "Arizona State in talks with Avalanche's Dave Hakstol to coach hockey team"
         },
@@ -627,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:03:14Z",
           "timePrecision": "exact",
-          "ageHours": 2.98,
+          "ageHours": 3.48,
           "freshnessBasis": "It's the busiest night of the NHL season.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +668,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:57:44Z",
           "timePrecision": "exact",
-          "ageHours": 4.07,
+          "ageHours": 4.57,
           "freshnessBasis": "Blackhawks captain Connor Bedard, who had offseason shoulder in July, is likely to make his season debut Tuesday against the Penguins.",
           "status": "active",
           "sourceUrls": [
@@ -691,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.53,
           "freshnessBasis": "Highlightly final: Newcastle United 1, Coventry 4.",
           "status": "active",
           "sourceUrls": [
@@ -726,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Plymouth U21 1, AFC Bournemouth U21 6.",
           "status": "active",
           "sourceUrls": [
@@ -755,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Exeter U21 5, Bristol City U21 3.",
           "status": "active",
           "sourceUrls": [
@@ -784,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Bolton Wanderers Res. 3, Blackburn Rovers U21 3.",
           "status": "active",
           "sourceUrls": [
@@ -813,7 +825,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T11:53:49Z",
           "timePrecision": "exact",
-          "ageHours": 12.13,
+          "ageHours": 12.64,
           "freshnessBasis": "Merseyside Police have confirmed that 10 people were arrested and an officer sustained a serious injury during the policing operation for Manchester City's clash at Liverpool.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T23:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.72,
+          "ageHours": 1.22,
           "freshnessBasis": "Coventry City boss Frank Lampard is not allowing his side to get carried away after they earned a thumping 4-1 home victory over Newcastle United on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -877,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T18:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 5.18,
+          "ageHours": 5.68,
           "freshnessBasis": "Carlo Holse's hat trick helped St. Louis City SC beat the LA Galaxy 6-2 on Sunday night to extend their unbeaten streak across all competitions to 20 games.",
           "status": "active",
           "sourceUrls": [
@@ -903,6 +915,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-314628dd4fec619b"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Washington quarterback Demond Williams Jr. seems unlikely to return this week from a rib injury he suffered during the Huskies' loss to Iowa Friday, but coach Jedd Fisch said Monday that \"we still have four days before we'll have to make that decision.\"",
+          "text": "Washington quarterback Demond Williams Jr. seems unlikely to return this week from a rib injury he suffered during the Huskies' loss to Iowa Friday, but coach Jedd Fisch said Monday that \"we still have four days before we'll have to make that decision.\"",
+          "entities": [],
+          "occurredAt": "2026-10-13T00:14:24Z",
+          "timePrecision": "exact",
+          "ageHours": 0.29,
+          "freshnessBasis": "Washington quarterback Demond Williams Jr. seems unlikely to return this week from a rib injury he suffered during the Huskies' loss to Iowa Friday, but coach Jedd Fisch said Monday that \"we still have four days before we'll have to make that decision.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50169908/washington-qb-williams-unlikely-return-vs-purdue"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50169908/washington-qb-williams-unlikely-return-vs-purdue"
+            }
+          ],
+          "id": "a415-76d6be572c0add9f",
+          "feedRank": 30,
+          "compactHeadline": "Washington QB Williams unlikely to return vs. Purdue"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-e1345609876d270f"
           ],
           "type": "INJURY",
@@ -912,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T22:22:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.66,
+          "ageHours": 2.16,
           "freshnessBasis": "UCLA has ''serious concern'' over the knee injury quarterback Nico Iamaleava sustained during Saturday's win at Oregon, coach Bob Chesney said.",
           "status": "active",
           "sourceUrls": [
@@ -926,11 +967,11 @@
             }
           ],
           "id": "a415-aa15ce1aa6a540be",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "UCLA has 'serious concern' over QB Iamaleava's knee injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-c6260e272ae355c3"
           ],
@@ -941,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T11:50:47Z",
           "timePrecision": "exact",
-          "ageHours": 12.18,
+          "ageHours": 12.69,
           "freshnessBasis": "Following big wins and multiple upsets in Week 6, here are our postseason projections.",
           "status": "active",
           "sourceUrls": [
@@ -955,11 +996,11 @@
             }
           ],
           "id": "a415-ba6576edbac92099",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "2026-27 Week 6 College Football Playoff, bowl projections"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-192f8205fa32c4e0"
           ],
@@ -970,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T22:16:38Z",
           "timePrecision": "exact",
-          "ageHours": 1.75,
+          "ageHours": 2.26,
           "freshnessBasis": "Mike Elko said his viral remark after the Aggies' loss to Missouri was made in the heat of the moment.",
           "status": "active",
           "sourceUrls": [
@@ -984,11 +1025,11 @@
             }
           ],
           "id": "a415-a4f032106a0d9417",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Texas A&M coach Elko says he regrets 'cesspool' comments"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-d2c3361bcad7e146"
           ],
@@ -999,7 +1040,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T21:41:50Z",
           "timePrecision": "exact",
-          "ageHours": 2.33,
+          "ageHours": 2.84,
           "freshnessBasis": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
           "status": "active",
           "sourceUrls": [
@@ -1013,11 +1054,11 @@
             }
           ],
           "id": "a415-9819fdcebe2aa754",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "How every 2027 five-star college football prospect will fit"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-f3defe39cdbc6283"
           ],
@@ -1028,7 +1069,7 @@
           "entities": [],
           "occurredAt": "2026-10-12T15:04:08Z",
           "timePrecision": "exact",
-          "ageHours": 8.96,
+          "ageHours": 9.46,
           "freshnessBasis": "Michigan coach Kyle Whittingham says the Wolverines are sticking with Bryce Underwood as starting quarterback and offensive coordinator Jason Beck will continue to call plays.",
           "status": "active",
           "sourceUrls": [
@@ -1042,37 +1083,8 @@
             }
           ],
           "id": "a415-17ce8dfeb854f3f3",
-          "feedRank": 34,
-          "compactHeadline": "Michigan sticking with Underwood as QB1, OC Beck as playcaller"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-2075bbee35030108"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Texas coach Steve Sarkisian defended Arch Manning on Monday following the upset loss to Oklahoma, saying the \"Manning\" name is leading to greater scrutiny.",
-          "text": "Texas coach Steve Sarkisian defended Arch Manning on Monday following the upset loss to Oklahoma, saying the \"Manning\" name is leading to greater scrutiny.",
-          "entities": [],
-          "occurredAt": "2026-10-12T19:29:14Z",
-          "timePrecision": "exact",
-          "ageHours": 4.54,
-          "freshnessBasis": "Texas coach Steve Sarkisian defended Arch Manning on Monday following the upset loss to Oklahoma, saying the \"Manning\" name is leading to greater scrutiny.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50168104/manning-name-leading-outsized-criticism-arch"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50168104/manning-name-leading-outsized-criticism-arch"
-            }
-          ],
-          "id": "a415-ecc5ffc191e252e6",
           "feedRank": 35,
-          "compactHeadline": "Sarkisian: 'Manning' name leading to outsized criticism of Arch"
+          "compactHeadline": "Michigan sticking with Underwood as QB1, OC Beck as playcaller"
         }
       ]
     }
@@ -1097,7 +1109,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 109,
+    "freshCandidateCount": 106,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
