@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-14T02:31:11Z",
+  "generatedAt": "2026-10-14T03:01:46Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "c7bba50d8f39b217a036049e1722eb1b93368693dca35542ff982bfc600d70d0",
+  "sourceCandidateHash": "805784c56845760245ca14c5bb13ac38471c7ce6faa5a496def7a3636a40ba16",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,47 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-6899fb5f15fa6985"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
+          "text": "Every MLB team's odds to win the 2026 World Series as the playoffs continue.",
+          "entities": [],
+          "occurredAt": "2026-10-14T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Cleveland Guardians 1, Tampa Bay Rays 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
+            "http://www.espn.com/mlb/recap?gameId=401908023"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908023"
+            }
+          ],
+          "id": "a415-73e3db203a88005f",
+          "feedRank": 1,
+          "compactHeadline": "Tampa Bay Rays beat Cleveland Guardians 3-1"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -23,7 +64,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:34:50Z",
           "timePrecision": "exact",
-          "ageHours": 9.94,
+          "ageHours": 10.45,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +78,11 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-75c4c03b05399118"
           ],
@@ -52,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:37:29Z",
           "timePrecision": "exact",
-          "ageHours": 10.9,
+          "ageHours": 11.4,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +107,11 @@
             }
           ],
           "id": "a415-46d2b9edd468d9e5",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Who is this year's Mr. October? Tracking the playoff MVP for 2026"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-07aa88e938b8ab68"
           ],
@@ -81,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T15:35:15Z",
           "timePrecision": "exact",
-          "ageHours": 10.93,
+          "ageHours": 11.44,
           "freshnessBasis": "Here's how the winter looks in Chicago after squandering a 2-0 series lead against the Guardians.",
           "status": "active",
           "sourceUrls": [
@@ -95,43 +136,8 @@
             }
           ],
           "id": "a415-1674e7f4d8eefc13",
-          "feedRank": 3,
-          "compactHeadline": "Biggest offseason questions for teams eliminated from MLB playoffs"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2c340a0f84d42335"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
-          "text": "The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
-          "entities": [],
-          "occurredAt": "2026-10-13T14:19:55Z",
-          "timePrecision": "exact",
-          "ageHours": 12.19,
-          "freshnessBasis": "- The Cleveland Guardians used small ball, the longball and played solid all-around baseball to keep winning in the postseason.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908023",
-            "https://www.espn.com/mlb/story/_/id/50170936/guardians-come-beat-rays-game-1-alcs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908023"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50170936/guardians-come-beat-rays-game-1-alcs"
-            }
-          ],
-          "id": "a415-90e05ee91bcf806a",
           "feedRank": 4,
-          "compactHeadline": "Chase DeLauter and Jose Ramírez lead the Guardians to a 7-3 win over the Rays in Game 1 of the ALCS"
+          "compactHeadline": "Biggest offseason questions for teams eliminated from MLB playoffs"
         },
         {
           "rank": 5,
@@ -145,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-10-14T01:48:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.22,
           "freshnessBasis": "Los Angeles Dodgers manager Dave Roberts told reporters Tuesday that struggling superstar Shohei Ohtani will be in the lineup for Game 3 of the NLCS on Wednesday vs. the Milwaukee Brewers.",
           "status": "active",
           "sourceUrls": [
@@ -174,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T21:50:55Z",
           "timePrecision": "exact",
-          "ageHours": 4.67,
+          "ageHours": 5.18,
           "freshnessBasis": "The Seattle Mariners have received permission to interview current Houston Astros manager Joe Espada about their vacancy, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -209,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:43:38Z",
           "timePrecision": "exact",
-          "ageHours": 9.79,
+          "ageHours": 10.3,
           "freshnessBasis": "Bengals TE Tanner Hudson suffered a torn pectoral in last Sunday's win over the Dolphins that will sideline him for the season, his agent told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -238,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T16:00:15Z",
           "timePrecision": "exact",
-          "ageHours": 10.52,
+          "ageHours": 11.03,
           "freshnessBasis": "Houston has traded and drafted receivers, hoping to complement No. 1 wideout Nico Collins and QB C.J. Stroud.",
           "status": "active",
           "sourceUrls": [
@@ -262,13 +268,13 @@
           ],
           "type": "SUSPENSION",
           "priority": 64,
-          "headline": "Niners linebacker Dre Greenlaw will serve his one-game suspension in Monday night's game against the Commanders after the NFL denied his appeal on Tuesday.",
-          "text": "Niners linebacker Dre Greenlaw will serve his one-game suspension in Monday night's game against the Commanders after the NFL denied his appeal on Tuesday.",
+          "headline": "Niners linebacker Dre Greenlaw will serve his one-game suspension in Monday night's game against the Commanders after the NFL denied his appeal Tuesday.",
+          "text": "Niners linebacker Dre Greenlaw will serve his one-game suspension in Monday night's game against the Commanders after the NFL denied his appeal Tuesday.",
           "entities": [],
-          "occurredAt": "2026-10-14T02:15:19Z",
+          "occurredAt": "2026-10-14T02:37:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "Niners linebacker Dre Greenlaw will serve his one-game suspension in Monday night's game against the Commanders after the NFL denied his appeal on Tuesday.",
+          "ageHours": 0.4,
+          "freshnessBasis": "Niners linebacker Dre Greenlaw will serve his one-game suspension in Monday night's game against the Commanders after the NFL denied his appeal Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50178480/niners-lb-dre-greenlaw-appeal-1-game-suspension-rejected"
@@ -296,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-10-14T02:01:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.49,
+          "ageHours": 1.0,
           "freshnessBasis": "The NFL on Tuesday suspended Rams left tackle Alaric Jackson for two games without pay after he punched Bills outside linebacker Bradley Chubb following Monday night's game in Los Angeles.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T22:02:40Z",
           "timePrecision": "exact",
-          "ageHours": 4.48,
+          "ageHours": 4.99,
           "freshnessBasis": "The NFL has issued a two-game suspension to Bears defensive end Montez Sweat for violating the league's policy on performance-enhancing substances.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-10-14T02:27:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
+          "ageHours": 0.57,
           "freshnessBasis": "A Miami jury returned a mixed verdict in the assault and battery civil trial against Tyreek Hill, finding the former NFL receiver liable for two counts of battery but not liable for the eight other claims made by his estranged wife, Lakeeta Vaccaro.",
           "status": "active",
           "sourceUrls": [
@@ -380,6 +386,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-3fc6c5ef378d6cd6"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Indiana Pacers 112, Oklahoma City Thunder 114.",
+          "text": "Highlightly final: Indiana Pacers 112, Oklahoma City Thunder 114.",
+          "entities": [],
+          "occurredAt": "2026-10-14T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Indiana Pacers 112, Oklahoma City Thunder 114.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-13",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-1337f5e3ed1a0fe7",
+          "feedRank": 13,
+          "compactHeadline": "Oklahoma City Thunder beat Indiana Pacers 114-112"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-d9a4a0ade51959ed"
           ],
           "type": "RESULT",
@@ -389,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: New York Knicks 98, Toronto Raptors 148.",
           "status": "active",
           "sourceUrls": [
@@ -403,11 +438,11 @@
             }
           ],
           "id": "a415-36e1439d192111f7",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Toronto Raptors beat New York Knicks 148-98"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-dd3a4a3c0903fbca"
           ],
@@ -418,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: Cleveland Cavaliers 116, Orlando Magic 132.",
           "status": "active",
           "sourceUrls": [
@@ -432,11 +467,11 @@
             }
           ],
           "id": "a415-2c898f6b90a6f7d5",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Orlando Magic beat Cleveland Cavaliers 132-116"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-20141e13cc66afc0"
           ],
@@ -447,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T20:42:33Z",
           "timePrecision": "exact",
-          "ageHours": 5.81,
+          "ageHours": 6.32,
           "freshnessBasis": "Celtics guard Payton Pritchard has agreed to a two-year, $44.2 million extension with a mutual option for the 2029-30 season.",
           "status": "active",
           "sourceUrls": [
@@ -461,11 +496,11 @@
             }
           ],
           "id": "a415-200fafca471effad",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Celtics to extend guard Payton Pritchard on 2-year, $44.2M deal"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-369a0119ecdad2cd"
           ],
@@ -476,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T19:51:07Z",
           "timePrecision": "exact",
-          "ageHours": 6.67,
+          "ageHours": 7.18,
           "freshnessBasis": "With Monday's extension deadline looming, Bobby Marks breaks down the biggest decisions around the league.",
           "status": "active",
           "sourceUrls": [
@@ -490,11 +525,11 @@
             }
           ],
           "id": "a415-fefdc587f9f1c5b0",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Which NBA deals will get done? Bobby Marks' biggest extension decisions to watch"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-d98ee7cd377a55da"
           ],
@@ -505,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T17:35:28Z",
           "timePrecision": "exact",
-          "ageHours": 8.93,
+          "ageHours": 9.44,
           "freshnessBasis": "Teams will be competing on these courts for the NBA Cup from Oct. 30 to Dec. 11.",
           "status": "active",
           "sourceUrls": [
@@ -519,7 +554,7 @@
             }
           ],
           "id": "a415-4a656e04eb8795b5",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "NBA teams reveal court designs for 2026 NBA Cup tournament"
         }
       ]
@@ -531,6 +566,41 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-8651e7609f615481"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Teuvo Teravainen and Roman Kantserov scored two goals apiece, and the Chicago Blackhawks topped the Pittsburgh Penguins 5-3 on Tuesday night in Connor Bedard's",
+          "text": "Teuvo Teravainen and Roman Kantserov scored two goals apiece, and the Chicago Blackhawks topped the Pittsburgh Penguins 5-3 on Tuesday night in Connor Bedard's",
+          "entities": [],
+          "occurredAt": "2026-10-14T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Pittsburgh Penguins 3, Chicago Blackhawks 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892496"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892496"
+            }
+          ],
+          "id": "a415-ad1f255afdb24eef",
+          "feedRank": 19,
+          "compactHeadline": "Teuvo Teravainen helps the Blackhawks beat the Penguins 5-3 in Connor Bedard's season debut"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-1f2c6ee458eb36e9"
           ],
           "type": "RECORD",
@@ -540,7 +610,7 @@
           "entities": [],
           "occurredAt": "2026-10-14T01:25:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.1,
+          "ageHours": 1.61,
           "freshnessBasis": "— Brady Tkachuk had a natural hat trick in the second period, his brother Matthew Tkachuk matched a club record with five assists and the Florida Panthers rolled past the Columbus Blue...",
           "status": "active",
           "sourceUrls": [
@@ -554,22 +624,22 @@
             }
           ],
           "id": "a415-178e2b95000fdde3",
-          "feedRank": 18,
+          "feedRank": 20,
           "compactHeadline": "Brady Tkachuk has natural hat trick, brother Matthew has 5 assists as Panthers roll Blue Jackets 7-3"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
-            "cand-9b4f2f1b8165c7ca"
+            "cand-2fb1b3e101fbe99a"
           ],
           "type": "SIGNING",
           "priority": 76,
           "headline": "Right wing Alex DeBrincat, Detroit's leading scorer who had two goals and an assist Tuesday in a loss to the New Jersey Devils, is finalizing a new deal with the Red Wings, sources told ESPN, a seven-year contract extension worth $13 million annually.",
           "text": "Right wing Alex DeBrincat, Detroit's leading scorer who had two goals and an assist Tuesday in a loss to the New Jersey Devils, is finalizing a new deal with the Red Wings, sources told ESPN, a seven-year contract extension worth $13 million annually.",
           "entities": [],
-          "occurredAt": "2026-10-14T02:24:04Z",
+          "occurredAt": "2026-10-14T02:31:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.5,
           "freshnessBasis": "Right wing Alex DeBrincat, Detroit's leading scorer who had two goals and an assist Tuesday in a loss to the New Jersey Devils, is finalizing a new deal with the Red Wings, sources told ESPN, a seven-year contract extension worth $13 million annually.",
           "status": "active",
           "sourceUrls": [
@@ -582,67 +652,38 @@
               "url": "https://www.espn.com/nhl/story/_/id/50178559/debrincat-red-wings-close-7-year-extension"
             }
           ],
-          "id": "a415-85cf582067b2b8b9",
-          "feedRank": 19,
-          "compactHeadline": "Sources: DeBrincat, Red Wings close in on 7-year extension"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-bc052ab8d152874e"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Bobby McMann scored a goal in regulation and then added the game-winner in the fifth round of the shootout as the Seattle Kraken beat the Philadelphia Flyers 3-2 on Tuesday night.",
-          "text": "Bobby McMann scored a goal in regulation and then added the game-winner in the fifth round of the shootout as the Seattle Kraken beat the Philadelphia Flyers 3-2 on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-10-14T02:29:31Z",
-          "timePrecision": "exact",
-          "ageHours": 0.03,
-          "freshnessBasis": "— Bobby McMann scored a goal in regulation and then added the game-winner in the fifth round of the shootout as the Seattle Kraken beat the Philadelphia Flyers 3-2 on Tuesday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892492"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892492"
-            }
-          ],
-          "id": "a415-2ede95fd3ca8f6bb",
-          "feedRank": 20,
-          "compactHeadline": "Kraken beat Flyers 3-2 in shootout as Philadelphia’s winless start reaches 8 games"
+          "id": "a415-cbec99c0c3a2950e",
+          "feedRank": 21,
+          "compactHeadline": "Sources: Alex DeBrincat, Red Wings close in on 7-year extension"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-69a59faf5d5acaa9"
+            "cand-4386a5befae0d26b"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Kyle Palmieri scored twice, Matias Maccelli added his first goal for New York and the Islanders beat the Vancouver Canucks 3-2 on Tuesday night.",
-          "text": "Kyle Palmieri scored twice, Matias Maccelli added his first goal for New York and the Islanders beat the Vancouver Canucks 3-2 on Tuesday night.",
+          "headline": "Highlightly final: Minnesota Wild 2, Winnipeg Jets 5.",
+          "text": "Highlightly final: Minnesota Wild 2, Winnipeg Jets 5.",
           "entities": [],
-          "occurredAt": "2026-10-14T02:27:27Z",
+          "occurredAt": "2026-10-14T00:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
-          "freshnessBasis": "— Kyle Palmieri scored twice, Matias Maccelli added his first goal for New York and the Islanders beat the Vancouver Canucks 3-2 on Tuesday night.",
+          "ageHours": 2.78,
+          "freshnessBasis": "Highlightly final: Minnesota Wild 2, Winnipeg Jets 5.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892495"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892495"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-13",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-33a1544ce140b67e",
-          "feedRank": 21,
-          "compactHeadline": "Kyle Palmieri scores twice as Islanders beat Canucks 3-2"
+          "id": "a415-40a0a4fd3703812a",
+          "feedRank": 22,
+          "compactHeadline": "Winnipeg Jets beat Minnesota Wild 5-2"
         },
         {
           "rank": 5,
@@ -651,13 +692,13 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "On the NHL's Frozen Frenzy night, the Tkachuk brothers fed right into it, as Brady Tkachuk had a natural hat trick, while his brother Matthew Tkachuk matched a club record with five assists, as the Florida Panthers beat Columbus Blue Jackets 7-3 Tuesday.",
-          "text": "On the NHL's Frozen Frenzy night, the Tkachuk brothers fed right into it, as Brady Tkachuk had a natural hat trick, while his brother Matthew Tkachuk matched a club record with five assists, as the Florida Panthers beat Columbus Blue Jackets 7-3 Tuesday.",
+          "headline": "On the NHL's Frozen Frenzy night, the Tkachuk brothers fed right into it, as Brady Tkachuk had a natural hat trick and his brother Matthew Tkachuk matched a club record with five assists as the Florida Panthers beat the Columbus Blue Jackets 7-3 Tuesday.",
+          "text": "On the NHL's Frozen Frenzy night, the Tkachuk brothers fed right into it, as Brady Tkachuk had a natural hat trick and his brother Matthew Tkachuk matched a club record with five assists as the Florida Panthers beat the Columbus Blue Jackets 7-3 Tuesday.",
           "entities": [],
-          "occurredAt": "2026-10-14T02:23:05Z",
+          "occurredAt": "2026-10-14T02:43:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
-          "freshnessBasis": "On the NHL's Frozen Frenzy night, the Tkachuk brothers fed right into it, as Brady Tkachuk had a natural hat trick, while his brother Matthew Tkachuk matched a club record with five assists, as the Florida Panthers beat Columbus Blue Jackets 7-3 Tuesday.",
+          "ageHours": 0.3,
+          "freshnessBasis": "On the NHL's Frozen Frenzy night, the Tkachuk brothers fed right into it, as Brady Tkachuk had a natural hat trick and his brother Matthew Tkachuk matched a club record with five assists as the Florida Panthers beat the Columbus Blue Jackets 7-3 Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/50178690/brady-tkachuk-natural-hat-trick-helps-panthers-end-skid"
@@ -670,37 +711,37 @@
             }
           ],
           "id": "a415-ea257a97d7d28cbd",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Brady Tkachuk's natural hat trick helps Panthers end skid"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-c113e7e83d7b686d"
+            "cand-73d21873831ebf11"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Alexis Lafreniere scored twice and Dylan Garand made 25 saves as the New York Rangers beat the Tampa Bay Lightning 4-1 on Tuesday night for their fifth straight home win.",
-          "text": "Alexis Lafreniere scored twice and Dylan Garand made 25 saves as the New York Rangers beat the Tampa Bay Lightning 4-1 on Tuesday night for their fifth straight home win.",
+          "headline": "Pius Suter, Jake Neighbours and Mason McTavish each had a pair of goals to lead the St. Louis Blues to a 7-2 win over the Ottawa Senators on Tuesday night.",
+          "text": "Pius Suter, Jake Neighbours and Mason McTavish each had a pair of goals to lead the St. Louis Blues to a 7-2 win over the Ottawa Senators on Tuesday night.",
           "entities": [],
-          "occurredAt": "2026-10-14T02:07:28Z",
+          "occurredAt": "2026-10-14T02:31:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.4,
-          "freshnessBasis": "— Alexis Lafreniere scored twice and Dylan Garand made 25 saves as the New York Rangers beat the Tampa Bay Lightning 4-1 on Tuesday night for their fifth straight home win.",
+          "ageHours": 0.51,
+          "freshnessBasis": "— Pius Suter, Jake Neighbours and Mason McTavish each had a pair of goals to lead the St. Louis Blues to a 7-2 win over the Ottawa Senators on Tuesday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892493"
+            "http://www.espn.com/nhl/recap?gameId=401892494"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892493"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892494"
             }
           ],
-          "id": "a415-b9db06470ac48b84",
-          "feedRank": 23,
-          "compactHeadline": "Alexis Lafreniere scores twice as Rangers beat Lightning 4-1"
+          "id": "a415-182dac5f23ac43fc",
+          "feedRank": 24,
+          "compactHeadline": "Suter, Neighbours and McTavish score 2 each as the Blues rout the Senators 7-2"
         }
       ]
     },
@@ -720,7 +761,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.52,
+          "ageHours": 9.03,
           "freshnessBasis": "Highlightly final: Coventry City U21 2, Bromley U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -734,7 +775,7 @@
             }
           ],
           "id": "a415-22a205fe76432830",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Late goal lifts Coventry City U21 beat Bromley U21 2-1"
         },
         {
@@ -749,7 +790,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.52,
+          "ageHours": 9.03,
           "freshnessBasis": "Highlightly final: Wycombe U21 0, Hull City U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -763,7 +804,7 @@
             }
           ],
           "id": "a415-1b34f135a0dbd6f6",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Hull City U21 and Wycombe U21 finished tied 0-0"
         },
         {
@@ -778,7 +819,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T23:03:43Z",
           "timePrecision": "exact",
-          "ageHours": 3.46,
+          "ageHours": 3.97,
           "freshnessBasis": "Lisandro Martínez launched a stinging verbal attack on Manchester United's hierarchy, after a 2-0 Champions League defeat against Atlético Madrid.",
           "status": "active",
           "sourceUrls": [
@@ -792,7 +833,7 @@
             }
           ],
           "id": "a415-ef1322a4ef929152",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "Lisandro Martínez slams Man United hierarchy: Squad not Champions League quality"
         },
         {
@@ -807,7 +848,7 @@
           "entities": [],
           "occurredAt": "2026-10-14T00:37:21Z",
           "timePrecision": "exact",
-          "ageHours": 1.9,
+          "ageHours": 2.41,
           "freshnessBasis": "Arsenal's substitutes made the difference once again, but Mikel Arteta's side still have questions as tougher tests await.",
           "status": "active",
           "sourceUrls": [
@@ -821,37 +862,8 @@
             }
           ],
           "id": "a415-e659599d8860bb20",
-          "feedRank": 27,
-          "compactHeadline": "Arsenal showed strength in depth in Lille win, but Gyökeres is a concern"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-ded8e386760beedd"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Paris Saint-Germain boss Luis Enrique has said Manchester City deserve to keep the trophies won during the period in which they have been found guilty of breaching Premier League rules.",
-          "text": "Paris Saint-Germain boss Luis Enrique has said Manchester City deserve to keep the trophies won during the period in which they have been found guilty of breaching Premier League rules.",
-          "entities": [],
-          "occurredAt": "2026-10-13T17:39:16Z",
-          "timePrecision": "exact",
-          "ageHours": 8.87,
-          "freshnessBasis": "Paris Saint-Germain boss Luis Enrique has said Manchester City deserve to keep the trophies won during the period in which they have been found guilty of breaching Premier League rules.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50174986/manchester-city-deserved-trophies-psg-boss-luis-enrique"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50174986/manchester-city-deserved-trophies-psg-boss-luis-enrique"
-            }
-          ],
-          "id": "a415-0c429c37b75d1b18",
           "feedRank": 28,
-          "compactHeadline": "Man City 'deserved' trophies - PSG boss Luis Enrique on charges"
+          "compactHeadline": "Arsenal showed strength in depth in Lille win, but Gyökeres is a concern"
         }
       ]
     },
@@ -871,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T19:19:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.2,
+          "ageHours": 7.71,
           "freshnessBasis": "Don Garber has addressed his September confrontation with Lionel Messi, and the MLS commissioner said he admired the exchange.",
           "status": "active",
           "sourceUrls": [
@@ -897,29 +909,29 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a10317b355d9bdb6"
+            "cand-298eefc7126ce082"
           ],
           "type": "SIGNING",
           "priority": 76,
           "headline": "Ohio Gov. Mike DeWine signed an executive order allowing 2022 athletes to play even though the NCAA's new guidance excludes those who have already played four seasons.",
           "text": "Ohio Gov. Mike DeWine signed an executive order allowing 2022 athletes to play even though the NCAA's new guidance excludes those who have already played four seasons.",
           "entities": [],
-          "occurredAt": "2026-10-14T00:33:47Z",
+          "occurredAt": "2026-10-14T02:41:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.96,
+          "ageHours": 0.34,
           "freshnessBasis": "Ohio Gov. Mike DeWine signed an executive order allowing 2022 athletes to play even though the NCAA's new guidance excludes those who have already played four seasons.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/espn/story/_/id/50177542/ohio-gov-dewine-signs-order-2022-athletes-play-2026-27"
+            "https://www.espn.com/college-sports/story/_/id/50177542/ohio-gov-dewine-signs-order-2022-athletes-play-2026-27"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/espn/story/_/id/50177542/ohio-gov-dewine-signs-order-2022-athletes-play-2026-27"
+              "url": "https://www.espn.com/college-sports/story/_/id/50177542/ohio-gov-dewine-signs-order-2022-athletes-play-2026-27"
             }
           ],
-          "id": "a415-b23fba018b5cdd1a",
+          "id": "a415-3a3cf4a31cbe1bae",
           "feedRank": 30,
           "compactHeadline": "Ohio Gov. Mike DeWine signs order letting state's 2022 athletes play in 2026-27"
         },
@@ -935,7 +947,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: Delaware Fightin' Blue Hens 30, Middle Tennessee Blue Raiders 33.",
           "status": "active",
           "sourceUrls": [
@@ -964,7 +976,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T14:25:06Z",
           "timePrecision": "exact",
-          "ageHours": 12.1,
+          "ageHours": 12.61,
           "freshnessBasis": "A conference-by-conference look at who is contending for the playoff, who's close and who's out.",
           "status": "active",
           "sourceUrls": [
@@ -993,7 +1005,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T10:36:33Z",
           "timePrecision": "exact",
-          "ageHours": 15.91,
+          "ageHours": 16.42,
           "freshnessBasis": "Three years, three signal-callers. It's not easy, but some College Football Playoff contenders have found a way.",
           "status": "active",
           "sourceUrls": [
@@ -1022,7 +1034,7 @@
           "entities": [],
           "occurredAt": "2026-10-14T02:29:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.03,
+          "ageHours": 0.54,
           "freshnessBasis": "— Roman Gagliano threw for 291 yards and three touchdowns and rushed for another score as Middle Tennessee rallied past Delaware 33-30 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -1051,7 +1063,7 @@
           "entities": [],
           "occurredAt": "2026-10-13T19:35:37Z",
           "timePrecision": "exact",
-          "ageHours": 6.93,
+          "ageHours": 7.44,
           "freshnessBasis": "Florida State CB Chuck Kennon, the Seminoles' top-rated recruit in this year's class, has been dismissed from the program after being arrested near Tampa.",
           "status": "active",
           "sourceUrls": [
@@ -1091,7 +1103,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 92,
+    "freshCandidateCount": 96,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
