@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-18T03:01:00Z",
+  "generatedAt": "2026-10-18T03:30:34Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "2b7f8fab0d8f63bbb7de3085a636c982a21fc0f276c12254d3d24e2faebda078",
+  "sourceCandidateHash": "6d6f722d50858f810fd677738057d363837d00ea2692ea3ffa18e3afad21a356",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-37fff10359b2f543"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
+          "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
+          "entities": [],
+          "occurredAt": "2026-10-18T03:24:46Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50022544/2026-mlb-playoffs-schedule-how-watch-postseason-world-series-bracket-standings"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50022544/2026-mlb-playoffs-schedule-how-watch-postseason-world-series-bracket-standings"
+            }
+          ],
+          "id": "a415-3dc7d494f0f3540b",
+          "feedRank": 1,
+          "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-06d789c2647d081a"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:38:24Z",
           "timePrecision": "exact",
-          "ageHours": 10.38,
+          "ageHours": 10.87,
           "freshnessBasis": "Game 4 of the ALCS was postponed late Friday night due to rain, creating an unusual set of circumstances for the Guardians and Rays.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-e2e08d8d08c8ba0b",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Rain postpones ALCS Game 4 to Saturday; Rays, Guardians to play Game 5 on Sunday"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-4f607ff38c4dce15"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T08:02:27Z",
           "timePrecision": "exact",
-          "ageHours": 18.98,
+          "ageHours": 19.47,
           "freshnessBasis": "Tampa Bay Rays (98-64, first in the AL East during the regular season) vs. Cleveland Guardians (85-77, first in the AL Central during the regular season)",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-a782e032d1e56829",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Guardians bring 2-1 ALCS lead into Game 4 against Rays"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-1c85877caf8b5542"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T15:21:42Z",
           "timePrecision": "exact",
-          "ageHours": 11.66,
+          "ageHours": 12.15,
           "freshnessBasis": "The championship round schedule, lines and odds to win.",
           "status": "active",
           "sourceUrls": [
@@ -95,7 +124,7 @@
             }
           ],
           "id": "a415-c66ee13252958aba",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "AL, NL Championship Series odds: Guardians now AL faves to reach World Series"
         }
       ]
@@ -116,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:58:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.54,
           "freshnessBasis": "John Beake, who was instrumental in the trade for John Elway and helped guide the Denver Broncos to back-to-back Super Bowl titles in the late 1990s, has died at age 87, the team said Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -130,7 +159,7 @@
             }
           ],
           "id": "a415-50d92edacb26e42b",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Ex-Broncos exec John Beake, who helped land John Elway, dies at 87"
         },
         {
@@ -145,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T22:48:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.21,
+          "ageHours": 4.71,
           "freshnessBasis": "The Eagles have placed Jalen Hurts on injured reserve after consultations with numerous doctors and experts, sources told ESPN and NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -159,7 +188,7 @@
             }
           ],
           "id": "a415-570132a0e75a071d",
-          "feedRank": 5,
+          "feedRank": 6,
           "compactHeadline": "Eagles QB Jalen Hurts on IR due to blood clot, expected to be out indefinitely"
         },
         {
@@ -174,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T20:00:08Z",
           "timePrecision": "exact",
-          "ageHours": 7.01,
+          "ageHours": 7.51,
           "freshnessBasis": "The Pittsburgh Steelers placed Roman Wilson on the injured reserve list, their second key receiver lost to injury in as many weeks.",
           "status": "active",
           "sourceUrls": [
@@ -188,7 +217,7 @@
             }
           ],
           "id": "a415-6810ba20fbfb4c78",
-          "feedRank": 6,
+          "feedRank": 7,
           "compactHeadline": "Steelers place Wilson on IR with finger injury"
         },
         {
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T17:50:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.18,
+          "ageHours": 9.67,
           "freshnessBasis": "Commanders running back Jacory Croskey-Merritt won't play against the 49ers because of a groin injury, coach Dan Quinn said.",
           "status": "active",
           "sourceUrls": [
@@ -217,7 +246,7 @@
             }
           ],
           "id": "a415-e5a478b5c691ea37",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Commanders RB Jacory Croskey-Merritt out vs. 49ers with groin injury"
         },
         {
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:08:46Z",
           "timePrecision": "exact",
-          "ageHours": 10.87,
+          "ageHours": 11.36,
           "freshnessBasis": "The Eagles are not planning to put Jalen Hurts on injured reserve, sources told ESPN, even as he remains sidelined indefinitely with a superficial blood clot.",
           "status": "active",
           "sourceUrls": [
@@ -246,7 +275,7 @@
             }
           ],
           "id": "a415-915b8deb2fbf2f82",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Sources: Eagles' Jalen Hurts, out indefinitely with blood clot, not planned for IR"
         },
         {
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T20:14:34Z",
           "timePrecision": "exact",
-          "ageHours": 6.77,
+          "ageHours": 7.27,
           "freshnessBasis": "Patriots wide receiver A.J. Brown was activated from injured reserve Saturday after missing the past four games with a right high ankle sprain, the team announced.",
           "status": "active",
           "sourceUrls": [
@@ -275,7 +304,7 @@
             }
           ],
           "id": "a415-290a5594b258f39b",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Patriots activate WR A.J. Brown for Sunday's game vs. Jets"
         }
       ]
@@ -296,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:23:33Z",
           "timePrecision": "exact",
-          "ageHours": 10.62,
+          "ageHours": 11.12,
           "freshnessBasis": "The 76ers, dealing with injuries in the frontcourt, have converted center Tacko Fall to a two-way contract.",
           "status": "active",
           "sourceUrls": [
@@ -310,7 +339,7 @@
             }
           ],
           "id": "a415-f3a72882f73472f0",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "76ers, needing frontcourt help, convert 7-foot-6 Tacko Fall to two-way contract"
         },
         {
@@ -325,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T01:41:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.33,
+          "ageHours": 1.82,
           "freshnessBasis": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -339,7 +368,7 @@
             }
           ],
           "id": "a415-9880e570b4904fba",
-          "feedRank": 11,
+          "feedRank": 12,
           "compactHeadline": "Knicks waive Bruce Brown, keep James Wiseman ahead of opener"
         },
         {
@@ -354,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:55:06Z",
           "timePrecision": "exact",
-          "ageHours": 10.1,
+          "ageHours": 10.59,
           "freshnessBasis": "The Nuggets will be without Julian Strawther indefinitely after the versatile 24-year-old guard/forward sprained his left knee while playing a preseason game at the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -368,7 +397,7 @@
             }
           ],
           "id": "a415-75dc43316f27e614",
-          "feedRank": 12,
+          "feedRank": 13,
           "compactHeadline": "Nuggets' Julian Strawther out with knee sprain, will be reevaluated in six weeks"
         },
         {
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:22:59Z",
           "timePrecision": "exact",
-          "ageHours": 10.63,
+          "ageHours": 11.13,
           "freshnessBasis": "Without VJ Edgecombe, who was held out of Friday night's 125-120 loss to the Celtics, 76ers coach Nick Nurse gave the closest glimpse of what his team may look like this season, including LeBron James and Joel Embiid playing preseason highs in minutes.",
           "status": "active",
           "sourceUrls": [
@@ -397,7 +426,7 @@
             }
           ],
           "id": "a415-3d6277ee5e853cc2",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "James, Embiid play 76ers' preseason finale, 'still working on our rhythm'"
         },
         {
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T14:36:47Z",
           "timePrecision": "exact",
-          "ageHours": 12.4,
+          "ageHours": 12.9,
           "freshnessBasis": "The Spurs will start guards De'Aaron Fox, Stephon Castle and Dylan Harper alongside Devin Vassell and Victor Wembanyama when they face the Thunder in Tuesday's season opener.",
           "status": "active",
           "sourceUrls": [
@@ -426,37 +455,8 @@
             }
           ],
           "id": "a415-d09de38ddcc4d924",
-          "feedRank": 14,
-          "compactHeadline": "Spurs' 3-guard lineup of Fox, Castle, Harper to start opener vs. Thunder"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-9a10cddbf96d8865"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "First overall pick AJ Dybantsa exited the Wizards' preseason finale after injuring his ankle on an awkward landing and will undergo further evaluation.",
-          "text": "First overall pick AJ Dybantsa exited the Wizards' preseason finale after injuring his ankle on an awkward landing and will undergo further evaluation.",
-          "entities": [],
-          "occurredAt": "2026-10-17T14:08:49Z",
-          "timePrecision": "exact",
-          "ageHours": 12.87,
-          "freshnessBasis": "First overall pick AJ Dybantsa exited the Wizards' preseason finale after injuring his ankle on an awkward landing and will undergo further evaluation.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50200909/no-1-pick-aj-dybantsa-set-evaluation-injuring-ankle"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50200909/no-1-pick-aj-dybantsa-set-evaluation-injuring-ankle"
-            }
-          ],
-          "id": "a415-0472ee20d3c9e7a8",
           "feedRank": 15,
-          "compactHeadline": "No. 1 pick AJ Dybantsa injures ankle during Wizards' preseason finale"
+          "compactHeadline": "Spurs' 3-guard lineup of Fox, Castle, Harper to start opener vs. Thunder"
         }
       ]
     },
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:45:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 0.75,
           "freshnessBasis": "— Kent Johnson scored with 1:33 remaining on the clock in overtime, Jet Greaves got his fifth career shutout and the Columbus Blue Jackets beat the New York Rangers 1-0 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:42:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.31,
+          "ageHours": 0.8,
           "freshnessBasis": "— Filip Forsberg scored a goal and added an assist to lead the Nashville Predators to a 5-2 victory over the St. Louis Blues on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:31:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.49,
+          "ageHours": 0.99,
           "freshnessBasis": "— Matvei Michkov and Porter Martone each had a goal and an assist, and the Philadelphia Flyers beat the Ottawa Senators 3-1 on Saturday night for their first victory this season.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:25:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.59,
+          "ageHours": 1.09,
           "freshnessBasis": "— Jake Oettinger made 19 saves for his NHL-leading third shutout in six games, Arttu Hyry scored twice and the Dallas Stars beat the Chicago Blackhawks 4-0 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:07:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.89,
+          "ageHours": 1.38,
           "freshnessBasis": "— Lucas Raymond scored the only goal during the shootout and the Detroit Red Wings rallied for a 4-3 victory over the San Jose Sharks on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T01:57:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.06,
+          "ageHours": 1.55,
           "freshnessBasis": "— Bo Horvat scored the winner and added an assist to help the New York Islanders beat the Toronto Maple Leafs 4-1 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:19:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.69,
+          "ageHours": 1.18,
           "freshnessBasis": "Emi Martínez said he would be \"back in a few weeks\" after undergoing surgery following a head injury suffered during Chelsea's Premier League win over Everton on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T18:31:34Z",
           "timePrecision": "exact",
-          "ageHours": 8.49,
+          "ageHours": 8.98,
           "freshnessBasis": "Andoni Iraola questioned the decision to overturn a penalty awarded to Liverpool in the first half of their 2-1 win at Brentford and shared injury concerns over Dominic Szoboszlai and Jeremie Frimpong after both were forced off.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T14:18:11Z",
           "timePrecision": "exact",
-          "ageHours": 12.71,
+          "ageHours": 13.21,
           "freshnessBasis": "Pedro Neto scored twice in the second half to guide Chelsea to a 2-0 win at Everton on Saturday in a Premier League match marred by a serious-looking head injury to Chelsea goalkeeper Emi Martínez.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T20:59:59Z",
           "timePrecision": "exact",
-          "ageHours": 6.02,
+          "ageHours": 6.51,
           "freshnessBasis": "Unai Emery praised Johan Manzambi after his goal helped Aston Villa claim a 1-0 win over Newcastle at St James' Park.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T18:54:48Z",
           "timePrecision": "exact",
-          "ageHours": 8.1,
+          "ageHours": 8.6,
           "freshnessBasis": "Enzo Maresca has played down fears over Erling Haaland's fitness after the striker limped off at the end of Manchester City's 3-2 win over Ipswich.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T18:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 8.3,
+          "ageHours": 8.8,
           "freshnessBasis": "Johan Manzambi scored the only goal of the game as Aston Villa clinched a 1-0 win over Newcastle at St James' Park.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
+          "ageHours": 0.77,
           "freshnessBasis": "Antoine Griezmann had two goals and an assist, Martín Ojeda added a goal and an assist, and Orlando City beat D.C. United 3-1 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:49:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
+          "ageHours": 0.68,
           "freshnessBasis": "Lionel Messi scored two scintillating second-half solo goals to take his MLS-leading tally to 25 as Inter Miami brushed aside hosts Atlanta United 3-1 on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -898,9 +898,9 @@
           "headline": "Florida State lost its top running back shortly before halftime versus Miami on Saturday after Ousmane Kromah had to be carted off the field with an ankle injury.",
           "text": "Florida State lost its top running back shortly before halftime versus Miami on Saturday after Ousmane Kromah had to be carted off the field with an ankle injury.",
           "entities": [],
-          "occurredAt": "2026-10-18T01:50:42Z",
+          "occurredAt": "2026-10-18T03:05:38Z",
           "timePrecision": "exact",
-          "ageHours": 1.17,
+          "ageHours": 0.42,
           "freshnessBasis": "Florida State lost its top running back shortly before halftime versus Miami on Saturday after Ousmane Kromah had to be carted off the field with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -920,147 +920,147 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-0ced4f2a118aa718"
+            "cand-5660cc6bbcdbf162"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Entering this week, unranked squads trailing the AP No. 1 team by at least 14 points had lost 195 consecutive games ... but Auburn had other plans.",
-          "text": "Entering this week, unranked squads trailing the AP No. 1 team by at least 14 points had lost 195 consecutive games ... but Auburn had other plans.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Darian Mensah threw for 326 yards and three touchdowns, and No. 3 Miami held on to beat archrival Florida State 43-35 in double overtime Saturday night.",
+          "text": "Darian Mensah threw for 326 yards and three touchdowns, and No. 3 Miami held on to beat archrival Florida State 43-35 in double overtime Saturday night.",
           "entities": [],
-          "occurredAt": "2026-10-18T00:20:51Z",
+          "occurredAt": "2026-10-18T03:27:44Z",
           "timePrecision": "exact",
-          "ageHours": 2.67,
-          "freshnessBasis": "Entering this week, unranked squads trailing the AP No. 1 team by at least 14 points had lost 195 consecutive games ... but Auburn had other plans.",
+          "ageHours": 0.05,
+          "freshnessBasis": "Darian Mensah threw for 326 yards and three touchdowns, and No. 3 Miami held on to beat archrival Florida State 43-35 in double overtime Saturday night.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50205300/auburn-georgia-upset-numbers"
+            "https://www.espn.com/college-football/story/_/id/50207351/miami-holds-florida-state-double-thriller"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50205300/auburn-georgia-upset-numbers"
+              "url": "https://www.espn.com/college-football/story/_/id/50207351/miami-holds-florida-state-double-thriller"
             }
           ],
-          "id": "a415-5705cced0310bd37",
+          "id": "a415-825552f53755d34c",
           "feedRank": 31,
-          "compactHeadline": "All the numbers behind Auburn's stunning upset of No. 1 Georgia"
+          "compactHeadline": "Miami holds off Florida State in double-overtime thriller"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-30d4cdee0ca3f171"
+            "cand-e0b4c23fc71d02c9"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Quarterback JP Pickles ran for three touchdowns and Mercer won with relative ease over Samford 31-21 on Saturday.",
-          "text": "Quarterback JP Pickles ran for three touchdowns and Mercer won with relative ease over Samford 31-21 on Saturday.",
+          "headline": "Conner Weigman threw for 343 yards and tied a career high with five touchdown passes to help No. 20 Houston beat No. 18 Oklahoma State 35-32 on Saturday night for its fourth straight victory.",
+          "text": "Conner Weigman threw for 343 yards and tied a career high with five touchdown passes to help No. 20 Houston beat No. 18 Oklahoma State 35-32 on Saturday night for its fourth straight victory.",
           "entities": [],
-          "occurredAt": "2026-10-18T02:54:27Z",
+          "occurredAt": "2026-10-18T03:25:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
-          "freshnessBasis": "— Quarterback JP Pickles ran for three touchdowns and Mercer won with relative ease over Samford 31-21 on Saturday.",
+          "ageHours": 0.08,
+          "freshnessBasis": "— Conner Weigman threw for 343 yards and tied a career high with five touchdown passes to help No. 20 Houston beat No. 18 Oklahoma State 35-32 on Saturday night for its fourth straight victory.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401868383"
+            "http://www.espn.com/ncf/recap?gameId=401856831"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401868383"
+              "url": "http://www.espn.com/ncf/recap?gameId=401856831"
             }
           ],
-          "id": "a415-2381823d0b057a01",
+          "id": "a415-a19e71b6f13f000e",
           "feedRank": 32,
-          "compactHeadline": "QB Pickles accounts for 194 total yards and 3TDs in Mercer's 31-21 win over Samford"
+          "compactHeadline": "Weigman throws 5 TD passes to lead No. 20 Houston to a 35-32 win over No. 18 Oklahoma State"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-a525fe13b1371909"
+            "cand-c01c19c5e1fb1057"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Nathan Hayes accounted for three touchdowns and Jackson Williams returned a missed field-goal attempt 100 yards for a touchdown to help North Dakota State beat Nevada 31-17 on...",
-          "text": "Nathan Hayes accounted for three touchdowns and Jackson Williams returned a missed field-goal attempt 100 yards for a touchdown to help North Dakota State beat Nevada 31-17 on...",
+          "headline": "Kaden Anderson threw a career-high five touchdown passes, Tarleton State dominated the fourth quarter, and the Texans defeated Central Arkansas 49-35 to win their homecoming game on Saturday night with an eye toward the top of the Football...",
+          "text": "Kaden Anderson threw a career-high five touchdown passes, Tarleton State dominated the fourth quarter, and the Texans defeated Central Arkansas 49-35 to win their homecoming game on Saturday night with an eye toward the top of the Football...",
           "entities": [],
-          "occurredAt": "2026-10-18T02:48:30Z",
+          "occurredAt": "2026-10-18T03:21:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
-          "freshnessBasis": "— Nathan Hayes accounted for three touchdowns and Jackson Williams returned a missed field-goal attempt 100 yards for a touchdown to help North Dakota State beat Nevada 31-17 on...",
+          "ageHours": 0.15,
+          "freshnessBasis": "— Kaden Anderson threw a career-high five touchdown passes, Tarleton State dominated the fourth quarter, and the Texans defeated Central Arkansas 49-35 to win their homecoming game on Saturday night with an eye toward the top of the Football...",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401864520"
+            "http://www.espn.com/ncf/recap?gameId=401868134"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401864520"
+              "url": "http://www.espn.com/ncf/recap?gameId=401868134"
             }
           ],
-          "id": "a415-d6393ed9aba4aa13",
+          "id": "a415-599800579c625897",
           "feedRank": 33,
-          "compactHeadline": "North Dakota State’s special teams help Bison beat Nevada 31-17"
+          "compactHeadline": "Kaden Anderson's 5 TD passes power Tarleton State to 49-35 win over Central Arkansas"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-3aa0bd57dd31300d"
+            "cand-bb10cb9b68d97c25"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Jaden Craig threw for 294 yards with two touchdowns and TCU beat instate Big 12 rival Baylor 17-6 on Saturday night in the Horned Frogs' highest-scoring game against a Power Four opponent this season.",
-          "text": "Jaden Craig threw for 294 yards with two touchdowns and TCU beat instate Big 12 rival Baylor 17-6 on Saturday night in the Horned Frogs' highest-scoring game against a Power Four opponent this season.",
+          "headline": "Adam Jones ran for three touchdowns and Montana State broke it open in the second quarter and the Bobcats cruised to a 56-20 win over Eastern Washington on Saturday.",
+          "text": "Adam Jones ran for three touchdowns and Montana State broke it open in the second quarter and the Bobcats cruised to a 56-20 win over Eastern Washington on Saturday.",
           "entities": [],
-          "occurredAt": "2026-10-18T02:48:27Z",
+          "occurredAt": "2026-10-18T03:14:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
-          "freshnessBasis": "— Jaden Craig threw for 294 yards with two touchdowns and TCU beat instate Big 12 rival Baylor 17-6 on Saturday night in the Horned Frogs' highest-scoring game against a Power Four opponent this season.",
+          "ageHours": 0.26,
+          "freshnessBasis": "— Adam Jones ran for three touchdowns and Montana State broke it open in the second quarter and the Bobcats cruised to a 56-20 win over Eastern Washington on Saturday.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856832"
+            "http://www.espn.com/ncf/recap?gameId=401868088"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856832"
+              "url": "http://www.espn.com/ncf/recap?gameId=401868088"
             }
           ],
-          "id": "a415-0929d98d72b5617b",
+          "id": "a415-ec1cd76b4ed07895",
           "feedRank": 34,
-          "compactHeadline": "Jaden Craig throws 2 TDs as TCU beats Baylor 17-6 to end the Bears' 4-game winning streak"
+          "compactHeadline": "Jones rambles for 3TDs and Montana State dismantles Eastern Washington 56-20"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-bd42a7515b02649d"
+            "cand-24afb0fc25fa6e01"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Ty Pennington threw for 277 yards, including two touchdowns, and Northern Arizona broke loose in the fourth quarter to defeat Portland State 38-25 on Saturday night in the Lumberjacks' homecoming game.",
-          "text": "Ty Pennington threw for 277 yards, including two touchdowns, and Northern Arizona broke loose in the fourth quarter to defeat Portland State 38-25 on Saturday night in the Lumberjacks' homecoming game.",
+          "headline": "Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night and snap the Razorbacks' 14-game Southeastern Conference losing streak.",
+          "text": "Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night and snap the Razorbacks' 14-game Southeastern Conference losing streak.",
           "entities": [],
-          "occurredAt": "2026-10-18T02:36:27Z",
+          "occurredAt": "2026-10-18T03:10:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
-          "freshnessBasis": "— Ty Pennington threw for 277 yards, including two touchdowns, and Northern Arizona broke loose in the fourth quarter to defeat Portland State 38-25 on Saturday night in the Lumberjacks' homecoming game.",
+          "ageHours": 0.33,
+          "freshnessBasis": "— Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night and snap the Razorbacks' 14-game Southeastern Conference losing streak.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401868125"
+            "http://www.espn.com/ncf/recap?gameId=401856726"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401868125"
+              "url": "http://www.espn.com/ncf/recap?gameId=401856726"
             }
           ],
-          "id": "a415-bc81a0b63e64be9f",
+          "id": "a415-635f3054d9edae3f",
           "feedRank": 35,
-          "compactHeadline": "Ty Pennington throws for 277 and Northern Arizona erupts in 4th quarter to top Portland State 38-25"
+          "compactHeadline": "Arkansas snaps 14-game SEC skid with 31-21 road win over Vanderbilt"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 94,
+    "freshCandidateCount": 96,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
