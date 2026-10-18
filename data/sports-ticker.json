@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-18T03:30:34Z",
+  "generatedAt": "2026-10-18T04:00:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "6d6f722d50858f810fd677738057d363837d00ea2692ea3ffa18e3afad21a356",
+  "sourceCandidateHash": "cdeef3f475a25900a5c6906902431f1e432f1c84174c9eb603b845ea3219e6b2",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T03:24:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.6,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,41 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-3d5e81e20f905931"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jonathan Aranda's single led to two runs in the seventh inning when the ball got by right fielder Chase DeLauter, Nick Martinez pitched 5 1/3 innings for his first postseason win and the Tampa Bay Rays defeated the Cleveland Guardians 7-3 Saturday...",
+          "text": "Jonathan Aranda's single led to two runs in the seventh inning when the ball got by right fielder Chase DeLauter, Nick Martinez pitched 5 1/3 innings for his first postseason win and the Tampa Bay Rays defeated the Cleveland Guardians 7-3 Saturday...",
+          "entities": [],
+          "occurredAt": "2026-10-18T03:57:28Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "— Jonathan Aranda's single led to two runs in the seventh inning when the ball got by right fielder Chase DeLauter, Nick Martinez pitched 5 1/3 innings for his first postseason win and the Tampa Bay Rays defeated the Cleveland Guardians 7-3 Saturday...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401908027",
+            "https://www.espn.com/mlb/story/_/id/50207772/rays-capitalize-guardians-errors-game-4-even-alcs"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908027"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50207772/rays-capitalize-guardians-errors-game-4-even-alcs"
+            }
+          ],
+          "id": "a415-c7e93624cccb2058",
+          "feedRank": 2,
+          "compactHeadline": "Rays capitalize on Guardians errors, win 7-3 to tie ALCS at 2-2"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-06d789c2647d081a"
           ],
           "type": "NEWS",
@@ -52,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:38:24Z",
           "timePrecision": "exact",
-          "ageHours": 10.87,
+          "ageHours": 11.37,
           "freshnessBasis": "Game 4 of the ALCS was postponed late Friday night due to rain, creating an unusual set of circumstances for the Guardians and Rays.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +101,11 @@
             }
           ],
           "id": "a415-e2e08d8d08c8ba0b",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Rain postpones ALCS Game 4 to Saturday; Rays, Guardians to play Game 5 on Sunday"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-4f607ff38c4dce15"
           ],
@@ -81,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T08:02:27Z",
           "timePrecision": "exact",
-          "ageHours": 19.47,
+          "ageHours": 19.97,
           "freshnessBasis": "Tampa Bay Rays (98-64, first in the AL East during the regular season) vs. Cleveland Guardians (85-77, first in the AL Central during the regular season)",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +130,8 @@
             }
           ],
           "id": "a415-a782e032d1e56829",
-          "feedRank": 3,
-          "compactHeadline": "Guardians bring 2-1 ALCS lead into Game 4 against Rays"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-1c85877caf8b5542"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The championship round schedule, lines and odds to win.",
-          "text": "The championship round schedule, lines and odds to win.",
-          "entities": [],
-          "occurredAt": "2026-10-17T15:21:42Z",
-          "timePrecision": "exact",
-          "ageHours": 12.15,
-          "freshnessBasis": "The championship round schedule, lines and odds to win.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/espn/betting/story/_/id/50132233/2026-mlb-playoffs-alcs-nlcs-betting-odds-spreads"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/espn/betting/story/_/id/50132233/2026-mlb-playoffs-alcs-nlcs-betting-odds-spreads"
-            }
-          ],
-          "id": "a415-c66ee13252958aba",
           "feedRank": 4,
-          "compactHeadline": "AL, NL Championship Series odds: Guardians now AL faves to reach World Series"
+          "compactHeadline": "Guardians bring 2-1 ALCS lead into Game 4 against Rays"
         }
       ]
     },
@@ -145,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:58:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.54,
+          "ageHours": 1.05,
           "freshnessBasis": "John Beake, who was instrumental in the trade for John Elway and helped guide the Denver Broncos to back-to-back Super Bowl titles in the late 1990s, has died at age 87, the team said Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -174,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T22:48:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.71,
+          "ageHours": 5.21,
           "freshnessBasis": "The Eagles have placed Jalen Hurts on injured reserve after consultations with numerous doctors and experts, sources told ESPN and NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +209,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T20:00:08Z",
           "timePrecision": "exact",
-          "ageHours": 7.51,
+          "ageHours": 8.01,
           "freshnessBasis": "The Pittsburgh Steelers placed Roman Wilson on the injured reserve list, their second key receiver lost to injury in as many weeks.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +238,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T17:50:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.67,
+          "ageHours": 10.18,
           "freshnessBasis": "Commanders running back Jacory Croskey-Merritt won't play against the 49ers because of a groin injury, coach Dan Quinn said.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:08:46Z",
           "timePrecision": "exact",
-          "ageHours": 11.36,
+          "ageHours": 11.87,
           "freshnessBasis": "The Eagles are not planning to put Jalen Hurts on injured reserve, sources told ESPN, even as he remains sidelined indefinitely with a superficial blood clot.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T20:14:34Z",
           "timePrecision": "exact",
-          "ageHours": 7.27,
+          "ageHours": 7.77,
           "freshnessBasis": "Patriots wide receiver A.J. Brown was activated from injured reserve Saturday after missing the past four games with a right high ankle sprain, the team announced.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:23:33Z",
           "timePrecision": "exact",
-          "ageHours": 11.12,
+          "ageHours": 11.62,
           "freshnessBasis": "The 76ers, dealing with injuries in the frontcourt, have converted center Tacko Fall to a two-way contract.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T01:41:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.82,
+          "ageHours": 2.33,
           "freshnessBasis": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +389,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:55:06Z",
           "timePrecision": "exact",
-          "ageHours": 10.59,
+          "ageHours": 11.1,
           "freshnessBasis": "The Nuggets will be without Julian Strawther indefinitely after the versatile 24-year-old guard/forward sprained his left knee while playing a preseason game at the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T16:22:59Z",
           "timePrecision": "exact",
-          "ageHours": 11.13,
+          "ageHours": 11.63,
           "freshnessBasis": "Without VJ Edgecombe, who was held out of Friday night's 125-120 loss to the Celtics, 76ers coach Nick Nurse gave the closest glimpse of what his team may look like this season, including LeBron James and Joel Embiid playing preseason highs in minutes.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T14:36:47Z",
           "timePrecision": "exact",
-          "ageHours": 12.9,
+          "ageHours": 13.4,
           "freshnessBasis": "The Spurs will start guards De'Aaron Fox, Stephon Castle and Dylan Harper alongside Devin Vassell and Victor Wembanyama when they face the Thunder in Tuesday's season opener.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:45:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.26,
           "freshnessBasis": "— Kent Johnson scored with 1:33 remaining on the clock in overtime, Jet Greaves got his fifth career shutout and the Columbus Blue Jackets beat the New York Rangers 1-0 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +511,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:42:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.8,
+          "ageHours": 1.31,
           "freshnessBasis": "— Filip Forsberg scored a goal and added an assist to lead the Nashville Predators to a 5-2 victory over the St. Louis Blues on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +540,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:31:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.99,
+          "ageHours": 1.49,
           "freshnessBasis": "— Matvei Michkov and Porter Martone each had a goal and an assist, and the Philadelphia Flyers beat the Ottawa Senators 3-1 on Saturday night for their first victory this season.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +569,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:25:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.09,
+          "ageHours": 1.59,
           "freshnessBasis": "— Jake Oettinger made 19 saves for his NHL-leading third shutout in six games, Arttu Hyry scored twice and the Dallas Stars beat the Chicago Blackhawks 4-0 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:07:29Z",
           "timePrecision": "exact",
-          "ageHours": 1.38,
+          "ageHours": 1.89,
           "freshnessBasis": "— Lucas Raymond scored the only goal during the shootout and the Detroit Red Wings rallied for a 4-3 victory over the San Jose Sharks on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T01:57:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.55,
+          "ageHours": 2.06,
           "freshnessBasis": "— Bo Horvat scored the winner and added an assist to help the New York Islanders beat the Toronto Maple Leafs 4-1 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +662,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:19:44Z",
           "timePrecision": "exact",
-          "ageHours": 1.18,
+          "ageHours": 1.69,
           "freshnessBasis": "Emi Martínez said he would be \"back in a few weeks\" after undergoing surgery following a head injury suffered during Chelsea's Premier League win over Everton on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +691,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T18:31:34Z",
           "timePrecision": "exact",
-          "ageHours": 8.98,
+          "ageHours": 9.49,
           "freshnessBasis": "Andoni Iraola questioned the decision to overturn a penalty awarded to Liverpool in the first half of their 2-1 win at Brentford and shared injury concerns over Dominic Szoboszlai and Jeremie Frimpong after both were forced off.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T14:18:11Z",
           "timePrecision": "exact",
-          "ageHours": 13.21,
+          "ageHours": 13.71,
           "freshnessBasis": "Pedro Neto scored twice in the second half to guide Chelsea to a 2-0 win at Everton on Saturday in a Premier League match marred by a serious-looking head injury to Chelsea goalkeeper Emi Martínez.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T20:59:59Z",
           "timePrecision": "exact",
-          "ageHours": 6.51,
+          "ageHours": 7.02,
           "freshnessBasis": "Unai Emery praised Johan Manzambi after his goal helped Aston Villa claim a 1-0 win over Newcastle at St James' Park.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T18:54:48Z",
           "timePrecision": "exact",
-          "ageHours": 8.6,
+          "ageHours": 9.1,
           "freshnessBasis": "Enzo Maresca has played down fears over Erling Haaland's fitness after the striker limped off at the end of Manchester City's 3-2 win over Ipswich.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-10-17T18:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 8.8,
+          "ageHours": 9.3,
           "freshnessBasis": "Johan Manzambi scored the only goal of the game as Aston Villa clinched a 1-0 win over Newcastle at St James' Park.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.27,
           "freshnessBasis": "Antoine Griezmann had two goals and an assist, Martín Ojeda added a goal and an assist, and Orlando City beat D.C. United 3-1 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:49:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.68,
+          "ageHours": 1.18,
           "freshnessBasis": "Lionel Messi scored two scintillating second-half solo goals to take his MLS-leading tally to 25 as Inter Miami brushed aside hosts Atlanta United 3-1 on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T03:05:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.92,
           "freshnessBasis": "Florida State lost its top running back shortly before halftime versus Miami on Saturday after Ousmane Kromah had to be carted off the field with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -920,6 +926,93 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-24afb0fc25fa6e01"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night, snapping the Razorbacks' 14-game Southeastern Conference losing streak.",
+          "text": "Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night, snapping the Razorbacks' 14-game Southeastern Conference losing streak.",
+          "entities": [],
+          "occurredAt": "2026-10-18T03:57:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "— Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night, snapping the Razorbacks' 14-game Southeastern Conference losing streak.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401856726"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401856726"
+            }
+          ],
+          "id": "a415-635f3054d9edae3f",
+          "feedRank": 31,
+          "compactHeadline": "Arkansas snaps 14-game SEC skid with 31-21 road win over Vanderbilt"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-f06e285c46084cf2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Kentucky pulled even with No. 1 Georgia for the SEC lead after rallying to beat Oklahoma 21-13 on Saturday night.",
+          "text": "Kentucky pulled even with No. 1 Georgia for the SEC lead after rallying to beat Oklahoma 21-13 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-10-18T03:52:58Z",
+          "timePrecision": "exact",
+          "ageHours": 0.13,
+          "freshnessBasis": "Kentucky pulled even with No. 1 Georgia for the SEC lead after rallying to beat Oklahoma 21-13 on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50207703/kentucky-grabs-share-sec-lead-comeback-win-oklahoma"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50207703/kentucky-grabs-share-sec-lead-comeback-win-oklahoma"
+            }
+          ],
+          "id": "a415-b5491ef916f37517",
+          "feedRank": 32,
+          "compactHeadline": "No. 15 Kentucky grabs share of SEC lead with comeback win over Oklahoma"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-7f57d526a7724cc7"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Stanford running back Micah Ford broke off for a 81-yard touchdown run in the final quarter to score his fourth touchdown of the game and cement Stanford's 34-7 rout over Elon.",
+          "text": "Stanford running back Micah Ford broke off for a 81-yard touchdown run in the final quarter to score his fourth touchdown of the game and cement Stanford's 34-7 rout over Elon.",
+          "entities": [],
+          "occurredAt": "2026-10-18T03:48:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.21,
+          "freshnessBasis": "— Stanford running back Micah Ford broke off for a 81-yard touchdown run in the final quarter to score his fourth touchdown of the game and cement Stanford's 34-7 rout over Elon.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858262"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858262"
+            }
+          ],
+          "id": "a415-62339791484411d5",
+          "feedRank": 33,
+          "compactHeadline": "Micah Ford rushes for 4 TDs as Stanford dominates Elon, 34-7"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-5660cc6bbcdbf162"
           ],
           "type": "RESULT",
@@ -927,9 +1020,9 @@
           "headline": "Darian Mensah threw for 326 yards and three touchdowns, and No. 3 Miami held on to beat archrival Florida State 43-35 in double overtime Saturday night.",
           "text": "Darian Mensah threw for 326 yards and three touchdowns, and No. 3 Miami held on to beat archrival Florida State 43-35 in double overtime Saturday night.",
           "entities": [],
-          "occurredAt": "2026-10-18T03:27:44Z",
+          "occurredAt": "2026-10-18T03:41:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.32,
           "freshnessBasis": "Darian Mensah threw for 326 yards and three touchdowns, and No. 3 Miami held on to beat archrival Florida State 43-35 in double overtime Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -943,124 +1036,37 @@
             }
           ],
           "id": "a415-825552f53755d34c",
-          "feedRank": 31,
-          "compactHeadline": "Miami holds off Florida State in double-overtime thriller"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-e0b4c23fc71d02c9"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Conner Weigman threw for 343 yards and tied a career high with five touchdown passes to help No. 20 Houston beat No. 18 Oklahoma State 35-32 on Saturday night for its fourth straight victory.",
-          "text": "Conner Weigman threw for 343 yards and tied a career high with five touchdown passes to help No. 20 Houston beat No. 18 Oklahoma State 35-32 on Saturday night for its fourth straight victory.",
-          "entities": [],
-          "occurredAt": "2026-10-18T03:25:40Z",
-          "timePrecision": "exact",
-          "ageHours": 0.08,
-          "freshnessBasis": "— Conner Weigman threw for 343 yards and tied a career high with five touchdown passes to help No. 20 Houston beat No. 18 Oklahoma State 35-32 on Saturday night for its fourth straight victory.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856831"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856831"
-            }
-          ],
-          "id": "a415-a19e71b6f13f000e",
-          "feedRank": 32,
-          "compactHeadline": "Weigman throws 5 TD passes to lead No. 20 Houston to a 35-32 win over No. 18 Oklahoma State"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-c01c19c5e1fb1057"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Kaden Anderson threw a career-high five touchdown passes, Tarleton State dominated the fourth quarter, and the Texans defeated Central Arkansas 49-35 to win their homecoming game on Saturday night with an eye toward the top of the Football...",
-          "text": "Kaden Anderson threw a career-high five touchdown passes, Tarleton State dominated the fourth quarter, and the Texans defeated Central Arkansas 49-35 to win their homecoming game on Saturday night with an eye toward the top of the Football...",
-          "entities": [],
-          "occurredAt": "2026-10-18T03:21:27Z",
-          "timePrecision": "exact",
-          "ageHours": 0.15,
-          "freshnessBasis": "— Kaden Anderson threw a career-high five touchdown passes, Tarleton State dominated the fourth quarter, and the Texans defeated Central Arkansas 49-35 to win their homecoming game on Saturday night with an eye toward the top of the Football...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401868134"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401868134"
-            }
-          ],
-          "id": "a415-599800579c625897",
-          "feedRank": 33,
-          "compactHeadline": "Kaden Anderson's 5 TD passes power Tarleton State to 49-35 win over Central Arkansas"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-bb10cb9b68d97c25"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Adam Jones ran for three touchdowns and Montana State broke it open in the second quarter and the Bobcats cruised to a 56-20 win over Eastern Washington on Saturday.",
-          "text": "Adam Jones ran for three touchdowns and Montana State broke it open in the second quarter and the Bobcats cruised to a 56-20 win over Eastern Washington on Saturday.",
-          "entities": [],
-          "occurredAt": "2026-10-18T03:14:42Z",
-          "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "— Adam Jones ran for three touchdowns and Montana State broke it open in the second quarter and the Bobcats cruised to a 56-20 win over Eastern Washington on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401868088"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401868088"
-            }
-          ],
-          "id": "a415-ec1cd76b4ed07895",
           "feedRank": 34,
-          "compactHeadline": "Jones rambles for 3TDs and Montana State dismantles Eastern Washington 56-20"
+          "compactHeadline": "Miami holds off Florida State in double-overtime thriller"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-24afb0fc25fa6e01"
+            "cand-b532594559a57d79"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night and snap the Razorbacks' 14-game Southeastern Conference losing streak.",
-          "text": "Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night and snap the Razorbacks' 14-game Southeastern Conference losing streak.",
+          "headline": "Lincoln Kienholz ran for two scores and passed for another, Keyjuan Brown rushed for two, and Louisville defeated Syracuse 34-26 Saturday.",
+          "text": "Lincoln Kienholz ran for two scores and passed for another, Keyjuan Brown rushed for two, and Louisville defeated Syracuse 34-26 Saturday.",
           "entities": [],
-          "occurredAt": "2026-10-18T03:10:33Z",
+          "occurredAt": "2026-10-18T03:39:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
-          "freshnessBasis": "— Miguel Mitchell and Joker Johnson each had an interception to help Arkansas beat Vanderbilt 31-21 on Saturday night and snap the Razorbacks' 14-game Southeastern Conference losing streak.",
+          "ageHours": 0.36,
+          "freshnessBasis": "— Lincoln Kienholz ran for two scores and passed for another, Keyjuan Brown rushed for two, and Louisville defeated Syracuse 34-26 Saturday.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856726"
+            "http://www.espn.com/ncf/recap?gameId=401858265"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856726"
+              "url": "http://www.espn.com/ncf/recap?gameId=401858265"
             }
           ],
-          "id": "a415-635f3054d9edae3f",
+          "id": "a415-a99481b4cfb5e24e",
           "feedRank": 35,
-          "compactHeadline": "Arkansas snaps 14-game SEC skid with 31-21 road win over Vanderbilt"
+          "compactHeadline": "Lincoln Kienholz accounts for three scores, leading Louisville to 34-26 win over Syracuse"
         }
       ]
     }
@@ -1085,7 +1091,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 96,
+    "freshCandidateCount": 95,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
