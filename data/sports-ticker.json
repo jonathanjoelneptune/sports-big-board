@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-19T00:01:30Z",
+  "generatedAt": "2026-10-19T00:30:50Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "20702009d531048997eb225f69d49fed58d1ed779079995af77ea66e641b2062",
+  "sourceCandidateHash": "1fbc102e275271117e7f715dd8a56d0aa8ad34fc303d205fb568cc6c48db2ac0",
   "leagues": [
     {
       "league": "MLB",
@@ -18,16 +18,18 @@
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "Junior Caminero, Yandy Diaz and Jonathan Aranda combined to go 6-for-14 with five RBIs as the Rays tied the ALCS at 2-2 with Saturday's 7-3 win over the Guardians.",
-          "text": "Junior Caminero, Yandy Diaz and Jonathan Aranda combined to go 6-for-14 with five RBIs as the Rays tied the ALCS at 2-2 with Saturday's 7-3 win over the Guardians.",
+          "headline": "Drew Rasmussen allowed one run over seven innings for his second postseason win, Tampa Bay's offense kept on constant pressure and the Rays beat the Guardians 3-1 Sunday night to take a 3-2 lead in the ALCS.",
+          "text": "Drew Rasmussen allowed one run over seven innings for his second postseason win, Tampa Bay's offense kept on constant pressure and the Rays beat the Guardians 3-1 Sunday night to take a 3-2 lead in the ALCS.",
           "entities": [],
           "occurredAt": "2026-10-18T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.51,
           "freshnessBasis": "Highlightly final: Tampa Bay Rays 3, Cleveland Guardians 1.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50214985/rays-beat-guardians-game-5-take-3-2-alcs-lead",
+            "http://www.espn.com/mlb/recap?gameId=401930515",
             "https://www.espn.com/mlb/story/_/id/50207772/rays-capitalize-guardians-errors-game-4-even-alcs",
             "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
             "http://www.espn.com/mlb/recap?gameId=401908027"
@@ -37,6 +39,16 @@
               "provider": "Highlightly",
               "sourceId": "highlightly-baseball-2026-10-18",
               "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50214985/rays-beat-guardians-game-5-take-3-2-alcs-lead"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401930515"
             },
             {
               "provider": "ESPN",
@@ -68,9 +80,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-18T23:59:03Z",
+          "occurredAt": "2026-10-19T00:09:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.36,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -99,7 +111,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T18:50:48Z",
           "timePrecision": "exact",
-          "ageHours": 5.18,
+          "ageHours": 5.67,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -128,7 +140,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T23:16:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.24,
           "freshnessBasis": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
           "status": "active",
           "sourceUrls": [
@@ -163,7 +175,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T20:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.94,
+          "ageHours": 4.43,
           "freshnessBasis": "Highlightly final: Arizona Cardinals 18, Los Angeles Rams 16.",
           "status": "active",
           "sourceUrls": [
@@ -198,7 +210,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.51,
           "freshnessBasis": "Highlightly final: Baltimore Ravens 10, Cleveland Browns 13.",
           "status": "active",
           "sourceUrls": [
@@ -227,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.61,
+          "ageHours": 4.1,
           "freshnessBasis": "Highlightly final: Los Angeles Chargers 6, Kansas City Chiefs 22.",
           "status": "active",
           "sourceUrls": [
@@ -262,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T13:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.53,
+          "ageHours": 11.01,
           "freshnessBasis": "Highlightly final: Houston Texans 34, Jacksonville Jaguars 31.",
           "status": "active",
           "sourceUrls": [
@@ -291,7 +303,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.61,
+          "ageHours": 4.1,
           "freshnessBasis": "Highlightly final: Buffalo Bills 33, Las Vegas Raiders 30.",
           "status": "active",
           "sourceUrls": [
@@ -326,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.51,
           "freshnessBasis": "Highlightly final: Pittsburgh Steelers 26, Tampa Bay Buccaneers 19.",
           "status": "active",
           "sourceUrls": [
@@ -365,9 +377,9 @@
           "headline": "Kings guard Ben Simmons has sustained a torn Achilles tendon and will undergo surgery, the team announced Sunday, an injury that is likely season-ending for the 30-year-old veteran who authored an impressive training camp on short notice for Sacramento.",
           "text": "Kings guard Ben Simmons has sustained a torn Achilles tendon and will undergo surgery, the team announced Sunday, an injury that is likely season-ending for the 30-year-old veteran who authored an impressive training camp on short notice for Sacramento.",
           "entities": [],
-          "occurredAt": "2026-10-18T23:47:46Z",
+          "occurredAt": "2026-10-19T00:20:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
+          "ageHours": 0.17,
           "freshnessBasis": "Kings guard Ben Simmons has sustained a torn Achilles tendon and will undergo surgery, the team announced Sunday, an injury that is likely season-ending for the 30-year-old veteran who authored an impressive training camp on short notice for Sacramento.",
           "status": "active",
           "sourceUrls": [
@@ -394,9 +406,9 @@
           "headline": "Steve Kerr said franchise superstar Stephen Curry is \"fine\" after he limped off the practice court with a right ankle issue.",
           "text": "Steve Kerr said franchise superstar Stephen Curry is \"fine\" after he limped off the practice court with a right ankle issue.",
           "entities": [],
-          "occurredAt": "2026-10-18T23:55:00Z",
+          "occurredAt": "2026-10-19T00:01:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.49,
           "freshnessBasis": "Steve Kerr said franchise superstar Stephen Curry is \"fine\" after he limped off the practice court with a right ankle issue.",
           "status": "active",
           "sourceUrls": [
@@ -425,7 +437,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T01:41:18Z",
           "timePrecision": "exact",
-          "ageHours": 22.34,
+          "ageHours": 22.83,
           "freshnessBasis": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -489,7 +501,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.51,
           "freshnessBasis": "Highlightly final: Edmonton Oilers 6, Utah Mammoth 2.",
           "status": "active",
           "sourceUrls": [
@@ -524,7 +536,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.51,
           "freshnessBasis": "Highlightly final: Pittsburgh Penguins 2, Vegas Golden Knights 6.",
           "status": "active",
           "sourceUrls": [
@@ -559,7 +571,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.51,
           "freshnessBasis": "Highlightly final: Boston Bruins 4, Los Angeles Kings 1.",
           "status": "active",
           "sourceUrls": [
@@ -594,7 +606,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T18:14:24Z",
           "timePrecision": "exact",
-          "ageHours": 5.79,
+          "ageHours": 6.27,
           "freshnessBasis": "Carter Verhaeghe and Sam Bennett each scored three goals as the Panthers became first team in NHL history with natural hat tricks in three straight games during an 8-3 win over the Kraken.",
           "status": "active",
           "sourceUrls": [
@@ -623,7 +635,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T08:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.83,
+          "ageHours": 16.32,
           "freshnessBasis": "Carolina Hurricanes (7-1-1, in the Metropolitan Division) vs. Calgary Flames (1-6, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -658,7 +670,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T12:28:29Z",
           "timePrecision": "exact",
-          "ageHours": 11.55,
+          "ageHours": 12.04,
           "freshnessBasis": "Emi Martínez said he would be \"back in a few weeks\" after undergoing surgery following a head injury suffered during Chelsea's Premier League win over Everton on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -687,7 +699,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T12:24:54Z",
           "timePrecision": "exact",
-          "ageHours": 11.61,
+          "ageHours": 12.1,
           "freshnessBasis": "Dejan Kulusevski will return to Tottenham's matchday squad for the first time in more than 500 days for Monday's visit of Coventry.",
           "status": "active",
           "sourceUrls": [
@@ -716,7 +728,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T19:39:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.85,
           "freshnessBasis": "Manchester United were already suffering from their worst start to a Premier League season since 1986. A 1-1 draw with Leeds won't help.",
           "status": "active",
           "sourceUrls": [
@@ -745,7 +757,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T19:48:31Z",
           "timePrecision": "exact",
-          "ageHours": 4.22,
+          "ageHours": 4.71,
           "freshnessBasis": "Defending Premier League champions Arsenal put in a weak attacking performance at Nottingham Forest -- but maybe that's just fine.",
           "status": "active",
           "sourceUrls": [
@@ -774,7 +786,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T21:55:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.1,
+          "ageHours": 2.59,
           "freshnessBasis": "Roberto De Zerbi has revealed phones were banned from meals during Tottenham's warm weather training camp in Marbella in his latest attempt to turn a vastly-assembled squad into a team.",
           "status": "active",
           "sourceUrls": [
@@ -790,6 +802,35 @@
           "id": "a415-08e9cd6d08b5befb",
           "feedRank": 23,
           "compactHeadline": "Roberto De Zerbi on latest Tottenham training ploy: 'We removed phones' from meals"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-2d5a67bb4164d405"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Leeds boss Daniel Farke has said that striker Dominic Calvert-Lewin showed \"respect\" after not taking the knee prior to Leeds United's draw with Manchester United on Sunday.",
+          "text": "Leeds boss Daniel Farke has said that striker Dominic Calvert-Lewin showed \"respect\" after not taking the knee prior to Leeds United's draw with Manchester United on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-10-18T20:21:05Z",
+          "timePrecision": "exact",
+          "ageHours": 4.16,
+          "freshnessBasis": "Leeds boss Daniel Farke has said that striker Dominic Calvert-Lewin showed \"respect\" after not taking the knee prior to Leeds United's draw with Manchester United on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50212578/dominic-calvert-lewin-showed-respect-standing-others-took-knee-racism-campaign-daniel-farke"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50212578/dominic-calvert-lewin-showed-respect-standing-others-took-knee-racism-campaign-daniel-farke"
+            }
+          ],
+          "id": "a415-2ab64b5dfbf547c1",
+          "feedRank": 24,
+          "compactHeadline": "Dominic Calvert-Lewin 'showed respect by standing' as others took knee for racism campaign - Daniel Farke"
         }
       ]
     },
@@ -809,7 +850,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.51,
           "freshnessBasis": "Highlightly final: Columbus Crew 2, FC Cincinnati 0.",
           "status": "active",
           "sourceUrls": [
@@ -823,7 +864,7 @@
             }
           ],
           "id": "a415-0e5b96037a2ea033",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Columbus Crew beat FC Cincinnati 2-0"
         },
         {
@@ -838,7 +879,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.01,
           "freshnessBasis": "Highlightly final: Colorado Rapids 0, Portland Timbers 0.",
           "status": "active",
           "sourceUrls": [
@@ -852,7 +893,7 @@
             }
           ],
           "id": "a415-a91661c12552c6ac",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Portland Timbers and Colorado Rapids finished tied 0-0"
         },
         {
@@ -867,7 +908,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.01,
           "freshnessBasis": "Highlightly final: Nashville SC 1, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -881,7 +922,7 @@
             }
           ],
           "id": "a415-3a919ce3bf233b21",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "San Jose Earthquakes and Nashville SC finished tied 1-1"
         },
         {
@@ -896,7 +937,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.01,
           "freshnessBasis": "Highlightly final: Montréal Impact 1, Seattle Sounders 1.",
           "status": "active",
           "sourceUrls": [
@@ -910,7 +951,7 @@
             }
           ],
           "id": "a415-9caa0a8ad8719c3e",
-          "feedRank": 27,
+          "feedRank": 28,
           "compactHeadline": "Seattle Sounders and Montréal Impact finished tied 1-1"
         },
         {
@@ -925,7 +966,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.01,
           "freshnessBasis": "Highlightly final: San Diego 2, Los Angeles Galaxy 2.",
           "status": "active",
           "sourceUrls": [
@@ -939,37 +980,8 @@
             }
           ],
           "id": "a415-6945ea792d7d0f15",
-          "feedRank": 28,
-          "compactHeadline": "Los Angeles Galaxy and San Diego finished tied 2-2"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ecc4b2bec1a0f041"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Real Salt Lake 3, Sporting Kansas City 1.",
-          "text": "Highlightly final: Real Salt Lake 3, Sporting Kansas City 1.",
-          "entities": [],
-          "occurredAt": "2026-10-18T00:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Real Salt Lake 3, Sporting Kansas City 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-10-17",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-e5071e9076f8ba4e",
           "feedRank": 29,
-          "compactHeadline": "Real Salt Lake beat Sporting Kansas City 3-1"
+          "compactHeadline": "Los Angeles Galaxy and San Diego finished tied 2-2"
         }
       ]
     },
@@ -989,7 +1001,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T20:48:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.22,
+          "ageHours": 3.71,
           "freshnessBasis": "Florida State running back Ousmane Kromah will miss the rest of the season after injuring his left ankle in Saturday's double-overtime loss to Miami.",
           "status": "active",
           "sourceUrls": [
@@ -1009,6 +1021,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-aed4d5bbab1faac4"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
+          "text": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
+          "entities": [],
+          "occurredAt": "2026-10-19T00:27:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.05,
+          "freshnessBasis": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50214548/vols-fined-500k-fans-storm-field-win-alabama"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50214548/vols-fined-500k-fans-storm-field-win-alabama"
+            }
+          ],
+          "id": "a415-ebb283406768bc64",
+          "feedRank": 31,
+          "compactHeadline": "Tennessee fined $500K after fans storm field following win over Alabama"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-1ae85ab6bf709748"
           ],
           "type": "RANKING",
@@ -1018,7 +1059,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T19:06:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.92,
+          "ageHours": 5.41,
           "freshnessBasis": "A look at the AP rankings after a wild weekend, along with a key stat and what's ahead for each team.",
           "status": "active",
           "sourceUrls": [
@@ -1032,37 +1073,8 @@
             }
           ],
           "id": "a415-40871d3337d57f12",
-          "feedRank": 31,
-          "compactHeadline": "AP college football Week 7 poll reaction: What's next for Top 25"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-946de850679fdebe"
-          ],
-          "type": "DISCIPLINE",
-          "priority": 64,
-          "headline": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
-          "text": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
-          "entities": [],
-          "occurredAt": "2026-10-18T23:54:08Z",
-          "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50214548/vols-fined-500k-fans-storm-field-win-alabama"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50214548/vols-fined-500k-fans-storm-field-win-alabama"
-            }
-          ],
-          "id": "a415-2d803213c812b3ea",
           "feedRank": 32,
-          "compactHeadline": "Tennessee fined $500K after fans storm field following Alabama win"
+          "compactHeadline": "AP college football Week 7 poll reaction: What's next for Top 25"
         },
         {
           "rank": 4,
@@ -1076,7 +1088,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.01,
           "freshnessBasis": "Highlightly final: Wake Forest Demon Deacons 41, California Golden Bears 7.",
           "status": "active",
           "sourceUrls": [
@@ -1105,7 +1117,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T02:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.78,
+          "ageHours": 22.26,
           "freshnessBasis": "Highlightly final: Utah Utes 27, Colorado Buffaloes 24.",
           "status": "active",
           "sourceUrls": [
@@ -1134,7 +1146,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T21:08:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.88,
+          "ageHours": 3.36,
           "freshnessBasis": "Bill Connelly makes sense of an upset-filled Saturday the likes of which college football has never seen.",
           "status": "active",
           "sourceUrls": [
