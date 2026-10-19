@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-18T23:30:35Z",
+  "generatedAt": "2026-10-19T00:01:30Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "db4f60e1c903d0a2a119b90b4319e0dcc6901c16d418012aa217eeb046ebb52e",
+  "sourceCandidateHash": "20702009d531048997eb225f69d49fed58d1ed779079995af77ea66e641b2062",
   "leagues": [
     {
       "league": "MLB",
@@ -14,92 +14,52 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-75c4c03b05399118"
+            "cand-6899fb5f15fa6985"
           ],
           "type": "PLAYOFF",
           "priority": 76,
-          "headline": "We go inside the numbers on the players doing the most to help their teams win.",
-          "text": "We go inside the numbers on the players doing the most to help their teams win.",
-          "entities": [],
-          "occurredAt": "2026-10-18T18:50:48Z",
-          "timePrecision": "exact",
-          "ageHours": 4.66,
-          "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
-            }
-          ],
-          "id": "a415-46d2b9edd468d9e5",
-          "feedRank": 1,
-          "compactHeadline": "Who is this year's Mr. October? Tracking the playoff MVP for 2026"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-56ae0f3142f5bae8"
-          ],
-          "type": "RESULT",
-          "priority": 70,
           "headline": "Junior Caminero, Yandy Diaz and Jonathan Aranda combined to go 6-for-14 with five RBIs as the Rays tied the ALCS at 2-2 with Saturday's 7-3 win over the Guardians.",
           "text": "Junior Caminero, Yandy Diaz and Jonathan Aranda combined to go 6-for-14 with five RBIs as the Rays tied the ALCS at 2-2 with Saturday's 7-3 win over the Guardians.",
           "entities": [],
-          "occurredAt": "2026-10-18T16:16:45Z",
+          "occurredAt": "2026-10-18T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.23,
-          "freshnessBasis": "Junior Caminero, Yandy Diaz and Jonathan Aranda combined to go 6-for-14 with five RBIs as the Rays tied the ALCS at 2-2 with Saturday's 7-3 win over the Guardians.",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Tampa Bay Rays 3, Cleveland Guardians 1.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50207772/rays-capitalize-guardians-errors-game-4-even-alcs"
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/50207772/rays-capitalize-guardians-errors-game-4-even-alcs",
+            "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league",
+            "http://www.espn.com/mlb/recap?gameId=401908027"
           ],
           "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-10-18",
+              "url": "https://highlightly.net"
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/50207772/rays-capitalize-guardians-errors-game-4-even-alcs"
-            }
-          ],
-          "id": "a415-3b5210ff1489386b",
-          "feedRank": 2,
-          "compactHeadline": "Rays' big three of Caminero, Diaz, Aranda deliver big hits in ALCS Game 4 win"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-0ad3fa0b6f0316f0"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
-          "text": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
-          "entities": [],
-          "occurredAt": "2026-10-18T23:16:40Z",
-          "timePrecision": "exact",
-          "ageHours": 0.23,
-          "freshnessBasis": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50176145/playoffs-cleveland-guardians-run-jose-ramirez-energy"
-          ],
-          "sources": [
+            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50176145/playoffs-cleveland-guardians-run-jose-ramirez-energy"
+              "url": "https://www.espn.com/espn/betting/story/_/id/46793185/espn-mlb-betting-odds-futures-bets-world-series-american-national-league"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401908027"
             }
           ],
-          "id": "a415-3683b0359c66ce19",
-          "feedRank": 3,
-          "compactHeadline": "MLB 2026: How Jose Ramirez's energy is fueling Guardians' run"
+          "id": "a415-73e3db203a88005f",
+          "feedRank": 1,
+          "compactHeadline": "Tampa Bay Rays beat Cleveland Guardians 3-1"
         },
         {
-          "rank": 4,
+          "rank": 2,
           "candidateIds": [
             "cand-37fff10359b2f543"
           ],
@@ -108,9 +68,9 @@
           "headline": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "text": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "entities": [],
-          "occurredAt": "2026-10-18T03:24:46Z",
+          "occurredAt": "2026-10-18T23:59:03Z",
           "timePrecision": "exact",
-          "ageHours": 20.1,
+          "ageHours": 0.04,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -124,66 +84,66 @@
             }
           ],
           "id": "a415-3dc7d494f0f3540b",
-          "feedRank": 4,
+          "feedRank": 2,
           "compactHeadline": "2026 MLB playoffs: Schedule, postseason bracket, standings"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
-            "cand-3d5e81e20f905931"
+            "cand-75c4c03b05399118"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Tampa Bay manager Kevin Cash wasn't concerned about the struggles of his top four hitters through the first three games of the AL Championship Series against the Cleveland Guardians.",
-          "text": "Tampa Bay manager Kevin Cash wasn't concerned about the struggles of his top four hitters through the first three games of the AL Championship Series against the Cleveland Guardians.",
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "We go inside the numbers on the players doing the most to help their teams win.",
+          "text": "We go inside the numbers on the players doing the most to help their teams win.",
           "entities": [],
-          "occurredAt": "2026-10-18T05:36:27Z",
+          "occurredAt": "2026-10-18T18:50:48Z",
           "timePrecision": "exact",
-          "ageHours": 17.9,
-          "freshnessBasis": "— Tampa Bay manager Kevin Cash wasn't concerned about the struggles of his top four hitters through the first three games of the AL Championship Series against the Cleveland Guardians.",
+          "ageHours": 5.18,
+          "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908027"
+            "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908027"
+              "url": "https://www.espn.com/mlb/story/_/id/50110772/2026-mlb-playoffs-mvp-tracker-wpa-leaderboard-win-probability-added-mr-october"
             }
           ],
-          "id": "a415-c7e93624cccb2058",
-          "feedRank": 5,
-          "compactHeadline": "Rays capitalize on Guardians errors, win 7-3 to tie ALCS at 2-2"
+          "id": "a415-46d2b9edd468d9e5",
+          "feedRank": 3,
+          "compactHeadline": "Who is this year's Mr. October? Tracking the playoff MVP for 2026"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
-            "cand-e560150d60f9b8cb"
+            "cand-0ad3fa0b6f0316f0"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Chase DeLauter's error in right field opened the door for the Rays in the pivotal seventh inning, and Tampa Bay went on to win 7-3 to even the ALCS at 2-2.",
-          "text": "Chase DeLauter's error in right field opened the door for the Rays in the pivotal seventh inning, and Tampa Bay went on to win 7-3 to even the ALCS at 2-2.",
+          "headline": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
+          "text": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
           "entities": [],
-          "occurredAt": "2026-10-18T17:20:08Z",
+          "occurredAt": "2026-10-18T23:16:40Z",
           "timePrecision": "exact",
-          "ageHours": 6.17,
-          "freshnessBasis": "Chase DeLauter's error in right field opened the door for the Rays in the pivotal seventh inning, and Tampa Bay went on to win 7-3 to even the ALCS at 2-2.",
+          "ageHours": 0.75,
+          "freshnessBasis": "The veteran slugger has turned it on in October -- and Cleveland is feeding off that energy.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50208289/delauter-error-deflates-guardians-alcs-game-4-loss-rays"
+            "https://www.espn.com/mlb/story/_/id/50176145/playoffs-cleveland-guardians-run-jose-ramirez-energy"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50208289/delauter-error-deflates-guardians-alcs-game-4-loss-rays"
+              "url": "https://www.espn.com/mlb/story/_/id/50176145/playoffs-cleveland-guardians-run-jose-ramirez-energy"
             }
           ],
-          "id": "a415-23a68230bb6ec0d0",
-          "feedRank": 6,
-          "compactHeadline": "Chase DeLauter's costly error deflates Guardians' hopes as Rays even ALCS"
+          "id": "a415-3683b0359c66ce19",
+          "feedRank": 4,
+          "compactHeadline": "MLB 2026: How Jose Ramirez's energy is fueling Guardians' run"
         }
       ]
     },
@@ -194,176 +154,200 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-9c9febacf0bd7d14"
+            "cand-4de1c044297b5a9e"
           ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "text": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "C.Ryland 43 yard field goal is GOOD, Center-C.Kreiter, Holder-B.Gillikin.",
+          "text": "C.Ryland 43 yard field goal is GOOD, Center-C.Kreiter, Holder-B.Gillikin.",
           "entities": [],
-          "occurredAt": "2026-10-18T23:14:22Z",
+          "occurredAt": "2026-10-18T20:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
-          "freshnessBasis": "The Steelers QB is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "ageHours": 3.94,
+          "freshnessBasis": "Highlightly final: Arizona Cardinals 18, Los Angeles Rams 16.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873004"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-18",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873004"
             }
           ],
-          "id": "a415-7a75961a3d7042a4",
-          "feedRank": 7,
-          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
+          "id": "a415-30c52d25de7deac0",
+          "feedRank": 5,
+          "compactHeadline": "Late score lifts Arizona Cardinals past Los Angeles Rams 18-16"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-fcd60a5ec5a4e0e3"
+            "cand-649f4b9242d04eb8"
           ],
-          "type": "RECORD",
+          "type": "RESULT",
           "priority": 82,
-          "headline": "Aaron Rodgers tied Peyton Manning on the all-time passing touchdown list with 539 in the Steelers' overtime victory.",
-          "text": "Aaron Rodgers tied Peyton Manning on the all-time passing touchdown list with 539 in the Steelers' overtime victory.",
+          "headline": "Cleveland Browns blocked a last-second field-goal attempt to preserve a 13-10 win over Baltimore Ravens.",
+          "text": "Cleveland Browns blocked a last-second field-goal attempt to preserve a 13-10 win over Baltimore Ravens.",
           "entities": [],
-          "occurredAt": "2026-10-18T22:16:00Z",
+          "occurredAt": "2026-10-18T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.24,
-          "freshnessBasis": "Aaron Rodgers tied Peyton Manning on the all-time passing touchdown list with 539 in the Steelers' overtime victory.",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Baltimore Ravens 10, Cleveland Browns 13.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50213488/aaron-rodgers-ties-peyton-manning-all-td-pass-list"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50213488/aaron-rodgers-ties-peyton-manning-all-td-pass-list"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-18",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-c1ba8f40fe277130",
-          "feedRank": 8,
-          "compactHeadline": "Steelers' Aaron Rodgers throws two TDs to tie Peyton Manning on all-time list"
+          "id": "a415-574efb65c057fbf3",
+          "feedRank": 6,
+          "compactHeadline": "Blocked last-second field goal seals Cleveland Browns's 13-10 win over Baltimore Ravens"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-a1809798d66e5af1"
+            "cand-c8a9a78ea5319527"
           ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "The Jaguars' Travis Hunter had a historic day at Wembley Stadium, becoming the first player since 2002 to record an interception and TD catch in the same game.",
-          "text": "The Jaguars' Travis Hunter had a historic day at Wembley Stadium, becoming the first player since 2002 to record an interception and TD catch in the same game.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Kenneth Walker ran for 128 yards and two touchdowns, Patrick Mahomes finished with 272 yards passing and the Kansas City Chiefs remained one of the NFL's final three unbeatens with a 22-6 victory over the injury-plagued Los Angeles Chargers on Sunday.",
+          "text": "Kenneth Walker ran for 128 yards and two touchdowns, Patrick Mahomes finished with 272 yards passing and the Kansas City Chiefs remained one of the NFL's final three unbeatens with a 22-6 victory over the injury-plagued Los Angeles Chargers on Sunday.",
           "entities": [],
-          "occurredAt": "2026-10-18T20:42:10Z",
+          "occurredAt": "2026-10-18T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.81,
-          "freshnessBasis": "The Jaguars' Travis Hunter had a historic day at Wembley Stadium, becoming the first player since 2002 to record an interception and TD catch in the same game.",
+          "ageHours": 3.61,
+          "freshnessBasis": "Highlightly final: Los Angeles Chargers 6, Kansas City Chiefs 22.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50212108/travis-hunter-interception-td-catch-jaguars-loss"
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873006"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-18",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50212108/travis-hunter-interception-td-catch-jaguars-loss"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873006"
             }
           ],
-          "id": "a415-0f9dacc211530d1f",
-          "feedRank": 9,
-          "compactHeadline": "Travis Hunter stars in Jaguars' loss, is 1st with INT and TD catch since 2002"
+          "id": "a415-d8705b15259d66b9",
+          "feedRank": 7,
+          "compactHeadline": "Chiefs move to 5-0 as Kenneth Walker runs for two TDs in a 22-6 win over Chargers"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-55b45f798a79b92b"
+            "cand-63eb280bd6d08baf"
           ],
-          "type": "INJURY",
+          "type": "RESULT",
           "priority": 78,
-          "headline": "In his first game since replacing Harrison Mevis, Blake Grupe left because of a knee injury and didn't return. Punter Ethan Evans hit a go-ahead PAT late.",
-          "text": "In his first game since replacing Harrison Mevis, Blake Grupe left because of a knee injury and didn't return. Punter Ethan Evans hit a go-ahead PAT late.",
+          "headline": "K.Fairbairn 49 yard field goal is GOOD, Center-A.Brinkman, Holder-K.Kroeger.",
+          "text": "K.Fairbairn 49 yard field goal is GOOD, Center-A.Brinkman, Holder-K.Kroeger.",
           "entities": [],
-          "occurredAt": "2026-10-18T23:24:46Z",
+          "occurredAt": "2026-10-18T13:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
-          "freshnessBasis": "In his first game since replacing Harrison Mevis, Blake Grupe left because of a knee injury and didn't return. Punter Ethan Evans hit a go-ahead PAT late.",
+          "ageHours": 10.53,
+          "freshnessBasis": "Highlightly final: Houston Texans 34, Jacksonville Jaguars 31.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50213862/blake-grupe-exits-rams-debut-early-due-knee-injury"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50213862/blake-grupe-exits-rams-debut-early-due-knee-injury"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-18",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-3f8210f779c99487",
-          "feedRank": 10,
-          "compactHeadline": "Ethan Evans' heroics for Rams short-lived in loss to Cards"
+          "id": "a415-ea11a5ba7b5601ed",
+          "feedRank": 8,
+          "compactHeadline": "Late score lifts Houston Texans past Jacksonville Jaguars 34-31"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-296f70c1559106c7"
+            "cand-c78ada5b1d750974"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Patriots receiver A.J. Brown, coming off a right high ankle sprain that sidelined him four weeks, had a shaky return to action Sunday, dropping a career-high three passes in the team's win over the Jets",
-          "text": "Patriots receiver A.J. Brown, coming off a right high ankle sprain that sidelined him four weeks, had a shaky return to action Sunday, dropping a career-high three passes in the team's win over the Jets",
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Josh Allen passed for 255 yards and two touchdowns, using his improvisational brilliance to tie the Bills' career TD passing record, and Buffalo held off the Las Vegas Raiders 33-30 on Sunday.",
+          "text": "Josh Allen passed for 255 yards and two touchdowns, using his improvisational brilliance to tie the Bills' career TD passing record, and Buffalo held off the Las Vegas Raiders 33-30 on Sunday.",
           "entities": [],
-          "occurredAt": "2026-10-18T23:04:29Z",
+          "occurredAt": "2026-10-18T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.44,
-          "freshnessBasis": "Patriots receiver A.J. Brown, coming off a right high ankle sprain that sidelined him four weeks, had a shaky return to action Sunday, dropping a career-high three passes in the team's win over the Jets",
+          "ageHours": 3.61,
+          "freshnessBasis": "Highlightly final: Buffalo Bills 33, Las Vegas Raiders 30.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50213864/patriots-aj-brown-career-high-3-drops-return-injury"
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873005"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-18",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50213864/patriots-aj-brown-career-high-3-drops-return-injury"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873005"
             }
           ],
-          "id": "a415-bdcf529cfa064340",
-          "feedRank": 11,
-          "compactHeadline": "Patriots' A.J. Brown has career-high 3 dropped passes in return from injury"
+          "id": "a415-e8b01db59cd2c11f",
+          "feedRank": 9,
+          "compactHeadline": "Buffalo Bills beat Las Vegas Raiders 33-30"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-a05e3e0f7fe4d2d7"
+            "cand-9c2a0d6b92f72065"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Falcons rookie linebacker Kendal Daniels was able to leave an area hospital, return to the locker room and rejoin his teammates after Sunday's loss.",
-          "text": "Falcons rookie linebacker Kendal Daniels was able to leave an area hospital, return to the locker room and rejoin his teammates after Sunday's loss.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The way Aaron Rodgers sees it, the Pittsburgh Steelers took a significant step with their first road win of the season.",
+          "text": "The way Aaron Rodgers sees it, the Pittsburgh Steelers took a significant step with their first road win of the season.",
           "entities": [],
-          "occurredAt": "2026-10-18T22:07:21Z",
+          "occurredAt": "2026-10-18T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.39,
-          "freshnessBasis": "Falcons rookie linebacker Kendal Daniels was able to leave an area hospital, return to the locker room and rejoin his teammates after Sunday's loss.",
+          "ageHours": 7.03,
+          "freshnessBasis": "Highlightly final: Pittsburgh Steelers 26, Tampa Bay Buccaneers 19.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50212250/falcons-kendal-daniels-carted-collision-vs-bears"
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873002"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-18",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50212250/falcons-kendal-daniels-carted-collision-vs-bears"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873002"
             }
           ],
-          "id": "a415-4d9281654dd7d44a",
-          "feedRank": 12,
-          "compactHeadline": "Kendal Daniels rejoins Falcons after being carted off field with neck injury"
+          "id": "a415-8e5b59adb8cfe561",
+          "feedRank": 10,
+          "compactHeadline": "Rodgers throws 2 late TD passes as Steelers storm back to beat Buccaneers 26-19 in OT"
         }
       ]
     },
@@ -373,6 +357,93 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-d5c14bde4a6b9e6b"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Kings guard Ben Simmons has sustained a torn Achilles tendon and will undergo surgery, the team announced Sunday, an injury that is likely season-ending for the 30-year-old veteran who authored an impressive training camp on short notice for Sacramento.",
+          "text": "Kings guard Ben Simmons has sustained a torn Achilles tendon and will undergo surgery, the team announced Sunday, an injury that is likely season-ending for the 30-year-old veteran who authored an impressive training camp on short notice for Sacramento.",
+          "entities": [],
+          "occurredAt": "2026-10-18T23:47:46Z",
+          "timePrecision": "exact",
+          "ageHours": 0.23,
+          "freshnessBasis": "Kings guard Ben Simmons has sustained a torn Achilles tendon and will undergo surgery, the team announced Sunday, an injury that is likely season-ending for the 30-year-old veteran who authored an impressive training camp on short notice for Sacramento.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50214131/kings-simmons-believed-achilles-tendon-tear"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50214131/kings-simmons-believed-achilles-tendon-tear"
+            }
+          ],
+          "id": "a415-f50d1f74a76f85ef",
+          "feedRank": 11,
+          "compactHeadline": "Kings guard Ben Simmons, 30, has torn Achilles tendon, will undergo surgery"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-5820fe1d8bf8355c"
+          ],
+          "type": "DISCIPLINE",
+          "priority": 64,
+          "headline": "Steve Kerr said franchise superstar Stephen Curry is \"fine\" after he limped off the practice court with a right ankle issue.",
+          "text": "Steve Kerr said franchise superstar Stephen Curry is \"fine\" after he limped off the practice court with a right ankle issue.",
+          "entities": [],
+          "occurredAt": "2026-10-18T23:55:00Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "Steve Kerr said franchise superstar Stephen Curry is \"fine\" after he limped off the practice court with a right ankle issue.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50214211/stephen-curry-fine-tweaking-right-ankle-practice"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50214211/stephen-curry-fine-tweaking-right-ankle-practice"
+            }
+          ],
+          "id": "a415-beb917472b93bd71",
+          "feedRank": 12,
+          "compactHeadline": "Warriors' Stephen Curry 'fine' after tweaking right ankle in practice"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-c5084d62dc02f7fb"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
+          "text": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-10-18T01:41:18Z",
+          "timePrecision": "exact",
+          "ageHours": 22.34,
+          "freshnessBasis": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50204321/sources-knicks-waiving-bruce-brown-keeping-james-wiseman"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50204321/sources-knicks-waiving-bruce-brown-keeping-james-wiseman"
+            }
+          ],
+          "id": "a415-9880e570b4904fba",
+          "feedRank": 13,
+          "compactHeadline": "Knicks waive Bruce Brown, keep James Wiseman ahead of opener"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-09693961b9d8c7fd"
           ],
@@ -399,64 +470,6 @@
           "id": "a415-32c497956d2571bd",
           "feedRank": 13,
           "compactHeadline": "Sources: Kings guard Ben Simmons believed to have torn Achilles tendon"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-07197bc04cea0b96"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Stephen Curry left the Warriors' open practice in San Francisco on Sunday night after appearing to tweak his right knee on a perimeter move.",
-          "text": "Stephen Curry left the Warriors' open practice in San Francisco on Sunday night after appearing to tweak his right knee on a perimeter move.",
-          "entities": [],
-          "occurredAt": "2026-10-18T23:24:12Z",
-          "timePrecision": "exact",
-          "ageHours": 0.11,
-          "freshnessBasis": "Stephen Curry left the Warriors' open practice in San Francisco on Sunday night after appearing to tweak his right knee on a perimeter move.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50214211/stephen-curry-limps-practice-tweaking-knee"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50214211/stephen-curry-limps-practice-tweaking-knee"
-            }
-          ],
-          "id": "a415-122bb767431c0abb",
-          "feedRank": 14,
-          "compactHeadline": "Stephen Curry limps out of practice after tweaking right knee"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-c5084d62dc02f7fb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
-          "text": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-10-18T01:41:18Z",
-          "timePrecision": "exact",
-          "ageHours": 21.82,
-          "freshnessBasis": "The Knicks are waiving Bruce Brown and keeping James Wiseman on the roster as the team heads into its regular-season opener, sources told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50204321/sources-knicks-waiving-bruce-brown-keeping-james-wiseman"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50204321/sources-knicks-waiving-bruce-brown-keeping-james-wiseman"
-            }
-          ],
-          "id": "a415-9880e570b4904fba",
-          "feedRank": 15,
-          "compactHeadline": "Knicks waive Bruce Brown, keep James Wiseman ahead of opener"
         }
       ]
     },
@@ -467,6 +480,111 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-551279c26a1474c3"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Connor McDavid had two goals and three assists and the Edmonton Oilers beat the Utah Mammoth 6-2 on Saturday night to split a home-and-home series.",
+          "text": "Connor McDavid had two goals and three assists and the Edmonton Oilers beat the Utah Mammoth 6-2 on Saturday night to split a home-and-home series.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: Edmonton Oilers 6, Utah Mammoth 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892531"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892531"
+            }
+          ],
+          "id": "a415-e3c684f5da3ba317",
+          "feedRank": 14,
+          "compactHeadline": "McDavid has 2 goals and 3 assists in the Oilers' 6-2 romp over the Mammoth"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-7d170076580e62e5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Mark Stone had a goal and two assists, and the Vegas Golden Knights extended their strong start by romping past the slumping Pittsburgh Penguins 6-2 on Saturday night.",
+          "text": "Mark Stone had a goal and two assists, and the Vegas Golden Knights extended their strong start by romping past the slumping Pittsburgh Penguins 6-2 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: Pittsburgh Penguins 2, Vegas Golden Knights 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892532"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892532"
+            }
+          ],
+          "id": "a415-fd42552effc49f02",
+          "feedRank": 15,
+          "compactHeadline": "Golden Knights rout Penguins 6-2 as Mark Stone nets a goal and 2 assists"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6f245c86f4cd64de"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Marat Khusnutdinov scored in the third period and the Boston Bruins beat the Los Angeles Kings 4-1 on Saturday night for their fifth straight victory.",
+          "text": "Marat Khusnutdinov scored in the third period and the Boston Bruins beat the Los Angeles Kings 4-1 on Saturday night for their fifth straight victory.",
+          "entities": [],
+          "occurredAt": "2026-10-18T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.03,
+          "freshnessBasis": "Highlightly final: Boston Bruins 4, Los Angeles Kings 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892530"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892530"
+            }
+          ],
+          "id": "a415-bcbb76901c48464a",
+          "feedRank": 16,
+          "compactHeadline": "Bruins beat the Kings 4-1 for their 5th straight victory"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-1d9ee6b0e1b43f8e"
           ],
           "type": "RESULT",
@@ -476,7 +594,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T18:14:24Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.79,
           "freshnessBasis": "Carter Verhaeghe and Sam Bennett each scored three goals as the Panthers became first team in NHL history with natural hat tricks in three straight games during an 8-3 win over the Kraken.",
           "status": "active",
           "sourceUrls": [
@@ -490,11 +608,11 @@
             }
           ],
           "id": "a415-6b6d2c097064f93c",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Panthers become 1st NHL team to author natural hat tricks in 3 straight games"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-5137e8aa9fd3689e"
           ],
@@ -505,7 +623,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T08:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.32,
+          "ageHours": 15.83,
           "freshnessBasis": "Carolina Hurricanes (7-1-1, in the Metropolitan Division) vs. Calgary Flames (1-6, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -519,124 +637,8 @@
             }
           ],
           "id": "a415-2f9290b6c6d61253",
-          "feedRank": 17,
-          "compactHeadline": "Carolina brings 7-game win streak into matchup against Calgary"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-1ae92e5a4c679b91"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Marat Khusnutdinov scored in the third period and the Boston Bruins beat the Los Angeles Kings 4-1 on Saturday night for their fifth straight victory.",
-          "text": "Marat Khusnutdinov scored in the third period and the Boston Bruins beat the Los Angeles Kings 4-1 on Saturday night for their fifth straight victory.",
-          "entities": [],
-          "occurredAt": "2026-10-18T12:38:44Z",
-          "timePrecision": "exact",
-          "ageHours": 10.86,
-          "freshnessBasis": "— Marat Khusnutdinov scored in the third period and the Boston Bruins beat the Los Angeles Kings 4-1 on Saturday night for their fifth straight victory.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892530"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892530"
-            }
-          ],
-          "id": "a415-afd8909441527603",
           "feedRank": 18,
-          "compactHeadline": "Bruins beat the Kings 4-1 for their 5th straight victory"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-914cbef9c94b7316"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Connor McDavid had two goals and three assists and the Edmonton Oilers beat the Utah Mammoth 6-2 on Saturday night to split a home-and-home series.",
-          "text": "Connor McDavid had two goals and three assists and the Edmonton Oilers beat the Utah Mammoth 6-2 on Saturday night to split a home-and-home series.",
-          "entities": [],
-          "occurredAt": "2026-10-18T04:56:27Z",
-          "timePrecision": "exact",
-          "ageHours": 18.57,
-          "freshnessBasis": "— Connor McDavid had two goals and three assists and the Edmonton Oilers beat the Utah Mammoth 6-2 on Saturday night to split a home-and-home series.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892531"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892531"
-            }
-          ],
-          "id": "a415-6fefe5b2121f9405",
-          "feedRank": 19,
-          "compactHeadline": "McDavid has 2 goals and 3 assists in the Oilers' 6-2 romp over the Mammoth"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-d577781daa117d21"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Mark Stone had a goal and two assists, and the Vegas Golden Knights extended their strong start by romping past the slumping Pittsburgh Penguins 6-2 on Saturday night.",
-          "text": "Mark Stone had a goal and two assists, and the Vegas Golden Knights extended their strong start by romping past the slumping Pittsburgh Penguins 6-2 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-10-18T04:49:37Z",
-          "timePrecision": "exact",
-          "ageHours": 18.68,
-          "freshnessBasis": "— Mark Stone had a goal and two assists, and the Vegas Golden Knights extended their strong start by romping past the slumping Pittsburgh Penguins 6-2 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892532"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892532"
-            }
-          ],
-          "id": "a415-0404b287727caee5",
-          "feedRank": 20,
-          "compactHeadline": "Golden Knights rout Penguins 6-2 as Mark Stone nets a goal and 2 assists"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-9f11172b14622107"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Kent Johnson scored with 1:33 remaining on the clock in overtime, Jet Greaves got his fifth career shutout and the Columbus Blue Jackets beat the New York Rangers 1-0 on Saturday night.",
-          "text": "Kent Johnson scored with 1:33 remaining on the clock in overtime, Jet Greaves got his fifth career shutout and the Columbus Blue Jackets beat the New York Rangers 1-0 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-10-18T02:45:28Z",
-          "timePrecision": "exact",
-          "ageHours": 20.75,
-          "freshnessBasis": "— Kent Johnson scored with 1:33 remaining on the clock in overtime, Jet Greaves got his fifth career shutout and the Columbus Blue Jackets beat the New York Rangers 1-0 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892527"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892527"
-            }
-          ],
-          "id": "a415-2a47975428227bbf",
-          "feedRank": 21,
-          "compactHeadline": "Kent Johnson scores in OT as Blue Jackets beat Rangers 1-0 behind Jet Greaves' shutout"
+          "compactHeadline": "Carolina brings 7-game win streak into matchup against Calgary"
         }
       ]
     },
@@ -656,7 +658,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T12:28:29Z",
           "timePrecision": "exact",
-          "ageHours": 11.04,
+          "ageHours": 11.55,
           "freshnessBasis": "Emi Martínez said he would be \"back in a few weeks\" after undergoing surgery following a head injury suffered during Chelsea's Premier League win over Everton on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -670,7 +672,7 @@
             }
           ],
           "id": "a415-01b0ddd2d6556a79",
-          "feedRank": 22,
+          "feedRank": 19,
           "compactHeadline": "Chelsea's Emi Martínez has jaw surgery, will be 'back in a few weeks'"
         },
         {
@@ -685,7 +687,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T12:24:54Z",
           "timePrecision": "exact",
-          "ageHours": 11.09,
+          "ageHours": 11.61,
           "freshnessBasis": "Dejan Kulusevski will return to Tottenham's matchday squad for the first time in more than 500 days for Monday's visit of Coventry.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +701,7 @@
             }
           ],
           "id": "a415-0a060c3cf54e26b0",
-          "feedRank": 23,
+          "feedRank": 20,
           "compactHeadline": "Dejan Kulusevski set to return to Tottenham squad after 526-day injury absence"
         },
         {
@@ -714,7 +716,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T19:39:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.36,
           "freshnessBasis": "Manchester United were already suffering from their worst start to a Premier League season since 1986. A 1-1 draw with Leeds won't help.",
           "status": "active",
           "sourceUrls": [
@@ -728,7 +730,7 @@
             }
           ],
           "id": "a415-3f054a4f53ffc437",
-          "feedRank": 24,
+          "feedRank": 21,
           "compactHeadline": "Seven games, seven points: Man United are sleepwalking to another lost season"
         },
         {
@@ -743,7 +745,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T19:48:31Z",
           "timePrecision": "exact",
-          "ageHours": 3.7,
+          "ageHours": 4.22,
           "freshnessBasis": "Defending Premier League champions Arsenal put in a weak attacking performance at Nottingham Forest -- but maybe that's just fine.",
           "status": "active",
           "sourceUrls": [
@@ -757,7 +759,7 @@
             }
           ],
           "id": "a415-248d34fa145afe86",
-          "feedRank": 25,
+          "feedRank": 22,
           "compactHeadline": "Arsenal don't look ready to 'attack' the Premier League title like they want to -- yet"
         },
         {
@@ -772,7 +774,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T21:55:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
+          "ageHours": 2.1,
           "freshnessBasis": "Roberto De Zerbi has revealed phones were banned from meals during Tottenham's warm weather training camp in Marbella in his latest attempt to turn a vastly-assembled squad into a team.",
           "status": "active",
           "sourceUrls": [
@@ -786,37 +788,8 @@
             }
           ],
           "id": "a415-08e9cd6d08b5befb",
-          "feedRank": 26,
+          "feedRank": 23,
           "compactHeadline": "Roberto De Zerbi on latest Tottenham training ploy: 'We removed phones' from meals"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-2d5a67bb4164d405"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Leeds boss Daniel Farke has said that striker Dominic Calvert-Lewin showed \"respect\" after not taking the knee prior to Leeds United's draw with Manchester United on Sunday.",
-          "text": "Leeds boss Daniel Farke has said that striker Dominic Calvert-Lewin showed \"respect\" after not taking the knee prior to Leeds United's draw with Manchester United on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-10-18T20:21:05Z",
-          "timePrecision": "exact",
-          "ageHours": 3.16,
-          "freshnessBasis": "Leeds boss Daniel Farke has said that striker Dominic Calvert-Lewin showed \"respect\" after not taking the knee prior to Leeds United's draw with Manchester United on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50212578/dominic-calvert-lewin-showed-respect-standing-others-took-knee-racism-campaign-daniel-farke"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50212578/dominic-calvert-lewin-showed-respect-standing-others-took-knee-racism-campaign-daniel-farke"
-            }
-          ],
-          "id": "a415-2ab64b5dfbf547c1",
-          "feedRank": 27,
-          "compactHeadline": "Dominic Calvert-Lewin 'showed respect by standing' as others took knee for racism campaign - Daniel Farke"
         }
       ]
     },
@@ -827,60 +800,176 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a15e28c7284157e2"
+            "cand-87147cd16b786b22"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Antoine Griezmann had two goals and an assist, Martín Ojeda added a goal and an assist, and Orlando City beat D.C. United 3-1 on Saturday night.",
-          "text": "Antoine Griezmann had two goals and an assist, Martín Ojeda added a goal and an assist, and Orlando City beat D.C. United 3-1 on Saturday night.",
+          "headline": "Highlightly final: Columbus Crew 2, FC Cincinnati 0.",
+          "text": "Highlightly final: Columbus Crew 2, FC Cincinnati 0.",
           "entities": [],
-          "occurredAt": "2026-10-18T02:44:39Z",
+          "occurredAt": "2026-10-18T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.77,
-          "freshnessBasis": "Antoine Griezmann had two goals and an assist, Martín Ojeda added a goal and an assist, and Orlando City beat D.C. United 3-1 on Saturday night.",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Columbus Crew 2, FC Cincinnati 0.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/761881"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761881"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-18",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-58b49ad1199c4742",
-          "feedRank": 28,
-          "compactHeadline": "Griezmann has 2 goals, 1 assist for Orlando City in 4-1 win over DC United"
+          "id": "a415-0e5b96037a2ea033",
+          "feedRank": 24,
+          "compactHeadline": "Columbus Crew beat FC Cincinnati 2-0"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-4285e6517d8f0ef6"
+            "cand-e18a108d682be69d"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Lionel Messi scored two scintillating second-half solo goals to take his MLS-leading tally to 25 as Inter Miami brushed aside hosts Atlanta United 3-1 on Saturday.",
-          "text": "Lionel Messi scored two scintillating second-half solo goals to take his MLS-leading tally to 25 as Inter Miami brushed aside hosts Atlanta United 3-1 on Saturday.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Colorado Rapids 0, Portland Timbers 0.",
+          "text": "Highlightly final: Colorado Rapids 0, Portland Timbers 0.",
           "entities": [],
-          "occurredAt": "2026-10-18T02:49:49Z",
+          "occurredAt": "2026-10-18T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.68,
-          "freshnessBasis": "Lionel Messi scored two scintillating second-half solo goals to take his MLS-leading tally to 25 as Inter Miami brushed aside hosts Atlanta United 3-1 on Saturday.",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Colorado Rapids 0, Portland Timbers 0.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50206341/lionel-messi-goals-inter-miami-atlanta-united-mls"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50206341/lionel-messi-goals-inter-miami-atlanta-united-mls"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-17",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-ac75ad7d3f3676e9",
+          "id": "a415-a91661c12552c6ac",
+          "feedRank": 25,
+          "compactHeadline": "Portland Timbers and Colorado Rapids finished tied 0-0"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-b397544a21b83db2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Nashville SC 1, San Jose Earthquakes 1.",
+          "text": "Highlightly final: Nashville SC 1, San Jose Earthquakes 1.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Nashville SC 1, San Jose Earthquakes 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-3a919ce3bf233b21",
+          "feedRank": 26,
+          "compactHeadline": "San Jose Earthquakes and Nashville SC finished tied 1-1"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-d91730e1ddb2bd1b"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Montréal Impact 1, Seattle Sounders 1.",
+          "text": "Highlightly final: Montréal Impact 1, Seattle Sounders 1.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Montréal Impact 1, Seattle Sounders 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-9caa0a8ad8719c3e",
+          "feedRank": 27,
+          "compactHeadline": "Seattle Sounders and Montréal Impact finished tied 1-1"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-1016566e7dafdf64"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: San Diego 2, Los Angeles Galaxy 2.",
+          "text": "Highlightly final: San Diego 2, Los Angeles Galaxy 2.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: San Diego 2, Los Angeles Galaxy 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-6945ea792d7d0f15",
+          "feedRank": 28,
+          "compactHeadline": "Los Angeles Galaxy and San Diego finished tied 2-2"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-ecc4b2bec1a0f041"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Real Salt Lake 3, Sporting Kansas City 1.",
+          "text": "Highlightly final: Real Salt Lake 3, Sporting Kansas City 1.",
+          "entities": [],
+          "occurredAt": "2026-10-18T00:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.53,
+          "freshnessBasis": "Highlightly final: Real Salt Lake 3, Sporting Kansas City 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-e5071e9076f8ba4e",
           "feedRank": 29,
-          "compactHeadline": "Lionel Messi scores twice, takes season tally to 25 in Miami win at Atlanta"
+          "compactHeadline": "Real Salt Lake beat Sporting Kansas City 3-1"
         }
       ]
     },
@@ -900,7 +989,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T20:48:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.71,
+          "ageHours": 3.22,
           "freshnessBasis": "Florida State running back Ousmane Kromah will miss the rest of the season after injuring his left ankle in Saturday's double-overtime loss to Miami.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +1018,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T19:06:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.41,
+          "ageHours": 4.92,
           "freshnessBasis": "A look at the AP rankings after a wild weekend, along with a key stat and what's ahead for each team.",
           "status": "active",
           "sourceUrls": [
@@ -949,6 +1038,93 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-946de850679fdebe"
+          ],
+          "type": "DISCIPLINE",
+          "priority": 64,
+          "headline": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
+          "text": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
+          "entities": [],
+          "occurredAt": "2026-10-18T23:54:08Z",
+          "timePrecision": "exact",
+          "ageHours": 0.12,
+          "freshnessBasis": "The Southeastern Conference fined Tennessee $500,000 on Sunday for allowing fans to storm the field following a 26-10 victory over then-No. 6 Alabama.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50214548/vols-fined-500k-fans-storm-field-win-alabama"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50214548/vols-fined-500k-fans-storm-field-win-alabama"
+            }
+          ],
+          "id": "a415-2d803213c812b3ea",
+          "feedRank": 32,
+          "compactHeadline": "Tennessee fined $500K after fans storm field following Alabama win"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-9bab9149970dd517"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Wake Forest Demon Deacons 41, California Golden Bears 7.",
+          "text": "Highlightly final: Wake Forest Demon Deacons 41, California Golden Bears 7.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.53,
+          "freshnessBasis": "Highlightly final: Wake Forest Demon Deacons 41, California Golden Bears 7.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-81ee29f314f9ad64",
+          "feedRank": 33,
+          "compactHeadline": "Wake Forest Demon Deacons beat California Golden Bears 41-7"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-9134beb1e2eb2fdd"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Utah Utes 27, Colorado Buffaloes 24.",
+          "text": "Highlightly final: Utah Utes 27, Colorado Buffaloes 24.",
+          "entities": [],
+          "occurredAt": "2026-10-18T02:15:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.78,
+          "freshnessBasis": "Highlightly final: Utah Utes 27, Colorado Buffaloes 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-10-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-0dbfc6be7506f8da",
+          "feedRank": 34,
+          "compactHeadline": "Utah Utes beat Colorado Buffaloes 27-24"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-22c54705c7941754"
           ],
           "type": "NEWS",
@@ -958,7 +1134,7 @@
           "entities": [],
           "occurredAt": "2026-10-18T21:08:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.36,
+          "ageHours": 2.88,
           "freshnessBasis": "Bill Connelly makes sense of an upset-filled Saturday the likes of which college football has never seen.",
           "status": "active",
           "sourceUrls": [
@@ -972,95 +1148,8 @@
             }
           ],
           "id": "a415-8e77abd9bc0e5133",
-          "feedRank": 32,
-          "compactHeadline": "Connelly on upset-filled Week 7: How it happened and what it all means"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-212ea49dffddf249"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Maryland fired defensive coordinator Ted Monachino on Sunday, a day after the team allowed at least 35 points in a fifth consecutive loss.",
-          "text": "Maryland fired defensive coordinator Ted Monachino on Sunday, a day after the team allowed at least 35 points in a fifth consecutive loss.",
-          "entities": [],
-          "occurredAt": "2026-10-18T19:46:03Z",
-          "timePrecision": "exact",
-          "ageHours": 3.74,
-          "freshnessBasis": "Maryland fired defensive coordinator Ted Monachino on Sunday, a day after the team allowed at least 35 points in a fifth consecutive loss.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50212155/maryland-fires-coordinator-monachino-amid-defensive-struggle"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50212155/maryland-fires-coordinator-monachino-amid-defensive-struggle"
-            }
-          ],
-          "id": "a415-aa9f7a31679c8304",
-          "feedRank": 33,
-          "compactHeadline": "Maryland fires coordinator Ted Monachino amid defensive struggles"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-c8a0581f2b74f277"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "No. 6 Indiana (6-1) at Michigan (4-2), Oct. 24 at 12 p.m. EDT.",
-          "text": "No. 6 Indiana (6-1) at Michigan (4-2), Oct. 24 at 12 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-18T19:45:46Z",
-          "timePrecision": "exact",
-          "ageHours": 3.75,
-          "freshnessBasis": "No. 6 Indiana (6-1) at Michigan (4-2), Oct. 24 at 12 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401858496"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401858496"
-            }
-          ],
-          "id": "a415-6495b397f2f242c1",
-          "feedRank": 34,
-          "compactHeadline": "Big Ten matchup features No. 6 Indiana against Michigan"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d4e1b4c8abe7da9c"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "No. 11 Tennessee (6-1) at South Carolina (3-3), Oct. 24 at 3:30 p.m. EDT.",
-          "text": "No. 11 Tennessee (6-1) at South Carolina (3-3), Oct. 24 at 3:30 p.m. EDT.",
-          "entities": [],
-          "occurredAt": "2026-10-18T19:45:45Z",
-          "timePrecision": "exact",
-          "ageHours": 3.75,
-          "freshnessBasis": "No. 11 Tennessee (6-1) at South Carolina (3-3), Oct. 24 at 3:30 p.m. EDT.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401856731"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401856731"
-            }
-          ],
-          "id": "a415-93b4cace4d2a665d",
           "feedRank": 35,
-          "compactHeadline": "No. 11 Tennessee squares off against South Carolina in SEC play"
+          "compactHeadline": "Connelly on upset-filled Week 7: How it happened and what it all means"
         }
       ]
     }
@@ -1085,8 +1174,8 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 133,
-    "publishedItemCount": 35,
+    "freshCandidateCount": 140,
+    "publishedItemCount": 36,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
