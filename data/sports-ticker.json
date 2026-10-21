@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-21T19:31:33Z",
+  "generatedAt": "2026-10-21T20:01:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "89fd0b4ac18e6150fd67c6e0f001f65395d91b825e170bdebca27a102075552c",
+  "sourceCandidateHash": "9bef13ef0dee0e2b9178f1ba538ac5ddab7ba2a3c8e37ef0bd3d93db1abffceb",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:13:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 0.8,
           "freshnessBasis": "Yankees GM Brian Cashman reached a deal to stay in the post he has held since 1998, while owner Hal Steinbrenner blamed the players for their early playoff exit.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-20T23:23:30Z",
           "timePrecision": "exact",
-          "ageHours": 20.13,
+          "ageHours": 20.64,
           "freshnessBasis": "The Brewers are trying to make amends for not living up \"to the spirit of the program\" stemming from a 2015 \"Timeless Ticket\" promotion if they paid $1,000.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-5b9720b19029469e"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
+          "text": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
+          "entities": [],
+          "occurredAt": "2026-10-21T19:56:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50046775/mlb-2026-manager-changes-tracker-hirings-firings-top-replacement-candidates"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50046775/mlb-2026-manager-changes-tracker-hirings-firings-top-replacement-candidates"
+            }
+          ],
+          "id": "a415-319743f9affd1911",
+          "feedRank": 3,
+          "compactHeadline": "2026 MLB offseason manager changes: Tracking hirings, firings"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-40f586ad11f9126a"
           ],
           "type": "NEWS",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:20:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.68,
           "freshnessBasis": "Bob Uecker would be \"incredibly proud\" of these Milwaukee Brewers, the family of the Hall of Fame broadcaster said Wednesday in a statement released by the team.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-e8035416c50487d3",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Uecker's family says he'd be 'incredibly proud' of Brewers"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-353c82ceef7545d5"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:14:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.28,
+          "ageHours": 0.78,
           "freshnessBasis": "After just one season, Kurt Suzuki will not be returning as manager of the Angels after the club lost 100 games for the first time in franchise history.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-8918985d4fb81b1c",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Kurt Suzuki out as Angels manager after team's first 100-loss season"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-d9e7eee27a4e80b6"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T18:35:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
+          "ageHours": 1.43,
           "freshnessBasis": "Ohio gaming regulators banned a man who allegedly made violent threats against Toronto Blue Jays manager John Schneider during the 2025 World Series.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-e03d076986fc319f",
-          "feedRank": 5,
-          "compactHeadline": "Ohio bettor banned for alleged threats toward Blue Jays manager"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-6399c91db0393714"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Yes, this Fall Classic is a battle of small-market teams that don't rely on home runs. But dig deeper, and you'll discover there's much more to this matchup.",
-          "text": "Yes, this Fall Classic is a battle of small-market teams that don't rely on home runs. But dig deeper, and you'll discover there's much more to this matchup.",
-          "entities": [],
-          "occurredAt": "2026-10-21T15:55:12Z",
-          "timePrecision": "exact",
-          "ageHours": 3.61,
-          "freshnessBasis": "Yes, this Fall Classic is a battle of small-market teams that don't rely on home runs. But dig deeper, and you'll discover there's much more to this matchup.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50228459/world-series-milwaukee-brewers-tampa-bay-rays-alike-different"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50228459/world-series-milwaukee-brewers-tampa-bay-rays-alike-different"
-            }
-          ],
-          "id": "a415-25ccb9af456eccdd",
           "feedRank": 6,
-          "compactHeadline": "World Series opponents Brewers, Rays more different than you think"
+          "compactHeadline": "Ohio bettor banned for alleged threats toward Blue Jays manager"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:22:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
+          "ageHours": 0.66,
           "freshnessBasis": "Tight end Sam LaPorta, who will be a free agent after the season, expressed some frustration that the Lions are \"not showing the love\" and indicated he would be OK with playing elsewhere in 2027.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T10:34:25Z",
           "timePrecision": "exact",
-          "ageHours": 8.95,
+          "ageHours": 9.45,
           "freshnessBasis": "The Steelers, in need of help at wide receiver with Michael Pittman Jr. and Roman Wilson out because of injuries, signed veteran Marquez Valdes-Scantling on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T10:28:49Z",
           "timePrecision": "exact",
-          "ageHours": 9.05,
+          "ageHours": 9.55,
           "freshnessBasis": "The Rams, after releasing Harrison Mevis and an injury to Blake Grupe, are signing free agent kicker Brandon McManus, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -281,35 +281,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-58b2e5b70ba5ff62"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 64,
-          "headline": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
-          "text": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
-          "entities": [],
-          "occurredAt": "2026-10-21T19:14:03Z",
-          "timePrecision": "exact",
-          "ageHours": 0.29,
-          "freshnessBasis": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50238746/giants-start-jj-mccarthy-qb-week"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50238746/giants-start-jj-mccarthy-qb-week"
-            }
-          ],
-          "id": "a415-98cd5010023db108",
-          "feedRank": 10,
-          "compactHeadline": "Giants turning to J.J. McCarthy as QB1 this week against Texans"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-5a11cbf2f7164708"
           ],
           "type": "ROSTER",
@@ -317,9 +288,9 @@
           "headline": "The Patriots will be without starting guards Alijah Vera-Tucker and Ben Brown for Thursday's game against the Bears due to injuries, coach Mike Vrabel said.",
           "text": "The Patriots will be without starting guards Alijah Vera-Tucker and Ben Brown for Thursday's game against the Bears due to injuries, coach Mike Vrabel said.",
           "entities": [],
-          "occurredAt": "2026-10-21T18:58:25Z",
+          "occurredAt": "2026-10-21T19:56:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
+          "ageHours": 0.09,
           "freshnessBasis": "The Patriots will be without starting guards Alijah Vera-Tucker and Ben Brown for Thursday's game against the Bears due to injuries, coach Mike Vrabel said.",
           "status": "active",
           "sourceUrls": [
@@ -333,8 +304,37 @@
             }
           ],
           "id": "a415-257015938f3404ab",
-          "feedRank": 11,
+          "feedRank": 10,
           "compactHeadline": "Patriots' Alijah Vera-Tucker, Ben Brown ruled out vs. Bears"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-58b2e5b70ba5ff62"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 64,
+          "headline": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
+          "text": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
+          "entities": [],
+          "occurredAt": "2026-10-21T19:14:03Z",
+          "timePrecision": "exact",
+          "ageHours": 0.79,
+          "freshnessBasis": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50238746/giants-start-jj-mccarthy-qb-week"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50238746/giants-start-jj-mccarthy-qb-week"
+            }
+          ],
+          "id": "a415-98cd5010023db108",
+          "feedRank": 11,
+          "compactHeadline": "Giants turning to J.J. McCarthy as QB1 this week against Texans"
         },
         {
           "rank": 6,
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T18:17:50Z",
           "timePrecision": "exact",
-          "ageHours": 1.23,
+          "ageHours": 1.73,
           "freshnessBasis": "Bills defensive back Sam Franklin Jr. was suspended one game for unsportsmanlike conduct that the league said was a spitting incident against the Raiders.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T12:25:33Z",
           "timePrecision": "exact",
-          "ageHours": 7.1,
+          "ageHours": 7.6,
           "freshnessBasis": "Victor Wembanyama didn't record his first bucket until the end of the third quarter and shot a career-worst 8% from the field as the Thunder got their revenge on the Spurs in Tuesday's Western Conference finals rematch.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T09:31:10Z",
           "timePrecision": "exact",
-          "ageHours": 10.01,
+          "ageHours": 10.51,
           "freshnessBasis": "Eighteen African countries are represented in the league, with Nigeria accounting for nearly half the number with 29 players of Nigerian origin.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T18:45:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.76,
+          "ageHours": 1.26,
           "freshnessBasis": "The Warriors have begun exploring trade routes for veteran center Kristaps Porzingis, who remains out indefinitely as he deals with a private health issue, league sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T03:58:09Z",
           "timePrecision": "exact",
-          "ageHours": 15.56,
+          "ageHours": 16.06,
           "freshnessBasis": "LeBron James, Kevin Durant, and SGA are among the NBA players with impressive consecutive scoring streaks. Check out other notable records now.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T10:30:32Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 9.52,
           "freshnessBasis": "Paul George scored 38 points -- the most by a Celtic in his debut, and the fifth most by a player in his first game with an NBA franchise -- in a 121-113 defeat to the Pistons on Tuesday. But as George put it: \"I'm not a moral victory guy.\"",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-10-20T21:10:19Z",
           "timePrecision": "exact",
-          "ageHours": 22.35,
+          "ageHours": 22.86,
           "freshnessBasis": "The Hornets will be without guards Kon Knueppel and Coby White as well as veteran forward Grant Williams as they open their season Wednesday at Brooklyn.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:57:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.57,
+          "ageHours": 2.07,
           "freshnessBasis": "Brady Tkachuk is playing in Ottawa for the first time asking for and getting a trade from the Senators.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T10:23:35Z",
           "timePrecision": "exact",
-          "ageHours": 9.13,
+          "ageHours": 9.63,
           "freshnessBasis": "Brady Tkachuk, who was traded from Ottawa to Florida in June, says he'll donate any Senators jerseys thrown in protest of his return to the Boys and Girls Club of Ottawa.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T08:11:11Z",
           "timePrecision": "exact",
-          "ageHours": 11.34,
+          "ageHours": 11.84,
           "freshnessBasis": "Winnipeg Jets (4-3-2, in the Central Division) vs. Dallas Stars (5-3-1, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T08:11:09Z",
           "timePrecision": "exact",
-          "ageHours": 11.34,
+          "ageHours": 11.84,
           "freshnessBasis": "Detroit Red Wings (3-3-3, in the Atlantic Division) vs. Vancouver Canucks (2-8-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T05:54:17Z",
           "timePrecision": "exact",
-          "ageHours": 13.62,
+          "ageHours": 14.12,
           "freshnessBasis": "— Anthony Cirelli scored twice, Nikita Kucherov had three points to tie Tampa Bay's career scoring record, and the Lightning extended their strong start by beating the Vegas Golden Knights 6-2 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -708,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T05:08:11Z",
           "timePrecision": "exact",
-          "ageHours": 14.39,
+          "ageHours": 14.89,
           "freshnessBasis": "— Freddy Gaudreau and Bobby McMann scored for Seattle in a shootout as the Kraken defeated the Detroit Red Wings 4-3 on Tuesday night after blowing a three-goal lead in the third period.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:29:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.04,
+          "ageHours": 4.54,
           "freshnessBasis": "Trevoh Chalobah has revealed his regret at his Chelsea exit and admitted he wanted to be a \"legend\" at Stamford Bridge.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:05:17Z",
           "timePrecision": "exact",
-          "ageHours": 4.44,
+          "ageHours": 4.94,
           "freshnessBasis": "Morgan Gibbs-White will be back in contention for Nottingham Forest's game at Ipswich on Friday evening.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T14:12:36Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
+          "ageHours": 5.82,
           "freshnessBasis": "Bournemouth have confirmed that Eli Junior Kroupi -- the club's top-scorer last season -- is back in training and could be in contention to face Manchester United on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T14:07:53Z",
           "timePrecision": "exact",
-          "ageHours": 5.39,
+          "ageHours": 5.9,
           "freshnessBasis": "It's no longer enough to be the best on-field player in order to have a shot at the Ballon d'Or, soccer's top individual prize. You have to make your case in the media, too -- and it takes a lot of work.",
           "status": "active",
           "sourceUrls": [
@@ -859,7 +859,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T13:10:54Z",
           "timePrecision": "exact",
-          "ageHours": 6.34,
+          "ageHours": 6.85,
           "freshnessBasis": "Before Raphinha became Barcelona's captain and converted into their main striker, he was Premier League battling relegation at Leeds United. It was the making of him.",
           "status": "active",
           "sourceUrls": [
@@ -899,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:23:51Z",
           "timePrecision": "exact",
-          "ageHours": 2.13,
+          "ageHours": 2.63,
           "freshnessBasis": "In his first year at Kentucky, Stein has the Wildcats in the College Football Playoff hunt.",
           "status": "active",
           "sourceUrls": [
@@ -928,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:55:30Z",
           "timePrecision": "exact",
-          "ageHours": 3.6,
+          "ageHours": 4.1,
           "freshnessBasis": "Buckeyes coach Ryan Day declined to put a timeline on Julian Sayin's recovery but said they are planning to move forward without him through the rest of the year.",
           "status": "active",
           "sourceUrls": [
@@ -957,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:27:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
+          "ageHours": 0.58,
           "freshnessBasis": "Ohio State running back Ja'Kobi Jackson, who has six touchdowns this season, underwent foot surgery and is expected to miss a few weeks, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:20:25Z",
           "timePrecision": "exact",
-          "ageHours": 2.19,
+          "ageHours": 2.69,
           "freshnessBasis": "Mike Locksley, who was 39-54 in eight seasons as football coach at Maryland, has been dismissed amid the Terrapins' 12-game Big Ten losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -1015,7 +1015,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.19,
+          "ageHours": 2.69,
           "freshnessBasis": "The Buckeyes will be without Julian Sayin for some time but are still in the College Football Playoff race.",
           "status": "active",
           "sourceUrls": [
@@ -1044,7 +1044,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:25:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.61,
           "freshnessBasis": "After seven full seasons in College Park, Locksley is out, but the Terps could have some notable pieces to build around.",
           "status": "active",
           "sourceUrls": [
@@ -1084,7 +1084,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 128,
+    "freshCandidateCount": 126,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
