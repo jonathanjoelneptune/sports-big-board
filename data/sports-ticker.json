@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-22T01:31:34Z",
+  "generatedAt": "2026-10-22T02:01:39Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "95271f79673e37e6a1484eff0442cddbf2ddd17e9f5f807126af8f4d47457ba1",
+  "sourceCandidateHash": "aa01f7cfa522d885e153fc1e14c69104d65e31bdba50c6e99e29d5850cfffd87",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T21:09:50Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.86,
           "freshnessBasis": "Yankees GM Brian Cashman reached a deal to stay in the post he has held since 1998, while owner Hal Steinbrenner blamed the players for their early playoff exit.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T00:24:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 1.62,
           "freshnessBasis": "Shohei Ohtani will not require surgery to treat any ailment he dealt with this past season, Dodgers president of baseball operations Andrew Friedman said Wednesday. And: \"I fully expect him to pitch next year,\" Friedman added.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-19ebe947a8821461"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Saying \"the world is run by 31-year-olds today,\" Athletics owner John Fisher hired as his president of baseball operations someone he hopes continues the organization's rich history with analytics but also brings new ideas.",
+          "text": "Saying \"the world is run by 31-year-olds today,\" Athletics owner John Fisher hired as his president of baseball operations someone he hopes continues the organization's rich history with analytics but also brings new ideas.",
+          "entities": [],
+          "occurredAt": "2026-10-22T01:43:42Z",
+          "timePrecision": "exact",
+          "ageHours": 0.3,
+          "freshnessBasis": "Saying \"the world is run by 31-year-olds today,\" Athletics owner John Fisher hired as his president of baseball operations someone he hopes continues the organization's rich history with analytics but also brings new ideas.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50243662/athletics-bet-youth-31-year-old-taylor-smith-lead-baseball-operations"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50243662/athletics-bet-youth-31-year-old-taylor-smith-lead-baseball-operations"
+            }
+          ],
+          "id": "a415-7f3eb463ccdca243",
+          "feedRank": 3,
+          "compactHeadline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-da60b3039a0e6fb8"
           ],
           "type": "NEWS",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T01:25:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.61,
           "freshnessBasis": "After just one season, Kurt Suzuki will not be returning as manager of the Angels, while John Mozeliak said he will not serve as full-time GM in 2027.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-bcb946115f591e42",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Kurt Suzuki out as Angels manager; interim GM John Mozeliak won't return in 2027"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-2e04cf4bbb92b26d"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T21:46:34Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 4.25,
           "freshnessBasis": "Yankees manager Aaron Boone says he has no plans to call out his players publicly more often despite recent criticisms of the club's culture.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-ebe3646134b2a418",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Boone spurns calls for culture change; Yankees clubhouse remains a 'strength'"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-d9e7eee27a4e80b6"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T20:06:11Z",
           "timePrecision": "exact",
-          "ageHours": 5.42,
+          "ageHours": 5.92,
           "freshnessBasis": "Ohio gaming regulators banned a man who allegedly made violent threats against Toronto Blue Jays manager John Schneider during the 2025 World Series.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-e03d076986fc319f",
-          "feedRank": 5,
-          "compactHeadline": "Ohio bettor banned for alleged threats toward Blue Jays manager"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-5b9720b19029469e"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
-          "text": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
-          "entities": [],
-          "occurredAt": "2026-10-21T19:56:36Z",
-          "timePrecision": "exact",
-          "ageHours": 5.58,
-          "freshnessBasis": "The offseason carousel is in motion. Here's who is out -- and who could be in line to replace them.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50046775/mlb-2026-manager-changes-tracker-hirings-firings-top-replacement-candidates"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50046775/mlb-2026-manager-changes-tracker-hirings-firings-top-replacement-candidates"
-            }
-          ],
-          "id": "a415-319743f9affd1911",
           "feedRank": 6,
-          "compactHeadline": "2026 MLB offseason manager changes: Tracking hirings, firings"
+          "compactHeadline": "Ohio bettor banned for alleged threats toward Blue Jays manager"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T23:17:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.24,
+          "ageHours": 2.74,
           "freshnessBasis": "Texans WR Tank Dell said he is \"ready to get tackled\" on Sunday when he returns for his first game since suffering a gruesome knee injury in December 2024.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T20:07:47Z",
           "timePrecision": "exact",
-          "ageHours": 5.4,
+          "ageHours": 5.9,
           "freshnessBasis": "The Bears have ruled RB Kyle Monangai out for Thursday night's matchup against the Patriots with lingering toe and thumb injuries.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T22:59:15Z",
           "timePrecision": "exact",
-          "ageHours": 2.54,
+          "ageHours": 3.04,
           "freshnessBasis": "Jordan Reid unveils his debut rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
           "status": "active",
           "sourceUrls": [
@@ -295,7 +295,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:22:14Z",
           "timePrecision": "exact",
-          "ageHours": 6.16,
+          "ageHours": 6.66,
           "freshnessBasis": "Tight end Sam LaPorta, who will be a free agent after the season, expressed some frustration that the Lions are \"not showing the love\" and indicated he would be OK with playing elsewhere in 2027.",
           "status": "active",
           "sourceUrls": [
@@ -324,7 +324,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T20:54:38Z",
           "timePrecision": "exact",
-          "ageHours": 4.62,
+          "ageHours": 5.12,
           "freshnessBasis": "After practice, Jackson was favoring his injured left ankle, walking into the team facility with a noticeable limp.",
           "status": "active",
           "sourceUrls": [
@@ -353,7 +353,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T00:55:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.6,
+          "ageHours": 1.1,
           "freshnessBasis": "Josh Jacobs, in his first comments since his arrest in May following an incident with a woman at his home, said he is trying to move forward from the \"mistake.\"",
           "status": "active",
           "sourceUrls": [
@@ -379,6 +379,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6dc3b90df421eb60"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Milwaukee Bucks 116, Washington Wizards 128.",
+          "text": "Highlightly final: Milwaukee Bucks 116, Washington Wizards 128.",
+          "entities": [],
+          "occurredAt": "2026-10-21T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Milwaukee Bucks 116, Washington Wizards 128.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-21",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-036dc41a6bd7ad5a",
+          "feedRank": 13,
+          "compactHeadline": "Washington Wizards beat Milwaukee Bucks 128-116"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-472773d89c547e7f"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Atlanta Hawks 132, Orlando Magic 125.",
+          "text": "Highlightly final: Atlanta Hawks 132, Orlando Magic 125.",
+          "entities": [],
+          "occurredAt": "2026-10-21T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Atlanta Hawks 132, Orlando Magic 125.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-21",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-ecacc55b4462b360",
+          "feedRank": 14,
+          "compactHeadline": "Atlanta Hawks beat Orlando Magic 132-125"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-1515a848be1703b6"
           ],
           "type": "SIGNING",
@@ -388,7 +446,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T21:23:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.14,
+          "ageHours": 4.64,
           "freshnessBasis": "The Mavericks agree to a two-way NBA deal with former first-round pick Walter Clayton Jr., sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -402,11 +460,11 @@
             }
           ],
           "id": "a415-8f72e08c56d4b961",
-          "feedRank": 13,
+          "feedRank": 15,
           "compactHeadline": "Sources: Mavericks agree to two-way deal with Walter Clayton Jr."
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-76a56cfd0d6226bd"
           ],
@@ -417,7 +475,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T12:25:33Z",
           "timePrecision": "exact",
-          "ageHours": 13.1,
+          "ageHours": 13.6,
           "freshnessBasis": "Victor Wembanyama didn't record his first bucket until the end of the third quarter and shot a career-worst 8% from the field as the Thunder got their revenge on the Spurs in Tuesday's Western Conference finals rematch.",
           "status": "active",
           "sourceUrls": [
@@ -431,11 +489,11 @@
             }
           ],
           "id": "a415-3ab371e32c6767b9",
-          "feedRank": 14,
+          "feedRank": 16,
           "compactHeadline": "Spurs' Victor Wembanyama misses first 12 shots in rough opener vs. Thunder"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-7a28ffb3e417423c"
           ],
@@ -446,7 +504,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T21:33:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.97,
+          "ageHours": 4.47,
           "freshnessBasis": "The Warriors have begun exploring trade routes for veteran center Kristaps Porzingis, who remains out indefinitely as he deals with a private health issue, league sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -460,11 +518,11 @@
             }
           ],
           "id": "a415-84d3fbfd94a9dc3a",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Sources: Warriors exploring options to trade center Kristaps Porzingis"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-c5785f6341f4c0cf"
           ],
@@ -475,7 +533,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T09:31:10Z",
           "timePrecision": "exact",
-          "ageHours": 16.01,
+          "ageHours": 16.51,
           "freshnessBasis": "Eighteen African countries are represented in the league, with Nigeria accounting for nearly half the number with 29 players of Nigerian origin.",
           "status": "active",
           "sourceUrls": [
@@ -489,66 +547,8 @@
             }
           ],
           "id": "a415-d851e561a1591e66",
-          "feedRank": 16,
-          "compactHeadline": "Victor Wembanyama, Giannis Antetokounmpo lead record African heritage presence in NBA"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-f90b903d1fe08117"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "LeBron James, Kevin Durant, and SGA are among the NBA players with impressive consecutive scoring streaks. Check out other notable records now.",
-          "text": "LeBron James, Kevin Durant, and SGA are among the NBA players with impressive consecutive scoring streaks. Check out other notable records now.",
-          "entities": [],
-          "occurredAt": "2026-10-21T03:58:09Z",
-          "timePrecision": "exact",
-          "ageHours": 21.56,
-          "freshnessBasis": "LeBron James, Kevin Durant, and SGA are among the NBA players with impressive consecutive scoring streaks. Check out other notable records now.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/46933211/nba-consecutive-scoring-streaks-player-records-know"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/46933211/nba-consecutive-scoring-streaks-player-records-know"
-            }
-          ],
-          "id": "a415-403869bcc3bf43b2",
-          "feedRank": 17,
-          "compactHeadline": "NBA consecutive scoring streaks: Player records to know"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8ae5819f580895ce"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "An avid WWE fan, Tyrese Haliburton wore a denim and leather jacket similar to the one worn by Triple H when he returned from a torn quad.",
-          "text": "An avid WWE fan, Tyrese Haliburton wore a denim and leather jacket similar to the one worn by Triple H when he returned from a torn quad.",
-          "entities": [],
-          "occurredAt": "2026-10-22T01:15:17Z",
-          "timePrecision": "exact",
-          "ageHours": 0.27,
-          "freshnessBasis": "An avid WWE fan, Tyrese Haliburton wore a denim and leather jacket similar to the one worn by Triple H when he returned from a torn quad.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50242948/tyrese-haliburton-pacers-triple-h-return"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50242948/tyrese-haliburton-pacers-triple-h-return"
-            }
-          ],
-          "id": "a415-9369da1567fe5e1f",
           "feedRank": 18,
-          "compactHeadline": "Tyrese Haliburton pays homage to Triple H's MSG outfit in return to NBA action"
+          "compactHeadline": "Victor Wembanyama, Giannis Antetokounmpo lead record African heritage presence in NBA"
         }
       ]
     },
@@ -568,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.53,
           "freshnessBasis": "Highlightly final: Tampa Bay Lightning 6, Vegas Golden Knights 2.",
           "status": "active",
           "sourceUrls": [
@@ -594,76 +594,6 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-ac90eb00297b5629"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Logan Stankoven and Nikolaj Ehlers each scored twice and had an assist and the Carolina Hurricanes beat Vancouver 6-3 on Tuesday night to take the NHL points lead and hand the Canucks their eighth straight loss.",
-          "text": "Logan Stankoven and Nikolaj Ehlers each scored twice and had an assist and the Carolina Hurricanes beat Vancouver 6-3 on Tuesday night to take the NHL points lead and hand the Canucks their eighth straight loss.",
-          "entities": [],
-          "occurredAt": "2026-10-21T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Carolina Hurricanes 6, Vancouver Canucks 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892548"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-20",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892548"
-            }
-          ],
-          "id": "a415-ae67562e2bd7624f",
-          "feedRank": 20,
-          "compactHeadline": "Defending champion Hurricanes beat Canucks 6-3 to take NHL lead"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-81bb84e766ad58a9"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Freddy Gaudreau and Bobby McMann scored for Seattle in a shootout as the Kraken defeated the Detroit Red Wings 4-3 on Tuesday night after blowing a three-goal lead in the third period.",
-          "text": "Freddy Gaudreau and Bobby McMann scored for Seattle in a shootout as the Kraken defeated the Detroit Red Wings 4-3 on Tuesday night after blowing a three-goal lead in the third period.",
-          "entities": [],
-          "occurredAt": "2026-10-21T01:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.86,
-          "freshnessBasis": "Highlightly final: Detroit Red Wings 3, Seattle Kraken 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892547"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-20",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892547"
-            }
-          ],
-          "id": "a415-9c1c939ef2399da6",
-          "feedRank": 21,
-          "compactHeadline": "Kraken recover to beat Red Wings 4-3 in shootout after blowing 3-goal lead in 3rd period"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-4bbe2f9514fdf781"
           ],
           "type": "TRADE",
@@ -673,7 +603,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:57:18Z",
           "timePrecision": "exact",
-          "ageHours": 7.57,
+          "ageHours": 8.07,
           "freshnessBasis": "Brady Tkachuk is playing in Ottawa for the first time asking for and getting a trade from the Senators.",
           "status": "active",
           "sourceUrls": [
@@ -687,11 +617,11 @@
             }
           ],
           "id": "a415-9d01deeb0c6f4838",
-          "feedRank": 22,
+          "feedRank": 20,
           "compactHeadline": "Brady Tkachuk returns to Ottawa for first time since trade"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
             "cand-2bd2a6092f6060cf"
           ],
@@ -702,7 +632,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T10:23:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.13,
+          "ageHours": 15.63,
           "freshnessBasis": "Brady Tkachuk, who was traded from Ottawa to Florida in June, says he'll donate any Senators jerseys thrown in protest of his return to the Boys and Girls Club of Ottawa.",
           "status": "active",
           "sourceUrls": [
@@ -716,11 +646,40 @@
             }
           ],
           "id": "a415-bc4356d1d6b8bd51",
-          "feedRank": 23,
+          "feedRank": 21,
           "compactHeadline": "Panthers' Brady Tkachuk to donate Senators jerseys thrown in protest"
         },
         {
-          "rank": 6,
+          "rank": 4,
+          "candidateIds": [
+            "cand-afe150fafdd740d1"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Brady Tkachuk embraced the overwhelming antagonism he faced in his first game back in Ottawa as fans welcomed back the former captain with constant boos.",
+          "text": "Brady Tkachuk embraced the overwhelming antagonism he faced in his first game back in Ottawa as fans welcomed back the former captain with constant boos.",
+          "entities": [],
+          "occurredAt": "2026-10-22T01:58:21Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Brady Tkachuk embraced the overwhelming antagonism he faced in his first game back in Ottawa as fans welcomed back the former captain with constant boos.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50243435/brady-tkachuk-embraces-boos-scores-acrimonious-return-ottawa"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50243435/brady-tkachuk-embraces-boos-scores-acrimonious-return-ottawa"
+            }
+          ],
+          "id": "a415-6533b8837c985a9c",
+          "feedRank": 22,
+          "compactHeadline": "Brady Tkachuk embraces boos, scores in acrimonious return to Ottawa"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-efcef2593057941a"
           ],
@@ -731,7 +690,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T08:11:11Z",
           "timePrecision": "exact",
-          "ageHours": 17.34,
+          "ageHours": 17.84,
           "freshnessBasis": "Winnipeg Jets (4-3-2, in the Central Division) vs. Dallas Stars (5-3-1, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -745,8 +704,37 @@
             }
           ],
           "id": "a415-cb4f7bf10026b26b",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Jets take losing streak into game against the Stars"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-341c66ddd75274eb"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Detroit Red Wings (3-3-3, in the Atlantic Division) vs. Vancouver Canucks (2-8-1, in the Pacific Division)",
+          "text": "Detroit Red Wings (3-3-3, in the Atlantic Division) vs. Vancouver Canucks (2-8-1, in the Pacific Division)",
+          "entities": [],
+          "occurredAt": "2026-10-21T08:11:09Z",
+          "timePrecision": "exact",
+          "ageHours": 17.84,
+          "freshnessBasis": "Detroit Red Wings (3-3-3, in the Atlantic Division) vs. Vancouver Canucks (2-8-1, in the Pacific Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892563"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892563"
+            }
+          ],
+          "id": "a415-d9ea224a2b50636a",
+          "feedRank": 24,
+          "compactHeadline": "Canucks bring losing streak into game against the Red Wings"
         }
       ]
     },
@@ -766,7 +754,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.53,
+          "ageHours": 8.03,
           "freshnessBasis": "Highlightly final: Bristol City U21 1, Norwich City U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -795,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T23:50:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.68,
+          "ageHours": 2.19,
           "freshnessBasis": "Ruben Amorim insisted he had \"nothing to say\" about Manchester United ahead of AC Milan's Europa League clash at Bournemouth on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -824,7 +812,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:29:16Z",
           "timePrecision": "exact",
-          "ageHours": 10.04,
+          "ageHours": 10.54,
           "freshnessBasis": "Trevoh Chalobah has revealed his regret at his Chelsea exit and admitted he wanted to be a \"legend\" at Stamford Bridge.",
           "status": "active",
           "sourceUrls": [
@@ -853,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:05:17Z",
           "timePrecision": "exact",
-          "ageHours": 10.44,
+          "ageHours": 10.94,
           "freshnessBasis": "Morgan Gibbs-White will be back in contention for Nottingham Forest's game at Ipswich on Friday evening.",
           "status": "active",
           "sourceUrls": [
@@ -888,7 +876,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.03,
           "freshnessBasis": "Highlightly final: DC United 1, FC Cincinnati 2.",
           "status": "active",
           "sourceUrls": [
@@ -921,9 +909,9 @@
           "headline": "Trey'Dez Green, widely regarded as one of the top tight ends in the country, is poised to return Saturday after missing the past three games with a leg injury.",
           "text": "Trey'Dez Green, widely regarded as one of the top tight ends in the country, is poised to return Saturday after missing the past three games with a leg injury.",
           "entities": [],
-          "occurredAt": "2026-10-22T01:09:27Z",
+          "occurredAt": "2026-10-22T01:31:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.5,
           "freshnessBasis": "Trey'Dez Green, widely regarded as one of the top tight ends in the country, is poised to return Saturday after missing the past three games with a leg injury.",
           "status": "active",
           "sourceUrls": [
@@ -952,7 +940,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:23:51Z",
           "timePrecision": "exact",
-          "ageHours": 8.13,
+          "ageHours": 8.63,
           "freshnessBasis": "In his first year at Kentucky, Stein has the Wildcats in the College Football Playoff hunt.",
           "status": "active",
           "sourceUrls": [
@@ -981,7 +969,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:55:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.6,
+          "ageHours": 10.1,
           "freshnessBasis": "Buckeyes coach Ryan Day declined to put a timeline on Julian Sayin's recovery but said they are planning to move forward without him through the rest of the year.",
           "status": "active",
           "sourceUrls": [
@@ -1010,7 +998,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T19:27:07Z",
           "timePrecision": "exact",
-          "ageHours": 6.07,
+          "ageHours": 6.58,
           "freshnessBasis": "Ohio State running back Ja'Kobi Jackson, who has six touchdowns this season, underwent foot surgery and is expected to miss a few weeks, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -1039,7 +1027,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:20:25Z",
           "timePrecision": "exact",
-          "ageHours": 8.19,
+          "ageHours": 8.69,
           "freshnessBasis": "Mike Locksley, who was 39-54 in eight seasons as football coach at Maryland, has been dismissed amid the Terrapins' 12-game Big Ten losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -1068,7 +1056,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.19,
+          "ageHours": 8.69,
           "freshnessBasis": "The Buckeyes will be without Julian Sayin for some time but are still in the College Football Playoff race.",
           "status": "active",
           "sourceUrls": [
