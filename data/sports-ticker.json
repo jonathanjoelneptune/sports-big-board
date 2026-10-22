@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-22T13:31:31Z",
+  "generatedAt": "2026-10-22T14:01:30Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "f18bed23df42a08378193d8f86f9b9a5538db36cdc444657c1bf9ef27c7f1b37",
+  "sourceCandidateHash": "cb154de315875ea65365685c4bec951184613edc93da794c7e9c2eb9889c3948",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T10:52:02Z",
           "timePrecision": "exact",
-          "ageHours": 2.66,
+          "ageHours": 3.16,
           "freshnessBasis": "Here's how the rosters of the Rays and the Brewers stack up and who is primed to do the most jaw-dropping things on baseball's biggest stage.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T03:38:47Z",
           "timePrecision": "exact",
-          "ageHours": 9.88,
+          "ageHours": 10.38,
           "freshnessBasis": "Shohei Ohtani will not require surgery to treat any ailment he dealt with this past season, Dodgers president of baseball operations Andrew Friedman said Wednesday. And: \"I fully expect him to pitch next year,\" Friedman added.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T21:09:50Z",
           "timePrecision": "exact",
-          "ageHours": 16.36,
+          "ageHours": 16.86,
           "freshnessBasis": "Yankees GM Brian Cashman reached a deal to stay in the post he has held since 1998, while owner Hal Steinbrenner blamed the players for their early playoff exit.",
           "status": "active",
           "sourceUrls": [
@@ -101,6 +101,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-e4aa8de0d2dbcf8e"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The famed ESPN broadcaster has a deep passion for Tampa Bay baseball, and he'll be in the stands for the Rays' World Series home games.",
+          "text": "The famed ESPN broadcaster has a deep passion for Tampa Bay baseball, and he'll be in the stands for the Rays' World Series home games.",
+          "entities": [],
+          "occurredAt": "2026-10-22T13:39:11Z",
+          "timePrecision": "exact",
+          "ageHours": 0.37,
+          "freshnessBasis": "The famed ESPN broadcaster has a deep passion for Tampa Bay baseball, and he'll be in the stands for the Rays' World Series home games.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50242150/tampa-bay-rays-dick-vitale-world-series"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50242150/tampa-bay-rays-dick-vitale-world-series"
+            }
+          ],
+          "id": "a415-dccfee5327fda73a",
+          "feedRank": 4,
+          "compactHeadline": "Rays die-hard Dick Vitale is ready for Tampa Bay's World Series spotlight"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-19ebe947a8821461"
           ],
           "type": "NEWS",
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T10:53:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.64,
+          "ageHours": 3.14,
           "freshnessBasis": "Saying \"the world is run by 31-year-olds today,\" Athletics owner John Fisher hired as his president of baseball operations someone he hopes continues the organization's rich history with analytics but also brings new ideas.",
           "status": "active",
           "sourceUrls": [
@@ -124,37 +153,8 @@
             }
           ],
           "id": "a415-7f3eb463ccdca243",
-          "feedRank": 4,
-          "compactHeadline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-da60b3039a0e6fb8"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "After just one season, Kurt Suzuki will not be returning as manager of the Angels, while John Mozeliak said he will not serve as full-time GM in 2027.",
-          "text": "After just one season, Kurt Suzuki will not be returning as manager of the Angels, while John Mozeliak said he will not serve as full-time GM in 2027.",
-          "entities": [],
-          "occurredAt": "2026-10-22T01:25:17Z",
-          "timePrecision": "exact",
-          "ageHours": 12.1,
-          "freshnessBasis": "After just one season, Kurt Suzuki will not be returning as manager of the Angels, while John Mozeliak said he will not serve as full-time GM in 2027.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50240270/kurt-suzuki-angels-manager-100-loss-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50240270/kurt-suzuki-angels-manager-100-loss-season"
-            }
-          ],
-          "id": "a415-bcb946115f591e42",
           "feedRank": 5,
-          "compactHeadline": "Kurt Suzuki out as Angels manager; interim GM John Mozeliak won't return in 2027"
+          "compactHeadline": "Athletics bet on youth with 31-year-old Taylor Smith to lead baseball operations"
         }
       ]
     },
@@ -174,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T12:44:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.78,
+          "ageHours": 1.28,
           "freshnessBasis": "Jordan Reid updated his rankings for the 2027 NFL draft class with 50 players -- including six quarterbacks and an elite wide receiver prospect.",
           "status": "active",
           "sourceUrls": [
@@ -208,7 +208,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T11:52:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.65,
+          "ageHours": 2.15,
           "freshnessBasis": "Saquon Barkley joining a contender? Brian Thomas Jr. headed out west? Khalil Mack and Donte Jackson boosting a defense? Let's build 11 win-win trades.",
           "status": "active",
           "sourceUrls": [
@@ -237,7 +237,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T23:17:11Z",
           "timePrecision": "exact",
-          "ageHours": 14.24,
+          "ageHours": 14.74,
           "freshnessBasis": "Texans WR Tank Dell said he is \"ready to get tackled\" on Sunday when he returns for his first game since suffering a gruesome knee injury in December 2024.",
           "status": "active",
           "sourceUrls": [
@@ -264,9 +264,9 @@
           "headline": "Nick Sirianni and Mike Vrabel have been fined $250,000 for conduct toward officials, sources confirmed to ESPN.",
           "text": "Nick Sirianni and Mike Vrabel have been fined $250,000 for conduct toward officials, sources confirmed to ESPN.",
           "entities": [],
-          "occurredAt": "2026-10-22T12:13:14Z",
+          "occurredAt": "2026-10-22T13:43:09Z",
           "timePrecision": "exact",
-          "ageHours": 1.3,
+          "ageHours": 0.31,
           "freshnessBasis": "Nick Sirianni and Mike Vrabel have been fined $250,000 for conduct toward officials, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -295,7 +295,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T20:07:47Z",
           "timePrecision": "exact",
-          "ageHours": 17.4,
+          "ageHours": 17.9,
           "freshnessBasis": "The Bears have ruled RB Kyle Monangai out for Thursday night's matchup against the Patriots with lingering toe and thumb injuries.",
           "status": "active",
           "sourceUrls": [
@@ -324,7 +324,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T10:54:50Z",
           "timePrecision": "exact",
-          "ageHours": 2.61,
+          "ageHours": 3.11,
           "freshnessBasis": "The Giants plan to start J.J. McCarthy at quarterback this week against the Texans.",
           "status": "active",
           "sourceUrls": [
@@ -359,7 +359,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T05:55:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.6,
+          "ageHours": 8.1,
           "freshnessBasis": "An emotional Tyrese Haliburton made his long-awaited return from the Achilles tear he suffered in Game 7 of the 2025 NBA Finals, as he led the Pacers to a gritty season-opening win over the Pelicans.",
           "status": "active",
           "sourceUrls": [
@@ -388,7 +388,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T12:21:55Z",
           "timePrecision": "exact",
-          "ageHours": 1.16,
+          "ageHours": 1.66,
           "freshnessBasis": "For the Lakers, who have installed Luka Doncic as the heir to LeBron James and rebuilt their roster around him, the early results in a 127-105 win over the Warriors were a promising sign of things to come.",
           "status": "active",
           "sourceUrls": [
@@ -417,7 +417,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T10:30:50Z",
           "timePrecision": "exact",
-          "ageHours": 3.01,
+          "ageHours": 3.51,
           "freshnessBasis": "ESPN Analytics is unveiling the NBA Trade Lab, an interactive web application for fans to build, save and vote on mock trades.",
           "status": "active",
           "sourceUrls": [
@@ -446,7 +446,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T12:06:06Z",
           "timePrecision": "exact",
-          "ageHours": 1.42,
+          "ageHours": 1.92,
           "freshnessBasis": "The Clippers are determined to stay together in the absence of banned owner Steve Ballmer and started the season by routing the Kings 121-96.",
           "status": "active",
           "sourceUrls": [
@@ -475,7 +475,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T12:12:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.32,
+          "ageHours": 1.82,
           "freshnessBasis": "Azeez Al-Shaair was fined after he wore the name Hind Rajab on his eye black during the Texans' season opener.",
           "status": "active",
           "sourceUrls": [
@@ -509,7 +509,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T05:12:09Z",
           "timePrecision": "exact",
-          "ageHours": 8.32,
+          "ageHours": 8.82,
           "freshnessBasis": "— Darius Garland scored 30 points and the Clippers routed the Sacramento Kings 121-96 on Wednesday night in Los Angeles' first season opener without",
           "status": "active",
           "sourceUrls": [
@@ -544,7 +544,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T04:19:08Z",
           "timePrecision": "exact",
-          "ageHours": 9.21,
+          "ageHours": 9.71,
           "freshnessBasis": "— With fans chanting “We don’t need you!,” the Ottawa Senators defeated Brady Tkachuk and his Florida Panthers 5-1 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -573,7 +573,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T02:59:56Z",
           "timePrecision": "exact",
-          "ageHours": 10.53,
+          "ageHours": 11.03,
           "freshnessBasis": "Rookie forward Cole Knuble scored twice to help the Philadelphia Flyers beat the Buffalo Sabres 3-1 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -602,7 +602,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T13:18:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
+          "ageHours": 0.71,
           "freshnessBasis": "Through 120 games, there were 34 games with one or more fights, up over the last two seasons (25 and 26).",
           "status": "active",
           "sourceUrls": [
@@ -631,7 +631,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:57:18Z",
           "timePrecision": "exact",
-          "ageHours": 19.57,
+          "ageHours": 20.07,
           "freshnessBasis": "Brady Tkachuk is playing in Ottawa for the first time asking for and getting a trade from the Senators.",
           "status": "active",
           "sourceUrls": [
@@ -660,7 +660,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T08:12:09Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
+          "ageHours": 5.82,
           "freshnessBasis": "Montreal Canadiens (4-3-2, in the Atlantic Division) vs. Chicago Blackhawks (3-6, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -695,7 +695,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T10:20:36Z",
           "timePrecision": "exact",
-          "ageHours": 3.18,
+          "ageHours": 3.68,
           "freshnessBasis": "Manchester United's first-team squad will report back for training on Friday after being given a day off today following the humiliating 4-1 Champions League defeat against Como, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -724,7 +724,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T12:43:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.8,
+          "ageHours": 1.3,
           "freshnessBasis": "Manchester City boss Enzo Maresca feels a duty to help Phil Foden return to his best.",
           "status": "active",
           "sourceUrls": [
@@ -753,7 +753,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T23:50:30Z",
           "timePrecision": "exact",
-          "ageHours": 13.68,
+          "ageHours": 14.18,
           "freshnessBasis": "Ruben Amorim insisted he had \"nothing to say\" about Manchester United ahead of AC Milan's Europa League clash at Bournemouth on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -782,7 +782,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T07:45:47Z",
           "timePrecision": "exact",
-          "ageHours": 5.76,
+          "ageHours": 6.26,
           "freshnessBasis": "Manchester United are considering refreshing their back four, with three senior defender's contracts up at the end of the season. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -817,7 +817,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T04:46:20Z",
           "timePrecision": "exact",
-          "ageHours": 8.75,
+          "ageHours": 9.25,
           "freshnessBasis": "St. Louis City won the first trophy in the club's history on Wednesday after defeating Columbus Crew on penalties to lift the U.S. Open Cup.",
           "status": "active",
           "sourceUrls": [
@@ -846,7 +846,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T04:44:36Z",
           "timePrecision": "exact",
-          "ageHours": 8.78,
+          "ageHours": 9.28,
           "freshnessBasis": "St. Louis goalkeeper Roman Bürki was taken to the hospital after taking a knock to the head during the U.S. Open Cup final against the Columbus Crew.",
           "status": "active",
           "sourceUrls": [
@@ -910,7 +910,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T10:56:51Z",
           "timePrecision": "exact",
-          "ageHours": 2.58,
+          "ageHours": 3.08,
           "freshnessBasis": "Oregon quarterback Dante Moore and wide receiver Evan Stewart are out for Saturday's matchup at Illinois, according to Wednesday's Big Ten availability report.",
           "status": "active",
           "sourceUrls": [
@@ -939,7 +939,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T01:31:47Z",
           "timePrecision": "exact",
-          "ageHours": 12.0,
+          "ageHours": 12.5,
           "freshnessBasis": "Trey'Dez Green, widely regarded as one of the top tight ends in the country, is poised to return Saturday after missing the past three games with a leg injury.",
           "status": "active",
           "sourceUrls": [
@@ -968,7 +968,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T04:17:08Z",
           "timePrecision": "exact",
-          "ageHours": 9.24,
+          "ageHours": 9.74,
           "freshnessBasis": "— James Jones rushed for 178 yards and a touchdown, Adam Damante threw for two scores and New Mexico State beat Sam Houston 30-24 on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -997,7 +997,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T17:23:51Z",
           "timePrecision": "exact",
-          "ageHours": 20.13,
+          "ageHours": 20.63,
           "freshnessBasis": "In his first year at Kentucky, Stein has the Wildcats in the College Football Playoff hunt.",
           "status": "active",
           "sourceUrls": [
@@ -1026,7 +1026,7 @@
           "entities": [],
           "occurredAt": "2026-10-21T15:55:30Z",
           "timePrecision": "exact",
-          "ageHours": 21.6,
+          "ageHours": 22.1,
           "freshnessBasis": "Buckeyes coach Ryan Day declined to put a timeline on Julian Sayin's recovery but said they are planning to move forward without him through the rest of the year.",
           "status": "active",
           "sourceUrls": [
@@ -1055,7 +1055,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T11:00:01Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.02,
           "freshnessBasis": "A judge and his fraternity brothers wondered if they had fallen for a prank. Instead, they'd seen into the future.",
           "status": "active",
           "sourceUrls": [
