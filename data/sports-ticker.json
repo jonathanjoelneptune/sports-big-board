@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-23T13:31:29Z",
+  "generatedAt": "2026-10-23T14:01:35Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "1000c207184a40f2b1576f1dae4dc422dc5e38582a522e178f7a5db2ac0fbd95",
+  "sourceCandidateHash": "0a223a0185003c89aeab41bc900a829da5eb61f099a966633d0951855005e892",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-4479f7f3651d2c7b"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "This year's World Series features the two teams with the best records in their respective leagues -- who both also call domed stadiums home.",
+          "text": "This year's World Series features the two teams with the best records in their respective leagues -- who both also call domed stadiums home.",
+          "entities": [],
+          "occurredAt": "2026-10-23T13:52:22Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "This year's World Series features the two teams with the best records in their respective leagues -- who both also call domed stadiums home.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50252562/mlb-world-series-brewers-rays-roofball"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50252562/mlb-world-series-brewers-rays-roofball"
+            }
+          ],
+          "id": "a415-4be6ce49e9d3cd74",
+          "feedRank": 1,
+          "compactHeadline": "Welcome to 'roofball': Your guide to an all-dome World Series"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-4f83ff8cb1293302"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T13:07:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
+          "ageHours": 0.91,
           "freshnessBasis": "Jay-Z's catalog is packed with sports references -- here are the ones that top our list.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-a951ba2b67597b26",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Jay-Z's greatest sports lyrics, ranked ahead of his SoFi Stadium show"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-12ed32ef14026dfc"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T10:56:21Z",
           "timePrecision": "exact",
-          "ageHours": 2.59,
+          "ageHours": 3.09,
           "freshnessBasis": "Misiorowski does amazing things with a baseball. It turns out, that's not the only incredible thing about him.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-6062e2cbdaf5ed30",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Jacob Misiorowski brings tall tales -- and talent -- to World Series"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-3d6b807fcd16dcd3"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T08:02:08Z",
           "timePrecision": "exact",
-          "ageHours": 5.49,
+          "ageHours": 5.99,
           "freshnessBasis": "Tampa Bay Rays (98-64, first in the AL East during the regular season) vs. Milwaukee Brewers (103-59, first in the NL Central during the regular season)",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-3b4917b383048e49",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Brewers and Rays square off to start the World Series"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-f174de30582d7650"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T23:18:08Z",
           "timePrecision": "exact",
-          "ageHours": 14.22,
+          "ageHours": 14.72,
           "freshnessBasis": "Guardians manager Stephen Vogt dispelled speculation about his future, saying he'll return next season to chase an elusive World Series title.",
           "status": "active",
           "sourceUrls": [
@@ -124,37 +153,8 @@
             }
           ],
           "id": "a415-1cccf154beda9081",
-          "feedRank": 4,
-          "compactHeadline": "Stephen Vogt back to Guardians in '27, shuns Mariners rumors"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-549342009fe81456"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Nic Lentz and Gabe Morales will make their World Series umpiring debuts, part of a crew headed by James Hoye for the matchup between the Brewers and Rays.",
-          "text": "Nic Lentz and Gabe Morales will make their World Series umpiring debuts, part of a crew headed by James Hoye for the matchup between the Brewers and Rays.",
-          "entities": [],
-          "occurredAt": "2026-10-22T20:48:23Z",
-          "timePrecision": "exact",
-          "ageHours": 16.72,
-          "freshnessBasis": "Nic Lentz and Gabe Morales will make their World Series umpiring debuts, part of a crew headed by James Hoye for the matchup between the Brewers and Rays.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50251942/umpires-nic-lentz-gabe-morales-make-world-series-debuts"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50251942/umpires-nic-lentz-gabe-morales-make-world-series-debuts"
-            }
-          ],
-          "id": "a415-1e548bce0829d308",
           "feedRank": 5,
-          "compactHeadline": "Umpires Nic Lentz, Gabe Morales to make World Series debuts"
+          "compactHeadline": "Stephen Vogt back to Guardians in '27, shuns Mariners rumors"
         }
       ]
     },
@@ -174,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T12:03:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.46,
+          "ageHours": 1.96,
           "freshnessBasis": "Jaguars left tackle Anton Harrison will miss the rest of the season because of a torn ACL in his right knee, league sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T13:07:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
+          "ageHours": 0.91,
           "freshnessBasis": "Jay-Z's catalog is packed with sports references -- here are the ones that top our list.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T07:01:47Z",
           "timePrecision": "exact",
-          "ageHours": 6.5,
+          "ageHours": 7.0,
           "freshnessBasis": "Bears tight end Cole Kmet exited Thursday night's game against the Patriots on a cart after injuring his right knee in the fourth quarter.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T23:37:34Z",
           "timePrecision": "exact",
-          "ageHours": 13.9,
+          "ageHours": 14.4,
           "freshnessBasis": "Los Angeles Rams wide receiver Puka Nacua left Thursday's practice with a calf injury, a team spokesperson said.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T22:36:39Z",
           "timePrecision": "exact",
-          "ageHours": 14.91,
+          "ageHours": 15.42,
           "freshnessBasis": "Baker Mayfield expects to return from a thumb injury, barring any setbacks, and play when the Buccaneers face the Panthers on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T22:44:23Z",
           "timePrecision": "exact",
-          "ageHours": 14.79,
+          "ageHours": 15.29,
           "freshnessBasis": "As the Colts plot their next moves after firing GM Chris Ballard, a source told ESPN that several teams would be open to a potential trade for Jonathan Taylor.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T12:50:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.68,
+          "ageHours": 1.19,
           "freshnessBasis": "Why star contract negotiations have shifted, why OKC is preparing for more roster changes and more intel from opening week.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T04:22:55Z",
           "timePrecision": "exact",
-          "ageHours": 9.14,
+          "ageHours": 9.64,
           "freshnessBasis": "LeBron James, Kevin Durant, and SGA are among the NBA players with impressive consecutive scoring streaks. Check out other notable records now.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T13:07:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
+          "ageHours": 0.91,
           "freshnessBasis": "Jay-Z's catalog is packed with sports references -- here are the ones that top our list.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T06:40:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.85,
+          "ageHours": 7.36,
           "freshnessBasis": "Shai Gilgeous-Alexander's historic streak of 20-point games ended Thursday night when he finished with 17 in a 96-84 win over the Nuggets.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T05:00:24Z",
           "timePrecision": "exact",
-          "ageHours": 8.52,
+          "ageHours": 9.02,
           "freshnessBasis": "— Jalen Williams scored 21 points, Chet Holmgren had 12 points and 17 rebounds, and the Oklahoma City Thunder withstood a poor shooting night from Shai-Gilgeous-Alexander in their home opener to beat the Denver Nuggets 96-84 on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T11:00:40Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
+          "ageHours": 3.02,
           "freshnessBasis": "Which stars shined with their new teams? Which might want a do-over? Ben Golliver examines 12 opening week debuts.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T08:12:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
+          "ageHours": 5.82,
           "freshnessBasis": "Minnesota Wild (6-3-2, in the Central Division) vs. Seattle Kraken (7-3-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T08:12:16Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
+          "ageHours": 5.82,
           "freshnessBasis": "Toronto Maple Leafs (6-4-2, in the Atlantic Division) vs. Edmonton Oilers (8-1-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T08:11:08Z",
           "timePrecision": "exact",
-          "ageHours": 5.34,
+          "ageHours": 5.84,
           "freshnessBasis": "New York Rangers (7-4-1, in the Metropolitan Division) vs. Ottawa Senators (7-4, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T19:26:58Z",
           "timePrecision": "exact",
-          "ageHours": 18.08,
+          "ageHours": 18.58,
           "freshnessBasis": "Ron Duguay, who played nearly 1,000 games in the NHL from the late 1970s through the '80s, has died of cancer. He was 69.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T05:37:09Z",
           "timePrecision": "exact",
-          "ageHours": 7.91,
+          "ageHours": 8.41,
           "freshnessBasis": "— Mackie Samoskevich scored with 5:25 left, and the Seattle Kraken, despite blowing a multiple-goal third-period lead for the second game in a row, beat the Utah Mammoth 5-3 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T04:49:09Z",
           "timePrecision": "exact",
-          "ageHours": 8.71,
+          "ageHours": 9.21,
           "freshnessBasis": "— Lucas Raymond scored twice and added an assist to help the Detroit Red Wings beat Vancouver 5-2 on Thursday night, sending the Canucks to their ninth straight loss.",
           "status": "active",
           "sourceUrls": [
@@ -705,6 +705,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-bae8a509ce190395"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Manchester United head coach Michael Carrick started his news conference with a speech that lasted more than five minutes as he tried to rally his players ahead of the crucial Premier League clash against Bournemouth.",
+          "text": "Manchester United head coach Michael Carrick started his news conference with a speech that lasted more than five minutes as he tried to rally his players ahead of the crucial Premier League clash against Bournemouth.",
+          "entities": [],
+          "occurredAt": "2026-10-23T13:35:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.43,
+          "freshnessBasis": "Manchester United head coach Michael Carrick started his news conference with a speech that lasted more than five minutes as he tried to rally his players ahead of the crucial Premier League clash against Bournemouth.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50257324/michael-carrick-pressure-man-united-boss-backs-amid-tension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50257324/michael-carrick-pressure-man-united-boss-backs-amid-tension"
+            }
+          ],
+          "id": "a415-779291ae72767dc1",
+          "feedRank": 24,
+          "compactHeadline": "Michael Carrick: Under-pressure Man United boss '100%' backs himself amid tension"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-6d948b663b27c269"
           ],
           "type": "NEWS",
@@ -712,9 +741,9 @@
           "headline": "Antonio Conte has denied that he is in advanced talks over a new job amid speculation he could replace Michael Carrick at Manchester United.",
           "text": "Antonio Conte has denied that he is in advanced talks over a new job amid speculation he could replace Michael Carrick at Manchester United.",
           "entities": [],
-          "occurredAt": "2026-10-23T13:01:16Z",
+          "occurredAt": "2026-10-23T13:34:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.5,
+          "ageHours": 0.45,
           "freshnessBasis": "Antonio Conte has denied that he is in advanced talks over a new job amid speculation he could replace Michael Carrick at Manchester United.",
           "status": "active",
           "sourceUrls": [
@@ -728,11 +757,11 @@
             }
           ],
           "id": "a415-36614ba3d2cc2004",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Antonio Conte, Fabian Hürzeler distance themselves from Man United job"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-d72291b463ac2a8c"
           ],
@@ -743,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T10:54:37Z",
           "timePrecision": "exact",
-          "ageHours": 2.61,
+          "ageHours": 3.12,
           "freshnessBasis": "João Pedro has said that a \"friendship was born\" when he assured Cole Palmer that he wasn't coming to Chelsea to steal his place in the team.",
           "status": "active",
           "sourceUrls": [
@@ -757,11 +786,11 @@
             }
           ],
           "id": "a415-bcc77a28168f284d",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "João Pedro: I told Cole Palmer 'I didn't want to take his spot' at Chelsea"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-e9312107138bcec6"
           ],
@@ -772,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T10:17:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.23,
+          "ageHours": 3.73,
           "freshnessBasis": "Manchester United are inviting fans to provide fresh input on the design of their proposed new 100,000-capacity stadium.",
           "status": "active",
           "sourceUrls": [
@@ -786,11 +815,11 @@
             }
           ],
           "id": "a415-acd3197ba544688d",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "Man United invite fans to fill survey on new stadium"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-f4b52741af69a332"
           ],
@@ -801,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T16:01:23Z",
           "timePrecision": "exact",
-          "ageHours": 21.5,
+          "ageHours": 22.0,
           "freshnessBasis": "Manchester United's first-team squad will report back for training on Friday after being given a day off on Thursday following the humiliating 4-1 Champions League defeat against Como, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -815,37 +844,8 @@
             }
           ],
           "id": "a415-e249075b3885e3d9",
-          "feedRank": 27,
-          "compactHeadline": "Man United players get Thursday day off despite Como thrashing - sources"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-3327c5ce8fb956ca"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Wayne Rooney has lambasted Manchester United's squad for acting like \"babies\" and urged Bruno Fernandes and Lisandro Martínez to look in the mirror.",
-          "text": "Wayne Rooney has lambasted Manchester United's squad for acting like \"babies\" and urged Bruno Fernandes and Lisandro Martínez to look in the mirror.",
-          "entities": [],
-          "occurredAt": "2026-10-22T19:32:16Z",
-          "timePrecision": "exact",
-          "ageHours": 17.99,
-          "freshnessBasis": "Wayne Rooney has lambasted Manchester United's squad for acting like \"babies\" and urged Bruno Fernandes and Lisandro Martínez to look in the mirror.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50251373/wayne-rooney-man-united-players-acting-babies"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50251373/wayne-rooney-man-united-players-acting-babies"
-            }
-          ],
-          "id": "a415-55bf0a74fb86d81a",
           "feedRank": 28,
-          "compactHeadline": "Wayne Rooney: Bruno Fernandes, Man United players acting like 'babies'"
+          "compactHeadline": "Man United players get Thursday day off despite Como thrashing - sources"
         }
       ]
     },
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T15:13:33Z",
           "timePrecision": "exact",
-          "ageHours": 22.3,
+          "ageHours": 22.8,
           "freshnessBasis": "St. Louis goalkeeper Roman Bürki was taken to the hospital after taking a knock to the head during the U.S. Open Cup final against the Columbus Crew.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T13:08:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 0.88,
           "freshnessBasis": "Miami's return to the the top of the AP Poll marks its first No. 1 ranking since January 2003 -- when sports and pop culture looked far different.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T10:13:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.3,
+          "ageHours": 3.8,
           "freshnessBasis": "Our college football experts rerank the top 25 players midway through the 2026 season.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-10-22T22:21:48Z",
           "timePrecision": "exact",
-          "ageHours": 15.16,
+          "ageHours": 15.66,
           "freshnessBasis": "Boston College top tailback Evan Dickens, who has 293 rushing yards and five overall TDs, is out for the season with a knee injury, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T04:00:15Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
+          "ageHours": 10.02,
           "freshnessBasis": "— Marcus Stokes was 29-of-43 passing for 320 yards and three touchdowns and added two rushing TDs to help Memphis beat East Carolina 41-34 in overtime on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T03:21:08Z",
           "timePrecision": "exact",
-          "ageHours": 10.17,
+          "ageHours": 10.67,
           "freshnessBasis": "— James London kicked a walk-off 40-yard field goal in overtime, Malachi Singleton threw two touchdown passes, and Appalachian State beat previously-unbeaten James Madison 34-31 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T02:21:47Z",
           "timePrecision": "exact",
-          "ageHours": 11.16,
+          "ageHours": 11.66,
           "freshnessBasis": "— Jaylon Coleman had a touchdown reception and a 9-yard rushing TD to help Liberty beat Kennesaw State 34-6 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 133,
+    "freshCandidateCount": 130,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
