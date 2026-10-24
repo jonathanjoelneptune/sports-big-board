@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-24T04:31:20Z",
+  "generatedAt": "2026-10-24T12:01:34Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "31e67b9cbf9a5b8c08db9d0d4b8f51e95318b34236da235dc6a53ef1a4a31ed7",
+  "sourceCandidateHash": "ca4aa314b84fe68d75b3a71f2c96a5b2247df1f9bec241eb20549da1ef6846e7",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T04:23:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 7.63,
           "freshnessBasis": "Jacob Misiorowski broke the record for the fastest World Series pitch with the first offering of this year's Fall Classic.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-8bf20d744ea763f6"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Brewers survived some late drama, including a seemingly game-ending double play being overturned on review, to beat the Rays 3-2 in Game 1 of the World Series.",
+          "text": "The Brewers survived some late drama, including a seemingly game-ending double play being overturned on review, to beat the Rays 3-2 in Game 1 of the World Series.",
+          "entities": [],
+          "occurredAt": "2026-10-24T07:17:30Z",
+          "timePrecision": "exact",
+          "ageHours": 4.73,
+          "freshnessBasis": "The Brewers survived some late drama, including a seemingly game-ending double play being overturned on review, to beat the Rays 3-2 in Game 1 of the World Series.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50262974/trevor-megill-escapes-9th-inning-jam-close-brewers-g1-win"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50262974/trevor-megill-escapes-9th-inning-jam-close-brewers-g1-win"
+            }
+          ],
+          "id": "a415-dba61200d9a9d68c",
+          "feedRank": 2,
+          "compactHeadline": "Trevor Megill escapes 9th-inning jam to close out Brewers' Game 1 win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-4479f7f3651d2c7b"
           ],
           "type": "RECORD",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T14:08:40Z",
           "timePrecision": "exact",
-          "ageHours": 14.38,
+          "ageHours": 21.88,
           "freshnessBasis": "This year's World Series features the two teams with the best records in their respective leagues -- who both also call domed stadiums home.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-4be6ce49e9d3cd74",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Welcome to 'roofball': Your guide to an all-dome World Series"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-ac2b3bb6f9bbadc3"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T17:18:57Z",
           "timePrecision": "exact",
-          "ageHours": 11.21,
+          "ageHours": 18.71,
           "freshnessBasis": "Brandon Woodruff, who hasn't pitched in a game since July 4 due to a shoulder injury, took the place of Chad Patrick on the Brewers' World Series roster.",
           "status": "active",
           "sourceUrls": [
@@ -95,95 +124,66 @@
             }
           ],
           "id": "a415-9222f17a921a1366",
-          "feedRank": 3,
-          "compactHeadline": "Brewers add pitcher Brandon Woodruff to World Series roster"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-4f83ff8cb1293302"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Jay-Z's catalog is packed with sports references -- here are the ones that top our list.",
-          "text": "Jay-Z's catalog is packed with sports references -- here are the ones that top our list.",
-          "entities": [],
-          "occurredAt": "2026-10-23T13:07:07Z",
-          "timePrecision": "exact",
-          "ageHours": 15.4,
-          "freshnessBasis": "Jay-Z's catalog is packed with sports references -- here are the ones that top our list.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/espn/story/_/id/50232827/jayz-best-sports-references-sofi-stadium"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/espn/story/_/id/50232827/jayz-best-sports-references-sofi-stadium"
-            }
-          ],
-          "id": "a415-a951ba2b67597b26",
           "feedRank": 4,
-          "compactHeadline": "Jay-Z's greatest sports lyrics, ranked ahead of his SoFi Stadium show"
+          "compactHeadline": "Brewers add pitcher Brandon Woodruff to World Series roster"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-8bf20d744ea763f6"
+            "cand-38c5eca551f9afac"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "The Milwaukee Brewers escaped with a 3-2 victory over the Tampa Bay Rays in Game 1 of the World Series on Friday night.",
-          "text": "The Milwaukee Brewers escaped with a 3-2 victory over the Tampa Bay Rays in Game 1 of the World Series on Friday night.",
+          "headline": "Tampa Bay Rays (98-64, first in the AL East during the regular season) vs. Milwaukee Brewers (103-59, first in the NL Central during the regular season)",
+          "text": "Tampa Bay Rays (98-64, first in the AL East during the regular season) vs. Milwaukee Brewers (103-59, first in the NL Central during the regular season)",
           "entities": [],
-          "occurredAt": "2026-10-24T04:27:18Z",
+          "occurredAt": "2026-10-24T08:01:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "The Milwaukee Brewers escaped with a 3-2 victory over the Tampa Bay Rays in Game 1 of the World Series on Friday night.",
+          "ageHours": 4.0,
+          "freshnessBasis": "Tampa Bay Rays (98-64, first in the AL East during the regular season) vs. Milwaukee Brewers (103-59, first in the NL Central during the regular season)",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50262974/trevor-megill-escapes-9th-inning-jam-close-brewers-g1-win"
+            "http://www.espn.com/mlb/preview?gameId=401908043"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50262974/trevor-megill-escapes-9th-inning-jam-close-brewers-g1-win"
+              "url": "http://www.espn.com/mlb/preview?gameId=401908043"
             }
           ],
-          "id": "a415-dba61200d9a9d68c",
+          "id": "a415-a062483bd4f7fc7e",
           "feedRank": 5,
-          "compactHeadline": "Trevor Megill escapes 9th-inning jam to close out Brewers' Game 1 win"
+          "compactHeadline": "Brewers take 1-0 lead into World Series Game 2 against Rays"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-3727d7858f5c54a6"
+            "cand-72e9a2c7705a610d"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Trevor Megill struck out Jonny DeLuca with runners on second and third to wiggle out of a ninth-inning jam as the Milwaukee Brewers escaped with a 3-2 victory over the Tampa Bay Rays in Game 1 of the World Series on Friday night.",
-          "text": "Trevor Megill struck out Jonny DeLuca with runners on second and third to wiggle out of a ninth-inning jam as the Milwaukee Brewers escaped with a 3-2 victory over the Tampa Bay Rays in Game 1 of the World Series on Friday night.",
+          "headline": "The Rays said they'll remain aggressive on the bases despite two costly baserunning miscues in Friday's loss to the Brewers in Game 1 of the World Series.",
+          "text": "The Rays said they'll remain aggressive on the bases despite two costly baserunning miscues in Friday's loss to the Brewers in Game 1 of the World Series.",
           "entities": [],
-          "occurredAt": "2026-10-24T04:23:46Z",
+          "occurredAt": "2026-10-24T06:22:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
-          "freshnessBasis": "— Trevor Megill struck out Jonny DeLuca with runners on second and third to wiggle out of a ninth-inning jam as the Milwaukee Brewers escaped with a 3-2 victory over the Tampa Bay Rays in Game 1 of the World Series on Friday night.",
+          "ageHours": 5.65,
+          "freshnessBasis": "The Rays said they'll remain aggressive on the bases despite two costly baserunning miscues in Friday's loss to the Brewers in Game 1 of the World Series.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401908042"
+            "https://www.espn.com/mlb/story/_/id/50263667/rays-ease-basepaths-losing-game-1-world-series"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401908042"
+              "url": "https://www.espn.com/mlb/story/_/id/50263667/rays-ease-basepaths-losing-game-1-world-series"
             }
           ],
-          "id": "a415-1dbd4e55da44cf92",
+          "id": "a415-d0e79ca8ad996406",
           "feedRank": 6,
-          "compactHeadline": "Brewers withstand Rays' comeback attempt to win 3-2 in Game 1 of World Series"
+          "compactHeadline": "Rays won't ease up on basepaths despite miscues in Game 1 of World Series"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T01:07:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.41,
+          "ageHours": 10.91,
           "freshnessBasis": "49ers receivers Mike Evans and Deebo Samuel Sr., and defensive end Nick Bosa are among a half dozen players who have been ruled out for Sunday's game against the Falcons.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T23:55:25Z",
           "timePrecision": "exact",
-          "ageHours": 4.6,
+          "ageHours": 12.1,
           "freshnessBasis": "Giants linebacker Tremaine Edmunds will miss the rest of the season with a torn chest muscle, a source told ESPN's Jordan Raanan. Edmunds leads the team with 50 tackles and wears the green dot to make the calls on defense.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T22:41:56Z",
           "timePrecision": "exact",
-          "ageHours": 5.82,
+          "ageHours": 13.33,
           "freshnessBasis": "RB Zach Charbonnet's season debut will have to wait at least one more week as the Seahawks have ruled him out for Sunday's game against the Chiefs.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T19:32:22Z",
           "timePrecision": "exact",
-          "ageHours": 8.98,
+          "ageHours": 16.49,
           "freshnessBasis": "Jets WR Adonai Mitchell, sidelined four games with a finger injury that required a surgical procedure, practiced all week and will play against the Dolphins.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T19:17:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.23,
+          "ageHours": 16.73,
           "freshnessBasis": "Rams wide receiver Puka Nacua (calf) will not practice Friday and is questionable to play Sunday against the Raiders, coach Sean McVay said.",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T18:46:10Z",
           "timePrecision": "exact",
-          "ageHours": 9.75,
+          "ageHours": 17.26,
           "freshnessBasis": "Cardinals rookie RB Jeremiyah Love will miss his second straight game Sunday as he continues to recover from an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -374,17 +374,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-486b0e3d7303e4c4"
+            "cand-4ae1332b8dd11c8c"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Pelicans starting center Yves Missi injured his left leg in the second quarter of Friday night's game at Utah and had to be helped to the locker room.",
-          "text": "Pelicans starting center Yves Missi injured his left leg in the second quarter of Friday night's game at Utah and had to be helped to the locker room.",
+          "headline": "Pelicans starting center Yves Missi injured his left knee in the second quarter of Friday night's game at Utah and had to be helped to the locker room.",
+          "text": "Pelicans starting center Yves Missi injured his left knee in the second quarter of Friday night's game at Utah and had to be helped to the locker room.",
           "entities": [],
-          "occurredAt": "2026-10-24T04:12:25Z",
+          "occurredAt": "2026-10-24T05:45:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "Pelicans starting center Yves Missi injured his left leg in the second quarter of Friday night's game at Utah and had to be helped to the locker room.",
+          "ageHours": 6.27,
+          "freshnessBasis": "Pelicans starting center Yves Missi injured his left knee in the second quarter of Friday night's game at Utah and had to be helped to the locker room.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50262849/pelicans-yves-missi-exits-jazz-game-left-leg-injury"
@@ -396,154 +396,154 @@
               "url": "https://www.espn.com/nba/story/_/id/50262849/pelicans-yves-missi-exits-jazz-game-left-leg-injury"
             }
           ],
-          "id": "a415-c7c3e7db0799534e",
+          "id": "a415-cfbebb0952544092",
           "feedRank": 13,
-          "compactHeadline": "Pelicans center Yves Missi helped off court vs. Jazz with leg injury"
+          "compactHeadline": "Pelicans center Yves Missi helped off court vs. Jazz with knee injury"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-bae8c8cd73753507"
+            "cand-dd7023440925e493"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Kyrie Irving scored 24 points and the Dallas Mavericks overcame the loss of Cooper Flagg to spoil Tyrese Haliburton 's home return for the Indiana Pacers in a 121-105 victory Friday...",
-          "text": "Kyrie Irving scored 24 points and the Dallas Mavericks overcame the loss of Cooper Flagg to spoil Tyrese Haliburton 's home return for the Indiana Pacers in a 121-105 victory Friday...",
+          "headline": "Rockets guard Amen Thompson blocked Victor Wembanyama at the rim to prevent a potential tying bucket as the Rockets beat the Spurs 114-110.",
+          "text": "Rockets guard Amen Thompson blocked Victor Wembanyama at the rim to prevent a potential tying bucket as the Rockets beat the Spurs 114-110.",
           "entities": [],
-          "occurredAt": "2026-10-24T02:20:46Z",
+          "occurredAt": "2026-10-24T10:21:53Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
-          "freshnessBasis": "— Kyrie Irving scored 24 points and the Dallas Mavericks overcame the loss of Cooper Flagg to spoil Tyrese Haliburton 's home return for the Indiana Pacers in a 121-105 victory Friday...",
+          "ageHours": 1.66,
+          "freshnessBasis": "Rockets guard Amen Thompson blocked Victor Wembanyama at the rim to prevent a potential tying bucket as the Rockets beat the Spurs 114-110.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909844"
+            "https://www.espn.com/nba/story/_/id/50264038/amen-thompson-stuffs-wemby-rim-rockets-hold-spurs"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909844"
+              "url": "https://www.espn.com/nba/story/_/id/50264038/amen-thompson-stuffs-wemby-rim-rockets-hold-spurs"
             }
           ],
-          "id": "a415-ad1a4b6e73a58ea0",
+          "id": "a415-8a851e175cfe63c2",
           "feedRank": 14,
-          "compactHeadline": "Mavericks lose Flagg to injury, and ruin Haliburton's home return with 121-105 win over Pacers"
+          "compactHeadline": "Amen Thompson stuffs Wemby's last-second shot as Rockets hold off Spurs"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-4241e76090e93ec3"
+            "cand-159d0b1695be1f64"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Anthony Edwards and Jaden McDaniels each scored 15 points to help the Minnesota Timberwolves beat the Orlando Magic 115-93 on Friday night.",
-          "text": "Anthony Edwards and Jaden McDaniels each scored 15 points to help the Minnesota Timberwolves beat the Orlando Magic 115-93 on Friday night.",
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "Jayson Tatum spent most of his postgame news conference Friday night addressing speculation about his relationship with former Celtics teammate Jaylen Brown in the wake of Brown's shocking trade to Philadelphia over the summer.",
+          "text": "Jayson Tatum spent most of his postgame news conference Friday night addressing speculation about his relationship with former Celtics teammate Jaylen Brown in the wake of Brown's shocking trade to Philadelphia over the summer.",
           "entities": [],
-          "occurredAt": "2026-10-24T02:18:46Z",
+          "occurredAt": "2026-10-24T07:18:38Z",
           "timePrecision": "exact",
-          "ageHours": 2.21,
-          "freshnessBasis": "— Anthony Edwards and Jaden McDaniels each scored 15 points to help the Minnesota Timberwolves beat the Orlando Magic 115-93 on Friday night.",
+          "ageHours": 4.72,
+          "freshnessBasis": "Jayson Tatum spent most of his postgame news conference Friday night addressing speculation about his relationship with former Celtics teammate Jaylen Brown in the wake of Brown's shocking trade to Philadelphia over the summer.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909845"
+            "https://www.espn.com/nba/story/_/id/50263591/celtics-jayson-tatum-insists-no-beef-76ers-jaylen-brown-wake-trade"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909845"
+              "url": "https://www.espn.com/nba/story/_/id/50263591/celtics-jayson-tatum-insists-no-beef-76ers-jaylen-brown-wake-trade"
             }
           ],
-          "id": "a415-4e24fb8b0f3ca876",
+          "id": "a415-0fb40df59a12feb9",
           "feedRank": 15,
-          "compactHeadline": "Despite low output from Anthony Edwards, Timberwolves dominate glass and roll Magic 115-93"
+          "compactHeadline": "Jayson Tatum insists 'there's no beef' with Jaylen Brown in wake of trade"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-7f5a8a79be28358c"
+            "cand-e3a1d73a9d5b3118"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Scottie Barnes had 28 points and 14 rebounds, and the Toronto Raptors continued their stellar defensive start to the season with a 112-102 victory over the Washington Wizards on Friday night.",
-          "text": "Scottie Barnes had 28 points and 14 rebounds, and the Toronto Raptors continued their stellar defensive start to the season with a 112-102 victory over the Washington Wizards on Friday night.",
+          "headline": "Cameron Boozer made a go-ahead jumper with 20 seconds left and finished with 25 points and 13 rebounds, and the Memphis Grizzlies came from 12 points down over the final 3:47 to beat the Golden State Warriors 111-108 on Friday night.",
+          "text": "Cameron Boozer made a go-ahead jumper with 20 seconds left and finished with 25 points and 13 rebounds, and the Memphis Grizzlies came from 12 points down over the final 3:47 to beat the Golden State Warriors 111-108 on Friday night.",
           "entities": [],
-          "occurredAt": "2026-10-24T01:55:47Z",
+          "occurredAt": "2026-10-24T05:19:46Z",
           "timePrecision": "exact",
-          "ageHours": 2.59,
-          "freshnessBasis": "— Scottie Barnes had 28 points and 14 rebounds, and the Toronto Raptors continued their stellar defensive start to the season with a 112-102 victory over the Washington Wizards on Friday night.",
+          "ageHours": 6.7,
+          "freshnessBasis": "— Cameron Boozer made a go-ahead jumper with 20 seconds left and finished with 25 points and 13 rebounds, and the Memphis Grizzlies came from 12 points down over the final 3:47 to beat the Golden State Warriors 111-108 on Friday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909846"
+            "http://www.espn.com/nba/recap?gameId=401909850"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909846"
+              "url": "http://www.espn.com/nba/recap?gameId=401909850"
             }
           ],
-          "id": "a415-29ca881ad1fa2cc1",
+          "id": "a415-490411c43d14f59e",
           "feedRank": 16,
-          "compactHeadline": "Barnes, Barrett pace stingy Raptors to a 112-102 win over the Wizards"
+          "compactHeadline": "Cameron Boozer hits go-ahead jumper with 20 seconds left, Grizzlies rally to beat Warriors 111-108"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-f95103e7f1549ccd"
+            "cand-98db704099f99294"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Norman Powell had 25 points, rookie Caleb Wilson added 21 and the Chicago Bulls beat the Milwaukee Bucks 132-125 on Friday.",
-          "text": "Norman Powell had 25 points, rookie Caleb Wilson added 21 and the Chicago Bulls beat the Milwaukee Bucks 132-125 on Friday.",
+          "headline": "Deni Avdija led the Trail Blazers with 26 points, six rebounds, and six assists in the Portland Trail Blazers 128-120 victory over the Sacramento Kings on Friday.",
+          "text": "Deni Avdija led the Trail Blazers with 26 points, six rebounds, and six assists in the Portland Trail Blazers 128-120 victory over the Sacramento Kings on Friday.",
           "entities": [],
-          "occurredAt": "2026-10-23T23:27:46Z",
+          "occurredAt": "2026-10-24T05:07:56Z",
           "timePrecision": "exact",
-          "ageHours": 5.06,
-          "freshnessBasis": "— Norman Powell had 25 points, rookie Caleb Wilson added 21 and the Chicago Bulls beat the Milwaukee Bucks 132-125 on Friday.",
+          "ageHours": 6.89,
+          "freshnessBasis": "— Deni Avdija led the Trail Blazers with 26 points, six rebounds, and six assists in the Portland Trail Blazers 128-120 victory over the Sacramento Kings on Friday.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909848"
+            "http://www.espn.com/nba/recap?gameId=401909852"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909848"
+              "url": "http://www.espn.com/nba/recap?gameId=401909852"
             }
           ],
-          "id": "a415-5fcf4950e3f806da",
+          "id": "a415-238f3bd37f970270",
           "feedRank": 17,
-          "compactHeadline": "Powell scores 25 points to help the Bulls hold off the Bucks, 132-125"
+          "compactHeadline": "Deni Avdija scores 26 points to lead Trail Blazers in win over Kings"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-3d2bd4b5eed81cb2"
+            "cand-d00a8d9492e2d81a"
           ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Former Lakers first-round pick Dalton Knecht has agreed to a two-way deal with the Knicks, his agents told ESPN's Shams Charania.",
-          "text": "Former Lakers first-round pick Dalton Knecht has agreed to a two-way deal with the Knicks, his agents told ESPN's Shams Charania.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Amen Thompson blocked Victor Wembanyama's game-tying layup attempt with less than a second remaining and the Houston Rockets held on to beat the San Antonio Spurs 114-110 on Friday night.",
+          "text": "Amen Thompson blocked Victor Wembanyama's game-tying layup attempt with less than a second remaining and the Houston Rockets held on to beat the San Antonio Spurs 114-110 on Friday night.",
           "entities": [],
-          "occurredAt": "2026-10-23T15:59:21Z",
+          "occurredAt": "2026-10-24T04:52:51Z",
           "timePrecision": "exact",
-          "ageHours": 12.53,
-          "freshnessBasis": "Former Lakers first-round pick Dalton Knecht has agreed to a two-way deal with the Knicks, his agents told ESPN's Shams Charania.",
+          "ageHours": 7.15,
+          "freshnessBasis": "— Amen Thompson blocked Victor Wembanyama's game-tying layup attempt with less than a second remaining and the Houston Rockets held on to beat the San Antonio Spurs 114-110 on Friday night.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50258464/ex-laker-dalton-knecht-joins-knicks-two-way-contract"
+            "http://www.espn.com/nba/recap?gameId=401909096"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50258464/ex-laker-dalton-knecht-joins-knicks-two-way-contract"
+              "url": "http://www.espn.com/nba/recap?gameId=401909096"
             }
           ],
-          "id": "a415-1bf785f62c0b4765",
+          "id": "a415-5f8d05a5ef53fa95",
           "feedRank": 18,
-          "compactHeadline": "Ex-Laker Dalton Knecht joins Knicks on two-way contract"
+          "compactHeadline": "Amen Thompson blocks Wembanyama in final second as the Rockets beat the Spurs 114-110 in Austin"
         }
       ]
     },
@@ -554,6 +554,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-a01d06e9651bd02d"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Montreal Canadiens (5-3-2, in the Atlantic Division) vs. Winnipeg Jets (4-3-3, in the Central Division)",
+          "text": "Montreal Canadiens (5-3-2, in the Atlantic Division) vs. Winnipeg Jets (4-3-3, in the Central Division)",
+          "entities": [],
+          "occurredAt": "2026-10-24T08:10:49Z",
+          "timePrecision": "exact",
+          "ageHours": 3.85,
+          "freshnessBasis": "Montreal Canadiens (5-3-2, in the Atlantic Division) vs. Winnipeg Jets (4-3-3, in the Central Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401891807"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401891807"
+            }
+          ],
+          "id": "a415-fc97848a9c31a000",
+          "feedRank": 19,
+          "compactHeadline": "Jets bring 4-game losing streak into matchup against the Canadiens"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-29761146790fbcf4"
           ],
           "type": "RESULT",
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T04:08:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 7.88,
           "freshnessBasis": "— Nathan MacKinnon had a goal and three assists, Nazem Kadri scored his first goal of the season and the Colorado Avalanche beat the Tampa Bay...",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +606,11 @@
             }
           ],
           "id": "a415-5d7b5f494792aa10",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Nathan MacKinnon has goal and 3 assists in Avalanche's 6-3 win over Lightning"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-43ad0e54d406a38c"
           ],
@@ -592,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T02:56:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
+          "ageHours": 9.08,
           "freshnessBasis": "— Jake Evans scored twice and assisted on Kaiden Guhle’s goal and the Montreal Canadiens beat the Chicago Blackhawks 4-1 on Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -606,11 +635,11 @@
             }
           ],
           "id": "a415-820dfedd9cbb9967",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Jake Evans scores twice in the Canadiens' 4-1 victory over the Blackhawks"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-d919e9dcf916e9b1"
           ],
@@ -621,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T18:00:43Z",
           "timePrecision": "exact",
-          "ageHours": 10.51,
+          "ageHours": 18.01,
           "freshnessBasis": "The Devils made a major move Friday, acquiring goalie and 3-time Vezina Trophy winner Connor Hellebuyck from the Jets in return for several players and draft picks.",
           "status": "active",
           "sourceUrls": [
@@ -635,37 +664,66 @@
             }
           ],
           "id": "a415-0df5cb6e49678be9",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Devils acquire 3-time Vezina winner Connor Hellebuyck from Jets"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
-            "cand-77261bfdff87bd3e"
+            "cand-b4f51bfa9f372745"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Minnesota Wild (6-3-2, in the Central Division) vs. Seattle Kraken (7-3-1, in the Pacific Division)",
-          "text": "Minnesota Wild (6-3-2, in the Central Division) vs. Seattle Kraken (7-3-1, in the Pacific Division)",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "New York Islanders (5-3-2, in the Metropolitan Division) vs. Dallas Stars (6-3-1, in the Central Division)",
+          "text": "New York Islanders (5-3-2, in the Metropolitan Division) vs. Dallas Stars (6-3-1, in the Central Division)",
           "entities": [],
-          "occurredAt": "2026-10-23T08:12:19Z",
+          "occurredAt": "2026-10-24T08:10:48Z",
           "timePrecision": "exact",
-          "ageHours": 20.32,
-          "freshnessBasis": "Minnesota Wild (6-3-2, in the Central Division) vs. Seattle Kraken (7-3-1, in the Pacific Division)",
+          "ageHours": 3.85,
+          "freshnessBasis": "New York Islanders (5-3-2, in the Metropolitan Division) vs. Dallas Stars (6-3-1, in the Central Division)",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nhl/preview?gameId=401892577"
+            "http://www.espn.com/nhl/preview?gameId=401892579"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/preview?gameId=401892577"
+              "url": "http://www.espn.com/nhl/preview?gameId=401892579"
             }
           ],
-          "id": "a415-b32eac40f085ba19",
-          "feedRank": 22,
-          "compactHeadline": "Wild take road losing streak into game against the Kraken"
+          "id": "a415-337a71940139b42a",
+          "feedRank": 23,
+          "compactHeadline": "Stars host the Islanders after overtime win"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-4b58aaece6298696"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Florida Panthers (5-4-2, in the Atlantic Division) vs. Chicago Blackhawks (3-7, in the Central Division)",
+          "text": "Florida Panthers (5-4-2, in the Atlantic Division) vs. Chicago Blackhawks (3-7, in the Central Division)",
+          "entities": [],
+          "occurredAt": "2026-10-24T08:10:47Z",
+          "timePrecision": "exact",
+          "ageHours": 3.85,
+          "freshnessBasis": "Florida Panthers (5-4-2, in the Atlantic Division) vs. Chicago Blackhawks (3-7, in the Central Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892578"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892578"
+            }
+          ],
+          "id": "a415-08912b9bd542f960",
+          "feedRank": 24,
+          "compactHeadline": "Chicago hosts Florida in a non-conference matchup"
         }
       ]
     },
@@ -685,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T22:50:36Z",
           "timePrecision": "exact",
-          "ageHours": 5.68,
+          "ageHours": 13.18,
           "freshnessBasis": "Roberto De Zerbi has defended Tottenham's medical staff despite an ongoing injury crisis.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +757,7 @@
             }
           ],
           "id": "a415-bc4c81893295aa07",
-          "feedRank": 23,
+          "feedRank": 25,
           "compactHeadline": "Roberto De Zerbi defends Spurs' 'high level' medical staff amid injury crisis"
         },
         {
@@ -714,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T18:25:27Z",
           "timePrecision": "exact",
-          "ageHours": 10.1,
+          "ageHours": 17.6,
           "freshnessBasis": "Mikel Arteta did not deny Bukayo Saka's injury could be significant after the winger's struggles appeared to indicate \"not good signs\" for his prognosis.",
           "status": "active",
           "sourceUrls": [
@@ -728,11 +786,40 @@
             }
           ],
           "id": "a415-2f6a61848b994fda",
-          "feedRank": 24,
+          "feedRank": 26,
           "compactHeadline": "Arsenal's Mikel Arteta admits Bukayo Saka injury signs are 'not good'"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-3c7cda3de5e2e1a4"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Before Raphinha became Barcelona's captain and converted into their main striker, he was Premier League battling relegation at Leeds United. It was the making of him.",
+          "text": "Before Raphinha became Barcelona's captain and converted into their main striker, he was Premier League battling relegation at Leeds United. It was the making of him.",
+          "entities": [],
+          "occurredAt": "2026-10-24T10:23:54Z",
+          "timePrecision": "exact",
+          "ageHours": 1.63,
+          "freshnessBasis": "Before Raphinha became Barcelona's captain and converted into their main striker, he was Premier League battling relegation at Leeds United. It was the making of him.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50196710/raphinha-latest-transformation-barcelona-star-striker-premier-league-leeds-united"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50196710/raphinha-latest-transformation-barcelona-star-striker-premier-league-leeds-united"
+            }
+          ],
+          "id": "a415-d895711b4030d724",
+          "feedRank": 27,
+          "compactHeadline": "How Raphinha's latest transformation made him into Barcelona's star striker"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-c571676955ac17a6"
           ],
@@ -743,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T21:19:10Z",
           "timePrecision": "exact",
-          "ageHours": 7.2,
+          "ageHours": 14.71,
           "freshnessBasis": "Liam Delap fired a blank on his return to Ipswich with Nottingham Forest forced to settle for a 1-1 draw despite a dominant display at Portman Road.",
           "status": "active",
           "sourceUrls": [
@@ -757,37 +844,8 @@
             }
           ],
           "id": "a415-4507f9543546e0c2",
-          "feedRank": 25,
+          "feedRank": 28,
           "compactHeadline": "Ipswich earn draw with Forest as Delap misfires on return"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-dad6bb46adcec652"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Nottingham Forest lamented the referee's decision not to reduce Ipswich Town to 10 men in the second half, as well a number of missed chances in front of goal, after a 1-1 draw at Portman Road.",
-          "text": "Nottingham Forest lamented the referee's decision not to reduce Ipswich Town to 10 men in the second half, as well a number of missed chances in front of goal, after a 1-1 draw at Portman Road.",
-          "entities": [],
-          "occurredAt": "2026-10-23T23:13:21Z",
-          "timePrecision": "exact",
-          "ageHours": 5.3,
-          "freshnessBasis": "Nottingham Forest lamented the referee's decision not to reduce Ipswich Town to 10 men in the second half, as well a number of missed chances in front of goal, after a 1-1 draw at Portman Road.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50261284/nottingham-forest-ipswich-town-red-card-issa-diop"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50261284/nottingham-forest-ipswich-town-red-card-issa-diop"
-            }
-          ],
-          "id": "a415-ac7f70ad3fe4516e",
-          "feedRank": 26,
-          "compactHeadline": "Nottingham Forest rue 'wrong' red card call, missed chances in Ipswich draw"
         }
       ]
     },
@@ -807,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T19:18:18Z",
           "timePrecision": "exact",
-          "ageHours": 9.22,
+          "ageHours": 16.72,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -821,7 +879,7 @@
             }
           ],
           "id": "a415-fa668b3291d7fcc5",
-          "feedRank": 27,
+          "feedRank": 29,
           "compactHeadline": "Messi tracker: Goals, assists, key moments in 2026"
         },
         {
@@ -836,7 +894,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T17:33:05Z",
           "timePrecision": "exact",
-          "ageHours": 10.97,
+          "ageHours": 18.47,
           "freshnessBasis": "Inter Miami head coach Cristian \"Kily\" Gonzalez confirmed Lionel Messi will rejoin the team for the match against the New York Red Bulls on Saturday after receiving the Princess of Asturias award for sport in Oviedo, Spain.",
           "status": "active",
           "sourceUrls": [
@@ -850,7 +908,7 @@
             }
           ],
           "id": "a415-dd0174fcfa96592a",
-          "feedRank": 28,
+          "feedRank": 30,
           "compactHeadline": "Miami coach praises Messi's 'commitment' to play after award in Spain"
         },
         {
@@ -865,7 +923,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T18:39:43Z",
           "timePrecision": "exact",
-          "ageHours": 9.86,
+          "ageHours": 17.36,
           "freshnessBasis": "Cavan Sullivan has a pre-contract agreement with Manchester City, but could Barcelona swoop up and sign the young American prospect? Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -879,7 +937,7 @@
             }
           ],
           "id": "a415-95f9dd13e3e1f4c2",
-          "feedRank": 29,
+          "feedRank": 31,
           "compactHeadline": "Transfer rumors, news: Barcelona to end up signing Sullivan?"
         }
       ]
@@ -891,6 +949,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e0fef6b478daa313"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Davis Warren threw for 303 yards and four touchdowns to lead Stanford to a 31-28 victory over North Carolina State on Friday night.",
+          "text": "Davis Warren threw for 303 yards and four touchdowns to lead Stanford to a 31-28 victory over North Carolina State on Friday night.",
+          "entities": [],
+          "occurredAt": "2026-10-24T07:09:46Z",
+          "timePrecision": "exact",
+          "ageHours": 4.86,
+          "freshnessBasis": "— Davis Warren threw for 303 yards and four touchdowns to lead Stanford to a 31-28 victory over North Carolina State on Friday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401858272"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858272"
+            }
+          ],
+          "id": "a415-10543d7e1d3cf352",
+          "feedRank": 32,
+          "compactHeadline": "Davis Warren's 4 TD passes lead Stanford to a 31-28 win over NC State"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-afd8478b5f7bef23"
           ],
           "type": "SIGNING",
@@ -900,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-23T20:50:14Z",
           "timePrecision": "exact",
-          "ageHours": 7.69,
+          "ageHours": 15.19,
           "freshnessBasis": "Oregon State freshman receiver Jesse Legree, one of the country's breakout stars in 2026, has re-signed with the Beavers for next season, he announced Friday.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +1001,11 @@
             }
           ],
           "id": "a415-9efeed86a9f8ac03",
-          "feedRank": 30,
+          "feedRank": 33,
           "compactHeadline": "Oregon State standout WR Jesse Legree re-signs with Beavers for '27"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-315ef213297f0301"
           ],
@@ -929,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T03:41:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.83,
+          "ageHours": 8.33,
           "freshnessBasis": "— Duke running back Nate Sheppard threw a 28-yard touchdown pass to a wide-open Brody Keefe with 1:14 left to give the Blue Devils a 19-16 win over Virginia on Friday night at...",
           "status": "active",
           "sourceUrls": [
@@ -943,37 +1030,8 @@
             }
           ],
           "id": "a415-680354147941dd28",
-          "feedRank": 31,
+          "feedRank": 34,
           "compactHeadline": "Duke uses trick-play TD pass from Nate Sheppard to pull out 19-16 victory over Virginia"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-58601e5f405960c4"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Miami's return to the the top of the AP Poll marks its first No. 1 ranking since January 2003 -- when sports and pop culture looked far different.",
-          "text": "Miami's return to the the top of the AP Poll marks its first No. 1 ranking since January 2003 -- when sports and pop culture looked far different.",
-          "entities": [],
-          "occurredAt": "2026-10-23T13:08:46Z",
-          "timePrecision": "exact",
-          "ageHours": 15.38,
-          "freshnessBasis": "Miami's return to the the top of the AP Poll marks its first No. 1 ranking since January 2003 -- when sports and pop culture looked far different.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/47654986/miami-hurricanes-2003-national-title-sports-entertainment-trends"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/47654986/miami-hurricanes-2003-national-title-sports-entertainment-trends"
-            }
-          ],
-          "id": "a415-3901ce363880917c",
-          "feedRank": 32,
-          "compactHeadline": "From the BCS to the CFP: Trends from Miami's last time as AP No. 1"
         },
         {
           "rank": 4,
@@ -982,13 +1040,13 @@
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Texas AD Chris Del Conte on Friday sought to clarify a report the team used a new AI-driven platform on a crucial play that failed in last week's loss to Florida.",
-          "text": "Texas AD Chris Del Conte on Friday sought to clarify a report the team used a new AI-driven platform on a crucial play that failed in last week's loss to Florida.",
+          "headline": "Texas AD Chris Del Conte on Friday sought to clarify a report that the team used a new AI-driven platform on a crucial play that failed in last week's loss to Florida.",
+          "text": "Texas AD Chris Del Conte on Friday sought to clarify a report that the team used a new AI-driven platform on a crucial play that failed in last week's loss to Florida.",
           "entities": [],
-          "occurredAt": "2026-10-24T03:45:38Z",
+          "occurredAt": "2026-10-24T05:36:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.76,
-          "freshnessBasis": "Texas AD Chris Del Conte on Friday sought to clarify a report the team used a new AI-driven platform on a crucial play that failed in last week's loss to Florida.",
+          "ageHours": 6.42,
+          "freshnessBasis": "Texas AD Chris Del Conte on Friday sought to clarify a report that the team used a new AI-driven platform on a crucial play that failed in last week's loss to Florida.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50262750/texas-ad-clarifies-use-ai-key-play-loss-florida"
@@ -1001,66 +1059,8 @@
             }
           ],
           "id": "a415-569b20e775aa2620",
-          "feedRank": 33,
-          "compactHeadline": "Texas AD Del Conte clarifies AI use on key play that failed in loss to Florida"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-296b45d104f7d383"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Kalieb Osborne threw two touchdown passes and ran for a score to lead Connecticut to a 35-16 victory over Massachusetts on Friday night.",
-          "text": "Kalieb Osborne threw two touchdown passes and ran for a score to lead Connecticut to a 35-16 victory over Massachusetts on Friday night.",
-          "entities": [],
-          "occurredAt": "2026-10-24T02:51:52Z",
-          "timePrecision": "exact",
-          "ageHours": 1.66,
-          "freshnessBasis": "— Kalieb Osborne threw two touchdown passes and ran for a score to lead Connecticut to a 35-16 victory over Massachusetts on Friday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401861965"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401861965"
-            }
-          ],
-          "id": "a415-488d283082afb8f5",
-          "feedRank": 34,
-          "compactHeadline": "Kalieb Osborne, Shamar Porter guide UConn to 35-16 victory over UMass"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b7266e157adc1241"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Our college football experts rerank the top 25 players midway through the 2026 season.",
-          "text": "Our college football experts rerank the top 25 players midway through the 2026 season.",
-          "entities": [],
-          "occurredAt": "2026-10-23T10:13:35Z",
-          "timePrecision": "exact",
-          "ageHours": 18.3,
-          "freshnessBasis": "Our college football experts rerank the top 25 players midway through the 2026 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50232147/2026-midseason-player-rank-top-25"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50232147/2026-midseason-player-rank-top-25"
-            }
-          ],
-          "id": "a415-77780c211223f4e4",
           "feedRank": 35,
-          "compactHeadline": "2026 CFB Player Rank: The top 25 players at midseason"
+          "compactHeadline": "Texas AD Del Conte clarifies AI use on key play that failed in loss to Florida"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 122,
+    "freshCandidateCount": 127,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
