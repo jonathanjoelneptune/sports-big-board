@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-25T04:01:31Z",
+  "generatedAt": "2026-10-25T04:31:23Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "9d76ad5fa848ced881eb883a22165c7dc2529f53c6f227829e2f2c516c864175",
+  "sourceCandidateHash": "fd69df27295ee3f6e67468aa69f62c7147ad27e506a067c755f42ea0a7a01508",
   "leagues": [
     {
       "league": "MLB",
@@ -14,16 +14,45 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-529df1081231954b"
+            "cand-ab8fc03143fc7d4a"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "The Brewers rallied from a 4-0 deficit in the first inning to beat the Rays 5-4 in Game 2 on Saturday and take a 2-0 lead in the World Series.",
+          "text": "The Brewers rallied from a 4-0 deficit in the first inning to beat the Rays 5-4 in Game 2 on Saturday and take a 2-0 lead in the World Series.",
+          "entities": [],
+          "occurredAt": "2026-10-25T04:27:56Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "The Brewers rallied from a 4-0 deficit in the first inning to beat the Rays 5-4 in Game 2 on Saturday and take a 2-0 lead in the World Series.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50273821/brewers-rally-vs-rays-game-2-take-2-0-world-series-lead"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50273821/brewers-rally-vs-rays-game-2-take-2-0-world-series-lead"
+            }
+          ],
+          "id": "a415-21dce3fffeabcb36",
+          "feedRank": 1,
+          "compactHeadline": "Brewers rally vs. Rays in Game 2 to take 2-0 lead in World Series"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-5414a94a629df869"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Sal Frelick tied the score with his first home run in three months, Cooper Pratt hit a go-ahead single in the seventh inning and the Milwaukee Brewers stunned the Tampa Bay Rays 5-4 on Saturday night for a 2-0 World Series lead by overcoming a...",
           "text": "Sal Frelick tied the score with his first home run in three months, Cooper Pratt hit a go-ahead single in the seventh inning and the Milwaukee Brewers stunned the Tampa Bay Rays 5-4 on Saturday night for a 2-0 World Series lead by overcoming a...",
           "entities": [],
-          "occurredAt": "2026-10-25T03:54:47Z",
+          "occurredAt": "2026-10-25T04:10:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.34,
           "freshnessBasis": "— Sal Frelick tied the score with his first home run in three months, Cooper Pratt hit a go-ahead single in the seventh inning and the Milwaukee Brewers stunned the Tampa Bay Rays 5-4 on Saturday night for a 2-0 World Series lead by overcoming a...",
           "status": "active",
           "sourceUrls": [
@@ -36,12 +65,12 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401908043"
             }
           ],
-          "id": "a415-278e2e96b8e7f242",
-          "feedRank": 1,
-          "compactHeadline": "Frelick and Pratt lift Brewers to 5-4 comeback win over Rays and 2-0 World Series lead"
+          "id": "a415-e7ef8a9a5fdd36b1",
+          "feedRank": 2,
+          "compactHeadline": "Frelick, Pratt lift Brewers to 5-4 comeback win over Rays and 2-0 World Series lead"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-75c4c03b05399118"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T16:04:15Z",
           "timePrecision": "exact",
-          "ageHours": 11.95,
+          "ageHours": 12.45,
           "freshnessBasis": "We go inside the numbers on the players doing the most to help their teams win.",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +95,8 @@
             }
           ],
           "id": "a415-46d2b9edd468d9e5",
-          "feedRank": 2,
-          "compactHeadline": "Who is this year's Mr. October? Tracking the playoff MVP for 2026"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-7ad3f13debd920fb"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Jacob Misiorowski broke the record for the fastest World Series pitch with the first offering of this year's Fall Classic.",
-          "text": "Jacob Misiorowski broke the record for the fastest World Series pitch with the first offering of this year's Fall Classic.",
-          "entities": [],
-          "occurredAt": "2026-10-24T04:23:41Z",
-          "timePrecision": "exact",
-          "ageHours": 23.63,
-          "freshnessBasis": "Jacob Misiorowski broke the record for the fastest World Series pitch with the first offering of this year's Fall Classic.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50261786/brewers-jacob-misiorowski-sets-world-series-velocity-record-first-pitch"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50261786/brewers-jacob-misiorowski-sets-world-series-velocity-record-first-pitch"
-            }
-          ],
-          "id": "a415-89610968b81bd45e",
           "feedRank": 3,
-          "compactHeadline": "Brewers' Jacob Misiorowski sets WS velocity record on first pitch"
+          "compactHeadline": "Who is this year's Mr. October? Tracking the playoff MVP for 2026"
         },
         {
           "rank": 4,
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:52:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.15,
+          "ageHours": 0.65,
           "freshnessBasis": "We have your one-stop shop for everything you need to keep up with all the action this October.",
           "status": "active",
           "sourceUrls": [
@@ -145,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T22:15:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.27,
           "freshnessBasis": "The Vikings activated running back Jordan Mason from injured reserve Saturday, completing his recovery from a fractured thumb that required surgery last month.",
           "status": "active",
           "sourceUrls": [
@@ -174,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T20:41:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.33,
+          "ageHours": 7.83,
           "freshnessBasis": "The Baltimore Ravens have ruled QB Lamar Jackson out of Sundays game vs. the Cincinnati Bengals as he continues to deal with a high ankle sprain. Tyler \"Snoop\" Huntley will get the start.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T21:01:12Z",
           "timePrecision": "exact",
-          "ageHours": 7.01,
+          "ageHours": 7.5,
           "freshnessBasis": "Packers running back Josh Jacobs will make his 2026 season debut against the Lions after spending the first six weeks on the NFL's commissioner exempt list.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T23:35:44Z",
           "timePrecision": "exact",
-          "ageHours": 4.43,
+          "ageHours": 4.93,
           "freshnessBasis": "The Bengals defensive end uses sign language to say \"I love you\" to his mother, Bola, who died of pancreatic cancer in 2018.",
           "status": "active",
           "sourceUrls": [
@@ -258,6 +258,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-05e8658ca0e3fd2d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Nikola Jokic scored eight of his 35 points in overtime and finished with 15 rebounds and 10 assists, and the short-handed Denver Nuggets rallied from down 23 to beat the New Orleans Pelicans 141-135 on Saturday night.",
+          "text": "Nikola Jokic scored eight of his 35 points in overtime and finished with 15 rebounds and 10 assists, and the short-handed Denver Nuggets rallied from down 23 to beat the New Orleans Pelicans 141-135 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-10-25T04:14:56Z",
+          "timePrecision": "exact",
+          "ageHours": 0.27,
+          "freshnessBasis": "— Nikola Jokic scored eight of his 35 points in overtime and finished with 15 rebounds and 10 assists, and the short-handed Denver Nuggets rallied from down 23 to beat the New Orleans Pelicans 141-135 on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401909859"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909859"
+            }
+          ],
+          "id": "a415-25a42524e8264ae3",
+          "feedRank": 9,
+          "compactHeadline": "Jokic has triple-double, Murray scores 42 points in Nuggets' OT victory over Pelicans"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-4772183d5e03c479"
           ],
           "type": "RESULT",
@@ -267,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:59:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.03,
+          "ageHours": 0.53,
           "freshnessBasis": "Joel Embiid had a triple-double with LeBron James out, Jaylen Brown scored 27 points and the 76ers remained undefeated with a 127-116 win over the Bucks.",
           "status": "active",
           "sourceUrls": [
@@ -281,11 +310,11 @@
             }
           ],
           "id": "a415-c8d7eee9e6d4af61",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Embiid posts triple-double as LeBron-less Sixers stay unbeaten"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-3b716b770f580b6f"
           ],
@@ -296,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T18:44:27Z",
           "timePrecision": "exact",
-          "ageHours": 9.28,
+          "ageHours": 9.78,
           "freshnessBasis": "Mavericks star forward Cooper Flagg had an MRI that revealed a mild left shoulder sprain, the team announced. He will not play against the Spurs.",
           "status": "active",
           "sourceUrls": [
@@ -310,11 +339,11 @@
             }
           ],
           "id": "a415-07735f6e40475e5c",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Mavericks' Cooper Flagg out for home opener with mild left shoulder sprain"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-f61ecb66e7ad1950"
           ],
@@ -325,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:19:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.7,
+          "ageHours": 1.19,
           "freshnessBasis": "— Kevin Durant scored 22 points and both Reed Sheppard and Tari Eason had 19 points as the Houston Rockets beat the Atlanta Hawks 121-114.",
           "status": "active",
           "sourceUrls": [
@@ -339,11 +368,11 @@
             }
           ],
           "id": "a415-3dd13335b0c488c3",
-          "feedRank": 11,
+          "feedRank": 12,
           "compactHeadline": "Durant scores 22, Sheppard hits five 3-pointers to lead Rockets to a win in Atlanta's home opener"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-64e55071c0a9673b"
           ],
@@ -354,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:49:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.2,
+          "ageHours": 1.69,
           "freshnessBasis": "— Victor Wembanyama had 23 points, seven rebounds and four blocks, Dylan Harper scored 22 points and the San Antonio Spurs beat the Dallas Mavericks 122-106 on Saturday night for their first victory of the season.",
           "status": "active",
           "sourceUrls": [
@@ -368,11 +397,11 @@
             }
           ],
           "id": "a415-4492948dec74c770",
-          "feedRank": 12,
+          "feedRank": 13,
           "compactHeadline": "Wembanyama, Harper lead Spurs past short-handed Mavericks 122-106 for their first victory"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-7fe1c19f8c7e2183"
           ],
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:48:59Z",
           "timePrecision": "exact",
-          "ageHours": 1.21,
+          "ageHours": 1.71,
           "freshnessBasis": "— Donovan Mitchell scored 22 points, Jarrett Allen added 21 points, and the Cleveland Cavaliers won their home opener, 125-121 over the Brooklyn Nets on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -397,37 +426,8 @@
             }
           ],
           "id": "a415-ac0ccf56087a5444",
-          "feedRank": 13,
-          "compactHeadline": "Cavaliers survive a late Nets rally to win home opener 125-121"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8334822352edf91e"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Joel Embiid had a triple-double with LeBron James out, Jaylen Brown scored 27 points on his 30th birthday and the Philadelphia 76ers remained undefeated with a 127-116 win over the Milwaukee Bucks on Saturday night.",
-          "text": "Joel Embiid had a triple-double with LeBron James out, Jaylen Brown scored 27 points on his 30th birthday and the Philadelphia 76ers remained undefeated with a 127-116 win over the Milwaukee Bucks on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-10-25T02:16:49Z",
-          "timePrecision": "exact",
-          "ageHours": 1.75,
-          "freshnessBasis": "— Joel Embiid had a triple-double with LeBron James out, Jaylen Brown scored 27 points on his 30th birthday and the Philadelphia 76ers remained undefeated with a 127-116 win over the Milwaukee Bucks on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909855"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909855"
-            }
-          ],
-          "id": "a415-b473b7fff35efdb0",
           "feedRank": 14,
-          "compactHeadline": "Embiid posts triple-double with LeBron out to keep 76ers perfect in 127-116 win over Bucks"
+          "compactHeadline": "Cavaliers survive a late Nets rally to win home opener 125-121"
         }
       ]
     },
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:42:46Z",
           "timePrecision": "exact",
-          "ageHours": 1.31,
+          "ageHours": 1.81,
           "freshnessBasis": "— William Nylander scored twice to reach 300 NHL goals, Anthony Stolarz made 30 saves and the Toronto Maple Leafs routed the Edmonton Oilers 7-2 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:11:46Z",
           "timePrecision": "exact",
-          "ageHours": 1.83,
+          "ageHours": 2.33,
           "freshnessBasis": "— Alex Tuch scored two goals, including the winner in overtime, to lead the Washington Capitals to a win over the Buffalo Sabres, 4-3 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:09:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.86,
+          "ageHours": 2.36,
           "freshnessBasis": "— Ville Koivunen scored at 3:44 of overtime and the Pittsburgh Penguins rallied to beat the Nashville Predators 3-2 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:06:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.91,
+          "ageHours": 2.41,
           "freshnessBasis": "— James Hagens and David Pastrnak scored in a 40-second span in the third period, and the Boston Bruins extended their points streak to eight games with a 6-4 victory over the San Jose Sharks on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T01:59:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.03,
+          "ageHours": 2.53,
           "freshnessBasis": "— Adam Fantilli scored on a power play 59 seconds into overtime and the Columbus Blue Jackets beat Vegas 2-1 on Saturday night, sending the Golden Knights to their third straight loss.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T01:45:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.26,
+          "ageHours": 2.76,
           "freshnessBasis": "— Pyotr Kochetkov made 24 saves for his first shutout of the season and 12th in the NHL in the Carolina Hurricanes' 4-0 victory over the St. Louis Blues on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T19:04:28Z",
           "timePrecision": "exact",
-          "ageHours": 8.95,
+          "ageHours": 9.45,
           "freshnessBasis": "Tottenham Hotspur get a rare away win against Chelsea, as Arsenal and Man City are both joint-top of the Premier League, on a Saturday full of matches across Europe.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T18:55:28Z",
           "timePrecision": "exact",
-          "ageHours": 9.1,
+          "ageHours": 9.6,
           "freshnessBasis": "Cole Palmer was sent off for the first time in his senior career as Chelsea became the third team in history to be shown 100 red cards in the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T12:47:17Z",
           "timePrecision": "exact",
-          "ageHours": 15.24,
+          "ageHours": 15.74,
           "freshnessBasis": "Under-fire Michael Carrick says his players must be mentally prepared to move on if misfiring Manchester United are to end their winless run against Bournemouth.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T20:06:23Z",
           "timePrecision": "exact",
-          "ageHours": 7.92,
+          "ageHours": 8.42,
           "freshnessBasis": "Chelsea manager Xabi Alonso refused to blame stand-in goalkeeper Mike Penders for his key error which helped Tottenham to a 2-0 win at Stamford Bridge on Saturday, and said Cole Palmer will learn from his red card.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T21:05:29Z",
           "timePrecision": "exact",
-          "ageHours": 6.93,
+          "ageHours": 7.43,
           "freshnessBasis": "Nashville SC clinched the 2026 MLS Supporters' Shield title after a 2-0 victory at CF Montréal on Saturday, winning the trophy for the first time in club history.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T02:01:58Z",
           "timePrecision": "exact",
-          "ageHours": 1.99,
+          "ageHours": 2.49,
           "freshnessBasis": "Evander had a goal and an assist, Tom Barlow also scored and Cincinnati beat D.C. United 2-0 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T00:31:37Z",
           "timePrecision": "exact",
-          "ageHours": 3.5,
+          "ageHours": 4.0,
           "freshnessBasis": "Lionel Messi came off the bench early in the second half but couldn't prevent Inter Miami's three-game win streak coming to an end with a 2-0 loss at Red Bull New York on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T00:15:14Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.27,
           "freshnessBasis": "Emil Forsberg scored an insurance goal early in second-half stoppage time and the New York Red Bulls beat Inter Miami 2-0 on Saturday to stay above the playoff line.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-10-24T22:18:07Z",
           "timePrecision": "exact",
-          "ageHours": 5.72,
+          "ageHours": 6.22,
           "freshnessBasis": "Malte Amundsen scored two goals. his first career multi-goal game in MLS, Gonzalo Tapia and Brooks Lennon each added a goal, and the Columbus Crew beat Toronto FC 4-1 on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:23:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.63,
+          "ageHours": 1.13,
           "freshnessBasis": "— Drew Mestemaker threw for 386 yards and four touchdowns, Sam Keltner kicked a school-record five field goals, and Oklahoma State held Colorado to 120 yards of offense in the second half of a 57-24 win on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T00:45:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.26,
+          "ageHours": 3.76,
           "freshnessBasis": "Alabama starting left guard William Sanders is expected to be sidelined for at least two weeks as he deals with a lower-leg injury he suffered during Saturday's win over Texas A&M.",
           "status": "active",
           "sourceUrls": [
@@ -949,6 +949,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-59a535730f640d41"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "With more top-ranked teams losing, college football continues to be unpredictable in 2026.",
+          "text": "With more top-ranked teams losing, college football continues to be unpredictable in 2026.",
+          "entities": [],
+          "occurredAt": "2026-10-25T04:20:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "With more top-ranked teams losing, college football continues to be unpredictable in 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/page/gamedayfinal102426/week-8-top-games-highlights-takeaways"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/page/gamedayfinal102426/week-8-top-games-highlights-takeaways"
+            }
+          ],
+          "id": "a415-97de13e572055d25",
+          "feedRank": 32,
+          "compactHeadline": "Upsets and chaos reign supreme in college football's Week 8"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-c08c2fa2396b62d7"
           ],
           "type": "RESULT",
@@ -958,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:52:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.15,
+          "ageHours": 0.64,
           "freshnessBasis": "— Jacob Bonilla's 37-yard field goal with less than two minutes remaining lifted Texas State to a 20-17 victory over Utah State on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1001,11 @@
             }
           ],
           "id": "a415-efa794e636e315e6",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Texas State tops Utah State 20-17 on Jacob Bonilla's field goal late in fourth quarter"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-bedc921f0ad4c49f"
           ],
@@ -987,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:47:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
+          "ageHours": 0.73,
           "freshnessBasis": "— A’Marion Peterson scored two of UTSA's five touchdowns on the ground and the Roadrunners beat Tulane 42-19 on Saturday night for their fifth straight win.",
           "status": "active",
           "sourceUrls": [
@@ -1001,11 +1030,11 @@
             }
           ],
           "id": "a415-bf844fed61c79180",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "UTSA wins 5th straight, rolls past Tulane 42-19"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-56427ae540e867fb"
           ],
@@ -1016,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-25T03:46:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.74,
           "freshnessBasis": "— Arch Manning threw a touchdown pass and had his first two rushing scores of the season, including the tiebreaker in the fourth quarter, and No. 19 Texas held on for a wild 34-27 victory over seventh-ranked Mississippi after blowing a 21-point lead...",
           "status": "active",
           "sourceUrls": [
@@ -1030,37 +1059,8 @@
             }
           ],
           "id": "a415-e2ef02df83a8bdb5",
-          "feedRank": 34,
-          "compactHeadline": "Arch Manning and No. 19 Texas hang on to beat No. 7 Ole Miss 34-27 after blowing 21-point lead"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-149a5366566a1cc3"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Calvin Russell III caught a 4-yard touchdown, and the ensuing two-point conversion pass, to give Syracuse a 31-30 overtime win over North Carolina on Saturday night.",
-          "text": "Calvin Russell III caught a 4-yard touchdown, and the ensuing two-point conversion pass, to give Syracuse a 31-30 overtime win over North Carolina on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-10-25T03:36:46Z",
-          "timePrecision": "exact",
-          "ageHours": 0.41,
-          "freshnessBasis": "— Calvin Russell III caught a 4-yard touchdown, and the ensuing two-point conversion pass, to give Syracuse a 31-30 overtime win over North Carolina on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401858275"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858275"
-            }
-          ],
-          "id": "a415-d2fce800bec64c2e",
           "feedRank": 35,
-          "compactHeadline": "Calvin Russell's 4-yard TD catch lifts Syracuse to 31-30 overtime win over North Carolina"
+          "compactHeadline": "Arch Manning and No. 19 Texas hang on to beat No. 7 Ole Miss 34-27 after blowing 21-point lead"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 131,
+    "freshCandidateCount": 130,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
