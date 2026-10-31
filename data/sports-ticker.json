@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-31T04:30:58Z",
+  "generatedAt": "2026-10-31T12:01:44Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e129d41b5536039c509d6914b1c59d0bb4c348624dbbdec06939bd1789a086a1",
+  "sourceCandidateHash": "4eecd123c288f6c68d0e03570e399ea9afab152a04eb1ac48e3f6438e963f890",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T16:31:15Z",
           "timePrecision": "exact",
-          "ageHours": 12.0,
+          "ageHours": 19.51,
           "freshnessBasis": "From playoff breakouts to World Series heroes (with plenty of Brewers on the list), here's a full squad of players who shined brightest under the postseason lights.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T16:57:59Z",
           "timePrecision": "exact",
-          "ageHours": 11.55,
+          "ageHours": 19.06,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -79,9 +79,9 @@
           "headline": "Sandy Alcantara was blocked from becoming a free agent by the Miami Marlins, while Michael King and Sonny Gray were among 14 MLB players who went on the market Friday.",
           "text": "Sandy Alcantara was blocked from becoming a free agent by the Miami Marlins, while Michael King and Sonny Gray were among 14 MLB players who went on the market Friday.",
           "entities": [],
-          "occurredAt": "2026-10-31T03:25:24Z",
+          "occurredAt": "2026-10-31T05:03:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.09,
+          "ageHours": 6.98,
           "freshnessBasis": "Sandy Alcantara was blocked from becoming a free agent by the Miami Marlins, while Michael King and Sonny Gray were among 14 MLB players who went on the market Friday.",
           "status": "active",
           "sourceUrls": [
@@ -101,6 +101,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-d62e2df1e6f5ec06"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Free agency starts at 5 p.m. ET on Nov. 2. Here are some pairings we'd love to see as this winter gets underway.",
+          "text": "Free agency starts at 5 p.m. ET on Nov. 2. Here are some pairings we'd love to see as this winter gets underway.",
+          "entities": [],
+          "occurredAt": "2026-10-31T04:38:24Z",
+          "timePrecision": "exact",
+          "ageHours": 7.39,
+          "freshnessBasis": "Free agency starts at 5 p.m. ET on Nov. 2. Here are some pairings we'd love to see as this winter gets underway.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50319156/offseason-best-fits-top-free-agents"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50319156/offseason-best-fits-top-free-agents"
+            }
+          ],
+          "id": "a415-03eb102caf691872",
+          "feedRank": 4,
+          "compactHeadline": "2026-27 MLB offseason: Best fits for top free agents"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-0deaee77a371a437"
           ],
           "type": "NEWS",
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T03:24:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 8.62,
           "freshnessBasis": "Bo Bichette exercised his $42 million player option to remain with the New York Mets next season, the team said Friday.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-08242f6260735612",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Bo Bichette exercises his $42M option to stay with Mets"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-692c73b7d1d12d3d"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T02:17:14Z",
           "timePrecision": "exact",
-          "ageHours": 2.23,
+          "ageHours": 9.74,
           "freshnessBasis": "Tens of thousands of exuberant Brewers fans flooded the streets of downtown Milwaukee to celebrate the franchise's first World Series title with a parade and victory rally.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-f901f5e3d7cb29ba",
-          "feedRank": 5,
-          "compactHeadline": "Beer-fueled Brewers continue World Series party with parade"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-36025149a816dbb2"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Astros on Friday hired Cardinals exec Randy Flores as their new general manager.",
-          "text": "The Astros on Friday hired Cardinals exec Randy Flores as their new general manager.",
-          "entities": [],
-          "occurredAt": "2026-10-31T02:00:53Z",
-          "timePrecision": "exact",
-          "ageHours": 2.5,
-          "freshnessBasis": "The Astros on Friday hired Cardinals exec Randy Flores as their new general manager.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50332157/astros-hire-randy-flores-new-general-manager"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50332157/astros-hire-randy-flores-new-general-manager"
-            }
-          ],
-          "id": "a415-098a4c0f2c38d043",
           "feedRank": 6,
-          "compactHeadline": "Astros hire Randy Flores as new general manager"
+          "compactHeadline": "Beer-fueled Brewers continue World Series party with parade"
         }
       ]
     },
@@ -194,93 +194,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-86103711057a4594"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
-          "text": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
-          "entities": [],
-          "occurredAt": "2026-10-31T00:05:38Z",
-          "timePrecision": "exact",
-          "ageHours": 4.42,
-          "freshnessBasis": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50331710/sources-commanders-daron-payne-injures-foot-practice"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50331710/sources-commanders-daron-payne-injures-foot-practice"
-            }
-          ],
-          "id": "a415-6cb626c96b80b79b",
-          "feedRank": 7,
-          "compactHeadline": "Sources: Commanders' Daron Payne likely IR-bound after practice injury"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-89b16aa96a756684"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
-          "text": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
-          "entities": [],
-          "occurredAt": "2026-10-30T21:46:45Z",
-          "timePrecision": "exact",
-          "ageHours": 6.74,
-          "freshnessBasis": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50329508/cardinals-rookie-rb-jeremiyah-love-ankle-set-return"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50329508/cardinals-rookie-rb-jeremiyah-love-ankle-set-return"
-            }
-          ],
-          "id": "a415-33746619eb9f1534",
-          "feedRank": 8,
-          "compactHeadline": "Cardinals rookie RB Jeremiyah Love (ankle) set to return"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-50e41d6b1ce27bb8"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Saquon Barkley, who did not practice Wednesday or Thursday and was a limited participant Friday, carries no designation into Sunday's game.",
-          "text": "Saquon Barkley, who did not practice Wednesday or Thursday and was a limited participant Friday, carries no designation into Sunday's game.",
-          "entities": [],
-          "occurredAt": "2026-10-30T21:13:22Z",
-          "timePrecision": "exact",
-          "ageHours": 7.29,
-          "freshnessBasis": "Saquon Barkley, who did not practice Wednesday or Thursday and was a limited participant Friday, carries no designation into Sunday's game.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50330421/eagles-saquon-barkley-carries-no-injury-designation-commanders-matchup"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50330421/eagles-saquon-barkley-carries-no-injury-designation-commanders-matchup"
-            }
-          ],
-          "id": "a415-594e642830590c26",
-          "feedRank": 9,
-          "compactHeadline": "Eagles' Saquon Barkley carries no injury designation for Commanders matchup"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-7be5de0e31107aec"
           ],
           "type": "INJURY",
@@ -288,9 +201,9 @@
           "headline": "Ravens quarterback Lamar Jackson will return to play Sunday at Buffalo, saying the pain in his injured left ankle is \"bearable.\"",
           "text": "Ravens quarterback Lamar Jackson will return to play Sunday at Buffalo, saying the pain in his injured left ankle is \"bearable.\"",
           "entities": [],
-          "occurredAt": "2026-10-30T19:55:05Z",
+          "occurredAt": "2026-10-31T11:05:57Z",
           "timePrecision": "exact",
-          "ageHours": 8.6,
+          "ageHours": 0.93,
           "freshnessBasis": "Ravens quarterback Lamar Jackson will return to play Sunday at Buffalo, saying the pain in his injured left ankle is \"bearable.\"",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +217,153 @@
             }
           ],
           "id": "a415-95cba750937e7652",
-          "feedRank": 10,
+          "feedRank": 7,
           "compactHeadline": "Ravens QB Jackson to return for Bills clash, calls ankle pain 'bearable'"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-ddd57f57b6cee703"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Aaron Schatz ranked the worst 6-0 teams ever by DVOA and point differential. Where do the 2026 Vikings land, and what's next for them?",
+          "text": "Aaron Schatz ranked the worst 6-0 teams ever by DVOA and point differential. Where do the 2026 Vikings land, and what's next for them?",
+          "entities": [],
+          "occurredAt": "2026-10-31T10:58:10Z",
+          "timePrecision": "exact",
+          "ageHours": 1.06,
+          "freshnessBasis": "Aaron Schatz ranked the worst 6-0 teams ever by DVOA and point differential. Where do the 2026 Vikings land, and what's next for them?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50329579/2026-minnesota-vikings-worst-undefeated-team-ever"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50329579/2026-minnesota-vikings-worst-undefeated-team-ever"
+            }
+          ],
+          "id": "a415-9daeacb200bcd0bc",
+          "feedRank": 8,
+          "compactHeadline": "Where the 2026 Vikings rank among worst 6-0 NFL teams ever"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-d44348e8d0ec44b3"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Colts now are open to trading Jonathan Taylor, sources told ESPN and NFL Network, and multiple teams have reached out to Indianapolis.",
+          "text": "The Colts now are open to trading Jonathan Taylor, sources told ESPN and NFL Network, and multiple teams have reached out to Indianapolis.",
+          "entities": [],
+          "occurredAt": "2026-10-31T11:49:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.21,
+          "freshnessBasis": "The Colts now are open to trading Jonathan Taylor, sources told ESPN and NFL Network, and multiple teams have reached out to Indianapolis.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50323095/sources-colts-willing-trade-star-rb-jonathan-taylor"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50323095/sources-colts-willing-trade-star-rb-jonathan-taylor"
+            }
+          ],
+          "id": "a415-3dbc09f07741ab64",
+          "feedRank": 9,
+          "compactHeadline": "Sources: Colts willing to trade RB Jonathan Taylor, active in talks with teams"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-fc6e2935a3e2071f"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Jets are not expected to trade Garrett Wilson, sources told ESPN, despite increased speculation about the star WR's future.",
+          "text": "The Jets are not expected to trade Garrett Wilson, sources told ESPN, despite increased speculation about the star WR's future.",
+          "entities": [],
+          "occurredAt": "2026-10-31T11:48:20Z",
+          "timePrecision": "exact",
+          "ageHours": 0.22,
+          "freshnessBasis": "The Jets are not expected to trade Garrett Wilson, sources told ESPN, despite increased speculation about the star WR's future.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50331651/no-way-jets-trade-garrett-wilson-deadline-source-says"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50331651/no-way-jets-trade-garrett-wilson-deadline-source-says"
+            }
+          ],
+          "id": "a415-664208c9113c30c8",
+          "feedRank": 10,
+          "compactHeadline": "'No way' that Jets trade star WR Garrett Wilson before deadline, source says"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-44b39afb7eb08e8b"
+            "cand-86103711057a4594"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "Jets nose tackle T'Vondre Sweat has been ruled out with a knee injury, and rookie edge rusher David Bailey, unable to practice this week due to a strained groin, is listed as doubtful.",
-          "text": "Jets nose tackle T'Vondre Sweat has been ruled out with a knee injury, and rookie edge rusher David Bailey, unable to practice this week due to a strained groin, is listed as doubtful.",
+          "headline": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
+          "text": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
           "entities": [],
-          "occurredAt": "2026-10-30T17:12:50Z",
+          "occurredAt": "2026-10-31T00:05:38Z",
           "timePrecision": "exact",
-          "ageHours": 11.3,
-          "freshnessBasis": "Jets nose tackle T'Vondre Sweat has been ruled out with a knee injury, and rookie edge rusher David Bailey, unable to practice this week due to a strained groin, is listed as doubtful.",
+          "ageHours": 11.94,
+          "freshnessBasis": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50328612/jets-rule-tvondre-sweat-say-bailey-doubtful-vs-raiders"
+            "https://www.espn.com/nfl/story/_/id/50331710/sources-commanders-daron-payne-injures-foot-practice"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50328612/jets-rule-tvondre-sweat-say-bailey-doubtful-vs-raiders"
+              "url": "https://www.espn.com/nfl/story/_/id/50331710/sources-commanders-daron-payne-injures-foot-practice"
             }
           ],
-          "id": "a415-eaca463cf463602b",
+          "id": "a415-6cb626c96b80b79b",
           "feedRank": 11,
-          "compactHeadline": "Jets dealing with defensive injuries for matchup vs. Raiders, RB Ashton Jeanty"
+          "compactHeadline": "Sources: Commanders' Daron Payne likely IR-bound after practice injury"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-28c07da37ff251f5"
+            "cand-89b16aa96a756684"
           ],
-          "type": "TRADE",
+          "type": "INJURY",
           "priority": 78,
-          "headline": "Colts coach Shane Steichen says receiver Josh Downs practiced all week and is \"ready to go\" despite the trade request he made earlier this week.",
-          "text": "Colts coach Shane Steichen says receiver Josh Downs practiced all week and is \"ready to go\" despite the trade request he made earlier this week.",
+          "headline": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
+          "text": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
           "entities": [],
-          "occurredAt": "2026-10-30T22:19:00Z",
+          "occurredAt": "2026-10-30T21:46:45Z",
           "timePrecision": "exact",
-          "ageHours": 6.2,
-          "freshnessBasis": "Colts coach Shane Steichen says receiver Josh Downs practiced all week and is \"ready to go\" despite the trade request he made earlier this week.",
+          "ageHours": 14.25,
+          "freshnessBasis": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50331045/colts-steichen-wr-downs-ready-go-trade-demand"
+            "https://www.espn.com/nfl/story/_/id/50329508/cardinals-rookie-rb-jeremiyah-love-ankle-set-return"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50331045/colts-steichen-wr-downs-ready-go-trade-demand"
+              "url": "https://www.espn.com/nfl/story/_/id/50329508/cardinals-rookie-rb-jeremiyah-love-ankle-set-return"
             }
           ],
-          "id": "a415-f31f8aef196ac1d8",
+          "id": "a415-33746619eb9f1534",
           "feedRank": 12,
-          "compactHeadline": "Colts' Shane Steichen: WR Josh Downs 'ready to go' despite trade request"
+          "compactHeadline": "Cardinals rookie RB Jeremiyah Love (ankle) set to return"
         }
       ]
     },
@@ -374,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e3874ed117aada30"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Behind a theatrical 31 points from Stephen Curry late Friday night, the Golden State Warriors roared back for a 112-95 win over the Los Angeles Lakers.",
+          "text": "Behind a theatrical 31 points from Stephen Curry late Friday night, the Golden State Warriors roared back for a 112-95 win over the Los Angeles Lakers.",
+          "entities": [],
+          "occurredAt": "2026-10-31T11:49:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.2,
+          "freshnessBasis": "Behind a theatrical 31 points from Stephen Curry late Friday night, the Golden State Warriors roared back for a 112-95 win over the Los Angeles Lakers.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50333810/stephen-curry-leads-warriors-25-point-comeback-lakers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50333810/stephen-curry-leads-warriors-25-point-comeback-lakers"
+            }
+          ],
+          "id": "a415-ceed70379c3064a2",
+          "feedRank": 13,
+          "compactHeadline": "Curry's ankle-breaker on Luka highlights Warriors' stunning 25-point comeback"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-14d19a270e48ad1c"
           ],
           "type": "INJURY",
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T02:48:07Z",
           "timePrecision": "exact",
-          "ageHours": 1.71,
+          "ageHours": 9.23,
           "freshnessBasis": "Philadelphia forward Jaylen Brown missed Friday night's NBA Cup game against the New York Knicks because of a left patella injury, the 76ers announced shortly before their 98-93 victory at the Xfinity Mobile Arena.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +426,11 @@
             }
           ],
           "id": "a415-e64da3f4354433c7",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Without injured Brown, 76ers outlast Knicks in NBA Cup Group Play"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-956f8aeac0b4ed84"
           ],
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T01:54:53Z",
           "timePrecision": "exact",
-          "ageHours": 2.6,
+          "ageHours": 10.11,
           "freshnessBasis": "Trail Blazers guard Ja Morant sustained a left hamstring strain in his first game against the Grizzlies, his former team, and will be out for at least four weeks.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +455,11 @@
             }
           ],
           "id": "a415-42efdc077842a0a5",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Ja Morant out at least 4 weeks with hamstring strain suffered against Grizzlies"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-70072c7e18b356c4"
           ],
@@ -441,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T01:44:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.78,
+          "ageHours": 10.29,
           "freshnessBasis": "Chet Holmgren will be out eight to 10 weeks because of a knee injury, the latest setback for an OKC team that lost Jalen Williams and Cason Wallace for an extended time early this week.",
           "status": "active",
           "sourceUrls": [
@@ -455,95 +484,66 @@
             }
           ],
           "id": "a415-c3e4429455875487",
-          "feedRank": 15,
-          "compactHeadline": "Thunder's Chet Holmgren out 8-10 weeks due to patellar tendon tear"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e3508047e6000adb"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Giannis Antetokounmpo scored 31 points and had his second triple-double of the season, Bam Adebayo added 27 points and the Miami Heat opened NBA Cup play by beating the short-handed Indiana Pacers 145-125 on Friday night.",
-          "text": "Giannis Antetokounmpo scored 31 points and had his second triple-double of the season, Bam Adebayo added 27 points and the Miami Heat opened NBA Cup play by beating the short-handed Indiana Pacers 145-125 on Friday night.",
-          "entities": [],
-          "occurredAt": "2026-10-31T03:52:46Z",
-          "timePrecision": "exact",
-          "ageHours": 0.64,
-          "freshnessBasis": "— Giannis Antetokounmpo scored 31 points and had his second triple-double of the season, Bam Adebayo added 27 points and the Miami Heat opened NBA Cup play by beating the short-handed Indiana Pacers 145-125 on Friday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909282"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909282"
-            }
-          ],
-          "id": "a415-544f268c85e621ad",
           "feedRank": 16,
-          "compactHeadline": "Giannis has triple-double, Heat open NBA Cup play with 145-125 win over Pacers"
+          "compactHeadline": "Thunder's Chet Holmgren out 8-10 weeks due to patellar tendon tear"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-dbcd09d78ac96228"
+            "cand-de1594633bcaea94"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "LaMelo Ball had a season-high 24 points and Jaden McDaniels scored 23 as the Minnesota Timberwolves beat the Los Angeles Clippers...",
-          "text": "LaMelo Ball had a season-high 24 points and Jaden McDaniels scored 23 as the Minnesota Timberwolves beat the Los Angeles Clippers...",
+          "headline": "Stephen Curry had 31 points, six assists and four rebounds, and the Golden State Warriors erased an early 25-point deficit then ran away from Luka Doncic and the Los Angeles Lakers for a 112-95 win Friday night in an NBA Cup game.",
+          "text": "Stephen Curry had 31 points, six assists and four rebounds, and the Golden State Warriors erased an early 25-point deficit then ran away from Luka Doncic and the Los Angeles Lakers for a 112-95 win Friday night in an NBA Cup game.",
           "entities": [],
-          "occurredAt": "2026-10-31T03:19:46Z",
+          "occurredAt": "2026-10-31T05:13:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.19,
-          "freshnessBasis": "— LaMelo Ball had a season-high 24 points and Jaden McDaniels scored 23 as the Minnesota Timberwolves beat the Los Angeles Clippers...",
+          "ageHours": 6.8,
+          "freshnessBasis": "— Stephen Curry had 31 points, six assists and four rebounds, and the Golden State Warriors erased an early 25-point deficit then ran away from Luka Doncic and the Los Angeles Lakers for a 112-95 win Friday night in an NBA Cup game.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909284"
+            "http://www.espn.com/nba/recap?gameId=401909285"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909284"
+              "url": "http://www.espn.com/nba/recap?gameId=401909285"
             }
           ],
-          "id": "a415-35509597ca4a17e4",
+          "id": "a415-2ea8d2b0edfeade5",
           "feedRank": 17,
-          "compactHeadline": "Timberwolves blow out Clippers 127-101 behind Ball's 24 points for 1st win without Edwards"
+          "compactHeadline": "Stephen Curry scores 31 points and outduels Luka Doncic as Warriors come back to beat Lakers 112-95"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-c879cabaf5599555"
+            "cand-1d0c900cef4d4952"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Desmond Bane scored a season-best 28 points, Franz Wagner set season highs with 26 points and 11 assists, and the Orlando Magic overcame Scottie Barnes’ first 40-point game to beat the Toronto Raptors 121-114 in NBA Cup play Friday night.",
-          "text": "Desmond Bane scored a season-best 28 points, Franz Wagner set season highs with 26 points and 11 assists, and the Orlando Magic overcame Scottie Barnes’ first 40-point game to beat the Toronto Raptors 121-114 in NBA Cup play Friday night.",
+          "headline": "Jamal Murray scored 39 points, Christian Braun added 31 and the Denver Nuggets rode a hot-shooting night to beat the Phoenix Suns 127-120 in an NBA Cup group stage game Friday night.",
+          "text": "Jamal Murray scored 39 points, Christian Braun added 31 and the Denver Nuggets rode a hot-shooting night to beat the Phoenix Suns 127-120 in an NBA Cup group stage game Friday night.",
           "entities": [],
-          "occurredAt": "2026-10-31T02:23:47Z",
+          "occurredAt": "2026-10-31T04:40:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.12,
-          "freshnessBasis": "— Desmond Bane scored a season-best 28 points, Franz Wagner set season highs with 26 points and 11 assists, and the Orlando Magic overcame Scottie Barnes’ first 40-point game to beat the Toronto Raptors 121-114 in NBA Cup play Friday night.",
+          "ageHours": 7.35,
+          "freshnessBasis": "— Jamal Murray scored 39 points, Christian Braun added 31 and the Denver Nuggets rode a hot-shooting night to beat the Phoenix Suns 127-120 in an NBA Cup group stage game Friday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909281"
+            "http://www.espn.com/nba/recap?gameId=401909286"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909281"
+              "url": "http://www.espn.com/nba/recap?gameId=401909286"
             }
           ],
-          "id": "a415-d5192f654962a90d",
+          "id": "a415-363ced777d4d15ad",
           "feedRank": 18,
-          "compactHeadline": "Bane scores 28 points, Wagner adds 26 points and 11 assists as Magic beat Raptors 121-114"
+          "compactHeadline": "Murray scores 39 points, Braun adds 31 to lead Nuggets over the Suns 127-120 in NBA Cup"
         }
       ]
     },
@@ -554,6 +554,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-593fba5e40081f82"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Winnipeg Jets (4-7-3, in the Central Division) vs. Carolina Hurricanes (11-2-2, in the Metropolitan Division)",
+          "text": "Winnipeg Jets (4-7-3, in the Central Division) vs. Carolina Hurricanes (11-2-2, in the Metropolitan Division)",
+          "entities": [],
+          "occurredAt": "2026-10-31T08:10:55Z",
+          "timePrecision": "exact",
+          "ageHours": 3.85,
+          "freshnessBasis": "Winnipeg Jets (4-7-3, in the Central Division) vs. Carolina Hurricanes (11-2-2, in the Metropolitan Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892624"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892624"
+            }
+          ],
+          "id": "a415-a55178c4610c8296",
+          "feedRank": 19,
+          "compactHeadline": "Hurricanes bring 3-game win streak into matchup against the Jets"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a6c7ea9de3bbb7be"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Calgary Flames (6-7, in the Pacific Division) vs. Colorado Avalanche (7-5-1, in the Central Division)",
+          "text": "Calgary Flames (6-7, in the Pacific Division) vs. Colorado Avalanche (7-5-1, in the Central Division)",
+          "entities": [],
+          "occurredAt": "2026-10-31T08:10:54Z",
+          "timePrecision": "exact",
+          "ageHours": 3.85,
+          "freshnessBasis": "Calgary Flames (6-7, in the Pacific Division) vs. Colorado Avalanche (7-5-1, in the Central Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892623"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892623"
+            }
+          ],
+          "id": "a415-df3d85752f7a6777",
+          "feedRank": 20,
+          "compactHeadline": "Avalanche look to extend home win streak, host the Flames"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-ff68d66761f8dc5a"
           ],
           "type": "CONTRACT",
@@ -563,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T02:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.9,
+          "ageHours": 9.42,
           "freshnessBasis": "Tampa Bay Lightning forward Nikita Kucherov, in the final year of his contract, has requested a trade, sources told ESPN Friday, but general manager Julien BriseBois said in a statement that the team has \"no intention of trading\" the star.",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +635,11 @@
             }
           ],
           "id": "a415-29410899f6ac90cf",
-          "feedRank": 19,
+          "feedRank": 21,
           "compactHeadline": "Sources: Kucherov requests trade; Lightning have 'no intention' of dealing star"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-6bcd6fef61c99d36"
           ],
@@ -592,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T03:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.1,
+          "ageHours": 8.62,
           "freshnessBasis": "— Matt Coronato had a career-high four points with a goal and three assists to lead the Calgary Flames over the Seattle Kraken 6-2 on Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -606,11 +664,11 @@
             }
           ],
           "id": "a415-4f79da8278cfc907",
-          "feedRank": 20,
+          "feedRank": 22,
           "compactHeadline": "Flames beat Kraken 6-2 behind career-best 4 points from Matt Coronato"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-20185147389b6ca0"
           ],
@@ -621,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T01:50:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.67,
+          "ageHours": 10.18,
           "freshnessBasis": "— Anton Lundell had a hat trick, Seth Jones capped a record-setting month with a goal and two assists, and the Florida Panthers topped the reeling Winnipeg Jets 5-2 on Friday night for their sixth win in eight games.",
           "status": "active",
           "sourceUrls": [
@@ -635,11 +693,11 @@
             }
           ],
           "id": "a415-ea3da43b99a23f7d",
-          "feedRank": 21,
+          "feedRank": 23,
           "compactHeadline": "Anton Lundell scores 3 goals, Seth Jones caps record month and Panthers beat reeling Jets 5-2"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-e963be5e01dbba46"
           ],
@@ -650,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T00:47:46Z",
           "timePrecision": "exact",
-          "ageHours": 3.72,
+          "ageHours": 11.23,
           "freshnessBasis": "— Connor Hellebuyck stopped 19 shots, Arseny Gritsyuk and Jack Hughes each scored twice and the New Jersey Devils beat the Vegas Golden Knights 5-2 on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -664,66 +722,8 @@
             }
           ],
           "id": "a415-d7d20f2f20fc5531",
-          "feedRank": 22,
-          "compactHeadline": "Hellebuyck stops 19 shots in 5-2 victory over Golden Knights, wins 2nd straight since joining Devils"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-1f3fa8d87d353f7f"
-          ],
-          "type": "SUSPENSION",
-          "priority": 64,
-          "headline": "On Friday, Ottawa Senators forward Hayden Hodgson was suspended two games by the NHL's Department of Player Safety for charging and boarding Los Angeles Kings defenseman Brandt Clarke earlier in the week.",
-          "text": "On Friday, Ottawa Senators forward Hayden Hodgson was suspended two games by the NHL's Department of Player Safety for charging and boarding Los Angeles Kings defenseman Brandt Clarke earlier in the week.",
-          "entities": [],
-          "occurredAt": "2026-10-31T03:56:07Z",
-          "timePrecision": "exact",
-          "ageHours": 0.58,
-          "freshnessBasis": "On Friday, Ottawa Senators forward Hayden Hodgson was suspended two games by the NHL's Department of Player Safety for charging and boarding Los Angeles Kings defenseman Brandt Clarke earlier in the week.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50332490/ottawa-senators-forward-hayden-hodgson-suspended-two-games"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50332490/ottawa-senators-forward-hayden-hodgson-suspended-two-games"
-            }
-          ],
-          "id": "a415-e43c1322d036df5f",
-          "feedRank": 23,
-          "compactHeadline": "Ottawa Senators F Hayden Hodgson suspended by NHL's Department of Player Safety"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-cbc155c32858ace8"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Pittsburgh Penguins (5-6-2, in the Metropolitan Division) vs. Montreal Canadiens (8-3-2, in the Atlantic Division)",
-          "text": "Pittsburgh Penguins (5-6-2, in the Metropolitan Division) vs. Montreal Canadiens (8-3-2, in the Atlantic Division)",
-          "entities": [],
-          "occurredAt": "2026-10-30T08:10:52Z",
-          "timePrecision": "exact",
-          "ageHours": 20.34,
-          "freshnessBasis": "Pittsburgh Penguins (5-6-2, in the Metropolitan Division) vs. Montreal Canadiens (8-3-2, in the Atlantic Division)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/preview?gameId=401892620"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/preview?gameId=401892620"
-            }
-          ],
-          "id": "a415-d6d70ec8c976eb7b",
           "feedRank": 24,
-          "compactHeadline": "Canadiens try to keep win streak going, host the Penguins"
+          "compactHeadline": "Hellebuyck stops 19 shots in 5-2 victory over Golden Knights, wins 2nd straight since joining Devils"
         }
       ]
     },
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T15:26:09Z",
           "timePrecision": "exact",
-          "ageHours": 13.08,
+          "ageHours": 20.59,
           "freshnessBasis": "Tottenham playmaker James Maddison is available for Saturday's visit of Crystal Palace despite an injury scare during the victory at Chelsea.",
           "status": "active",
           "sourceUrls": [
@@ -763,6 +763,64 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-6a4bbd63eda1b540"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Bruno Fernandes has returned to the Manchester United starting lineup",
+          "text": "Bruno Fernandes has returned to the Manchester United starting lineup",
+          "entities": [],
+          "occurredAt": "2026-10-31T11:57:47Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Bruno Fernandes has returned to the Manchester United starting lineup",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50334951/bruno-fernandes-returns-man-united-xi-chelsea-clash"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50334951/bruno-fernandes-returns-man-united-xi-chelsea-clash"
+            }
+          ],
+          "id": "a415-fb0e112a86ddee37",
+          "feedRank": 26,
+          "compactHeadline": "Bruno Fernandes returns to Man United XI for Chelsea clash"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-0ffb01e6c4ee4d8a"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Andrey Santos has said that Bruno Fernandes was the only player from Manchester United that impressed him when facing his current employers with Chelsea.",
+          "text": "Andrey Santos has said that Bruno Fernandes was the only player from Manchester United that impressed him when facing his current employers with Chelsea.",
+          "entities": [],
+          "occurredAt": "2026-10-31T08:01:14Z",
+          "timePrecision": "exact",
+          "ageHours": 4.01,
+          "freshnessBasis": "Andrey Santos has said that Bruno Fernandes was the only player from Manchester United that impressed him when facing his current employers with Chelsea.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50327080/andrey-santos-names-man-united-player-impressed-chelsea-clash"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50327080/andrey-santos-names-man-united-player-impressed-chelsea-clash"
+            }
+          ],
+          "id": "a415-893f41e0a24ff821",
+          "feedRank": 27,
+          "compactHeadline": "Andrey Santos names Man United player who impressed him in Chelsea clash"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-45787c5b0df48e7a"
           ],
           "type": "RANKING",
@@ -772,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T12:06:05Z",
           "timePrecision": "exact",
-          "ageHours": 16.41,
+          "ageHours": 23.93,
           "freshnessBasis": "If we look beyond the Premier League and beyond those who qualified for the Champions League, which are the best teams in the world?",
           "status": "active",
           "sourceUrls": [
@@ -786,102 +844,45 @@
             }
           ],
           "id": "a415-73a42ab18f214146",
-          "feedRank": 26,
-          "compactHeadline": "Global power ranking: The top 20 soccer teams in the world, ranked!"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-10b7c51a291258cc"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Manchester United manager Michael Carrick said \"hard truths\" have been spoken between himself, the players and the club hierarchy amid an eight-game winless run.",
-          "text": "Manchester United manager Michael Carrick said \"hard truths\" have been spoken between himself, the players and the club hierarchy amid an eight-game winless run.",
-          "entities": [],
-          "occurredAt": "2026-10-30T22:31:03Z",
-          "timePrecision": "exact",
-          "ageHours": 6.0,
-          "freshnessBasis": "Manchester United manager Michael Carrick said \"hard truths\" have been spoken between himself, the players and the club hierarchy amid an eight-game winless run.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50329748/man-united-michael-carrick-coach-players-talks"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50329748/man-united-michael-carrick-coach-players-talks"
-            }
-          ],
-          "id": "a415-f5710533a139e5d2",
-          "feedRank": 27,
-          "compactHeadline": "Michael Carrick: 'Hard truths' have been shared amid Man United slump"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-36af831b977da960"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Andoni Iraola's brand of risk-reward football is starting to take hold at Liverpool and captain Virgil van Dijk has said the players are becoming increasingly confident at committing to the game plan.",
-          "text": "Andoni Iraola's brand of risk-reward football is starting to take hold at Liverpool and captain Virgil van Dijk has said the players are becoming increasingly confident at committing to the game plan.",
-          "entities": [],
-          "occurredAt": "2026-10-30T17:30:15Z",
-          "timePrecision": "exact",
-          "ageHours": 11.01,
-          "freshnessBasis": "Andoni Iraola's brand of risk-reward football is starting to take hold at Liverpool and captain Virgil van Dijk has said the players are becoming increasingly confident at committing to the game plan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50329062/virgil-van-dijk-liverpool-take-risk-andoni-iraola-playstyle"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50329062/virgil-van-dijk-liverpool-take-risk-andoni-iraola-playstyle"
-            }
-          ],
-          "id": "a415-03e4e09edab50bc4",
           "feedRank": 28,
-          "compactHeadline": "Virgil van Dijk: Liverpool must 'take that risk' under Andoni Iraola playing style"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-84ec1b18978b0812"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Marco Rose will hold Bournemouth forward Junior Kroupi back for a little longer despite more minutes in midweek.",
-          "text": "Marco Rose will hold Bournemouth forward Junior Kroupi back for a little longer despite more minutes in midweek.",
-          "entities": [],
-          "occurredAt": "2026-10-30T16:23:36Z",
-          "timePrecision": "exact",
-          "ageHours": 12.12,
-          "freshnessBasis": "Marco Rose will hold Bournemouth forward Junior Kroupi back for a little longer despite more minutes in midweek.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50328857/junior-kroupi-not-yet-ready-start-according-bournemouth-boss-marco-rose"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50328857/junior-kroupi-not-yet-ready-start-according-bournemouth-boss-marco-rose"
-            }
-          ],
-          "id": "a415-7144c6fb5c377805",
-          "feedRank": 29,
-          "compactHeadline": "Junior Kroupi not yet ready to start, according to Bournemouth boss Marco Rose"
+          "compactHeadline": "Global power ranking: The top 20 soccer teams in the world, ranked!"
         }
       ]
     },
     {
       "league": "MLS",
       "seasonState": "active",
-      "items": []
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-71858a2014c0130c"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Everyone has Halloween plans, so to make sure players and fans could celebrate, MLS gave clubs the option of playing outside of trick-or-treat prime time.",
+          "text": "Everyone has Halloween plans, so to make sure players and fans could celebrate, MLS gave clubs the option of playing outside of trick-or-treat prime time.",
+          "entities": [],
+          "occurredAt": "2026-10-31T09:00:37Z",
+          "timePrecision": "exact",
+          "ageHours": 3.02,
+          "freshnessBasis": "Everyone has Halloween plans, so to make sure players and fans could celebrate, MLS gave clubs the option of playing outside of trick-or-treat prime time.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50328963/spooky-scheduling-how-mls-ensures-fans-players-dont-horror-halloween"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50328963/spooky-scheduling-how-mls-ensures-fans-players-dont-horror-halloween"
+            }
+          ],
+          "id": "a415-5405252435c19a51",
+          "feedRank": 29,
+          "compactHeadline": "Spooky scheduling: How MLS ensures fans, players don't have horror Halloween"
+        }
+      ]
     },
     {
       "league": "NCAAF",
@@ -889,6 +890,64 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-4f5a9db5923ea1bb"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Freshman Isaiah Ene had a career-high 107 yards rushing and two touchdowns on 19 carries, Donovan Turner returned an interception 36-yards for a score and Sacramento State beat Kent State on Friday night to win its first Mid-American Conference game.",
+          "text": "Freshman Isaiah Ene had a career-high 107 yards rushing and two touchdowns on 19 carries, Donovan Turner returned an interception 36-yards for a score and Sacramento State beat Kent State on Friday night to win its first Mid-American Conference game.",
+          "entities": [],
+          "occurredAt": "2026-10-31T06:26:46Z",
+          "timePrecision": "exact",
+          "ageHours": 5.58,
+          "freshnessBasis": "— Freshman Isaiah Ene had a career-high 107 yards rushing and two touchdowns on 19 carries, Donovan Turner returned an interception 36-yards for a score and Sacramento State beat Kent State on Friday night to win its first Mid-American Conference game.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401866451"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401866451"
+            }
+          ],
+          "id": "a415-22f9e18823264c36",
+          "feedRank": 30,
+          "compactHeadline": "Isaiah Ene helps Sacramento State beat Kent State 31-10 for first MAC win"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a33a47ab034fbff3"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "In Joe Klanderman's first game as interim coach, Baylor improved to 5-3 overall, 3-2 in the Big 12, with a 41-9 rout of UCF on Friday night, a convincing Bears' victory that snapped the Knights' four-game home winning streak.",
+          "text": "In Joe Klanderman's first game as interim coach, Baylor improved to 5-3 overall, 3-2 in the Big 12, with a 41-9 rout of UCF on Friday night, a convincing Bears' victory that snapped the Knights' four-game home winning streak.",
+          "entities": [],
+          "occurredAt": "2026-10-31T05:53:58Z",
+          "timePrecision": "exact",
+          "ageHours": 6.13,
+          "freshnessBasis": "In Joe Klanderman's first game as interim coach, Baylor improved to 5-3 overall, 3-2 in the Big 12, with a 41-9 rout of UCF on Friday night, a convincing Bears' victory that snapped the Knights' four-game home winning streak.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50333537/baylor-races-ucf-joe-klanderman-debut-interim"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50333537/baylor-races-ucf-joe-klanderman-debut-interim"
+            }
+          ],
+          "id": "a415-4abb3adb47c1bf68",
+          "feedRank": 31,
+          "compactHeadline": "Baylor bounces back, wins Joe Klanderman's first game as interim coach"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-f4ce10a2de94c2fa"
           ],
@@ -899,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T19:39:18Z",
           "timePrecision": "exact",
-          "ageHours": 8.86,
+          "ageHours": 16.37,
           "freshnessBasis": "Tyler Ulrich, a 21-year-old college football player who died earlier this month, suffered a traumatic brain injury and a brain bleed, according to a coroner's report.",
           "status": "active",
           "sourceUrls": [
@@ -913,11 +972,11 @@
             }
           ],
           "id": "a415-acaeafd2235a1c62",
-          "feedRank": 30,
+          "feedRank": 32,
           "compactHeadline": "Coroner: SNU safety Tyler Ulrich, 21, died from TBI, brain bleed"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-c88ec313e2868ae9"
           ],
@@ -928,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T04:15:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 7.77,
           "freshnessBasis": "— DJ Lagway threw for 319 yards and four touchdowns to lead Baylor to a 41-9 rout of UCF on Friday night in Joe Klanderman's first game as interim head coach.",
           "status": "active",
           "sourceUrls": [
@@ -942,11 +1001,11 @@
             }
           ],
           "id": "a415-70fb272c467d3631",
-          "feedRank": 31,
+          "feedRank": 33,
           "compactHeadline": "Lagway throws for 4 TDs as Baylor wins Klanderman's first game as interim coach, beating UCF 41-9"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-69a7debda5311dec"
           ],
@@ -957,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T03:16:46Z",
           "timePrecision": "exact",
-          "ageHours": 1.24,
+          "ageHours": 8.75,
           "freshnessBasis": "— Johnnie Daniels had 99 yards rushing and two touchdowns, TJ Smith returned a kickoff 95 yards for a touchdown and Tulane rallied from a 10-point fourth-quarter deficit to beat Charlotte 38-31 in overtime on Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -971,11 +1030,11 @@
             }
           ],
           "id": "a415-e684cc91522e0140",
-          "feedRank": 32,
+          "feedRank": 34,
           "compactHeadline": "Tulane rallies from 10-point deficit, beats Charlotte 38-31 in OT"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-c0276aa665b3ada3"
           ],
@@ -986,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-10-31T02:37:46Z",
           "timePrecision": "exact",
-          "ageHours": 1.89,
+          "ageHours": 9.4,
           "freshnessBasis": "— Grayson Saunier threw two touchdown passes and added 107 yards rushing and a TD on 18 carries, Cameron Best-Alston had two of Dartmouth's five interceptions, and the Big Green beat Harvard 24-14 on Friday night to move into a tie atop the Ivy League...",
           "status": "active",
           "sourceUrls": [
@@ -1000,66 +1059,8 @@
             }
           ],
           "id": "a415-ae65a18e36388d7a",
-          "feedRank": 33,
-          "compactHeadline": "Saunier, Best-Alston help Dartmouth beat Harvard 24-14, move into tie atop Ivy League"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-2e0390e8793f2d92"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Nebraska quarterback Anthony Colandrea has signed a deal to return to the Cornhuskers in 2027 for his final year of college eligibility, his agent told ESPN.",
-          "text": "Nebraska quarterback Anthony Colandrea has signed a deal to return to the Cornhuskers in 2027 for his final year of college eligibility, his agent told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-10-30T16:45:53Z",
-          "timePrecision": "exact",
-          "ageHours": 11.75,
-          "freshnessBasis": "Nebraska quarterback Anthony Colandrea has signed a deal to return to the Cornhuskers in 2027 for his final year of college eligibility, his agent told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50327701/nebraska-qb-anthony-colandrea-re-signs-2027-season"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50327701/nebraska-qb-anthony-colandrea-re-signs-2027-season"
-            }
-          ],
-          "id": "a415-59f7ea0a28f6cada",
-          "feedRank": 34,
-          "compactHeadline": "Nebraska QB Anthony Colandrea re-signs for 2027 season, agent says"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-7c8e91f686dee882"
-          ],
-          "type": "LEGAL",
-          "priority": 64,
-          "headline": "Oregon freshman WR Messiah Hampton is facing charges of attempting to elude police and reckless driving in connection with an Oct. 18 high-speed chase.",
-          "text": "Oregon freshman WR Messiah Hampton is facing charges of attempting to elude police and reckless driving in connection with an Oct. 18 high-speed chase.",
-          "entities": [],
-          "occurredAt": "2026-10-31T04:17:41Z",
-          "timePrecision": "exact",
-          "ageHours": 0.22,
-          "freshnessBasis": "Oregon freshman WR Messiah Hampton is facing charges of attempting to elude police and reckless driving in connection with an Oct. 18 high-speed chase.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50333238/oregon-hampton-arrested-connection-high-speed-chase"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50333238/oregon-hampton-arrested-connection-high-speed-chase"
-            }
-          ],
-          "id": "a415-8992547891489626",
           "feedRank": 35,
-          "compactHeadline": "Oregon freshman WR Messiah Hampton arrested in connection with high-speed chase"
+          "compactHeadline": "Saunier, Best-Alston help Dartmouth beat Harvard 24-14, move into tie atop Ivy League"
         }
       ]
     }
@@ -1084,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 114,
+    "freshCandidateCount": 116,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
