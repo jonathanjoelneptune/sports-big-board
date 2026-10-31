@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-10-30T23:30:47Z",
+  "generatedAt": "2026-10-31T00:02:20Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "c40469e3dc35cadf9995eda2fa7222ae5c0d1ee2747186a0088e69892a9ee951",
+  "sourceCandidateHash": "8a38bce295acc684a85fce4f16fdc2e9493dd18bebd988ce53369f594b652a00",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T16:31:15Z",
           "timePrecision": "exact",
-          "ageHours": 6.99,
+          "ageHours": 7.52,
           "freshnessBasis": "From playoff breakouts to World Series heroes (with plenty of Brewers on the list), here's a full squad of players who shined brightest under the postseason lights.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T16:57:59Z",
           "timePrecision": "exact",
-          "ageHours": 6.55,
+          "ageHours": 7.07,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-a80f3605db593e3f"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Sandy Alcantara was blocked from becoming a free agent by the Miami Marlins, while Michael King and Sonny Gray were among 14 MLB players who went on the market Friday.",
+          "text": "Sandy Alcantara was blocked from becoming a free agent by the Miami Marlins, while Michael King and Sonny Gray were among 14 MLB players who went on the market Friday.",
+          "entities": [],
+          "occurredAt": "2026-10-30T23:53:15Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "Sandy Alcantara was blocked from becoming a free agent by the Miami Marlins, while Michael King and Sonny Gray were among 14 MLB players who went on the market Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50331633/michael-king-sonny-gray-14-mlb-players-become-free-agents"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50331633/michael-king-sonny-gray-14-mlb-players-become-free-agents"
+            }
+          ],
+          "id": "a415-dc3ed38a815a63a2",
+          "feedRank": 3,
+          "compactHeadline": "Michael King, Sonny Gray among 14 MLB players to become free agents"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-692c73b7d1d12d3d"
           ],
           "type": "NEWS",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T22:58:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.54,
+          "ageHours": 1.07,
           "freshnessBasis": "Tens of thousands of exuberant Brewers fans flooded the streets of downtown Milwaukee to celebrate the franchise's first World Series title with a parade and victory rally.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-f901f5e3d7cb29ba",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Beer-fueled Brewers continue World Series party with parade"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-43d1fbdb19865c88"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T01:50:49Z",
           "timePrecision": "exact",
-          "ageHours": 21.67,
+          "ageHours": 22.19,
           "freshnessBasis": "We break down the two-time Cy Young Award winner's potential suitors, contract and more.",
           "status": "active",
           "sourceUrls": [
@@ -124,11 +153,11 @@
             }
           ],
           "id": "a415-5a1abd692d151ad9",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "What's next for Tarik Skubal, MLB's top free agent of 2026-27 offseason"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-e788358d320d491f"
           ],
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T20:51:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.65,
+          "ageHours": 3.17,
           "freshnessBasis": "Thousands of Wisconsinites thronged the streets of Milwaukee on Friday to revel in the Brewers' title.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-e960fc43360ca0a0",
-          "feedRank": 5,
-          "compactHeadline": "Sights and sounds from Brewers' parade through Milwaukee"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-6a0d91c40435afd0"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Former Rockies manager Clint Hurdle on Friday bid farewell to the organization he's been a part of for two stints totaling 20-plus seasons.",
-          "text": "Former Rockies manager Clint Hurdle on Friday bid farewell to the organization he's been a part of for two stints totaling 20-plus seasons.",
-          "entities": [],
-          "occurredAt": "2026-10-30T18:26:31Z",
-          "timePrecision": "exact",
-          "ageHours": 5.07,
-          "freshnessBasis": "Former Rockies manager Clint Hurdle on Friday bid farewell to the organization he's been a part of for two stints totaling 20-plus seasons.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50329386/clint-hurdle-bids-farewell-rockies-20-plus-seasons"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50329386/clint-hurdle-bids-farewell-rockies-20-plus-seasons"
-            }
-          ],
-          "id": "a415-924d4634ecbeb6bf",
           "feedRank": 6,
-          "compactHeadline": "Clint Hurdle bids farewell to Rockies after 20-plus seasons"
+          "compactHeadline": "Sights and sounds from Brewers' parade through Milwaukee"
         }
       ]
     },
@@ -194,6 +194,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-86103711057a4594"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
+          "text": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-10-30T23:45:24Z",
+          "timePrecision": "exact",
+          "ageHours": 0.28,
+          "freshnessBasis": "Commanders DT Daron Payne suffered a significant foot injury in practice Friday that likely will land him on injured reserve, sources told NFL Network.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50331710/sources-commanders-daron-payne-injures-foot-practice"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50331710/sources-commanders-daron-payne-injures-foot-practice"
+            }
+          ],
+          "id": "a415-6cb626c96b80b79b",
+          "feedRank": 7,
+          "compactHeadline": "Sources: Commanders' Daron Payne likely IR-bound after practice injury"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-89b16aa96a756684"
           ],
           "type": "INJURY",
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T21:46:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.73,
+          "ageHours": 2.26,
           "freshnessBasis": "Jeremiyah Love is expected to return to the field for the Cardinals on Sunday after missing the past two weeks with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +246,11 @@
             }
           ],
           "id": "a415-33746619eb9f1534",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Cardinals rookie RB Jeremiyah Love (ankle) set to return"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-50e41d6b1ce27bb8"
           ],
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T21:13:22Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 2.82,
           "freshnessBasis": "Saquon Barkley, who did not practice Wednesday or Thursday and was a limited participant Friday, carries no designation into Sunday's game.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-594e642830590c26",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Eagles' Saquon Barkley carries no injury designation for Commanders matchup"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-7be5de0e31107aec"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T19:55:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.6,
+          "ageHours": 4.12,
           "freshnessBasis": "Ravens quarterback Lamar Jackson will return to play Sunday at Buffalo, saying the pain in his injured left ankle is \"bearable.\"",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-95cba750937e7652",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Ravens QB Jackson to return for Bills clash, calls ankle pain 'bearable'"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-44b39afb7eb08e8b"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T17:12:50Z",
           "timePrecision": "exact",
-          "ageHours": 6.3,
+          "ageHours": 6.83,
           "freshnessBasis": "Jets nose tackle T'Vondre Sweat has been ruled out with a knee injury, and rookie edge rusher David Bailey, unable to practice this week due to a strained groin, is listed as doubtful.",
           "status": "active",
           "sourceUrls": [
@@ -304,11 +333,11 @@
             }
           ],
           "id": "a415-eaca463cf463602b",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Jets dealing with defensive injuries for matchup vs. Raiders, RB Ashton Jeanty"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-28c07da37ff251f5"
           ],
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T22:19:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.2,
+          "ageHours": 1.72,
           "freshnessBasis": "Colts coach Shane Steichen says receiver Josh Downs practiced all week and is \"ready to go\" despite the trade request he made earlier this week.",
           "status": "active",
           "sourceUrls": [
@@ -333,37 +362,8 @@
             }
           ],
           "id": "a415-f31f8aef196ac1d8",
-          "feedRank": 11,
-          "compactHeadline": "Colts' Shane Steichen: WR Josh Downs 'ready to go' despite trade request"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-16b7bd2eb2c82e03"
-          ],
-          "type": "RETURN",
-          "priority": 72,
-          "headline": "Chiefs receiver Rashee Rice is expected back from a hamstring injury against the Broncos on Sunday.",
-          "text": "Chiefs receiver Rashee Rice is expected back from a hamstring injury against the Broncos on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-10-30T19:53:39Z",
-          "timePrecision": "exact",
-          "ageHours": 3.62,
-          "freshnessBasis": "Chiefs receiver Rashee Rice is expected back from a hamstring injury against the Broncos on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50329594/chiefs-get-rashee-rice-back-injury-broncos-game"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50329594/chiefs-get-rashee-rice-back-injury-broncos-game"
-            }
-          ],
-          "id": "a415-cc2d76021de06464",
           "feedRank": 12,
-          "compactHeadline": "Chiefs get Rashee Rice back from injury for Broncos game"
+          "compactHeadline": "Colts' Shane Steichen: WR Josh Downs 'ready to go' despite trade request"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T23:28:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.57,
           "freshnessBasis": "Philadelphia 76ers veteran forward Jaylen Brown will be out of Friday's NBA Cup game against the New York Knicks with a left knee patella injury, the team announced.",
           "status": "active",
           "sourceUrls": [
@@ -403,6 +403,41 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-4ef04108b3115c56"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Cameron Boozer had the first triple-double of his NBA career with 18 points, 12 rebounds and 12 assists, and the Memphis Grizzlies beat the Portland Trail Blazers 124-103 on Thursday night to move to 5-0.",
+          "text": "Cameron Boozer had the first triple-double of his NBA career with 18 points, 12 rebounds and 12 assists, and the Memphis Grizzlies beat the Portland Trail Blazers 124-103 on Thursday night to move to 5-0.",
+          "entities": [],
+          "occurredAt": "2026-10-30T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.04,
+          "freshnessBasis": "Highlightly final: Memphis Grizzlies 124, Portland Trail Blazers 103.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nba/recap?gameId=401909895"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-10-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909895"
+            }
+          ],
+          "id": "a415-d06ce4f292e422cb",
+          "feedRank": 14,
+          "compactHeadline": "Boozer posts first career triple-double in Grizzlies win over Blazers"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-956f8aeac0b4ed84"
           ],
           "type": "INJURY",
@@ -412,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T20:36:51Z",
           "timePrecision": "exact",
-          "ageHours": 2.9,
+          "ageHours": 3.42,
           "freshnessBasis": "Trail Blazers guard Ja Morant sustained a left hamstring strain in his first game against the Grizzlies, his former team, and will be out at least four weeks.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +461,11 @@
             }
           ],
           "id": "a415-42efdc077842a0a5",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Ja Morant out at least 4 weeks with hamstring strain suffered against Grizzlies"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-c7b3210341c6b689"
           ],
@@ -441,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T05:56:53Z",
           "timePrecision": "exact",
-          "ageHours": 17.57,
+          "ageHours": 18.09,
           "freshnessBasis": "Ja Morant exited his first game against his former team in the fourth quarter Thursday night because of a left hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -455,11 +490,11 @@
             }
           ],
           "id": "a415-f3411a483f14e805",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Trail Blazers' Ja Morant exits first game vs. Grizzlies with hamstring injury"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-34464d0e13a9f17e"
           ],
@@ -470,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T01:22:15Z",
           "timePrecision": "exact",
-          "ageHours": 22.14,
+          "ageHours": 22.67,
           "freshnessBasis": "Knicks reserve guard Jose Alvarado will miss Friday's NBA Cup game against the 76ers because of a right ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -484,11 +519,11 @@
             }
           ],
           "id": "a415-9a90204f7f906953",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Knicks' Jose Alvarado (ankle) to miss fourth straight vs. 76ers"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c892201527048636"
           ],
@@ -499,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T22:54:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.6,
+          "ageHours": 1.13,
           "freshnessBasis": "Lakers owner Mark Walter and Thrive Capital founder Josh Kushner met Thursday to finalize the transaction and are expected to sign the formal agreement soon, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -513,37 +548,8 @@
             }
           ],
           "id": "a415-eeafa43ebea68f6e",
-          "feedRank": 17,
-          "compactHeadline": "Sources: Mark Walter, Josh Kushner finalize all terms of $12.5B Lakers sale"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b4973c5732001fc5"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Three days of secret talks resulted in Mark Walter flipping the Lakers -- and reignited yet another round of bickering among the six Buss siblings.",
-          "text": "Three days of secret talks resulted in Mark Walter flipping the Lakers -- and reignited yet another round of bickering among the six Buss siblings.",
-          "entities": [],
-          "occurredAt": "2026-10-30T22:33:34Z",
-          "timePrecision": "exact",
-          "ageHours": 0.95,
-          "freshnessBasis": "Three days of secret talks resulted in Mark Walter flipping the Lakers -- and reignited yet another round of bickering among the six Buss siblings.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50287529/los-angeles-lakers-sale-mark-walter-iger-kushner-luka"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50287529/los-angeles-lakers-sale-mark-walter-iger-kushner-luka"
-            }
-          ],
-          "id": "a415-f8cb097a333eb96f",
           "feedRank": 18,
-          "compactHeadline": "Inside the stunning 72-hour Lakers sale -- and the uncertainty that still looms"
+          "compactHeadline": "Sources: Mark Walter, Josh Kushner finalize all terms of $12.5B Lakers sale"
         }
       ]
     },
@@ -554,6 +560,140 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-968186c7299775bd"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "Tampa Bay Lightning star forward Nikita Kucherov, 33, who is in the final year of an eight year, $76 million contract, has requested a trade from a club he led to two Stanley Cup titles, sources told ESPN on Friday night, confirming an earlier report.",
+          "text": "Tampa Bay Lightning star forward Nikita Kucherov, 33, who is in the final year of an eight year, $76 million contract, has requested a trade from a club he led to two Stanley Cup titles, sources told ESPN on Friday night, confirming an earlier report.",
+          "entities": [],
+          "occurredAt": "2026-10-30T23:59:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "Tampa Bay Lightning star forward Nikita Kucherov, 33, who is in the final year of an eight year, $76 million contract, has requested a trade from a club he led to two Stanley Cup titles, sources told ESPN on Friday night, confirming an earlier report.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50331644/nikita-kucherov-33-requests-trade-lightning"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50331644/nikita-kucherov-33-requests-trade-lightning"
+            }
+          ],
+          "id": "a415-e353ef4aabcaa0f0",
+          "feedRank": 19,
+          "compactHeadline": "Sources: Tampa Bay Lightning star forward Nikita Kucherov, 33, requests trade"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-5eb64acc428ce7bf"
+          ],
+          "type": "RESULT",
+          "priority": 76,
+          "headline": "Tage Thompson had three goals and two assists, Zach Benson added a goal and two assists, and the Buffalo Sabres scored six consecutive goals during a 7-6 victory over the struggling Anaheim Ducks on Thursday night.",
+          "text": "Tage Thompson had three goals and two assists, Zach Benson added a goal and two assists, and the Buffalo Sabres scored six consecutive goals during a 7-6 victory over the struggling Anaheim Ducks on Thursday night.",
+          "entities": [],
+          "occurredAt": "2026-10-30T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.04,
+          "freshnessBasis": "Highlightly final: Buffalo Sabres 7, Anaheim Ducks 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892608"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892608"
+            }
+          ],
+          "id": "a415-7fda3b73af448dac",
+          "feedRank": 20,
+          "compactHeadline": "Tage Thompson has hat trick, 5 points in Sabres' 7-6 win over Ducks"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-4f613bb422acf01a"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Will Smith scored twice, including the tying goal just 11 seconds before Mason Marchment’s go-ahead goal, and the San Jose Sharks rallied from a two-goal deficit to beat the Vancouver Canucks 3-2 on Thursday night.",
+          "text": "Will Smith scored twice, including the tying goal just 11 seconds before Mason Marchment’s go-ahead goal, and the San Jose Sharks rallied from a two-goal deficit to beat the Vancouver Canucks 3-2 on Thursday night.",
+          "entities": [],
+          "occurredAt": "2026-10-30T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.04,
+          "freshnessBasis": "Highlightly final: Vancouver Canucks 2, San Jose Sharks 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892610"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892610"
+            }
+          ],
+          "id": "a415-7f4da795a3dd0905",
+          "feedRank": 21,
+          "compactHeadline": "Will Smith scores twice as the Sharks rally from a two-goal deficit to beat the Canucks 3-2"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-3351fb7188c6cabb"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Quinton Byfield scored at 3:37 of overtime and the Los Angeles Kings beat the Ottawa Senators 6-5 on Thursday night after blowing a four-goal lead in the third period.",
+          "text": "Quinton Byfield scored at 3:37 of overtime and the Los Angeles Kings beat the Ottawa Senators 6-5 on Thursday night after blowing a four-goal lead in the third period.",
+          "entities": [],
+          "occurredAt": "2026-10-30T02:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.04,
+          "freshnessBasis": "Highlightly final: Ottawa Senators 5, Los Angeles Kings 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892609"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-10-29",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892609"
+            }
+          ],
+          "id": "a415-68b862016a8875c8",
+          "feedRank": 22,
+          "compactHeadline": "Kings beat Senators 6-5 in OT after blowing a 4-goal lead in the 3rd period"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-cbc155c32858ace8"
           ],
           "type": "STREAK",
@@ -563,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T08:10:52Z",
           "timePrecision": "exact",
-          "ageHours": 15.33,
+          "ageHours": 15.86,
           "freshnessBasis": "Pittsburgh Penguins (5-6-2, in the Metropolitan Division) vs. Montreal Canadiens (8-3-2, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +717,11 @@
             }
           ],
           "id": "a415-d6d70ec8c976eb7b",
-          "feedRank": 19,
+          "feedRank": 23,
           "compactHeadline": "Canadiens try to keep win streak going, host the Penguins"
         },
         {
-          "rank": 2,
+          "rank": 6,
           "candidateIds": [
             "cand-36fbd1251a891993"
           ],
@@ -592,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T08:10:48Z",
           "timePrecision": "exact",
-          "ageHours": 15.33,
+          "ageHours": 15.86,
           "freshnessBasis": "Chicago Blackhawks (4-9, in the Central Division) vs. Boston Bruins (9-4-1, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -606,124 +746,8 @@
             }
           ],
           "id": "a415-e65f6a4d6045839f",
-          "feedRank": 20,
-          "compactHeadline": "Bruins try to extend home win streak, face the Blackhawks"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-426f53620a0abb7a"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "New Oilers coach Mike Babcock is making his approach loud and clear early in the season with lineup decisions.",
-          "text": "New Oilers coach Mike Babcock is making his approach loud and clear early in the season with lineup decisions.",
-          "entities": [],
-          "occurredAt": "2026-10-30T19:47:43Z",
-          "timePrecision": "exact",
-          "ageHours": 3.72,
-          "freshnessBasis": "New Oilers coach Mike Babcock is making his approach loud and clear early in the season with lineup decisions.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50329679/oilers-get-message-mike-babcock-healthy-scratches"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50329679/oilers-get-message-mike-babcock-healthy-scratches"
-            }
-          ],
-          "id": "a415-08be9d456ed9b09f",
-          "feedRank": 21,
-          "compactHeadline": "Oilers take accountability message from coach Mike Babcock's healthy scratches"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-83750a3ace47b6c3"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Quinton Byfield scored at 3:37 of overtime and the Los Angeles Kings beat the Ottawa Senators 6-5 on Thursday night after blowing a four-goal lead in the third period.",
-          "text": "Quinton Byfield scored at 3:37 of overtime and the Los Angeles Kings beat the Ottawa Senators 6-5 on Thursday night after blowing a four-goal lead in the third period.",
-          "entities": [],
-          "occurredAt": "2026-10-30T05:12:47Z",
-          "timePrecision": "exact",
-          "ageHours": 18.3,
-          "freshnessBasis": "— Quinton Byfield scored at 3:37 of overtime and the Los Angeles Kings beat the Ottawa Senators 6-5 on Thursday night after blowing a four-goal lead in the third period.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892609"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892609"
-            }
-          ],
-          "id": "a415-98102f40fd17d380",
-          "feedRank": 22,
-          "compactHeadline": "Kings beat Senators 6-5 in OT after blowing a 4-goal lead in the 3rd period"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-c75ff166226c0181"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Tage Thompson had three goals and two assists, Zach Benson added a goal and two assists, and the Buffalo Sabres scored six consecutive goals during a 7-6 victory over the struggling Anaheim Ducks on Thursday night.",
-          "text": "Tage Thompson had three goals and two assists, Zach Benson added a goal and two assists, and the Buffalo Sabres scored six consecutive goals during a 7-6 victory over the struggling Anaheim Ducks on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-10-30T04:51:48Z",
-          "timePrecision": "exact",
-          "ageHours": 18.65,
-          "freshnessBasis": "— Tage Thompson had three goals and two assists, Zach Benson added a goal and two assists, and the Buffalo Sabres scored six consecutive goals during a 7-6 victory over the struggling Anaheim Ducks on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892608"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892608"
-            }
-          ],
-          "id": "a415-5e26bd65e4b1f36a",
-          "feedRank": 23,
-          "compactHeadline": "Tage Thompson has hat trick, 5 points in Sabres' 7-6 win over Ducks"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-67880dd7922c8fd0"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Will Smith scored twice, including the tying goal just 11 seconds before Mason Marchment’s go-ahead goal, and the San Jose Sharks rallied from a two-goal deficit to beat the Vancouver Canucks 3-2 on Thursday night.",
-          "text": "Will Smith scored twice, including the tying goal just 11 seconds before Mason Marchment’s go-ahead goal, and the San Jose Sharks rallied from a two-goal deficit to beat the Vancouver Canucks 3-2 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-10-30T04:43:59Z",
-          "timePrecision": "exact",
-          "ageHours": 18.78,
-          "freshnessBasis": "— Will Smith scored twice, including the tying goal just 11 seconds before Mason Marchment’s go-ahead goal, and the San Jose Sharks rallied from a two-goal deficit to beat the Vancouver Canucks 3-2 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892610"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892610"
-            }
-          ],
-          "id": "a415-54b58543c8a47232",
           "feedRank": 24,
-          "compactHeadline": "Will Smith scores twice as the Sharks rally from a two-goal deficit to beat the Canucks 3-2"
+          "compactHeadline": "Bruins try to extend home win streak, face the Blackhawks"
         }
       ]
     },
@@ -734,118 +758,176 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ecdba94a4fa10213"
+            "cand-a338dd83ead7bf49"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Tottenham playmaker James Maddison is available for Saturday's visit of Crystal Palace despite an injury scare during the victory at Chelsea.",
-          "text": "Tottenham playmaker James Maddison is available for Saturday's visit of Crystal Palace despite an injury scare during the victory at Chelsea.",
+          "type": "RESULT",
+          "priority": 76,
+          "headline": "A late goal came in the 90th minute to decide Nottingham Forest U21's 3-2 win over Luton Town U21.",
+          "text": "A late goal came in the 90th minute to decide Nottingham Forest U21's 3-2 win over Luton Town U21.",
           "entities": [],
-          "occurredAt": "2026-10-30T15:26:09Z",
+          "occurredAt": "2026-10-30T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.08,
-          "freshnessBasis": "Tottenham playmaker James Maddison is available for Saturday's visit of Crystal Palace despite an injury scare during the victory at Chelsea.",
+          "ageHours": 5.04,
+          "freshnessBasis": "Highlightly final: Nottingham Forest U21 3, Luton Town U21 2.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50328247/james-maddison-available-tottenham-clash-crystal-palace"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50328247/james-maddison-available-tottenham-clash-crystal-palace"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-30",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-68211d8ec5bdd4e4",
+          "id": "a415-f58ac9266f669d6c",
           "feedRank": 25,
-          "compactHeadline": "James Maddison available for Tottenham's clash with Crystal Palace"
+          "compactHeadline": "Late goal lifts Nottingham Forest U21 beat Luton Town U21 3-2"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-45787c5b0df48e7a"
+            "cand-3900a88c6665c3b6"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "If we look beyond the Premier League and beyond those who qualified for the Champions League, which are the best teams in the world?",
-          "text": "If we look beyond the Premier League and beyond those who qualified for the Champions League, which are the best teams in the world?",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Ipswich Town U21 0, Coventry City U21 1.",
+          "text": "Highlightly final: Ipswich Town U21 0, Coventry City U21 1.",
           "entities": [],
-          "occurredAt": "2026-10-30T12:06:05Z",
+          "occurredAt": "2026-10-30T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.41,
-          "freshnessBasis": "If we look beyond the Premier League and beyond those who qualified for the Champions League, which are the best teams in the world?",
+          "ageHours": 5.04,
+          "freshnessBasis": "Highlightly final: Ipswich Town U21 0, Coventry City U21 1.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50312487/top-20-soccer-teams-world-ranked"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50312487/top-20-soccer-teams-world-ranked"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-30",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-73a42ab18f214146",
+          "id": "a415-daf297f531b38823",
           "feedRank": 26,
-          "compactHeadline": "Global power ranking: The top 20 soccer teams in the world, ranked!"
+          "compactHeadline": "Coventry City U21 beat Ipswich Town U21 1-0"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-10b7c51a291258cc"
+            "cand-1e415ee820f3cdbf"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Manchester United manager Michael Carrick said \"hard truths\" have been spoken between himself, the players and the club hierarchy amid an eight-game winless run.",
-          "text": "Manchester United manager Michael Carrick said \"hard truths\" have been spoken between himself, the players and the club hierarchy amid an eight-game winless run.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Sheffield United U21 2, West Ham United U21 1.",
+          "text": "Highlightly final: Sheffield United U21 2, West Ham United U21 1.",
           "entities": [],
-          "occurredAt": "2026-10-30T22:31:03Z",
+          "occurredAt": "2026-10-30T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.0,
-          "freshnessBasis": "Manchester United manager Michael Carrick said \"hard truths\" have been spoken between himself, the players and the club hierarchy amid an eight-game winless run.",
+          "ageHours": 5.04,
+          "freshnessBasis": "Highlightly final: Sheffield United U21 2, West Ham United U21 1.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50329748/man-united-michael-carrick-coach-players-talks"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50329748/man-united-michael-carrick-coach-players-talks"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-30",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-f5710533a139e5d2",
+          "id": "a415-15247ddf66979d77",
           "feedRank": 27,
-          "compactHeadline": "Michael Carrick: 'Hard truths' have been shared amid Man United slump"
+          "compactHeadline": "Sheffield United U21 beat West Ham United U21 2-1"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-36af831b977da960"
+            "cand-142e38ae367584ad"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Andoni Iraola's brand of risk-reward football is starting to take hold at Liverpool and captain Virgil van Dijk has said the players are becoming increasingly confident at committing to the game plan.",
-          "text": "Andoni Iraola's brand of risk-reward football is starting to take hold at Liverpool and captain Virgil van Dijk has said the players are becoming increasingly confident at committing to the game plan.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Peterborough United U21 0, Newcastle United U21 2.",
+          "text": "Highlightly final: Peterborough United U21 0, Newcastle United U21 2.",
           "entities": [],
-          "occurredAt": "2026-10-30T17:30:15Z",
+          "occurredAt": "2026-10-30T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.01,
-          "freshnessBasis": "Andoni Iraola's brand of risk-reward football is starting to take hold at Liverpool and captain Virgil van Dijk has said the players are becoming increasingly confident at committing to the game plan.",
+          "ageHours": 5.04,
+          "freshnessBasis": "Highlightly final: Peterborough United U21 0, Newcastle United U21 2.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50329062/virgil-van-dijk-liverpool-take-risk-andoni-iraola-playstyle"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50329062/virgil-van-dijk-liverpool-take-risk-andoni-iraola-playstyle"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-30",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-03e4e09edab50bc4",
+          "id": "a415-0679818b79929cdb",
           "feedRank": 28,
-          "compactHeadline": "Virgil van Dijk: Liverpool must 'take that risk' under Andoni Iraola playing style"
+          "compactHeadline": "Newcastle United U21 beat Peterborough United U21 2-0"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-f8dfa90dbabc9263"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Southampton U21 1, Blackburn Rovers U21 2.",
+          "text": "Highlightly final: Southampton U21 1, Blackburn Rovers U21 2.",
+          "entities": [],
+          "occurredAt": "2026-10-30T19:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.04,
+          "freshnessBasis": "Highlightly final: Southampton U21 1, Blackburn Rovers U21 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-30",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-01462610fa098f97",
+          "feedRank": 29,
+          "compactHeadline": "Blackburn Rovers U21 beat Southampton U21 2-1"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-7c1e53ce8808d926"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Swansea City U21 3, Birmingham City U21 0.",
+          "text": "Highlightly final: Swansea City U21 3, Birmingham City U21 0.",
+          "entities": [],
+          "occurredAt": "2026-10-30T19:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.04,
+          "freshnessBasis": "Highlightly final: Swansea City U21 3, Birmingham City U21 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-10-30",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-d628faa2b4730136",
+          "feedRank": 30,
+          "compactHeadline": "Swansea City U21 beat Birmingham City U21 3-0"
         }
       ]
     },
@@ -865,7 +947,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T02:03:47Z",
           "timePrecision": "exact",
-          "ageHours": 21.45,
+          "ageHours": 21.98,
           "freshnessBasis": "Lionel Messi is eligible for Inter Miami's game against the New England Revolution on Sunday despite receiving his fifth yellow card of the season on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -879,7 +961,7 @@
             }
           ],
           "id": "a415-36a0bfe124aeeea9",
-          "feedRank": 29,
+          "feedRank": 31,
           "compactHeadline": "Messi eligible for crunch Miami game with Revs despite yellow card haul"
         }
       ]
@@ -900,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T19:39:18Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
+          "ageHours": 4.38,
           "freshnessBasis": "Tyler Ulrich, a 21-year-old college football player who died earlier this month, suffered a traumatic brain injury and a brain bleed, according to a coroner's report.",
           "status": "active",
           "sourceUrls": [
@@ -914,7 +996,7 @@
             }
           ],
           "id": "a415-acaeafd2235a1c62",
-          "feedRank": 30,
+          "feedRank": 32,
           "compactHeadline": "Coroner: SNU safety Tyler Ulrich, 21, died from TBI, brain bleed"
         },
         {
@@ -929,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T16:45:53Z",
           "timePrecision": "exact",
-          "ageHours": 6.75,
+          "ageHours": 7.27,
           "freshnessBasis": "Nebraska quarterback Anthony Colandrea has signed a deal to return to the Cornhuskers in 2027 for his final year of college eligibility, his agent told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +1025,7 @@
             }
           ],
           "id": "a415-59f7ea0a28f6cada",
-          "feedRank": 31,
+          "feedRank": 33,
           "compactHeadline": "Nebraska QB Anthony Colandrea re-signs for 2027 season, agent says"
         },
         {
@@ -958,7 +1040,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T15:49:13Z",
           "timePrecision": "exact",
-          "ageHours": 7.69,
+          "ageHours": 8.22,
           "freshnessBasis": "Where the top 60 classes stand as the latest cycle hits the home stretch.",
           "status": "active",
           "sourceUrls": [
@@ -972,7 +1054,7 @@
             }
           ],
           "id": "a415-9cce8e7c0b4030f4",
-          "feedRank": 32,
+          "feedRank": 34,
           "compactHeadline": "Ranking the top 60 college football recruiting classes for 2027"
         },
         {
@@ -987,7 +1069,7 @@
           "entities": [],
           "occurredAt": "2026-10-30T17:41:48Z",
           "timePrecision": "exact",
-          "ageHours": 5.82,
+          "ageHours": 6.34,
           "freshnessBasis": "Florida will start QB Aaron Philo over Tramell Jones Jr. when the No. 17 Gators try to end a five-game losing streak vs. No. 3 Georgia, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -1001,66 +1083,8 @@
             }
           ],
           "id": "a415-b833811fe38cd27a",
-          "feedRank": 33,
-          "compactHeadline": "Sources: Florida's Aaron Philo resumes QB1 role vs. Georgia"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-7654b572dacfd832"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "\"College GameDay\" heads to Bloomington, Indiana for Week 9.",
-          "text": "\"College GameDay\" heads to Bloomington, Indiana for Week 9.",
-          "entities": [],
-          "occurredAt": "2026-10-30T18:37:39Z",
-          "timePrecision": "exact",
-          "ageHours": 4.89,
-          "freshnessBasis": "\"College GameDay\" heads to Bloomington, Indiana for Week 9.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50329417/2026-college-gameday-week-9-minnesota-vs-indiana"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50329417/2026-college-gameday-week-9-minnesota-vs-indiana"
-            }
-          ],
-          "id": "a415-faf0d269ee0209c5",
-          "feedRank": 34,
-          "compactHeadline": "2026 'College GameDay' Week 9: Minnesota vs. Indiana"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d2c3361bcad7e146"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
-          "text": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
-          "entities": [],
-          "occurredAt": "2026-10-30T17:06:38Z",
-          "timePrecision": "exact",
-          "ageHours": 6.4,
-          "freshnessBasis": "There are 23 five-star players in the class, and we scout each one's game for the next level.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/recruiting/story/_/id/48543549/college-football-recruiting-2027-prospects-five-star-scouts-take"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/recruiting/story/_/id/48543549/college-football-recruiting-2027-prospects-five-star-scouts-take"
-            }
-          ],
-          "id": "a415-9819fdcebe2aa754",
           "feedRank": 35,
-          "compactHeadline": "How every 2027 five-star college football prospect will fit"
+          "compactHeadline": "Sources: Florida's Aaron Philo resumes QB1 role vs. Georgia"
         }
       ]
     }
@@ -1085,7 +1109,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 123,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
