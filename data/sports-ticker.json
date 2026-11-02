@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-02T01:31:44Z",
+  "generatedAt": "2026-11-02T02:01:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "2be59b1a578692c10e351046bed9e0c0360602a4de6c9d321ee34fbb823f6cbb",
+  "sourceCandidateHash": "e1d21109f26ebde12a0a20d20f302787f4e0e6fae65ad8472630ac959ec41425",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T22:36:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.91,
+          "ageHours": 3.41,
           "freshnessBasis": "Japanese right-hander Kaima Taira's team, the Seibu Lions, announced it will allow him to pursue a career in MLB via the posting system that allows certain players to sign abroad.",
           "status": "active",
           "sourceUrls": [
@@ -39,35 +39,6 @@
           "id": "a415-ee54457c314e9118",
           "feedRank": 1,
           "compactHeadline": "Japanese RHP Kaima Taira to be posted by Seibu Lions, move to MLB"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-b1698dae610c9f02"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Rays exercised their $20 million option Saturday on ace pitcher Drew Rasmussen.",
-          "text": "The Rays exercised their $20 million option Saturday on ace pitcher Drew Rasmussen.",
-          "entities": [],
-          "occurredAt": "2026-11-01T01:40:15Z",
-          "timePrecision": "exact",
-          "ageHours": 23.86,
-          "freshnessBasis": "The Rays exercised their $20 million option Saturday on ace pitcher Drew Rasmussen.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50342824/rays-pick-20m-option-ace-pitcher-drew-rasmussen"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50342824/rays-pick-20m-option-ace-pitcher-drew-rasmussen"
-            }
-          ],
-          "id": "a415-4609fa981af365c2",
-          "feedRank": 2,
-          "compactHeadline": "Rays pick up $20M option on ace pitcher Drew Rasmussen"
         }
       ]
     },
@@ -78,212 +49,176 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0ef8fb861a448e96"
+            "cand-9c9febacf0bd7d14"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Drake Maye threw two touchdown passes and rushed for a score as the New England Patriots came back to beat the Miami Dolphins 24-19 on Sunday.",
-          "text": "Drake Maye threw two touchdown passes and rushed for a score as the New England Patriots came back to beat the Miami Dolphins 24-19 on Sunday.",
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "The Pittsburgh passer is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
+          "text": "The Pittsburgh passer is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
           "entities": [],
-          "occurredAt": "2026-11-01T21:25:00Z",
+          "occurredAt": "2026-11-02T01:38:07Z",
           "timePrecision": "exact",
-          "ageHours": 4.11,
-          "freshnessBasis": "Highlightly final: New England Patriots 24, Miami Dolphins 19.",
+          "ageHours": 0.39,
+          "freshnessBasis": "The Pittsburgh passer is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873034"
+            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-01",
-              "url": "https://highlightly.net"
-            },
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
+            }
+          ],
+          "id": "a415-7a75961a3d7042a4",
+          "feedRank": 2,
+          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-5a120c5977a6ba3c"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Drake Maye was without a pair of top receivers and a running back Sunday against the Miami Dolphins.",
+          "text": "Drake Maye was without a pair of top receivers and a running back Sunday against the Miami Dolphins.",
+          "entities": [],
+          "occurredAt": "2026-11-02T01:56:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.09,
+          "freshnessBasis": "— Drake Maye was without a pair of top receivers and a running back Sunday against the Miami Dolphins.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/recap?gameId=401873034"
+          ],
+          "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
               "url": "http://www.espn.com/nfl/recap?gameId=401873034"
             }
           ],
-          "id": "a415-418700969c9d35a8",
+          "id": "a415-1b3dfcc5d6682a5c",
           "feedRank": 3,
           "compactHeadline": "Maye has 3 touchdowns as Patriots rally to beat Dolphins 24-19"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
-            "cand-edc44dde8627669c"
+            "cand-6cbe003746939a51"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Malcolm Roach sacked Patrick Mahomes on fourth-and-goal on the final play Sunday, preserving Denver's come-from-behind 28-24 win over the Kansas City Chiefs that vaulted Broncos into first place in the AFC West.",
           "text": "Malcolm Roach sacked Patrick Mahomes on fourth-and-goal on the final play Sunday, preserving Denver's come-from-behind 28-24 win over the Kansas City Chiefs that vaulted Broncos into first place in the AFC West.",
           "entities": [],
-          "occurredAt": "2026-11-01T21:25:00Z",
+          "occurredAt": "2026-11-02T01:05:50Z",
           "timePrecision": "exact",
-          "ageHours": 4.11,
-          "freshnessBasis": "Highlightly final: Kansas City Chiefs 24, Denver Broncos 28.",
+          "ageHours": 0.93,
+          "freshnessBasis": "— Malcolm Roach sacked Patrick Mahomes on fourth-and-goal on the final play Sunday, preserving Denver's come-from-behind 28-24 win over the Kansas City Chiefs that vaulted Broncos into first place in the AFC West.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/nfl/recap?gameId=401873033"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-01",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
               "url": "http://www.espn.com/nfl/recap?gameId=401873033"
             }
           ],
-          "id": "a415-3fb94a2e5915b697",
+          "id": "a415-5f698b3e3e85f734",
           "feedRank": 4,
           "compactHeadline": "On fourth-and-goal, Roach drops Mahomes and flips the AFC West race as Broncos beat Chiefs 28-24"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
-            "cand-9d11498fcc4c619c"
+            "cand-5c2c241126685207"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Bengals defensive tackle Dexter Lawrence had some simple advice for Joe Burrow as the franchise quarterback prepared to take the field with Cincinnati trailing the Tennessee Titans by a touchdown in the fourth quarter.",
           "text": "Bengals defensive tackle Dexter Lawrence had some simple advice for Joe Burrow as the franchise quarterback prepared to take the field with Cincinnati trailing the Tennessee Titans by a touchdown in the fourth quarter.",
           "entities": [],
-          "occurredAt": "2026-11-01T18:00:00Z",
+          "occurredAt": "2026-11-02T00:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 7.53,
-          "freshnessBasis": "Highlightly final: Tennessee Titans 36, Cincinnati Bengals 43.",
+          "ageHours": 1.31,
+          "freshnessBasis": "— Bengals defensive tackle Dexter Lawrence had some simple advice for Joe Burrow as the franchise quarterback prepared to take the field with Cincinnati trailing the Tennessee Titans by a touchdown in the fourth quarter.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/nfl/recap?gameId=401873031"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-01",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
               "url": "http://www.espn.com/nfl/recap?gameId=401873031"
             }
           ],
-          "id": "a415-a072879b2e4ebf2e",
+          "id": "a415-4ce7566b50385482",
           "feedRank": 5,
           "compactHeadline": "Joe Burrow throws 5 TD passes, then runs for score in OT as Bengals rally for 43-36 win over Titans"
         },
         {
-          "rank": 4,
-          "candidateIds": [
-            "cand-6455883fd6a9e305"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "The Detroit Lions handed the Minnesota Vikings their first loss of the season and had a muted celebration because All-Pro linebacker",
-          "text": "The Detroit Lions handed the Minnesota Vikings their first loss of the season and had a muted celebration because All-Pro linebacker",
-          "entities": [],
-          "occurredAt": "2026-11-01T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 7.53,
-          "freshnessBasis": "Highlightly final: Minnesota Vikings 15, Detroit Lions 19.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873030"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-01",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873030"
-            }
-          ],
-          "id": "a415-a2d09499390091d4",
-          "feedRank": 6,
-          "compactHeadline": "Goff throws go-ahead touchdown pass to Williams and Lions beat Vikings 19-15 for their 1st loss"
-        },
-        {
           "rank": 5,
           "candidateIds": [
-            "cand-1d44cad9aa229e0e"
+            "cand-3880ba7778055b08"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "With Josh Allen at quarterback, anything seems possible for the Buffalo Bills — including overcoming a sloppy first half.",
           "text": "With Josh Allen at quarterback, anything seems possible for the Buffalo Bills — including overcoming a sloppy first half.",
           "entities": [],
-          "occurredAt": "2026-11-01T18:00:00Z",
+          "occurredAt": "2026-11-02T00:25:46Z",
           "timePrecision": "exact",
-          "ageHours": 7.53,
-          "freshnessBasis": "Highlightly final: Baltimore Ravens 10, Buffalo Bills 36.",
+          "ageHours": 1.6,
+          "freshnessBasis": "— With Josh Allen at quarterback, anything seems possible for the Buffalo Bills — including overcoming a sloppy first half.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/nfl/recap?gameId=401873026"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-01",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
               "url": "http://www.espn.com/nfl/recap?gameId=401873026"
             }
           ],
-          "id": "a415-2701cc3a8d1c0527",
-          "feedRank": 7,
+          "id": "a415-1b86d4ce46b17a13",
+          "feedRank": 6,
           "compactHeadline": "Bills cruise in 2nd half to 36-10 win over Ravens, who lose QBs Jackson and Huntley to injuries"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-7b86a14bec246362"
+            "cand-d8d3fc7b8df07c38"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Baker Mayfield didn't complete a pass, but the Buccaneers beat the Falcons 16-0 behind Bucky Irving and Kenny Gainwell's rushing on a wet, sloppy field.",
-          "text": "Baker Mayfield didn't complete a pass, but the Buccaneers beat the Falcons 16-0 behind Bucky Irving and Kenny Gainwell's rushing on a wet, sloppy field.",
+          "headline": "Tyler Allgeier jolted his Arizona offense, which gave Gardner Minshew and Michael Wilson a chance to stun the Dallas Cowboys.",
+          "text": "Tyler Allgeier jolted his Arizona offense, which gave Gardner Minshew and Michael Wilson a chance to stun the Dallas Cowboys.",
           "entities": [],
-          "occurredAt": "2026-11-01T18:00:00Z",
+          "occurredAt": "2026-11-01T23:41:47Z",
           "timePrecision": "exact",
-          "ageHours": 7.53,
-          "freshnessBasis": "Highlightly final: Atlanta Falcons 0, Tampa Bay Buccaneers 16.",
+          "ageHours": 2.33,
+          "freshnessBasis": "— Tyler Allgeier jolted his Arizona offense, which gave Gardner Minshew and Michael Wilson a chance to stun the Dallas Cowboys.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/nfl/story/_/id/50351129/buccaneers-silence-falcons-pass-completion"
+            "http://www.espn.com/nfl/recap?gameId=401873024"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-01",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50351129/buccaneers-silence-falcons-pass-completion"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873024"
             }
           ],
-          "id": "a415-68ee8a708a01fd75",
-          "feedRank": 8,
-          "compactHeadline": "Bucs down Falcons without pass completion; Bucky Irving, Kenny Gainwell run wild"
+          "id": "a415-27cc61c37a05cdaa",
+          "feedRank": 7,
+          "compactHeadline": "Chad Ryland kicks winner after PAT miss that forced OT as Cards beat Cowboys 33-30 with wild rally"
         }
       ]
     },
@@ -294,69 +229,34 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-d3923ef656e2f108"
+            "cand-bc05d06f0055a1aa"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Jayson Tatum scored 32 points — 15 of them from the free-throw line — and Paul George added 17 as the Boston Celtics won their fifth straight, 108-97 over the Orlando Magic Sunday.",
           "text": "Jayson Tatum scored 32 points — 15 of them from the free-throw line — and Paul George added 17 as the Boston Celtics won their fifth straight, 108-97 over the Orlando Magic Sunday.",
           "entities": [],
-          "occurredAt": "2026-11-01T20:30:00Z",
+          "occurredAt": "2026-11-01T23:45:46Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
-          "freshnessBasis": "Highlightly final: Boston Celtics 108, Orlando Magic 97.",
+          "ageHours": 2.27,
+          "freshnessBasis": "— Jayson Tatum scored 32 points — 15 of them from the free-throw line — and Paul George added 17 as the Boston Celtics won their fifth straight, 108-97 over the Orlando Magic Sunday.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/nba/recap?gameId=401909903"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-01",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
               "url": "http://www.espn.com/nba/recap?gameId=401909903"
             }
           ],
-          "id": "a415-202701a576c26e89",
-          "feedRank": 9,
+          "id": "a415-b4cb292b73a2eefc",
+          "feedRank": 8,
           "compactHeadline": "Jayson Tatum's 32, Paul George's 10 4th-quarter points lead Boston Celtics to win at Orlando"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-f7c63a1f7a58c7ba"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Brooklyn Nets 98, Indiana Pacers 90.",
-          "text": "Highlightly final: Brooklyn Nets 98, Indiana Pacers 90.",
-          "entities": [],
-          "occurredAt": "2026-11-01T22:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.53,
-          "freshnessBasis": "Highlightly final: Brooklyn Nets 98, Indiana Pacers 90.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-01",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-11322f65b7d686a5",
-          "feedRank": 10,
-          "compactHeadline": "Brooklyn Nets beat Indiana Pacers 98-90"
-        },
-        {
-          "rank": 3,
           "candidateIds": [
             "cand-dc18e1ef3796fddf"
           ],
@@ -367,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T20:24:15Z",
           "timePrecision": "exact",
-          "ageHours": 5.12,
+          "ageHours": 5.62,
           "freshnessBasis": "Victor Wembanyama launched a career-high 34 shots for a season-high 43 points to propel the Spurs to a 121-111 win over the Timberwolves.",
           "status": "active",
           "sourceUrls": [
@@ -381,11 +281,11 @@
             }
           ],
           "id": "a415-694132afb0b55886",
-          "feedRank": 11,
+          "feedRank": 9,
           "compactHeadline": "Spurs' Victor Wembanyama notches 43 points on career-high 34 shots in win"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-ca74c816dfb1885d"
           ],
@@ -396,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T01:18:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
+          "ageHours": 0.73,
           "freshnessBasis": "The superstar singer-songwriter was joined on stage by Brunson, who presented Styles with a commemorative banner for his 30-show Madison Square Garden residency.",
           "status": "active",
           "sourceUrls": [
@@ -410,11 +310,11 @@
             }
           ],
           "id": "a415-63fea66e8934b3f4",
-          "feedRank": 12,
+          "feedRank": 10,
           "compactHeadline": "Jalen Brunson joins Harry Styles on stage to cap Styles' MSG residency"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-c0d8346a675aa2c8"
           ],
@@ -425,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T01:06:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.91,
           "freshnessBasis": "— Michael Porter Jr. scored 23 points, and Julius Randle had 20 points to lead the Brooklyn Nets to a 98-90 victory over the Indiana Pacers on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -439,11 +339,11 @@
             }
           ],
           "id": "a415-4fd285fc67b72aa6",
-          "feedRank": 13,
+          "feedRank": 11,
           "compactHeadline": "Porter, Randle help Nets to 98-90 victory over Pacers"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-647a5aa7bb33104c"
           ],
@@ -454,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T06:02:54Z",
           "timePrecision": "exact",
-          "ageHours": 19.48,
+          "ageHours": 19.98,
           "freshnessBasis": "Sacramento Kings (0-6, 15th in the Western Conference) vs. Dallas Mavericks (4-2, seventh in the Western Conference)",
           "status": "active",
           "sourceUrls": [
@@ -468,8 +368,37 @@
             }
           ],
           "id": "a415-ec031ab0a620c45f",
-          "feedRank": 14,
+          "feedRank": 12,
           "compactHeadline": "Mavericks face the Kings on 3-game win streak"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-b2fcabc06717ebeb"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Victor Wembanyama had 43 points, seven rebounds, six blocks and four assists as the San Antonio Spurs beat the Minnesota Timberwolves 121-111 on Saturday night for their fourth straight victory.",
+          "text": "Victor Wembanyama had 43 points, seven rebounds, six blocks and four assists as the San Antonio Spurs beat the Minnesota Timberwolves 121-111 on Saturday night for their fourth straight victory.",
+          "entities": [],
+          "occurredAt": "2026-11-01T02:54:47Z",
+          "timePrecision": "exact",
+          "ageHours": 23.11,
+          "freshnessBasis": "— Victor Wembanyama had 43 points, seven rebounds, six blocks and four assists as the San Antonio Spurs beat the Minnesota Timberwolves 121-111 on Saturday night for their fourth straight victory.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401909901"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909901"
+            }
+          ],
+          "id": "a415-9b6169c00eaf98e9",
+          "feedRank": 13,
+          "compactHeadline": "Wembanyama has 43 points and 6 blocks to lead Spurs past short-handed Timberwolves 121-111"
         }
       ]
     },
@@ -480,110 +409,34 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-75e0b37ebcc3d0e0"
+            "cand-51e1a7023dc819ec"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Travis Konecny scored a goal and assisted on another in his first game since missing more than three weeks with an injury as the Philadelphia Flyers beat the Utah Mammoth 6-3 on Sunday.",
-          "text": "Travis Konecny scored a goal and assisted on another in his first game since missing more than three weeks with an injury as the Philadelphia Flyers beat the Utah Mammoth 6-3 on Sunday.",
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Connor McDavid scored a goal and extended his NHL record season-opening assists streak to 15 games, powering the Edmonton Oilers past the New York...",
+          "text": "Connor McDavid scored a goal and extended his NHL record season-opening assists streak to 15 games, powering the Edmonton Oilers past the New York...",
           "entities": [],
-          "occurredAt": "2026-11-01T21:00:00Z",
+          "occurredAt": "2026-11-02T01:42:47Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
-          "freshnessBasis": "Highlightly final: Utah Mammoth 3, Philadelphia Flyers 6.",
+          "ageHours": 0.31,
+          "freshnessBasis": "— Connor McDavid scored a goal and extended his NHL record season-opening assists streak to 15 games, powering the Edmonton Oilers past the New York...",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892626"
+            "http://www.espn.com/nhl/recap?gameId=401892627"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-01",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892626"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892627"
             }
           ],
-          "id": "a415-0f7137458184a2cb",
-          "feedRank": 15,
-          "compactHeadline": "Travis Konecny scores in return as Flyers beat Utah Mammoth 6-3"
+          "id": "a415-2240d41a7bb64fd2",
+          "feedRank": 14,
+          "compactHeadline": "Connor McDavid has a goal and an assist to lead the Oilers past the Rangers, 4-1"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-98d675797f7c6e43"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Quinn Hughes and Michael McCarron scored in the first 5:27 for Minnesota, and the Wild held on for a 5-1 victory over the Washington Capitals on Sunday.",
-          "text": "Quinn Hughes and Michael McCarron scored in the first 5:27 for Minnesota, and the Wild held on for a 5-1 victory over the Washington Capitals on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-11-01T20:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.03,
-          "freshnessBasis": "Highlightly final: Minnesota Wild 5, Washington Capitals 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892625"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-01",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892625"
-            }
-          ],
-          "id": "a415-4593a0eeffd3e90a",
-          "feedRank": 16,
-          "compactHeadline": "2 early goals lift Minnesota to a 5-1 win over Washington, snapping the Capitals' 3-game run"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-3af57c06f22e6e64"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Pyotr Kochetkov’s 26-save shutout gave him 10 straight victories to begin the season, Sean Walker scored two goals, and the Carolina Hurricanes beat the Winnipeg Jets 7-0 on Sunday.",
-          "text": "Pyotr Kochetkov’s 26-save shutout gave him 10 straight victories to begin the season, Sean Walker scored two goals, and the Carolina Hurricanes beat the Winnipeg Jets 7-0 on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-11-01T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 7.53,
-          "freshnessBasis": "Highlightly final: Winnipeg Jets 0, Carolina Hurricanes 7.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892624"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-01",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892624"
-            }
-          ],
-          "id": "a415-b5fa3534a9b000e0",
-          "feedRank": 17,
-          "compactHeadline": "Kochetkov makes 26 saves, Walker scores twice as Hurricanes beat Jets 7-0"
-        },
-        {
-          "rank": 4,
           "candidateIds": [
             "cand-c81942ec990978ef"
           ],
@@ -594,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T23:54:59Z",
           "timePrecision": "exact",
-          "ageHours": 1.61,
+          "ageHours": 2.11,
           "freshnessBasis": "The Nashville Predators traded forward Matthew Wood to the Seattle Kraken for forward Shane Wright on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -608,43 +461,95 @@
             }
           ],
           "id": "a415-5464ad964164ae8d",
-          "feedRank": 18,
+          "feedRank": 15,
           "compactHeadline": "Predators acquire Shane Wright from Kraken for Matthew Wood"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-c53bb0038cd29698"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Travis Konecny scored a goal and assisted on another in his first game since missing more than three weeks with an injury as the Philadelphia Flyers beat the Utah Mammoth 6-3 on Sunday.",
+          "text": "Travis Konecny scored a goal and assisted on another in his first game since missing more than three weeks with an injury as the Philadelphia Flyers beat the Utah Mammoth 6-3 on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-11-02T00:02:52Z",
+          "timePrecision": "exact",
+          "ageHours": 1.98,
+          "freshnessBasis": "— Travis Konecny scored a goal and assisted on another in his first game since missing more than three weeks with an injury as the Philadelphia Flyers beat the Utah Mammoth 6-3 on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892626"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892626"
+            }
+          ],
+          "id": "a415-613c6c5d36b6c299",
+          "feedRank": 16,
+          "compactHeadline": "Travis Konecny scores in return as Flyers beat Utah Mammoth 6-3"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-2e79c52ac196baba"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Quinn Hughes and Michael McCarron scored in the first 5:27 for Minnesota, and the Wild held on for a 5-1 victory over the Washington Capitals on Sunday.",
+          "text": "Quinn Hughes and Michael McCarron scored in the first 5:27 for Minnesota, and the Wild held on for a 5-1 victory over the Washington Capitals on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-11-01T23:21:56Z",
+          "timePrecision": "exact",
+          "ageHours": 2.66,
+          "freshnessBasis": "— Quinn Hughes and Michael McCarron scored in the first 5:27 for Minnesota, and the Wild held on for a 5-1 victory over the Washington Capitals on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892625"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892625"
+            }
+          ],
+          "id": "a415-15de29342cf27920",
+          "feedRank": 17,
+          "compactHeadline": "2 early goals lift Minnesota to a 5-1 win over Washington, snapping the Capitals' 3-game run"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-a1179617ef6645bd"
+            "cand-caa2825f22ffdd02"
           ],
           "type": "RESULT",
-          "priority": 72,
-          "headline": "Artturi Lehkonen scored twice, Nathan MacKinnon had a goal and an assist, and the Colorado Avalanche beat the Calgary Flames 5-2 on Saturday night.",
-          "text": "Artturi Lehkonen scored twice, Nathan MacKinnon had a goal and an assist, and the Colorado Avalanche beat the Calgary Flames 5-2 on Saturday night.",
+          "priority": 70,
+          "headline": "Pyotr Kochetkov’s 26-save shutout gave him 10 straight victories to begin the season, Sean Walker scored two goals, and the Carolina Hurricanes beat the Winnipeg Jets 7-0 on Sunday.",
+          "text": "Pyotr Kochetkov’s 26-save shutout gave him 10 straight victories to begin the season, Sean Walker scored two goals, and the Carolina Hurricanes beat the Winnipeg Jets 7-0 on Sunday.",
           "entities": [],
-          "occurredAt": "2026-11-01T02:00:00Z",
+          "occurredAt": "2026-11-01T20:57:46Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Calgary Flames 2, Colorado Avalanche 5.",
+          "ageHours": 5.07,
+          "freshnessBasis": "— Pyotr Kochetkov’s 26-save shutout gave him 10 straight victories to begin the season, Sean Walker scored two goals, and the Carolina Hurricanes beat the Winnipeg Jets 7-0 on Sunday.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892623"
+            "http://www.espn.com/nhl/recap?gameId=401892624"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-10-31",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892623"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892624"
             }
           ],
-          "id": "a415-4f1b2ab2389d30a9",
-          "feedRank": 19,
-          "compactHeadline": "Artturi Lehkonen and Cale Makar lead the Avalanche to a 5-2 victory over the Flames"
+          "id": "a415-2c4b06bd327b2bdd",
+          "feedRank": 18,
+          "compactHeadline": "Kochetkov makes 26 saves, Walker scores twice as Hurricanes beat Jets 7-0"
         },
         {
           "rank": 6,
@@ -658,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T08:10:51Z",
           "timePrecision": "exact",
-          "ageHours": 17.35,
+          "ageHours": 17.85,
           "freshnessBasis": "Calgary Flames (6-8, in the Pacific Division) vs. San Jose Sharks (7-7-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -672,7 +577,7 @@
             }
           ],
           "id": "a415-6d8896e82f1a6a14",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Flames bring road losing streak into game against the Sharks"
         }
       ]
@@ -693,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T19:48:39Z",
           "timePrecision": "exact",
-          "ageHours": 5.72,
+          "ageHours": 6.22,
           "freshnessBasis": "Arsenal recorded a first Premier League win at Anfield in 16 years but needed some help from Liverpool goalkeeper Alisson Becker, whose first-half error led to Kai Havertz's solitary goal in the 1-0 win.",
           "status": "active",
           "sourceUrls": [
@@ -707,7 +612,7 @@
             }
           ],
           "id": "a415-cd7ad8f15af60472",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Arsenal hold off Liverpool for first win at Anfield since 2012"
         },
         {
@@ -722,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T19:05:35Z",
           "timePrecision": "exact",
-          "ageHours": 6.44,
+          "ageHours": 6.93,
           "freshnessBasis": "Kai Havertz's winning goal in Arsenal's 1-0 triumph at Liverpool on Sunday made him the record German goalscorer in the Premier League.",
           "status": "active",
           "sourceUrls": [
@@ -736,7 +641,7 @@
             }
           ],
           "id": "a415-f459713a4e8032a8",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "Kai Havertz becomes all-time record German goalscorer in Premier League"
         },
         {
@@ -751,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T21:00:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.02,
           "freshnessBasis": "Arsenal's defense held firm against the Reds' expensive attack to notch a famous win at Anfield for the first time since 2012. However, there were positive signs for Liverpool when it came to their intensity and effort.",
           "status": "active",
           "sourceUrls": [
@@ -765,7 +670,7 @@
             }
           ],
           "id": "a415-8a21a05e30a73375",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Arsenal hold on for a big win at Liverpool, one Iraola & Co. can learn from"
         },
         {
@@ -780,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T18:46:04Z",
           "timePrecision": "exact",
-          "ageHours": 6.76,
+          "ageHours": 7.26,
           "freshnessBasis": "Kai Havertz's early goal proved enough as Arsenal held on to beat Liverpool 1-0 at Anfield on Sunday. Here's all the action as it happened.",
           "status": "active",
           "sourceUrls": [
@@ -794,7 +699,7 @@
             }
           ],
           "id": "a415-5f2c7f9b32c41b49",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Premier League recap: Arsenal beat Liverpool 1-0 in thrilling game"
         },
         {
@@ -809,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T21:12:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.32,
+          "ageHours": 4.82,
           "freshnessBasis": "Erik ten Hag has told ESPN he does not believe Cristiano Ronaldo was fit or committed enough during their time together at Manchester United.",
           "status": "active",
           "sourceUrls": [
@@ -823,7 +728,7 @@
             }
           ],
           "id": "a415-09c129a0fbd010ae",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "Erik ten Hag questions Cristiano Ronaldo's fitness, ability at Man United: 'From Juventus onwards it's simply over'"
         },
         {
@@ -838,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T21:05:51Z",
           "timePrecision": "exact",
-          "ageHours": 4.43,
+          "ageHours": 4.93,
           "freshnessBasis": "Mikel Arteta said his players \"loved the mission\" of winning at Liverpool for the first time in 14 years as he hailed Sunday's \"historic\" 1-0 victory at Anfield.",
           "status": "active",
           "sourceUrls": [
@@ -852,7 +757,7 @@
             }
           ],
           "id": "a415-dc7293473c3fb416",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Arteta says Arsenal 'loved the mission' in first Anfield win since 2012"
         }
       ]
@@ -863,6 +768,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-8232c358621183c3"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Nashville got two own goals and a stoppage-time winner by Sam Surridge to erase a two-goal lead and beat the New York Red Bulls 3-2 on a rainy Sunday at Geodis Park.",
+          "text": "Nashville got two own goals and a stoppage-time winner by Sam Surridge to erase a two-goal lead and beat the New York Red Bulls 3-2 on a rainy Sunday at Geodis Park.",
+          "entities": [],
+          "occurredAt": "2026-11-02T00:23:43Z",
+          "timePrecision": "exact",
+          "ageHours": 1.63,
+          "freshnessBasis": "Nashville got two own goals and a stoppage-time winner by Sam Surridge to erase a two-goal lead and beat the New York Red Bulls 3-2 on a rainy Sunday at Geodis Park.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50353289/nashville-ties-miami-single-season-points-record"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50353289/nashville-ties-miami-single-season-points-record"
+            }
+          ],
+          "id": "a415-46e15109e53d9e93",
+          "feedRank": 26,
+          "compactHeadline": "Nashville ties Miami's single-season points record, ends Red Bulls playoff push"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-a1ff3dff53618dad"
           ],
@@ -897,7 +831,7 @@
           "compactHeadline": "Late goal lifts Nashville SC beat New York Red Bulls 3-2"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-e49c7f0593b43655"
           ],
@@ -926,7 +860,7 @@
           "compactHeadline": "Atlanta United FC beat Toronto FC 3-1"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-34e4ee801e491489"
           ],
@@ -972,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T22:39:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.87,
+          "ageHours": 3.37,
           "freshnessBasis": "With the first CFP rankings coming Tuesday, we break down every candidate's chances of landing a bid.",
           "status": "active",
           "sourceUrls": [
@@ -986,7 +920,7 @@
             }
           ],
           "id": "a415-0c4161bae8890f16",
-          "feedRank": 30,
+          "feedRank": 27,
           "compactHeadline": "Connelly's CFP tiers: How 29 contenders stack up after Week 9"
         },
         {
@@ -1001,7 +935,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T20:44:58Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 5.28,
           "freshnessBasis": "No. 1 Miami (FL) (8-0) at No. 4 Notre Dame (7-1), Nov. 7 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1015,7 +949,7 @@
             }
           ],
           "id": "a415-f63e65be17253440",
-          "feedRank": 31,
+          "feedRank": 28,
           "compactHeadline": "Top-5 matchup features Notre Dame hosting Miami (FL)"
         },
         {
@@ -1030,7 +964,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T20:44:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
+          "ageHours": 5.29,
           "freshnessBasis": "No. 2 Georgia (7-1) at No. 12 Ole Miss (6-2), Nov. 7 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1044,7 +978,7 @@
             }
           ],
           "id": "a415-a09af2fe6b88353a",
-          "feedRank": 32,
+          "feedRank": 29,
           "compactHeadline": "Top-25 SEC matchup features Georgia visiting Ole Miss"
         },
         {
@@ -1059,7 +993,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T20:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.81,
+          "ageHours": 5.31,
           "freshnessBasis": "No. 8 Kentucky (7-1) at No. 16 Tennessee (6-2), Nov. 7 at 6:15 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1073,7 +1007,7 @@
             }
           ],
           "id": "a415-806a08b6534bc90d",
-          "feedRank": 33,
+          "feedRank": 30,
           "compactHeadline": "Tennessee hosts Kentucky in top-25 SEC matchup"
         },
         {
@@ -1088,7 +1022,7 @@
           "entities": [],
           "occurredAt": "2026-11-01T20:43:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.81,
+          "ageHours": 5.31,
           "freshnessBasis": "No. 9 Alabama (6-2) at No. 15 LSU (6-2), Nov. 7 at 3:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1102,37 +1036,37 @@
             }
           ],
           "id": "a415-c30ec1b2f7222d5a",
-          "feedRank": 34,
+          "feedRank": 31,
           "compactHeadline": "LSU hosts Alabama in top-25 SEC matchup"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-4715c79f5dc715a1"
+            "cand-9acc6e7124d4cfec"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Texas State Bobcats 45, Boise State Broncos 46.",
-          "text": "Highlightly final: Texas State Bobcats 45, Boise State Broncos 46.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Ball State (3-5) at UMass (4-4), Nov. 4 at 7 p.m. EST.",
+          "text": "Ball State (3-5) at UMass (4-4), Nov. 4 at 7 p.m. EST.",
           "entities": [],
-          "occurredAt": "2026-11-01T02:00:00Z",
+          "occurredAt": "2026-11-01T20:45:17Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Texas State Bobcats 45, Boise State Broncos 46.",
+          "ageHours": 5.27,
+          "freshnessBasis": "Ball State (3-5) at UMass (4-4), Nov. 4 at 7 p.m. EST.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "http://www.espn.com/ncf/preview?gameId=401866455"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-10-31",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/preview?gameId=401866455"
             }
           ],
-          "id": "a415-d902e976dc3edec9",
-          "feedRank": 35,
-          "compactHeadline": "Boise State Broncos beat Texas State Bobcats 46-45"
+          "id": "a415-8bf9dc2b6961f0a7",
+          "feedRank": 32,
+          "compactHeadline": "MAC matchup features UMass squaring off against Ball State"
         }
       ]
     }
@@ -1157,7 +1091,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 140,
+    "freshCandidateCount": 135,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
