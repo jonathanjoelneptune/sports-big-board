@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-02T21:31:45Z",
+  "generatedAt": "2026-11-02T22:01:54Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "9f24fc42b4a0ae83ba64a41365d1236b5e85d416d5fdb055c8ba255e902fdeeb",
+  "sourceCandidateHash": "408d010e3ad825e612f76a6ce2340a40f07e9f73cf43291d0126e293ba013f6a",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-dcaf1b213d64b69f"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Texas Rangers centerfielder Evan Carter underwent hip surgery to address a labral issue and hip impingement and is unlikely to be ready for the start of next season.",
+          "text": "Texas Rangers centerfielder Evan Carter underwent hip surgery to address a labral issue and hip impingement and is unlikely to be ready for the start of next season.",
+          "entities": [],
+          "occurredAt": "2026-11-02T21:53:22Z",
+          "timePrecision": "exact",
+          "ageHours": 0.14,
+          "freshnessBasis": "Texas Rangers centerfielder Evan Carter underwent hip surgery to address a labral issue and hip impingement and is unlikely to be ready for the start of next season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50361175/rangers-cf-carter-hip-surgery-likely-miss-start-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50361175/rangers-cf-carter-hip-surgery-likely-miss-start-season"
+            }
+          ],
+          "id": "a415-5da0122d36fc345f",
+          "feedRank": 1,
+          "compactHeadline": "Rangers CF Evan Carter has hip surgery, likely to miss start of season"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-10d52cd7f5496fa0"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T15:10:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.35,
+          "ageHours": 6.86,
           "freshnessBasis": "The Cubs have declined a $7.5 million contract option on pitcher Colin Rea for next season, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-f108344631894696",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Sources: Cubs decline $7.5M option for pitcher Colin Rea"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-1b3d7819c1811bbe"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T19:08:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.39,
+          "ageHours": 2.9,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-b604ed1e7c551502",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "MLB free agency tracker: 2026-27 offseason trades, moves"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-d05d9cd40394778d"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T19:22:53Z",
           "timePrecision": "exact",
-          "ageHours": 2.15,
+          "ageHours": 2.65,
           "freshnessBasis": "Randy Flores was introduced as the 15th general manager of the Astros on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +124,8 @@
             }
           ],
           "id": "a415-30e276ab6680edc4",
-          "feedRank": 3,
-          "compactHeadline": "Astros owner Jim Crane hails Randy Flores as a 'perfect fit' as team's GM"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-776f09cac81a4f74"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Dusty Baker, Bruce Bochy, Joe Maddon and Lou Piniella are among the retired baseball managers up for Hall of Fame consideration on the contemporary era ballot.",
-          "text": "Dusty Baker, Bruce Bochy, Joe Maddon and Lou Piniella are among the retired baseball managers up for Hall of Fame consideration on the contemporary era ballot.",
-          "entities": [],
-          "occurredAt": "2026-11-02T16:36:48Z",
-          "timePrecision": "exact",
-          "ageHours": 4.92,
-          "freshnessBasis": "Dusty Baker, Bruce Bochy, Joe Maddon and Lou Piniella are among the retired baseball managers up for Hall of Fame consideration on the contemporary era ballot.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50358968/baker-piniella-headline-baseball-hall-fame-contemporary-ballot"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50358968/baker-piniella-headline-baseball-hall-fame-contemporary-ballot"
-            }
-          ],
-          "id": "a415-865a3544b70ec567",
           "feedRank": 4,
-          "compactHeadline": "Baker, Bochy, Piniella headline Baseball Hall of Fame contemporary ballot"
+          "compactHeadline": "Astros owner Jim Crane hails Randy Flores as a 'perfect fit' as team's GM"
         }
       ]
     },
@@ -145,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T20:29:55Z",
           "timePrecision": "exact",
-          "ageHours": 1.03,
+          "ageHours": 1.53,
           "freshnessBasis": "Lions linebacker Jack Campbell is still in the hospital for evaluation and monitoring of a neck injury, but the team said in a statement \"preliminary indications are positive.\"",
           "status": "active",
           "sourceUrls": [
@@ -174,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T19:59:43Z",
           "timePrecision": "exact",
-          "ageHours": 1.53,
+          "ageHours": 2.04,
           "freshnessBasis": "Bengals defensive end Cashius Howell will be out indefinitely after having surgery to repair his right wrist, which he injured in Cincinnati's win against the Titans on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T19:31:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.01,
+          "ageHours": 2.51,
           "freshnessBasis": "It's possible that Jackson's final snap with the Ravens ended with injury Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -223,6 +223,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-7c9cade8bda008cb"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Eagles coach Nick Sirianni said Monday that he is not making a change at offensive coordinator or quarterback amid his team's six-game losing streak.",
+          "text": "Eagles coach Nick Sirianni said Monday that he is not making a change at offensive coordinator or quarterback amid his team's six-game losing streak.",
+          "entities": [],
+          "occurredAt": "2026-11-02T22:00:44Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "Eagles coach Nick Sirianni said Monday that he is not making a change at offensive coordinator or quarterback amid his team's six-game losing streak.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50361174/sirianni-no-changes-oc-qb-eagles-six-game-skid"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50361174/sirianni-no-changes-oc-qb-eagles-six-game-skid"
+            }
+          ],
+          "id": "a415-3fa2e5acb55fb296",
+          "feedRank": 8,
+          "compactHeadline": "Nick Sirianni not making changes at OC or QB despite Eagles' losing streak"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-24142e67690ecd44"
           ],
           "type": "INJURY",
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T16:44:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
+          "ageHours": 5.29,
           "freshnessBasis": "Lamar Jackson's return lasted one snap, the Cardinals upset the Cowboys with their QB2 and RB2, and the Buccaneers won by 16 despite 0 passing yards.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-3cb99e2e350158f8",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Sizing up wild NFL Week 8: Lamar Jackson's injury, Bucs' win, Cowboys' collapse"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-08d6e8e7984ad906"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T15:23:01Z",
           "timePrecision": "exact",
-          "ageHours": 6.15,
+          "ageHours": 6.65,
           "freshnessBasis": "Jaguars nose tackle DaVon Hamilton is expected to miss the remainder of the season after suffering a torn quadriceps muscle, league sources told NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -275,37 +304,8 @@
             }
           ],
           "id": "a415-973bcd852565da15",
-          "feedRank": 9,
-          "compactHeadline": "Jaguars DT DaVon Hamilton likely out for season with torn quad, sources say"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f226281f3c13cc56"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Jets coach Aaron Glenn insisted Monday that he's not concerned about his job security amid a three-game losing streak.",
-          "text": "Jets coach Aaron Glenn insisted Monday that he's not concerned about his job security amid a three-game losing streak.",
-          "entities": [],
-          "occurredAt": "2026-11-02T16:53:14Z",
-          "timePrecision": "exact",
-          "ageHours": 4.64,
-          "freshnessBasis": "Jets coach Aaron Glenn insisted Monday that he's not concerned about his job security amid a three-game losing streak.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50359102/jets-aaron-glenn-says-not-worried-job-security"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50359102/jets-aaron-glenn-says-not-worried-job-security"
-            }
-          ],
-          "id": "a415-2bc5ff6159fb1aec",
           "feedRank": 10,
-          "compactHeadline": "Jets' Aaron Glenn says he's not worried about job security amid tough start"
+          "compactHeadline": "Jaguars DT DaVon Hamilton likely out for season with torn quad, sources say"
         }
       ]
     },
@@ -325,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T07:03:48Z",
           "timePrecision": "exact",
-          "ageHours": 14.47,
+          "ageHours": 14.97,
           "freshnessBasis": "Washington Wizards (3-3, sixth in the Eastern Conference) vs. Orlando Magic (2-4, ninth in the Eastern Conference)",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T07:03:47Z",
           "timePrecision": "exact",
-          "ageHours": 14.47,
+          "ageHours": 14.97,
           "freshnessBasis": "Toronto Raptors (3-3, fifth in the Eastern Conference) vs. Los Angeles Clippers (1-5, 13th in the Western Conference)",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T02:34:08Z",
           "timePrecision": "exact",
-          "ageHours": 18.96,
+          "ageHours": 19.46,
           "freshnessBasis": "The Thunder declined to pick up Nikola Topic's option for next season, making the Serbian point guard a free agent next summer.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T21:02:48Z",
           "timePrecision": "exact",
-          "ageHours": 0.48,
+          "ageHours": 0.99,
           "freshnessBasis": "Michael Wilbon, the longtime ESPN commentator and co-host of \"Pardon the Interruption,\" is taking a leave of absence to address health issues.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T20:47:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.74,
+          "ageHours": 1.24,
           "freshnessBasis": "The Thunder will retire Russell Westbrook's No. 0 this season. The former MVP played the first 11 of his 18 seasons in Oklahoma City.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T20:44:22Z",
           "timePrecision": "exact",
-          "ageHours": 0.79,
+          "ageHours": 1.29,
           "freshnessBasis": "His Airness had a simple message for the Golden State Valkyries star after her 30-point performance in Game 7.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T20:24:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.13,
+          "ageHours": 1.63,
           "freshnessBasis": "Lightning star Nikita Kucherov says his trade request is not about the money.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T02:40:47Z",
           "timePrecision": "exact",
-          "ageHours": 18.85,
+          "ageHours": 19.35,
           "freshnessBasis": "— Connor McDavid scored a goal and extended his NHL record season-opening assists streak to 15 games, powering the Edmonton Oilers past the New York...",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T09:10:54Z",
           "timePrecision": "exact",
-          "ageHours": 12.35,
+          "ageHours": 12.85,
           "freshnessBasis": "Carolina Hurricanes (12-2-2, in the Metropolitan Division) vs. Nashville Predators (5-4-5, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T09:10:47Z",
           "timePrecision": "exact",
-          "ageHours": 12.35,
+          "ageHours": 12.85,
           "freshnessBasis": "Minnesota Wild (10-3-3, in the Central Division) vs. Philadelphia Flyers (4-8-4, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -612,31 +612,31 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-c81942ec990978ef"
+            "cand-ece3d6200bb8af8a"
           ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The Nashville Predators traded forward Matthew Wood to the Seattle Kraken for forward Shane Wright on Sunday.",
-          "text": "The Nashville Predators traded forward Matthew Wood to the Seattle Kraken for forward Shane Wright on Sunday.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "A Long Island cancer center unveiled a room dedicated to the late mother of Islanders player Matthew Schaefer on Monday.",
+          "text": "A Long Island cancer center unveiled a room dedicated to the late mother of Islanders player Matthew Schaefer on Monday.",
           "entities": [],
-          "occurredAt": "2026-11-01T23:54:59Z",
+          "occurredAt": "2026-11-02T21:34:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.61,
-          "freshnessBasis": "The Nashville Predators traded forward Matthew Wood to the Seattle Kraken for forward Shane Wright on Sunday.",
+          "ageHours": 0.47,
+          "freshnessBasis": "A Long Island cancer center unveiled a room dedicated to the late mother of Islanders player Matthew Schaefer on Monday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50352466/predators-acquire-shane-wright-kraken-matthew-wood"
+            "https://www.espn.com/nhl/story/_/id/50361048/cancer-center-unveils-room-named-mom-islanders-schaefer"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50352466/predators-acquire-shane-wright-kraken-matthew-wood"
+              "url": "https://www.espn.com/nhl/story/_/id/50361048/cancer-center-unveils-room-named-mom-islanders-schaefer"
             }
           ],
-          "id": "a415-5464ad964164ae8d",
+          "id": "a415-5386345552199791",
           "feedRank": 21,
-          "compactHeadline": "Predators acquire Shane Wright from Kraken for Matthew Wood"
+          "compactHeadline": "Cancer center unveils room named for mom of Islanders' Schaefer"
         }
       ]
     },
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T12:41:41Z",
           "timePrecision": "exact",
-          "ageHours": 8.83,
+          "ageHours": 9.34,
           "freshnessBasis": "Arsenal recorded a first Premier League win at Anfield in 14 years but needed some help from Liverpool goalkeeper Alisson Becker, whose first-half error led to Kai Havertz's solitary goal in the 1-0 win.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T14:41:14Z",
           "timePrecision": "exact",
-          "ageHours": 6.84,
+          "ageHours": 7.34,
           "freshnessBasis": "Chelsea boss Xabi Alonso believes the club is finally seeing the best of Romeo Lavia, with the midfielder \"in a good place\" after putting his injury problems behind him.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T12:34:40Z",
           "timePrecision": "exact",
-          "ageHours": 8.95,
+          "ageHours": 9.45,
           "freshnessBasis": "Michael Carrick has been handed an injury boost ahead of Manchester United's Champions League tie against Roma after Patrick Dorgu was able to return to training.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T18:11:23Z",
           "timePrecision": "exact",
-          "ageHours": 3.34,
+          "ageHours": 3.84,
           "freshnessBasis": "Noni Madueke has said that Alexis Mac Allister tried to \"bait\" him into getting a red card during Arsenal's 1-0 win over Liverpool at Anfield.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T04:54:48Z",
           "timePrecision": "exact",
-          "ageHours": 16.62,
+          "ageHours": 17.12,
           "freshnessBasis": "Inter Miami CF beat the New England Revolution 2-1 on Sunday in Foxborough, Massachusetts, with Lionel Messi once again providing the magic touch, this time to ensure his team's spot in the 2027 Concacaf Champions Cup.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T03:12:25Z",
           "timePrecision": "exact",
-          "ageHours": 18.32,
+          "ageHours": 18.82,
           "freshnessBasis": "Lionel Messi had a second-half assist before scoring the winner as Inter Miami CF came from behind to beat the New England Revolution 2-1 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T00:23:43Z",
           "timePrecision": "exact",
-          "ageHours": 21.13,
+          "ageHours": 21.64,
           "freshnessBasis": "Nashville got two own goals and a stoppage-time winner by Sam Surridge to erase a two-goal lead and beat the New York Red Bulls 3-2 on a rainy Sunday at Geodis Park.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T03:23:03Z",
           "timePrecision": "exact",
-          "ageHours": 18.15,
+          "ageHours": 18.65,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T19:00:04Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.03,
           "freshnessBasis": "Notre Dame captain and starting linebacker Drayk Bowen will miss Saturday's big showdown against top-ranked Miami with a right ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T18:27:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.08,
+          "ageHours": 3.58,
           "freshnessBasis": "Alabama is optimistic about the return of WR Ryan Coleman-Williams, CB Zabien Brown, C Racin Delgatty and DB Terrance Green for its game Saturday vs. LSU.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T17:13:29Z",
           "timePrecision": "exact",
-          "ageHours": 4.3,
+          "ageHours": 4.81,
           "freshnessBasis": "With the first CFP rankings coming Tuesday, we break down every candidate's chances of landing a bid.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T12:27:11Z",
           "timePrecision": "exact",
-          "ageHours": 9.08,
+          "ageHours": 9.58,
           "freshnessBasis": "After an eventful Week 9, our bowl gurus take a look at how the postseason picture changed.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-02T18:37:28Z",
           "timePrecision": "exact",
-          "ageHours": 2.9,
+          "ageHours": 3.41,
           "freshnessBasis": "Michigan quarterback Tommy Carr has been named the team's starter for the \"foreseeable future,\" coach Kyle Whittingham said Monday.",
           "status": "active",
           "sourceUrls": [
@@ -1036,31 +1036,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-bcb44d3db3de602a"
+            "cand-e0e11e3b8a4483a5"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Nebraska coach Matt Rhule vouched for his program and urged calm after a fan cursed at his daughter following the Huskers loss to Washington on Saturday in Lincoln.",
-          "text": "Nebraska coach Matt Rhule vouched for his program and urged calm after a fan cursed at his daughter following the Huskers loss to Washington on Saturday in Lincoln.",
+          "headline": "Wildcats coach Collin Klein said Monday that it is an \"outside chance\" Avery Johnson will be able to return this season.",
+          "text": "Wildcats coach Collin Klein said Monday that it is an \"outside chance\" Avery Johnson will be able to return this season.",
           "entities": [],
-          "occurredAt": "2026-11-02T21:25:47Z",
+          "occurredAt": "2026-11-02T21:40:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
-          "freshnessBasis": "Nebraska coach Matt Rhule vouched for his program and urged calm after a fan cursed at his daughter following the Huskers loss to Washington on Saturday in Lincoln.",
+          "ageHours": 0.36,
+          "freshnessBasis": "Wildcats coach Collin Klein said Monday that it is an \"outside chance\" Avery Johnson will be able to return this season.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50360856/nebraska-rhule-urges-calm-fan-cursed-daughter"
+            "https://www.espn.com/college-football/story/_/id/50361137/kansas-state-avery-johnson-oklahoma-state-season"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50360856/nebraska-rhule-urges-calm-fan-cursed-daughter"
+              "url": "https://www.espn.com/college-football/story/_/id/50361137/kansas-state-avery-johnson-oklahoma-state-season"
             }
           ],
-          "id": "a415-9621ccefb8f415c1",
+          "id": "a415-39eaedb950f2704e",
           "feedRank": 35,
-          "compactHeadline": "Nebraska's Matt Rhule urges calm after fan cursed at his daughter after loss"
+          "compactHeadline": "Kansas State QB Avery Johnson out vs. Oklahoma State, maybe for season"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 124,
+    "freshCandidateCount": 128,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
