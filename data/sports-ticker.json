@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-07T01:01:34Z",
+  "generatedAt": "2026-11-07T01:31:09Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "2cdb5a11cc5e497205d94ba8e031c2ee87f49261c18d3565bc9a4ebb602de620",
+  "sourceCandidateHash": "05ec9349f90f02aba6099fd65f73a6084e844b7e163f39bf5b14074776202a00",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-9149b5da0ca3e216"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Corbin Carroll had surgery on his right elbow this week and is expected to be ready for the start of spring training in February, the Diamondbacks said.",
+          "text": "Corbin Carroll had surgery on his right elbow this week and is expected to be ready for the start of spring training in February, the Diamondbacks said.",
+          "entities": [],
+          "occurredAt": "2026-11-07T01:29:15Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "Corbin Carroll had surgery on his right elbow this week and is expected to be ready for the start of spring training in February, the Diamondbacks said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50403554/diamondbacks-corbin-carroll-surgery-right-elbow"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50403554/diamondbacks-corbin-carroll-surgery-right-elbow"
+            }
+          ],
+          "id": "a415-8e29bbfd26bc7429",
+          "feedRank": 1,
+          "compactHeadline": "D-backs' Corbin Carroll has elbow surgery, should be ready for spring training"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-06b4cf070724cb6c"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T03:53:46Z",
           "timePrecision": "exact",
-          "ageHours": 21.13,
+          "ageHours": 21.62,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-831ba4b2a8b784e5",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-dfbd90a7843f8744"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-07T00:34:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.45,
+          "ageHours": 0.94,
           "freshnessBasis": "A witness said that the inside info he used to bet on Clase pitches dried up due to increased scrutiny from the scandal involving Shohei Ohtani's interpreter.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-4a43b51df33e3765",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Witness: Clase 'inside' pitch info dried up amid Mizuhara case fallout"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-0f7b1fbe219fb686"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T22:18:04Z",
           "timePrecision": "exact",
-          "ageHours": 2.73,
+          "ageHours": 3.22,
           "freshnessBasis": "Yankees catching coach and field coordinator Tanner Swanson is joining the Mariners' staff as bench coach, a source confirmed to ESPN on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +124,8 @@
             }
           ],
           "id": "a415-1f646d9b8875d54d",
-          "feedRank": 3,
-          "compactHeadline": "Sources: Mariners to hire Yankees' Tanner Swanson as bench coach"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f8230f186743785e"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Toronto Blue Jays say a series of anti-Muslim videos posted by Anthony Santander on the right-fielder's social media account do not represent the team's values and beliefs.",
-          "text": "The Toronto Blue Jays say a series of anti-Muslim videos posted by Anthony Santander on the right-fielder's social media account do not represent the team's values and beliefs.",
-          "entities": [],
-          "occurredAt": "2026-11-06T15:40:03Z",
-          "timePrecision": "exact",
-          "ageHours": 9.36,
-          "freshnessBasis": "The Toronto Blue Jays say a series of anti-Muslim videos posted by Anthony Santander on the right-fielder's social media account do not represent the team's values and beliefs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50399679/anthony-santander-anti-muslim-posts-represent-team"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50399679/anthony-santander-anti-muslim-posts-represent-team"
-            }
-          ],
-          "id": "a415-0f8077009e001d8e",
           "feedRank": 4,
-          "compactHeadline": "Blue Jays: Anthony Santander's anti-Muslim posts don't represent team"
+          "compactHeadline": "Sources: Mariners to hire Yankees' Tanner Swanson as bench coach"
         }
       ]
     },
@@ -145,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T21:06:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.93,
+          "ageHours": 4.42,
           "freshnessBasis": "The Ravens will acquire quarterback Jacoby Brissett and a 2027 fifth-round pick for a fourth-round pick in 2027 and seventh-round pick in 2028, sources told ESPN and NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -174,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T18:56:40Z",
           "timePrecision": "exact",
-          "ageHours": 6.08,
+          "ageHours": 6.57,
           "freshnessBasis": "The Browns will start Shedeur Sanders at quarterback against the Saints as Deshaun Watson remains in the concussion protocol.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T17:24:08Z",
           "timePrecision": "exact",
-          "ageHours": 7.62,
+          "ageHours": 8.12,
           "freshnessBasis": "Dolphins left guard Kadyn Proctor has cleared concussion protocol and will play Sunday against the Lions, coach Jeff Hafley said.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T16:45:26Z",
           "timePrecision": "exact",
-          "ageHours": 8.27,
+          "ageHours": 8.76,
           "freshnessBasis": "The Jets have ruled wideout Garrett Wilson out for Sunday's matchup against the Chiefs as he continues to recover from a concussion suffered last week.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T22:24:26Z",
           "timePrecision": "exact",
-          "ageHours": 2.62,
+          "ageHours": 3.11,
           "freshnessBasis": "Rams star pass rusher Myles Garrett is on track to be activated from injured reserve ahead of Sunday's game at the Commanders.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T20:04:33Z",
           "timePrecision": "exact",
-          "ageHours": 4.95,
+          "ageHours": 5.44,
           "freshnessBasis": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Jacoby Brissett to Baltimore.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: Miami Heat 100, Golden State Warriors 120.",
           "status": "active",
           "sourceUrls": [
@@ -360,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T16:01:02Z",
           "timePrecision": "exact",
-          "ageHours": 9.01,
+          "ageHours": 9.5,
           "freshnessBasis": "Former Bucks coach Doc Rivers said Giannis Antetokounmpo \"didn't want to be the bad guy\" when he was trying to seek a trade out of Milwaukee last season.",
           "status": "active",
           "sourceUrls": [
@@ -389,7 +389,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Orlando Magic 104, Phoenix Suns 117.",
           "status": "active",
           "sourceUrls": [
@@ -424,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T14:44:12Z",
           "timePrecision": "exact",
-          "ageHours": 10.29,
+          "ageHours": 10.78,
           "freshnessBasis": "James holds a 9-4 record with averages of 29.6 points, 8.5 rebounds and 6.9 assists per game on 54% shooting in Cleveland as an opponent.",
           "status": "active",
           "sourceUrls": [
@@ -453,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-11-07T00:56:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.58,
           "freshnessBasis": "Here's everything you need to know about the fourth annual in-season tournament.",
           "status": "active",
           "sourceUrls": [
@@ -482,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T23:57:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.07,
+          "ageHours": 1.56,
           "freshnessBasis": "Kristaps Porzingis has announced that he will \"step away\" from the NBA to prioritize his health. He has not played for the Warriors this season.",
           "status": "active",
           "sourceUrls": [
@@ -517,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.53,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Nashville Predators 3, Colorado Avalanche 2.",
           "status": "active",
           "sourceUrls": [
@@ -552,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T09:11:47Z",
           "timePrecision": "exact",
-          "ageHours": 15.83,
+          "ageHours": 16.32,
           "freshnessBasis": "St. Louis Blues (7-7-2, in the Central Division) vs. Nashville Predators (7-4-5, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -581,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T09:11:45Z",
           "timePrecision": "exact",
-          "ageHours": 15.83,
+          "ageHours": 16.32,
           "freshnessBasis": "Vancouver Canucks (3-14-1, in the Pacific Division) vs. Edmonton Oilers (11-3-3, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -610,7 +610,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T09:11:36Z",
           "timePrecision": "exact",
-          "ageHours": 15.83,
+          "ageHours": 16.33,
           "freshnessBasis": "New Jersey Devils (11-5, in the Metropolitan Division) vs. New York Islanders (7-6-2, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -639,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T09:11:34Z",
           "timePrecision": "exact",
-          "ageHours": 15.83,
+          "ageHours": 16.33,
           "freshnessBasis": "Chicago Blackhawks (4-12-1, in the Central Division) vs. Carolina Hurricanes (13-3-2, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -668,7 +668,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T04:13:35Z",
           "timePrecision": "exact",
-          "ageHours": 20.8,
+          "ageHours": 21.29,
           "freshnessBasis": "— Cutter Gauthier became the first Anaheim player with nine goals in a four-game span, scoring and adding an assist in the Ducks' 5-4 victory over the Edmonton Oilers on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -703,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.52,
           "freshnessBasis": "Highlightly final: Coventry 1, Everton 3.",
           "status": "active",
           "sourceUrls": [
@@ -738,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Blackburn Rovers U21 2, Sunderland U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -767,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Fulham U21 4, Stoke City U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -796,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Newcastle United U21 1, Reading FC U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -825,7 +825,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Leicester City U21 2, Nottingham Forest U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -854,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Wolves U21 2, Brentford U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -889,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T06:21:49Z",
           "timePrecision": "exact",
-          "ageHours": 18.66,
+          "ageHours": 19.16,
           "freshnessBasis": "Houston Dynamo striker Lyle Foster, on loan from Burnley, earned a recall to the Bafana Bafana squad ahead of November's 2027 Africa Cup of Nations (AFCON) qualifying double-header against tournament co-hosts Kenya.",
           "status": "active",
           "sourceUrls": [
@@ -924,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T21:33:06Z",
           "timePrecision": "exact",
-          "ageHours": 3.47,
+          "ageHours": 3.97,
           "freshnessBasis": "Alabama will get a trio of injured starters -- WR Ryan Coleman-Williams, center Racin Delgatty and DT Terrance Green -- back for Saturday's game at LSU.",
           "status": "active",
           "sourceUrls": [
@@ -953,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T20:29:46Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.02,
           "freshnessBasis": "QB Austin Simmons, who is fourth in the SEC at 244 passing yards per game, has re-signed with Missouri for 2027, sources told ESPN, as his NFL stock rises.",
           "status": "active",
           "sourceUrls": [
@@ -982,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T16:13:03Z",
           "timePrecision": "exact",
-          "ageHours": 8.81,
+          "ageHours": 9.3,
           "freshnessBasis": "RB Hollywood Smothers has a torn MCL, a source told ESPN, and will miss the rest of the season for the Longhorns, who are seeing their injury issues mount.",
           "status": "active",
           "sourceUrls": [
@@ -1011,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T16:43:19Z",
           "timePrecision": "exact",
-          "ageHours": 8.3,
+          "ageHours": 8.8,
           "freshnessBasis": "Here's when the CFP committee releases its weekly Top 25 rankings.",
           "status": "active",
           "sourceUrls": [
@@ -1040,7 +1040,7 @@
           "entities": [],
           "occurredAt": "2026-11-07T00:12:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.81,
+          "ageHours": 1.31,
           "freshnessBasis": "Federal appeals court judges handed the NCAA a significant victory in its struggle to implement a new five-year eligibility ruling Friday, though the win does nothing to tamp down dozens of similar lawsuits playing out in state courts across the country.",
           "status": "active",
           "sourceUrls": [
@@ -1069,7 +1069,7 @@
           "entities": [],
           "occurredAt": "2026-11-06T11:21:21Z",
           "timePrecision": "exact",
-          "ageHours": 13.67,
+          "ageHours": 14.16,
           "freshnessBasis": "With the season hitting crunch time, we break down the first-year players making the biggest impact.",
           "status": "active",
           "sourceUrls": [
@@ -1109,7 +1109,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 120,
+    "freshCandidateCount": 121,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
