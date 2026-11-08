@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-08T21:30:43Z",
+  "generatedAt": "2026-11-08T22:00:59Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "90653aac2c34a3baa95f404b12bb22da1e102bf3d48a92eb9d2467a677dc6aec",
+  "sourceCandidateHash": "d0a33f44ea0b9e81c97fc5a0c515468e882ff269021c382cc2314c3f78714889",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T15:31:14Z",
           "timePrecision": "exact",
-          "ageHours": 5.99,
+          "ageHours": 6.5,
           "freshnessBasis": "Pedro Martinez appealed to both MLB players and owners to find a solution to their CBA talks, saying \"get something done and don't lock out baseball for the fans.\"",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-07T22:57:19Z",
           "timePrecision": "exact",
-          "ageHours": 22.56,
+          "ageHours": 23.06,
           "freshnessBasis": "Reliever Jyun-Yue Tseng, a 25-year-old right-hander who was 5-3 with 25 saves this year in the Chinese Professional Baseball League, is entering Major League Baseball's posting system and will be available to sign as a free agent from Sunday till Dec. 22.",
           "status": "active",
           "sourceUrls": [
@@ -87,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:15:48Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.75,
           "freshnessBasis": "Broncos wide receiver Jaylen Waddle and cornerback Riley Moss both suffered concussions against the Panthers.",
           "status": "active",
           "sourceUrls": [
@@ -107,34 +107,92 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-5277ef4d6fab123e"
+            "cand-c97c029a9b35c9cc"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Deshaun Watson has cleared the concussion protocol but the Browns quarterback is inactive for Sunday's game against the New Orleans Saints.",
-          "text": "Deshaun Watson has cleared the concussion protocol but the Browns quarterback is inactive for Sunday's game against the New Orleans Saints.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Bo Nix threw for 237 yards and two touchdowns and the Denver Broncos benefitted from a momentum-turning coach’s challenge to beat the Carolina Panthers 26-21 on Sunday for their fifth straight win.",
+          "text": "Bo Nix threw for 237 yards and two touchdowns and the Denver Broncos benefitted from a momentum-turning coach’s challenge to beat the Carolina Panthers 26-21 on Sunday for their fifth straight win.",
           "entities": [],
-          "occurredAt": "2026-11-08T16:33:54Z",
+          "occurredAt": "2026-11-08T21:53:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.95,
-          "freshnessBasis": "Deshaun Watson has cleared the concussion protocol but the Browns quarterback is inactive for Sunday's game against the New Orleans Saints.",
+          "ageHours": 0.12,
+          "freshnessBasis": "— Bo Nix threw for 237 yards and two touchdowns and the Denver Broncos benefitted from a momentum-turning coach’s challenge to beat the Carolina Panthers 26-21 on Sunday for their fifth straight win.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50409705/browns-qb-deshaun-watson-concussion-protocol"
+            "http://www.espn.com/nfl/recap?gameId=401873041"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50409705/browns-qb-deshaun-watson-concussion-protocol"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873041"
             }
           ],
-          "id": "a415-fa1b2718f5e13dd9",
+          "id": "a415-f0f07b128d15d522",
           "feedRank": 4,
-          "compactHeadline": "Browns QB Deshaun Watson out of protocol but inactive"
+          "compactHeadline": "Bo Nix throws for 2 TDs, Broncos win key challenge to beat Panthers 26-21 for fifth straight victory"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-eb6d43542fd97844"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jameis Winston replaced the injured J.J. McCarthy long enough to throw a go-ahead touchdown pass and help the New York Giants keep their grip on the NFC East and beat Philadelphia 19-11 on Sunday to hand the Eagles their seventh straight loss.",
+          "text": "Jameis Winston replaced the injured J.J. McCarthy long enough to throw a go-ahead touchdown pass and help the New York Giants keep their grip on the NFC East and beat Philadelphia 19-11 on Sunday to hand the Eagles their seventh straight loss.",
+          "entities": [],
+          "occurredAt": "2026-11-08T21:38:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.37,
+          "freshnessBasis": "— Jameis Winston replaced the injured J.J. McCarthy long enough to throw a go-ahead touchdown pass and help the New York Giants keep their grip on the NFC East and beat Philadelphia 19-11 on Sunday to hand the Eagles their seventh straight loss.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/recap?gameId=401873044"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873044"
+            }
+          ],
+          "id": "a415-3ade32be909069d2",
+          "feedRank": 5,
+          "compactHeadline": "Winston, McCarthy combine to lead Giants to 19-11 win and hand Eagles 7th straight loss"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-ed4eed0f70f69fac"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Matt Stafford found star receiver Puka Nacua early and often, Myles Garrett had three sacks and a forced fumble in his return and the Los Angeles Rams held on for their third straight victory, 20-13 over the Washington Commanders on Sunday.",
+          "text": "Matt Stafford found star receiver Puka Nacua early and often, Myles Garrett had three sacks and a forced fumble in his return and the Los Angeles Rams held on for their third straight victory, 20-13 over the Washington Commanders on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-11-08T21:37:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.39,
+          "freshnessBasis": "— Matt Stafford found star receiver Puka Nacua early and often, Myles Garrett had three sacks and a forced fumble in his return and the Los Angeles Rams held on for their third straight victory, 20-13 over the Washington Commanders on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/recap?gameId=401873043"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873043"
+            }
+          ],
+          "id": "a415-646574fdb04ca243",
+          "feedRank": 6,
+          "compactHeadline": "Puka Nacua, Myles Garrett lead Rams to 20-13 win over Commanders"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-31a912d054e65307"
           ],
@@ -145,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:05:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.92,
           "freshnessBasis": "— Jahmyr Gibbs had a rushing touchdown, Jared Goff threw for 170 yards and the Detroit Lions beat the Miami Dolphins 19-9 on Sunday for their fourth straight victory.",
           "status": "active",
           "sourceUrls": [
@@ -159,11 +217,11 @@
             }
           ],
           "id": "a415-83aabb5b1a4bc9f2",
-          "feedRank": 5,
+          "feedRank": 7,
           "compactHeadline": "Lions grind past Dolphins 19-9 as Jahmyr Gibbs scores and Jake Bates makes 4 field goals"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-ca6934cc68a37312"
           ],
@@ -174,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:32:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.97,
+          "ageHours": 1.47,
           "freshnessBasis": "— Joe Burrow threw for three touchdowns and rushed for another and the Cincinnati Bengals' offense kept rolling to defeat the Atlanta Falcons 34-17 in Madrid on Sunday for their fourth straight win.",
           "status": "active",
           "sourceUrls": [
@@ -188,66 +246,8 @@
             }
           ],
           "id": "a415-e2503f24b71ded36",
-          "feedRank": 6,
-          "compactHeadline": "Burrow powers Bengals past the Falcons in Madrid for their 4th straight win"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0257c97a34e591b8"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Jacoby Brissett to Baltimore.",
-          "text": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Jacoby Brissett to Baltimore.",
-          "entities": [],
-          "occurredAt": "2026-11-08T18:10:06Z",
-          "timePrecision": "exact",
-          "ageHours": 3.34,
-          "freshnessBasis": "The NFL trade deadline is Nov. 10, but deals have already started. We're tracking all moves, including Jacoby Brissett to Baltimore.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50043471/2026-trade-deadline-updates-latest-news-deals-terms"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50043471/2026-trade-deadline-updates-latest-news-deals-terms"
-            }
-          ],
-          "id": "a415-cfc1c2318ece9b37",
-          "feedRank": 7,
-          "compactHeadline": "2026 NFL trade deadline updates: Jacoby Brissett, Jeffery Simmons on the move"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-50cbefb80db38ee9"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The Patriots will upgrade if they can before Tuesday's deadline, but it might be quiet. In fact, New England could even trade away someone like Christian Barmore.",
-          "text": "The Patriots will upgrade if they can before Tuesday's deadline, but it might be quiet. In fact, New England could even trade away someone like Christian Barmore.",
-          "entities": [],
-          "occurredAt": "2026-11-08T11:00:01Z",
-          "timePrecision": "exact",
-          "ageHours": 10.51,
-          "freshnessBasis": "The Patriots will upgrade if they can before Tuesday's deadline, but it might be quiet. In fact, New England could even trade away someone like Christian Barmore.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50401769/new-england-patriots-notebook-week-9-trade-deadline-plans"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50401769/new-england-patriots-notebook-week-9-trade-deadline-plans"
-            }
-          ],
-          "id": "a415-0c4b5339062fa4ba",
           "feedRank": 8,
-          "compactHeadline": "Weekly Patriots notes: What New England could do at the trade deadline, intel"
+          "compactHeadline": "Burrow powers Bengals past the Falcons in Madrid for their 4th straight win"
         }
       ]
     },
@@ -265,9 +265,9 @@
           "headline": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "text": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "entities": [],
-          "occurredAt": "2026-11-08T20:50:04Z",
+          "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.68,
+          "ageHours": 0.25,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:55:40Z",
           "timePrecision": "exact",
-          "ageHours": 3.58,
+          "ageHours": 4.09,
           "freshnessBasis": "Warriors star Stephen Curry scored 17 of his 41 points in the final seven minutes of a 126-119 overtime win over the Magic, setting another late-career NBA record.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:49:22Z",
           "timePrecision": "exact",
-          "ageHours": 2.69,
+          "ageHours": 3.19,
           "freshnessBasis": "Luka Doncic's historically great start to the season has been slowed for Sunday as he was ruled out against the Pistons due to lower back tightness.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T05:55:34Z",
           "timePrecision": "exact",
-          "ageHours": 15.59,
+          "ageHours": 16.09,
           "freshnessBasis": "— Victor Wembanyama scored 29 points and led the San Antonio Spurs to a 125-103 blowout win over the Portland Trail Blazers on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T03:38:36Z",
           "timePrecision": "exact",
-          "ageHours": 17.87,
+          "ageHours": 18.37,
           "freshnessBasis": "— Jalen Brunson scored 31 points, Karl-Anthony Towns added 29 and the New York Knicks made big plays when they needed them in a 109-97 win over the Cleveland Cavaliers on Saturday night in a rematch between last year's Eastern Conference finalists.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 12.32,
+          "ageHours": 12.82,
           "freshnessBasis": "Florida Panthers (9-6-2, in the Atlantic Division) vs. Boston Bruins (12-4-1, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T09:11:37Z",
           "timePrecision": "exact",
-          "ageHours": 12.32,
+          "ageHours": 12.82,
           "freshnessBasis": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:14:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
+          "ageHours": 0.77,
           "freshnessBasis": "— Elias Lindholm, Mikey Eyssimont and Morgan Geekie each scored a goal in an opening period that started out testy, carrying the Boston Bruins past the Florida Panthers 4-1 on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T06:32:37Z",
           "timePrecision": "exact",
-          "ageHours": 14.97,
+          "ageHours": 15.47,
           "freshnessBasis": "— Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T04:53:36Z",
           "timePrecision": "exact",
-          "ageHours": 16.62,
+          "ageHours": 17.12,
           "freshnessBasis": "— Sidney Crosby scored two goals while moving into sole possession of sixth place on the NHL’s career scoring list, and the Pittsburgh Penguins snapped their four-game skid with a 5-2 victory over the Los Angeles Kings on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T04:44:35Z",
           "timePrecision": "exact",
-          "ageHours": 16.77,
+          "ageHours": 17.27,
           "freshnessBasis": "— Mackenzie Blackwood made 27 saves, Martin Necas had two goals and two assists and the Colorado Avalanche beat the Detroit Red Wings 4-0 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:08:27Z",
           "timePrecision": "exact",
-          "ageHours": 3.37,
+          "ageHours": 3.88,
           "freshnessBasis": "\"Poetry in motion\" was the serenade from the Liverpool fans at Crystal Palace. And for a moment in their 3-1 victory, that's exactly what the Reds were.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:15:01Z",
           "timePrecision": "exact",
-          "ageHours": 1.26,
+          "ageHours": 1.77,
           "freshnessBasis": "Leeds have condemned alleged racist abuse of defender Jayden Bogle on social media following Saturday's 1-0 Premier League win over Tottenham at Elland Road.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.53,
+          "ageHours": 4.03,
           "freshnessBasis": "Andoni Iraola admitted Liverpool \"needed\" their 3-1 victory over Crystal Palace after a disappointing week for his team.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 4.76,
+          "ageHours": 5.26,
           "freshnessBasis": "Diego Gómez scored another stunner as Brighton enjoyed a happy homecoming by climbing to second in the Premier League with a 2-0 win over 10-man Brentford at the Amex Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:29:50Z",
           "timePrecision": "exact",
-          "ageHours": 5.01,
+          "ageHours": 5.52,
           "freshnessBasis": "Sunderland ended their winless run in the Premier League with a hard-fought 1-0 win over Chelsea at the Stadium of Light.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:14:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.78,
           "freshnessBasis": "Florian Wirtz scored his first Premier League goal of the season as Liverpool beat struggling Crystal Palace 3-1 at Selhurst Park.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T00:35:37Z",
           "timePrecision": "exact",
-          "ageHours": 20.92,
+          "ageHours": 21.42,
           "freshnessBasis": "Nashville set a new single-season MLS points record after reaching 77 points with its win over FC Cincinnati on the final day of the regular season.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:54:28Z",
           "timePrecision": "exact",
-          "ageHours": 18.6,
+          "ageHours": 19.11,
           "freshnessBasis": "Sergi Solans and Zach Booth scored early and Real Salt Lake clinched a playoff spot while eliminating the LA Galaxy with a 2-1 Decision Day victory over the Galaxy on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T00:33:27Z",
           "timePrecision": "exact",
-          "ageHours": 20.95,
+          "ageHours": 21.46,
           "freshnessBasis": "Cavan and Quinn Sullivan became just the third pair of brothers to score for the same club in an MLS match.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:35:48Z",
           "timePrecision": "exact",
-          "ageHours": 18.92,
+          "ageHours": 19.42,
           "freshnessBasis": "- Kaick Ferreira, known simply as \"Kaick\", scored the go-ahead goal in the 88th and FC Dallas beat Colorado 3-1 on Saturday night to eliminati the Rapids from playoff contention.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.76,
+          "ageHours": 1.27,
           "freshnessBasis": "No. 8 Texas (7-2) at No. 24 LSU (6-3), Nov. 14 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.76,
+          "ageHours": 1.27,
           "freshnessBasis": "No. 11 Wake Forest (8-1) at No. 25 SMU (7-2), Nov. 14 at 12 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.78,
+          "ageHours": 1.28,
           "freshnessBasis": "No. 15 USC (7-2) at No. 6 Indiana (8-1), Nov. 14 at 3:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.25,
           "freshnessBasis": "Louisiana (6-3) at UL Monroe (2-7), Nov. 12 at 9 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:45:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.25,
           "freshnessBasis": "Colorado State (3-6) at Washington State (1-8), Nov. 14 at 10:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:45:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.25,
           "freshnessBasis": "Nebraska (5-4) at Rutgers (2-7), Nov. 14 at 12:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
