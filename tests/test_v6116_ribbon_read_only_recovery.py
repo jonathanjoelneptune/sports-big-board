@@ -20,6 +20,9 @@ class FakeConnection:
     def execute(self, sql, params):
         assert "history_event_alias" in sql
         assert params == ("2026-11-08",)
+        return self
+
+    def fetchall(self):
         return [
             {"league": "NFL", "alias_event_id": "new-provider-id", "canonical_event_key": "NFL:canonical-id"}
         ]
