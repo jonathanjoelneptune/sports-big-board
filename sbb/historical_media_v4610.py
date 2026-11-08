@@ -344,8 +344,14 @@ def repair_date_associations(self, date, leagues=None, force=False):
 
 
 def _ribbon_media_v4610(self, date, leagues=None, include_failed=False):
-    try: repair_date_associations(self, date, leagues=leagues, force=False)
-    except Exception: pass
+    """Read persisted GAME media without doing database maintenance on request.
+
+    Emergency recovery: repair_date_associations scans candidate assets and holds
+    the repository write lock. Calling it from this high-traffic read path made
+    ribbon requests and Day State workers wait behind an expensive repair.
+    Keep explicit repo.repair_date_associations() available for controlled
+    maintenance; do not mutate canonical relationships while serving scores.
+    """
     result = _ORIGINAL_RIBBON_MEDIA(self, date, leagues=leagues, include_failed=include_failed)
     try:
         _ensure_alias_table(self)
