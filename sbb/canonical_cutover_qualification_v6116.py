@@ -385,6 +385,22 @@ class CutoverQualification:
         return event
 
     def project_day(self, day, legacy_rows):
+        # The legacy Day State is authoritative unless the cutover flag was
+        # explicitly enabled. Do not read qualification history on this hot
+        # path: status() acquires the canonical store lock twice, and a busy
+        # shadow/certification writer can stall every ribbon request.
+        if not self.authority_requested():
+            return legacy_rows, {
+                "used": False,
+                "reason": "FLAG_OFF_OR_NOT_QUALIFIED",
+                "version": VERSION,
+                "flag": FLAG_ENV,
+                "requested": False,
+                "enabled": False,
+                "qualified": False,
+                "productionAuthority": "LEGACY_DAY_STATE",
+                "failClosedFallback": True,
+            }
         status = self.status()
         if not status.get("enabled"):
             return legacy_rows, {"used": False, "reason": "FLAG_OFF_OR_NOT_QUALIFIED", **status}

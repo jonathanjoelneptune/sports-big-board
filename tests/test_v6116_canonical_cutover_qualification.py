@@ -233,7 +233,23 @@ def verify_inventory_projection_preserves_legacy_scores_and_adds_canonical_only(
         assert projected["USOPEN"][0]["eventId"] == "special-1", projected
 
 
+def verify_flag_off_never_reads_qualification_store():
+    """Ribbon/Day State may not block on canonical store when cutover is OFF."""
+    manager = cutover.CutoverQualification.__new__(cutover.CutoverQualification)
+    manager.authority_requested = lambda: False
+    manager.status = lambda: (_ for _ in ()).throw(
+        AssertionError("flag-OFF projection must not query qualification cycles")
+    )
+    legacy = {"NFL": [{"eventId": "example", "status": "LIVE"}]}
+    projected, status = manager.project_day("2026-11-08", legacy)
+    assert projected is legacy, "legacy score/status rows must stay unchanged"
+    assert status["used"] is False, status
+    assert status["requested"] is False and status["enabled"] is False, status
+    assert status["productionAuthority"] == "LEGACY_DAY_STATE", status
+
+
 def main():
+    verify_flag_off_never_reads_qualification_store()
     verify_shadow_only_audit_and_stability_gate()
     verify_overincluded_blocks_cycle()
     verify_inventory_projection_preserves_legacy_scores_and_adds_canonical_only()
