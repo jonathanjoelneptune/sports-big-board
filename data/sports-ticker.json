@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-09T01:01:15Z",
+  "generatedAt": "2026-11-09T01:30:47Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "c1ce586da1a5696085a55358e434529b736d7b283d1116410459d05572101a19",
+  "sourceCandidateHash": "c05f86e9b57a87525c839a96b5a3522b908d75951491dae545efd5911566d687",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-06b4cf070724cb6c"
+          ],
+          "type": "MILESTONE",
+          "priority": 82,
+          "headline": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "text": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "entities": [],
+          "occurredAt": "2026-11-09T01:03:42Z",
+          "timePrecision": "exact",
+          "ageHours": 0.45,
+          "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
+            }
+          ],
+          "id": "a415-831ba4b2a8b784e5",
+          "feedRank": 1,
+          "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-94559beca71d51e5"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T15:31:14Z",
           "timePrecision": "exact",
-          "ageHours": 9.5,
+          "ageHours": 9.99,
           "freshnessBasis": "Pedro Martinez appealed to both MLB players and owners to find a solution to their CBA talks, saying \"get something done and don't lock out baseball for the fans.\"",
           "status": "active",
           "sourceUrls": [
@@ -37,7 +66,7 @@
             }
           ],
           "id": "a415-096355a3af0a8a1d",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Pedro Martinez appeals for MLB resolution, reflects on effects of 1994 strike"
         }
       ]
@@ -49,212 +78,176 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-1f3d55f92a1882fa"
+            "cand-cf997e76711c6c75"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "AJ Barner caught a touchdown pass and ran for a score, and the Seattle Seahawks beat the Arizona Cardinals 17-3 on Sunday without starting quarterback Sam Darnold.",
-          "text": "AJ Barner caught a touchdown pass and ran for a score, and the Seattle Seahawks beat the Arizona Cardinals 17-3 on Sunday without starting quarterback Sam Darnold.",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Broncos wide receiver Jaylen Waddle and cornerback Riley Moss both suffered concussions against the Panthers.",
+          "text": "Broncos wide receiver Jaylen Waddle and cornerback Riley Moss both suffered concussions against the Panthers.",
           "entities": [],
-          "occurredAt": "2026-11-08T21:25:00Z",
+          "occurredAt": "2026-11-08T23:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.6,
-          "freshnessBasis": "Highlightly final: Arizona Cardinals 3, Seattle Seahawks 17.",
+          "ageHours": 1.59,
+          "freshnessBasis": "Broncos wide receiver Jaylen Waddle and cornerback Riley Moss both suffered concussions against the Panthers.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873048"
+            "https://www.espn.com/nfl/story/_/id/50423176/broncos-wr-jaylen-waddle-cb-riley-moss-suffer-concussions"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873048"
+              "url": "https://www.espn.com/nfl/story/_/id/50423176/broncos-wr-jaylen-waddle-cb-riley-moss-suffer-concussions"
             }
           ],
-          "id": "a415-48e9f92be05ff71c",
-          "feedRank": 2,
-          "compactHeadline": "AJ Barner has a TD catch and runs for a score in Seahawks' 17-3 win over Cardinals"
+          "id": "a415-9be0283bf381d630",
+          "feedRank": 3,
+          "compactHeadline": "Broncos WR Jaylen Waddle, CB Riley Moss suffer concussions against Panthers"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-0ab30d2edb1bd81d"
+            "cand-eb6d43542fd97844"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "C.J. Stroud threw five touchdown passes, including a pair of season-best 63-yarders to Tank Dell and Kayshon Boutte, and the Houston Texans routed the winless Chargers 44-22 on Sunday and sent Los Angeles to its eighth straight defeat in front of...",
-          "text": "C.J. Stroud threw five touchdown passes, including a pair of season-best 63-yarders to Tank Dell and Kayshon Boutte, and the Houston Texans routed the winless Chargers 44-22 on Sunday and sent Los Angeles to its eighth straight defeat in front of...",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
+          "text": "J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
           "entities": [],
-          "occurredAt": "2026-11-08T21:05:00Z",
+          "occurredAt": "2026-11-08T23:44:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.94,
-          "freshnessBasis": "Highlightly final: Houston Texans 44, Los Angeles Chargers 22.",
+          "ageHours": 1.77,
+          "freshnessBasis": "— J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873046"
+            "http://www.espn.com/nfl/recap?gameId=401873044"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873046"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873044"
             }
           ],
-          "id": "a415-d78624917a7bb660",
-          "feedRank": 3,
-          "compactHeadline": "C.J. Stroud tosses 5 TD passes as Texans rout winless Chargers 44-22. LA finally scores a TD"
+          "id": "a415-3ade32be909069d2",
+          "feedRank": 4,
+          "compactHeadline": "Winston, McCarthy combine to lead Giants to 19-11 win and hand Eagles 7th straight loss"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-9ffe4f409cc7cb10"
+            "cand-8555b396b34aca4d"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Chiefs quarterback Patrick Mahomes was able to play through pain in his right arm after absorbing a massive hit during Sunday's 35-12 victory over the Jets.",
-          "text": "Chiefs quarterback Patrick Mahomes was able to play through pain in his right arm after absorbing a massive hit during Sunday's 35-12 victory over the Jets.",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Rams do not believe Puka Nacua suffered a torn ACL, but the imaging Monday will tell more, sources said.",
+          "text": "The Rams do not believe Puka Nacua suffered a torn ACL, but the imaging Monday will tell more, sources said.",
           "entities": [],
-          "occurredAt": "2026-11-08T18:00:00Z",
+          "occurredAt": "2026-11-08T23:32:52Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
-          "freshnessBasis": "Highlightly final: New York Jets 12, Kansas City Chiefs 35.",
+          "ageHours": 1.97,
+          "freshnessBasis": "The Rams do not believe Puka Nacua suffered a torn ACL, but the imaging Monday will tell more, sources said.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/nfl/story/_/id/50427266/chiefs-patrick-mahomes-brushes-injury-scare"
+            "https://www.espn.com/nfl/story/_/id/50425853/sources-rams-puka-nacua-undergo-tests-knee"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50427266/chiefs-patrick-mahomes-brushes-injury-scare"
+              "url": "https://www.espn.com/nfl/story/_/id/50425853/sources-rams-puka-nacua-undergo-tests-knee"
             }
           ],
-          "id": "a415-b78f48d8976d4e15",
-          "feedRank": 4,
-          "compactHeadline": "Chiefs' Patrick Mahomes brushes off injury scare during rout of Jets"
+          "id": "a415-53fc660701d25cf4",
+          "feedRank": 5,
+          "compactHeadline": "Sources: Puka Nacua set for tests on late-game knee injury; Rams believe ACL OK"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-d5872cb5c7cd392f"
+            "cand-31a912d054e65307"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Giants QB J.J. McCarthy said he's all good after being forced to exit Sunday's 19-11 win over the Eagles with a hip injury.",
-          "text": "Giants QB J.J. McCarthy said he's all good after being forced to exit Sunday's 19-11 win over the Eagles with a hip injury.",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Detroit Lions have repeated a mantra all week in the aftermath of a scary neck injury to All-Pro linebacker Jack Campbell.",
+          "text": "The Detroit Lions have repeated a mantra all week in the aftermath of a scary neck injury to All-Pro linebacker Jack Campbell.",
           "entities": [],
-          "occurredAt": "2026-11-08T18:00:00Z",
+          "occurredAt": "2026-11-08T22:29:36Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
-          "freshnessBasis": "Highlightly final: New York Giants 19, Philadelphia Eagles 11.",
+          "ageHours": 3.02,
+          "freshnessBasis": "— The Detroit Lions have repeated a mantra all week in the aftermath of a scary neck injury to All-Pro linebacker Jack Campbell.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/nfl/story/_/id/50427263/giants-qb-jj-mccarthy-says-fine-big-hit-injures-hip"
+            "http://www.espn.com/nfl/recap?gameId=401873042"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50427263/giants-qb-jj-mccarthy-says-fine-big-hit-injures-hip"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873042"
             }
           ],
-          "id": "a415-22b7fa567231888a",
-          "feedRank": 5,
-          "compactHeadline": "Giants QB J.J. McCarthy says he'll be fine after big hit injures hip"
+          "id": "a415-83aabb5b1a4bc9f2",
+          "feedRank": 6,
+          "compactHeadline": "Lions grind past Dolphins 19-9 as Jahmyr Gibbs scores and Jake Bates makes 4 field goals"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-59801907819118f3"
+            "cand-3abb6ea7eab776d1"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "There's still room for growth from the star-studded Rams, but they're starting to show again why they were a preseason Super Bowl favorite.",
-          "text": "There's still room for growth from the star-studded Rams, but they're starting to show again why they were a preseason Super Bowl favorite.",
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
+          "text": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
           "entities": [],
-          "occurredAt": "2026-11-08T18:00:00Z",
+          "occurredAt": "2026-11-09T00:27:12Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
-          "freshnessBasis": "Highlightly final: Los Angeles Rams 20, Washington Commanders 13.",
+          "ageHours": 1.06,
+          "freshnessBasis": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873043"
+            "https://www.espn.com/nfl/story/_/id/50427153/dak-prescott-cowboys-make-playoffs-making-trade"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873043"
+              "url": "https://www.espn.com/nfl/story/_/id/50427153/dak-prescott-cowboys-make-playoffs-making-trade"
             }
           ],
-          "id": "a415-3d1d1725fb05fe5a",
-          "feedRank": 6,
-          "compactHeadline": "Puka Nacua, Myles Garrett lead Rams to 20-13 win over Commanders"
+          "id": "a415-ddf6157ce9109882",
+          "feedRank": 7,
+          "compactHeadline": "Dak Prescott: Cowboys can make playoffs without making trade"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-d4138ae0a7f45e23"
+            "cand-362b748d64466263"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "The Denver Broncos continue to know how to win close games.",
-          "text": "The Denver Broncos continue to know how to win close games.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
+          "text": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
           "entities": [],
-          "occurredAt": "2026-11-08T18:00:00Z",
+          "occurredAt": "2026-11-09T01:13:16Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
-          "freshnessBasis": "Highlightly final: Denver Broncos 26, Carolina Panthers 21.",
+          "ageHours": 0.29,
+          "freshnessBasis": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873041"
+            "https://www.espn.com/nfl/story/_/id/50426396/jets-frustrated-geno-smith-membou"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873041"
+              "url": "https://www.espn.com/nfl/story/_/id/50426396/jets-frustrated-geno-smith-membou"
             }
           ],
-          "id": "a415-2607c03513c3eda3",
-          "feedRank": 7,
-          "compactHeadline": "Bo Nix throws for 2 TDs, Broncos win key challenge to beat Panthers 26-21 for fifth straight victory"
+          "id": "a415-f7744c6799bf4844",
+          "feedRank": 8,
+          "compactHeadline": "Jets begin to unravel on and off field as losing streak hits four games"
         }
       ]
     },
@@ -265,41 +258,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-7af9118599f72920"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jaylen Brown scored 29 points, Tyrese Maxey added 27 and LeBron James had his highest-scoring effort so far in a Philadelphia uniform as the 76ers held off the struggling Chicago Bulls 127-121 on Sunday afternoon.",
-          "text": "Jaylen Brown scored 29 points, Tyrese Maxey added 27 and LeBron James had his highest-scoring effort so far in a Philadelphia uniform as the 76ers held off the struggling Chicago Bulls 127-121 on Sunday afternoon.",
-          "entities": [],
-          "occurredAt": "2026-11-08T20:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.52,
-          "freshnessBasis": "Highlightly final: Philadelphia 76ers 127, Chicago Bulls 121.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nba/recap?gameId=401909945"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909945"
-            }
-          ],
-          "id": "a415-4f6f08020a3d88a1",
-          "feedRank": 8,
-          "compactHeadline": "Brown, Maxey and James combine for 78 points in 76ers' 127-121 win over Bulls"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-2e2d8b9c6ad48a4a"
           ],
           "type": "INJURY",
@@ -309,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:28:50Z",
           "timePrecision": "exact",
-          "ageHours": 1.54,
+          "ageHours": 2.03,
           "freshnessBasis": "Jalen Duren will miss at least two more weeks because of a hamstring injury, the Detroit Pistons announced Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -327,7 +285,7 @@
           "compactHeadline": "Jalen Duren to miss at least two more weeks with hamstring injury"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-90fdb73549950ae5"
           ],
@@ -338,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:32:12Z",
           "timePrecision": "exact",
-          "ageHours": 2.48,
+          "ageHours": 2.98,
           "freshnessBasis": "Charlotte Hornets second-year guard Kon Knueppel has a left hamstring strain and will be out for at least four weeks before he is reevaluated.",
           "status": "active",
           "sourceUrls": [
@@ -356,7 +314,7 @@
           "compactHeadline": "Hornets' Kon Knueppel out at least 4 weeks with latest hamstring strain"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-d83a33f651ddedbe"
           ],
@@ -367,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 3.26,
+          "ageHours": 3.75,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -385,62 +343,91 @@
           "compactHeadline": "Thunder get Nique Clifford in trade with Kings"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
-            "cand-edc71ba72ccacf94"
+            "cand-33a9919b15ffaf1a"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Wisconsin Herd 142, Iowa Wolves 130.",
-          "text": "Highlightly final: Wisconsin Herd 142, Iowa Wolves 130.",
+          "headline": "Warriors star Stephen Curry scored 17 of his 41 points in the final seven minutes of a 126-119 overtime win over the Magic, setting another late-career NBA record.",
+          "text": "Warriors star Stephen Curry scored 17 of his 41 points in the final seven minutes of a 126-119 overtime win over the Magic, setting another late-career NBA record.",
           "entities": [],
-          "occurredAt": "2026-11-08T21:00:00Z",
+          "occurredAt": "2026-11-08T17:55:40Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
-          "freshnessBasis": "Highlightly final: Wisconsin Herd 142, Iowa Wolves 130.",
+          "ageHours": 7.59,
+          "freshnessBasis": "Warriors star Stephen Curry scored 17 of his 41 points in the final seven minutes of a 126-119 overtime win over the Magic, setting another late-career NBA record.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://www.espn.com/nba/story/_/id/50417316/remarkable-curry-latest-history-making-night-keeps-warriors-rolling"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-08",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50417316/remarkable-curry-latest-history-making-night-keeps-warriors-rolling"
             }
           ],
-          "id": "a415-4870b557b83793e6",
+          "id": "a415-5617a74fed186115",
           "feedRank": 12,
-          "compactHeadline": "Wisconsin Herd beat Iowa Wolves 142-130"
+          "compactHeadline": "Stephen Curry's latest history-making night keeps Warriors rolling"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-06656505c486db93"
+          ],
+          "type": "LEGAL",
+          "priority": 64,
+          "headline": "A man was arrested on Friday night at LeBron James' Brentwood, California, home, a Los Angeles Police Department spokesperson confirmed to ESPN on Saturday.",
+          "text": "A man was arrested on Friday night at LeBron James' Brentwood, California, home, a Los Angeles Police Department spokesperson confirmed to ESPN on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-11-09T00:15:45Z",
+          "timePrecision": "exact",
+          "ageHours": 1.25,
+          "freshnessBasis": "A man was arrested on Friday night at LeBron James' Brentwood, California, home, a Los Angeles Police Department spokesperson confirmed to ESPN on Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50410292/man-arrested-stalking-charges-lebron-james-home-la"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50410292/man-arrested-stalking-charges-lebron-james-home-la"
+            }
+          ],
+          "id": "a415-e6c730803ee6412c",
+          "feedRank": 13,
+          "compactHeadline": "Man arrested on stalking charges at LeBron James' home in Los Angeles"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-97aca92c9142a500"
+            "cand-2d6b2c828a1cdfb2"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Birmingham Squadron 110, Austin Toros Spurs 117.",
-          "text": "Highlightly final: Birmingham Squadron 110, Austin Toros Spurs 117.",
+          "type": "DEPTH_CHART",
+          "priority": 64,
+          "headline": "Hampered by plane delays leaving Mexico City, the Nuggets have listed their entire starting lineup as questionable for Monday's game in Houston.",
+          "text": "Hampered by plane delays leaving Mexico City, the Nuggets have listed their entire starting lineup as questionable for Monday's game in Houston.",
           "entities": [],
-          "occurredAt": "2026-11-08T21:00:00Z",
+          "occurredAt": "2026-11-08T23:37:36Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
-          "freshnessBasis": "Highlightly final: Birmingham Squadron 110, Austin Toros Spurs 117.",
+          "ageHours": 1.89,
+          "freshnessBasis": "Hampered by plane delays leaving Mexico City, the Nuggets have listed their entire starting lineup as questionable for Monday's game in Houston.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://www.espn.com/nba/story/_/id/50426497/nuggets-starters-questionable-vs-rockets-plane-delays"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-08",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50426497/nuggets-starters-questionable-vs-rockets-plane-delays"
             }
           ],
-          "id": "a415-6c2edc959dcd8af7",
-          "feedRank": 13,
-          "compactHeadline": "Austin Toros Spurs beat Birmingham Squadron 117-110"
+          "id": "a415-f50ce6e4aabfe885",
+          "feedRank": 14,
+          "compactHeadline": "Nuggets' starters all questionable vs. Rockets after delays leaving Mexico"
         }
       ]
     },
@@ -451,180 +438,63 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-1aaf82aa061f95a9"
+            "cand-21a471f5c1056ef5"
           ],
           "type": "RESULT",
-          "priority": 72,
+          "priority": 70,
           "headline": "Tomas Hertl scored two goals and the Vegas Golden Knights won their third straight game, 4-1 over the Buffalo Sabres on Sunday.",
           "text": "Tomas Hertl scored two goals and the Vegas Golden Knights won their third straight game, 4-1 over the Buffalo Sabres on Sunday.",
           "entities": [],
-          "occurredAt": "2026-11-08T20:30:00Z",
+          "occurredAt": "2026-11-08T23:16:35Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
-          "freshnessBasis": "Highlightly final: Vegas Golden Knights 4, Buffalo Sabres 1.",
+          "ageHours": 2.24,
+          "freshnessBasis": "— Tomas Hertl scored two goals and the Vegas Golden Knights won their third straight game, 4-1 over the Buffalo Sabres on Sunday.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/nhl/recap?gameId=401892675"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-08",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
               "url": "http://www.espn.com/nhl/recap?gameId=401892675"
             }
           ],
-          "id": "a415-4c3199cf93a96140",
-          "feedRank": 14,
+          "id": "a415-f7aa8da3e12f2f94",
+          "feedRank": 15,
           "compactHeadline": "Tomas Hertl scores twice as Golden Knights beat Sabres 4-1 for third straight win"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-71f0ed7f0d62b50b"
+            "cand-a5d9725648823058"
           ],
           "type": "STREAK",
           "priority": 74,
           "headline": "Florida Panthers (9-6-2, in the Atlantic Division) vs. Boston Bruins (12-4-1, in the Atlantic Division)",
           "text": "Florida Panthers (9-6-2, in the Atlantic Division) vs. Boston Bruins (12-4-1, in the Atlantic Division)",
           "entities": [],
-          "occurredAt": "2026-11-08T18:00:00Z",
+          "occurredAt": "2026-11-08T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
-          "freshnessBasis": "Highlightly final: Florida Panthers 1, Boston Bruins 4.",
+          "ageHours": 16.32,
+          "freshnessBasis": "Florida Panthers (9-6-2, in the Atlantic Division) vs. Boston Bruins (12-4-1, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/nhl/preview?gameId=401892674"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-08",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
               "url": "http://www.espn.com/nhl/preview?gameId=401892674"
             }
           ],
-          "id": "a415-1e2c4685c98e20ed",
-          "feedRank": 15,
-          "compactHeadline": "Boston Bruins beat Florida Panthers 4-1"
+          "id": "a415-aa2bc40584b7aa5d",
+          "feedRank": 16,
+          "compactHeadline": "Bruins try to keep win streak alive, host the Panthers"
         },
         {
           "rank": 3,
-          "candidateIds": [
-            "cand-95aa1d22fc078f42"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
-          "text": "Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-08T03:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.02,
-          "freshnessBasis": "Highlightly final: Vancouver Canucks 2, Edmonton Oilers 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892673"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-07",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892673"
-            }
-          ],
-          "id": "a415-85b7870c3e2b817f",
-          "feedRank": 16,
-          "compactHeadline": "Draisaitl scores twice, McDavid has 3 assists to extend streak and Oilers beat skidding Canucks 4-2"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-eb5a6a7c023998d6"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Mackenzie Blackwood made 27 saves, Martin Necas had two goals and two assists and the Colorado Avalanche beat the Detroit Red Wings 4-0 on Saturday night.",
-          "text": "Mackenzie Blackwood made 27 saves, Martin Necas had two goals and two assists and the Colorado Avalanche beat the Detroit Red Wings 4-0 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-08T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.02,
-          "freshnessBasis": "Highlightly final: Detroit Red Wings 0, Colorado Avalanche 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892671"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-07",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892671"
-            }
-          ],
-          "id": "a415-f9ddd5c57b56a118",
-          "feedRank": 17,
-          "compactHeadline": "Blackwood makes 27 saves, Necas has 4 points, Avs beat Wings 4-0"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-b4e2bed561f1f8be"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Sidney Crosby scored two goals while moving into sole possession of sixth place on the NHL’s career scoring list, and the Pittsburgh Penguins snapped their four-game skid with a 5-2 victory over the Los Angeles Kings on Saturday night.",
-          "text": "Sidney Crosby scored two goals while moving into sole possession of sixth place on the NHL’s career scoring list, and the Pittsburgh Penguins snapped their four-game skid with a 5-2 victory over the Los Angeles Kings on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-08T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.02,
-          "freshnessBasis": "Highlightly final: Pittsburgh Penguins 5, Los Angeles Kings 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892672"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-07",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892672"
-            }
-          ],
-          "id": "a415-a4af082e0afd4839",
-          "feedRank": 18,
-          "compactHeadline": "Sidney Crosby takes sole possession of 6th on NHL scoring list in Penguins' 5-2 win over Kings"
-        },
-        {
-          "rank": 6,
           "candidateIds": [
             "cand-a1c6dec99165f861"
           ],
@@ -635,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T09:11:37Z",
           "timePrecision": "exact",
-          "ageHours": 15.83,
+          "ageHours": 16.32,
           "freshnessBasis": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -649,8 +519,66 @@
             }
           ],
           "id": "a415-b6fecd0b7f8c0ada",
-          "feedRank": 19,
+          "feedRank": 17,
           "compactHeadline": "New York brings 3-game win streak into matchup against Edmonton"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-a1287d2427f69b44"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Elias Lindholm, Mikey Eyssimont and Morgan Geekie each scored a goal in an opening period that started out testy, carrying the Boston Bruins past the Florida Panthers 4-1 on Sunday.",
+          "text": "Elias Lindholm, Mikey Eyssimont and Morgan Geekie each scored a goal in an opening period that started out testy, carrying the Boston Bruins past the Florida Panthers 4-1 on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-11-08T21:14:35Z",
+          "timePrecision": "exact",
+          "ageHours": 4.27,
+          "freshnessBasis": "— Elias Lindholm, Mikey Eyssimont and Morgan Geekie each scored a goal in an opening period that started out testy, carrying the Boston Bruins past the Florida Panthers 4-1 on Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892674"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892674"
+            }
+          ],
+          "id": "a415-49abebce7aed12d9",
+          "feedRank": 18,
+          "compactHeadline": "Elias Lindholm scores 1st of Boston's 3 goals in 1st period, carrying Bruins past Panthers, 4-1"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-f77e1240a0b4f630"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
+          "text": "Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-11-08T06:32:37Z",
+          "timePrecision": "exact",
+          "ageHours": 18.97,
+          "freshnessBasis": "— Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892673"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892673"
+            }
+          ],
+          "id": "a415-59e1ae8eb969867a",
+          "feedRank": 19,
+          "compactHeadline": "Draisaitl scores twice, McDavid has 3 assists to extend streak and Oilers beat skidding Canucks 4-2"
         }
       ]
     },
@@ -670,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:08:27Z",
           "timePrecision": "exact",
-          "ageHours": 6.88,
+          "ageHours": 7.37,
           "freshnessBasis": "\"Poetry in motion\" was the serenade from the Liverpool fans at Crystal Palace. And for a moment in their 3-1 victory, that's exactly what the Reds were.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:27:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.57,
+          "ageHours": 3.06,
           "freshnessBasis": "Bruno Guimarães saluted \"unbelievable\" Arsenal after they stretched their lead at the top of the Premier League with a gritty 1-0 win over Hull.",
           "status": "active",
           "sourceUrls": [
@@ -728,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:15:01Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 5.26,
           "freshnessBasis": "Leeds have condemned alleged racist abuse of defender Jayden Bogle on social media following Saturday's 1-0 Premier League win over Tottenham at Elland Road.",
           "status": "active",
           "sourceUrls": [
@@ -757,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Andoni Iraola admitted Liverpool \"needed\" their 3-1 victory over Crystal Palace after a disappointing week for his team.",
           "status": "active",
           "sourceUrls": [
@@ -786,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 8.27,
+          "ageHours": 8.76,
           "freshnessBasis": "Diego Gómez scored another stunner as Brighton enjoyed a happy homecoming by climbing to second in the Premier League with a 2-0 win over 10-man Brentford at the Amex Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -815,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:29:50Z",
           "timePrecision": "exact",
-          "ageHours": 8.52,
+          "ageHours": 9.02,
           "freshnessBasis": "Sunderland ended their winless run in the Premier League with a hard-fought 1-0 win over Chelsea at the Stadium of Light.",
           "status": "active",
           "sourceUrls": [
@@ -850,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:54:28Z",
           "timePrecision": "exact",
-          "ageHours": 22.11,
+          "ageHours": 22.61,
           "freshnessBasis": "Sergi Solans and Zach Booth scored early and Real Salt Lake clinched a playoff spot while eliminating the LA Galaxy with a 2-1 Decision Day victory over the Galaxy on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -879,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:35:48Z",
           "timePrecision": "exact",
-          "ageHours": 22.42,
+          "ageHours": 22.92,
           "freshnessBasis": "- Kaick Ferreira, known simply as \"Kaick\", scored the go-ahead goal in the 88th and FC Dallas beat Colorado 3-1 on Saturday night to eliminati the Rapids from playoff contention.",
           "status": "active",
           "sourceUrls": [
@@ -908,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:35:02Z",
           "timePrecision": "exact",
-          "ageHours": 22.44,
+          "ageHours": 22.93,
           "freshnessBasis": "- Ariel Lassiter opened the scoring in the third minute, Kristoffer Velde added a goal and the Portland Timbers beat Austin FC 2-0 on Saturday night to clinch a spot in the MLS Cup playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -937,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T10:48:49Z",
           "timePrecision": "exact",
-          "ageHours": 14.21,
+          "ageHours": 14.7,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -972,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:58Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.76,
           "freshnessBasis": "No. 8 Texas (7-2) at No. 24 LSU (6-3), Nov. 14 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1001,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:57Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.76,
           "freshnessBasis": "No. 11 Wake Forest (8-1) at No. 25 SMU (7-2), Nov. 14 at 12 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1030,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.29,
+          "ageHours": 4.78,
           "freshnessBasis": "No. 15 USC (7-2) at No. 6 Indiana (8-1), Nov. 14 at 3:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1050,35 +978,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-4e45c2c17ad0ea9a"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: West Virginia Mountaineers 48, Texas Tech Red Raiders 53.",
-          "text": "Highlightly final: West Virginia Mountaineers 48, Texas Tech Red Raiders 53.",
-          "entities": [],
-          "occurredAt": "2026-11-08T02:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.52,
-          "freshnessBasis": "Highlightly final: West Virginia Mountaineers 48, Texas Tech Red Raiders 53.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-fdfd8a1ca3a36f8a",
-          "feedRank": 33,
-          "compactHeadline": "Texas Tech Red Raiders beat West Virginia Mountaineers 53-48"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-f27a7fbd586212e9"
           ],
           "type": "NEWS",
@@ -1088,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:44:50Z",
           "timePrecision": "exact",
-          "ageHours": 1.27,
+          "ageHours": 1.77,
           "freshnessBasis": "A day after losing to rival Michigan State 15-6, Michigan fired offensive coordinator Jason Beck, the program announced Sunday afternoon. The Wolverines are 5-4 and have the No. 17 scoring offense in the Big Ten.",
           "status": "active",
           "sourceUrls": [
@@ -1102,11 +1001,11 @@
             }
           ],
           "id": "a415-7c121b73d23f1dff",
-          "feedRank": 34,
+          "feedRank": 33,
           "compactHeadline": "Michigan fires offensive coordinator Jason Beck after loss to Michigan State"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-714a38da8fbf5154"
           ],
@@ -1117,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:22:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.65,
+          "ageHours": 2.14,
           "freshnessBasis": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1131,8 +1030,37 @@
             }
           ],
           "id": "a415-8a9e03376911cdeb",
-          "feedRank": 35,
+          "feedRank": 34,
           "compactHeadline": "Connelly: How Week 10's top games were won, what it means for CFP"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-57fbf5de067cbaf2"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Louisiana (6-3) at UL Monroe (2-7), Nov. 12 at 9 p.m. EST.",
+          "text": "Louisiana (6-3) at UL Monroe (2-7), Nov. 12 at 9 p.m. EST.",
+          "entities": [],
+          "occurredAt": "2026-11-08T20:45:59Z",
+          "timePrecision": "exact",
+          "ageHours": 4.75,
+          "freshnessBasis": "Louisiana (6-3) at UL Monroe (2-7), Nov. 12 at 9 p.m. EST.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/preview?gameId=401869969"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/preview?gameId=401869969"
+            }
+          ],
+          "id": "a415-21ba0096c4139146",
+          "feedRank": 35,
+          "compactHeadline": "Louisiana visits UL Monroe in Sun Belt action"
         }
       ]
     }
