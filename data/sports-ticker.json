@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-09T00:31:06Z",
+  "generatedAt": "2026-11-09T01:01:15Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "3705210948765d744bc8af17db0bd07252a7995e404d7510df4ed1a6c204046f",
+  "sourceCandidateHash": "c1ce586da1a5696085a55358e434529b736d7b283d1116410459d05572101a19",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T15:31:14Z",
           "timePrecision": "exact",
-          "ageHours": 9.0,
+          "ageHours": 9.5,
           "freshnessBasis": "Pedro Martinez appealed to both MLB players and owners to find a solution to their CBA talks, saying \"get something done and don't lock out baseball for the fans.\"",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,76 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-1f3d55f92a1882fa"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "AJ Barner caught a touchdown pass and ran for a score, and the Seattle Seahawks beat the Arizona Cardinals 17-3 on Sunday without starting quarterback Sam Darnold.",
+          "text": "AJ Barner caught a touchdown pass and ran for a score, and the Seattle Seahawks beat the Arizona Cardinals 17-3 on Sunday without starting quarterback Sam Darnold.",
+          "entities": [],
+          "occurredAt": "2026-11-08T21:25:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.6,
+          "freshnessBasis": "Highlightly final: Arizona Cardinals 3, Seattle Seahawks 17.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873048"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-08",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873048"
+            }
+          ],
+          "id": "a415-48e9f92be05ff71c",
+          "feedRank": 2,
+          "compactHeadline": "AJ Barner has a TD catch and runs for a score in Seahawks' 17-3 win over Cardinals"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-0ab30d2edb1bd81d"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "C.J. Stroud threw five touchdown passes, including a pair of season-best 63-yarders to Tank Dell and Kayshon Boutte, and the Houston Texans routed the winless Chargers 44-22 on Sunday and sent Los Angeles to its eighth straight defeat in front of...",
+          "text": "C.J. Stroud threw five touchdown passes, including a pair of season-best 63-yarders to Tank Dell and Kayshon Boutte, and the Houston Texans routed the winless Chargers 44-22 on Sunday and sent Los Angeles to its eighth straight defeat in front of...",
+          "entities": [],
+          "occurredAt": "2026-11-08T21:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.94,
+          "freshnessBasis": "Highlightly final: Houston Texans 44, Los Angeles Chargers 22.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873046"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-08",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873046"
+            }
+          ],
+          "id": "a415-d78624917a7bb660",
+          "feedRank": 3,
+          "compactHeadline": "C.J. Stroud tosses 5 TD passes as Texans rout winless Chargers 44-22. LA finally scores a TD"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-9ffe4f409cc7cb10"
           ],
           "type": "RESULT",
@@ -58,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: New York Jets 12, Kansas City Chiefs 35.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +148,11 @@
             }
           ],
           "id": "a415-b78f48d8976d4e15",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Chiefs' Patrick Mahomes brushes off injury scare during rout of Jets"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-d5872cb5c7cd392f"
           ],
@@ -93,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: New York Giants 19, Philadelphia Eagles 11.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +183,11 @@
             }
           ],
           "id": "a415-22b7fa567231888a",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Giants QB J.J. McCarthy says he'll be fine after big hit injures hip"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-59801907819118f3"
           ],
@@ -128,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Los Angeles Rams 20, Washington Commanders 13.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +218,11 @@
             }
           ],
           "id": "a415-3d1d1725fb05fe5a",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "Puka Nacua, Myles Garrett lead Rams to 20-13 win over Commanders"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-d4138ae0a7f45e23"
           ],
@@ -163,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Denver Broncos 26, Carolina Panthers 21.",
           "status": "active",
           "sourceUrls": [
@@ -183,78 +253,8 @@
             }
           ],
           "id": "a415-2607c03513c3eda3",
-          "feedRank": 5,
-          "compactHeadline": "Bo Nix throws for 2 TDs, Broncos win key challenge to beat Panthers 26-21 for fifth straight victory"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-618672fa48f30747"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "With the Dallas Cowboys trailing by three points and on the verge of yet another fourth-quarter collapse, Dak Prescott needed 29 seconds to bail them out.",
-          "text": "With the Dallas Cowboys trailing by three points and on the verge of yet another fourth-quarter collapse, Dak Prescott needed 29 seconds to bail them out.",
-          "entities": [],
-          "occurredAt": "2026-11-08T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 6.52,
-          "freshnessBasis": "Highlightly final: Dallas Cowboys 27, Indianapolis Colts 23.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873040"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873040"
-            }
-          ],
-          "id": "a415-79ad97d69c516c3d",
-          "feedRank": 6,
-          "compactHeadline": "Javonte Williams' late TD run helps Cowboys avoid another 4th-quarter collapse and beat Colts 27-23"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-01f52e50c0815892"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Joe Burrow threw for three touchdowns and rushed for another and the Cincinnati Bengals' offense kept rolling to defeat the Atlanta Falcons 34-17 in Madrid on Sunday for their fourth straight win.",
-          "text": "Joe Burrow threw for three touchdowns and rushed for another and the Cincinnati Bengals' offense kept rolling to defeat the Atlanta Falcons 34-17 in Madrid on Sunday for their fourth straight win.",
-          "entities": [],
-          "occurredAt": "2026-11-08T14:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 10.02,
-          "freshnessBasis": "Highlightly final: Cincinnati Bengals 34, Atlanta Falcons 17.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873038"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-08",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873038"
-            }
-          ],
-          "id": "a415-8d434f12a0b98261",
           "feedRank": 7,
-          "compactHeadline": "Burrow powers Bengals past the Falcons in Madrid for their 4th straight win"
+          "compactHeadline": "Bo Nix throws for 2 TDs, Broncos win key challenge to beat Panthers 26-21 for fifth straight victory"
         }
       ]
     },
@@ -274,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 4.52,
           "freshnessBasis": "Highlightly final: Philadelphia 76ers 127, Chicago Bulls 121.",
           "status": "active",
           "sourceUrls": [
@@ -309,7 +309,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:28:50Z",
           "timePrecision": "exact",
-          "ageHours": 1.04,
+          "ageHours": 1.54,
           "freshnessBasis": "Jalen Duren will miss at least two more weeks because of a hamstring injury, the Detroit Pistons announced Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -338,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:32:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.98,
+          "ageHours": 2.48,
           "freshnessBasis": "Charlotte Hornets second-year guard Kon Knueppel has a left hamstring strain and will be out for at least four weeks before he is reevaluated.",
           "status": "active",
           "sourceUrls": [
@@ -367,7 +367,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 3.26,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -396,7 +396,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
+          "ageHours": 4.02,
           "freshnessBasis": "Highlightly final: Wisconsin Herd 142, Iowa Wolves 130.",
           "status": "active",
           "sourceUrls": [
@@ -416,37 +416,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-652dadae09bd180f"
+            "cand-97aca92c9142a500"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Victor Wembanyama scored 29 points and led the San Antonio Spurs to a 125-103 blowout win over the Portland Trail Blazers on Saturday night.",
-          "text": "Victor Wembanyama scored 29 points and led the San Antonio Spurs to a 125-103 blowout win over the Portland Trail Blazers on Saturday night.",
+          "headline": "Highlightly final: Birmingham Squadron 110, Austin Toros Spurs 117.",
+          "text": "Highlightly final: Birmingham Squadron 110, Austin Toros Spurs 117.",
           "entities": [],
-          "occurredAt": "2026-11-08T03:00:00Z",
+          "occurredAt": "2026-11-08T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.52,
-          "freshnessBasis": "Highlightly final: San Antonio Spurs 125, Portland Trail Blazers 103.",
+          "ageHours": 4.02,
+          "freshnessBasis": "Highlightly final: Birmingham Squadron 110, Austin Toros Spurs 117.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nba/recap?gameId=401909944"
+            "https://highlightly.net"
           ],
           "sources": [
             {
               "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-07",
+              "sourceId": "highlightly-basketball-2026-11-08",
               "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909944"
             }
           ],
-          "id": "a415-830284fbe919b79b",
+          "id": "a415-6c2edc959dcd8af7",
           "feedRank": 13,
-          "compactHeadline": "Victor Wembanyama scores 29 points in Spurs win over Blazers"
+          "compactHeadline": "Austin Toros Spurs beat Birmingham Squadron 117-110"
         }
       ]
     },
@@ -466,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 4.52,
           "freshnessBasis": "Highlightly final: Vegas Golden Knights 4, Buffalo Sabres 1.",
           "status": "active",
           "sourceUrls": [
@@ -501,7 +495,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Florida Panthers 1, Boston Bruins 4.",
           "status": "active",
           "sourceUrls": [
@@ -536,7 +530,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.52,
+          "ageHours": 22.02,
           "freshnessBasis": "Highlightly final: Vancouver Canucks 2, Edmonton Oilers 4.",
           "status": "active",
           "sourceUrls": [
@@ -571,7 +565,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Detroit Red Wings 0, Colorado Avalanche 4.",
           "status": "active",
           "sourceUrls": [
@@ -606,7 +600,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Pittsburgh Penguins 5, Los Angeles Kings 2.",
           "status": "active",
           "sourceUrls": [
@@ -632,37 +626,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-69e19eeefa5540be"
+            "cand-a1c6dec99165f861"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Nikita Kucherov scored a power-play goal 3:23 into overtime and the Tampa Bay Lightning rallied past the Minnesota Wild 4-3 on Saturday night.",
-          "text": "Nikita Kucherov scored a power-play goal 3:23 into overtime and the Tampa Bay Lightning rallied past the Minnesota Wild 4-3 on Saturday night.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
+          "text": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
           "entities": [],
-          "occurredAt": "2026-11-08T01:00:00Z",
+          "occurredAt": "2026-11-08T09:11:37Z",
           "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Tampa Bay Lightning 4, Minnesota Wild 3.",
+          "ageHours": 15.83,
+          "freshnessBasis": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892670"
+            "http://www.espn.com/nhl/preview?gameId=401892680"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-07",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892670"
+              "url": "http://www.espn.com/nhl/preview?gameId=401892680"
             }
           ],
-          "id": "a415-bb28effb2e0e163f",
+          "id": "a415-b6fecd0b7f8c0ada",
           "feedRank": 19,
-          "compactHeadline": "Nikita Kucherov scores power-play goal in overtime and Lightning rally for 4-3 win over Wild"
+          "compactHeadline": "New York brings 3-game win streak into matchup against Edmonton"
         }
       ]
     },
@@ -682,7 +670,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:08:27Z",
           "timePrecision": "exact",
-          "ageHours": 6.38,
+          "ageHours": 6.88,
           "freshnessBasis": "\"Poetry in motion\" was the serenade from the Liverpool fans at Crystal Palace. And for a moment in their 3-1 victory, that's exactly what the Reds were.",
           "status": "active",
           "sourceUrls": [
@@ -711,7 +699,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:27:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.07,
+          "ageHours": 2.57,
           "freshnessBasis": "Bruno Guimarães saluted \"unbelievable\" Arsenal after they stretched their lead at the top of the Premier League with a gritty 1-0 win over Hull.",
           "status": "active",
           "sourceUrls": [
@@ -740,7 +728,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:15:01Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.77,
           "freshnessBasis": "Leeds have condemned alleged racist abuse of defender Jayden Bogle on social media following Saturday's 1-0 Premier League win over Tottenham at Elland Road.",
           "status": "active",
           "sourceUrls": [
@@ -769,7 +757,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
+          "ageHours": 7.03,
           "freshnessBasis": "Andoni Iraola admitted Liverpool \"needed\" their 3-1 victory over Crystal Palace after a disappointing week for his team.",
           "status": "active",
           "sourceUrls": [
@@ -798,7 +786,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 7.77,
+          "ageHours": 8.27,
           "freshnessBasis": "Diego Gómez scored another stunner as Brighton enjoyed a happy homecoming by climbing to second in the Premier League with a 2-0 win over 10-man Brentford at the Amex Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -827,7 +815,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:29:50Z",
           "timePrecision": "exact",
-          "ageHours": 8.02,
+          "ageHours": 8.52,
           "freshnessBasis": "Sunderland ended their winless run in the Premier League with a hard-fought 1-0 win over Chelsea at the Stadium of Light.",
           "status": "active",
           "sourceUrls": [
@@ -853,35 +841,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a316a1d349e142cd"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Nashville set a new single-season MLS points record after reaching 77 points with its win over FC Cincinnati on the final day of the regular season.",
-          "text": "Nashville set a new single-season MLS points record after reaching 77 points with its win over FC Cincinnati on the final day of the regular season.",
-          "entities": [],
-          "occurredAt": "2026-11-08T00:35:37Z",
-          "timePrecision": "exact",
-          "ageHours": 23.92,
-          "freshnessBasis": "Nashville set a new single-season MLS points record after reaching 77 points with its win over FC Cincinnati on the final day of the regular season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50403967/nashville-mls-single-season-points-record-inter-miami"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50403967/nashville-mls-single-season-points-record-inter-miami"
-            }
-          ],
-          "id": "a415-fbb9b252d248e50b",
-          "feedRank": 26,
-          "compactHeadline": "Nashville breaks Miami's MLS single-season points record"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-cc9ab2aa77e6b53e"
           ],
           "type": "PLAYOFF",
@@ -891,7 +850,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:54:28Z",
           "timePrecision": "exact",
-          "ageHours": 21.61,
+          "ageHours": 22.11,
           "freshnessBasis": "Sergi Solans and Zach Booth scored early and Real Salt Lake clinched a playoff spot while eliminating the LA Galaxy with a 2-1 Decision Day victory over the Galaxy on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -905,40 +864,11 @@
             }
           ],
           "id": "a415-f6aa7893b2cfa669",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "LA Galaxy miss playoffs again as Real Salt Lake gets final berth"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-ff897863db723f44"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Cavan and Quinn Sullivan became just the third pair of brothers to score for the same club in an MLS match.",
-          "text": "Cavan and Quinn Sullivan became just the third pair of brothers to score for the same club in an MLS match.",
-          "entities": [],
-          "occurredAt": "2026-11-08T00:33:27Z",
-          "timePrecision": "exact",
-          "ageHours": 23.96,
-          "freshnessBasis": "Cavan and Quinn Sullivan became just the third pair of brothers to score for the same club in an MLS match.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50413971/cavan-quinn-sullivan-philadelphia-union-mls-usa"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50413971/cavan-quinn-sullivan-philadelphia-union-mls-usa"
-            }
-          ],
-          "id": "a415-e9b7bb2ee2dc760d",
-          "feedRank": 28,
-          "compactHeadline": "Cavan, Quinn Sullivan both score as Philadelphia Union soar into playoffs"
-        },
-        {
-          "rank": 4,
+          "rank": 2,
           "candidateIds": [
             "cand-ce89efd377998069"
           ],
@@ -949,7 +879,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:35:48Z",
           "timePrecision": "exact",
-          "ageHours": 21.92,
+          "ageHours": 22.42,
           "freshnessBasis": "- Kaick Ferreira, known simply as \"Kaick\", scored the go-ahead goal in the 88th and FC Dallas beat Colorado 3-1 on Saturday night to eliminati the Rapids from playoff contention.",
           "status": "active",
           "sourceUrls": [
@@ -963,8 +893,66 @@
             }
           ],
           "id": "a415-fa7bd2f1bcdcc56d",
-          "feedRank": 29,
+          "feedRank": 27,
           "compactHeadline": "Kaick, Dallas win 3-1, eliminate Rapids from playoff contention"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-79fddb1fd7f7ffad"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Ariel Lassiter opened the scoring in the third minute, Kristoffer Velde added a goal and the Portland Timbers beat Austin FC 2-0 on Saturday night to clinch a spot in the MLS Cup playoffs.",
+          "text": "Ariel Lassiter opened the scoring in the third minute, Kristoffer Velde added a goal and the Portland Timbers beat Austin FC 2-0 on Saturday night to clinch a spot in the MLS Cup playoffs.",
+          "entities": [],
+          "occurredAt": "2026-11-08T02:35:02Z",
+          "timePrecision": "exact",
+          "ageHours": 22.44,
+          "freshnessBasis": "- Ariel Lassiter opened the scoring in the third minute, Kristoffer Velde added a goal and the Portland Timbers beat Austin FC 2-0 on Saturday night to clinch a spot in the MLS Cup playoffs.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/761942"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "http://www.espn.com/soccer/report/_/gameId/761942"
+            }
+          ],
+          "id": "a415-1dd6e6158d4e15e9",
+          "feedRank": 28,
+          "compactHeadline": "Lassiter scores in 3rd minute, Timbers beat Austin 2-0, clinch playoff spot"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-e0d7b53d44cb4cd7"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
+          "text": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
+          "entities": [],
+          "occurredAt": "2026-11-08T10:48:49Z",
+          "timePrecision": "exact",
+          "ageHours": 14.21,
+          "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/47978642/lionel-messi-2026-tracker-inter-miami-argentina-games-goals-assists-stats"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/47978642/lionel-messi-2026-tracker-inter-miami-argentina-games-goals-assists-stats"
+            }
+          ],
+          "id": "a415-fa668b3291d7fcc5",
+          "feedRank": 29,
+          "compactHeadline": "Messi tracker: Goals, assists, key moments in 2026"
         }
       ]
     },
@@ -984,7 +972,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:58Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.27,
           "freshnessBasis": "No. 8 Texas (7-2) at No. 24 LSU (6-3), Nov. 14 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1013,7 +1001,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:57Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.27,
           "freshnessBasis": "No. 11 Wake Forest (8-1) at No. 25 SMU (7-2), Nov. 14 at 12 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1042,7 +1030,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.29,
           "freshnessBasis": "No. 15 USC (7-2) at No. 6 Indiana (8-1), Nov. 14 at 3:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -1071,7 +1059,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.02,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: West Virginia Mountaineers 48, Texas Tech Red Raiders 53.",
           "status": "active",
           "sourceUrls": [
@@ -1091,35 +1079,6 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-37e733334e06b7bc"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Oklahoma Sooners 23, Florida Gators 7.",
-          "text": "Highlightly final: Oklahoma Sooners 23, Florida Gators 7.",
-          "entities": [],
-          "occurredAt": "2026-11-08T00:45:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.77,
-          "freshnessBasis": "Highlightly final: Oklahoma Sooners 23, Florida Gators 7.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-07",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-8aa1f188c0ade58c",
-          "feedRank": 34,
-          "compactHeadline": "Oklahoma Sooners beat Florida Gators 23-7"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-f27a7fbd586212e9"
           ],
           "type": "NEWS",
@@ -1129,7 +1088,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:44:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.27,
           "freshnessBasis": "A day after losing to rival Michigan State 15-6, Michigan fired offensive coordinator Jason Beck, the program announced Sunday afternoon. The Wolverines are 5-4 and have the No. 17 scoring offense in the Big Ten.",
           "status": "active",
           "sourceUrls": [
@@ -1143,8 +1102,37 @@
             }
           ],
           "id": "a415-7c121b73d23f1dff",
-          "feedRank": 35,
+          "feedRank": 34,
           "compactHeadline": "Michigan fires offensive coordinator Jason Beck after loss to Michigan State"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-714a38da8fbf5154"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
+          "text": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
+          "entities": [],
+          "occurredAt": "2026-11-08T23:22:19Z",
+          "timePrecision": "exact",
+          "ageHours": 1.65,
+          "freshnessBasis": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50420955/connelly-how-week-10-biggest-games-won"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50420955/connelly-how-week-10-biggest-games-won"
+            }
+          ],
+          "id": "a415-8a9e03376911cdeb",
+          "feedRank": 35,
+          "compactHeadline": "Connelly: How Week 10's top games were won, what it means for CFP"
         }
       ]
     }
