@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-09T17:00:56Z",
+  "generatedAt": "2026-11-09T17:30:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "78749defefb6c557e65c99344fd7a0cf137beaa1a8ebe8912560438db0b5b699",
+  "sourceCandidateHash": "2386701a850812143424d247bf78c653db8f98bd0bc7423d0e7d8cd5d33bd19c",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T01:03:42Z",
           "timePrecision": "exact",
-          "ageHours": 15.95,
+          "ageHours": 16.45,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-2865276610be9c19"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Giants coach John Harbaugh says he feels \"fairly good\" about quarterback J.J. McCarthy's availability this week after he suffered a hip injury in Sunday's win against the Eagles.",
+          "text": "Giants coach John Harbaugh says he feels \"fairly good\" about quarterback J.J. McCarthy's availability this week after he suffered a hip injury in Sunday's win against the Eagles.",
+          "entities": [],
+          "occurredAt": "2026-11-09T17:27:29Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Giants coach John Harbaugh says he feels \"fairly good\" about quarterback J.J. McCarthy's availability this week after he suffered a hip injury in Sunday's win against the Eagles.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50433758/giants-feel-fairly-good-qb-mccarthy-playing-thursday"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50433758/giants-feel-fairly-good-qb-mccarthy-playing-thursday"
+            }
+          ],
+          "id": "a415-0d8a783952c18572",
+          "feedRank": 2,
+          "compactHeadline": "Giants 'feel fairly good' about QB J.J. McCarthy (hip) playing Thursday"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-acf17854d18e1142"
           ],
           "type": "PLAYOFF",
@@ -58,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T15:56:57Z",
           "timePrecision": "exact",
-          "ageHours": 1.07,
+          "ageHours": 1.57,
           "freshnessBasis": "The Packers, Bears, Lions and Vikings are a combined 25-8 and all hold playoff spots right now. Can anyone stop the NFC North -- and who will win the division?",
           "status": "active",
           "sourceUrls": [
@@ -72,11 +101,40 @@
             }
           ],
           "id": "a415-a18c1321b20602c8",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Is the NFC North the best division ever? Sizing up wins for Packers, Lions, Bears"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-3458a5c19467e741"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The NFL trade deadline is on Tuesday at 4 p.m. ET. Has Kubiak, Raiders given hints that they might not make moves?",
+          "text": "The NFL trade deadline is on Tuesday at 4 p.m. ET. Has Kubiak, Raiders given hints that they might not make moves?",
+          "entities": [],
+          "occurredAt": "2026-11-09T17:17:18Z",
+          "timePrecision": "exact",
+          "ageHours": 0.23,
+          "freshnessBasis": "The NFL trade deadline is on Tuesday at 4 p.m. ET. Has Kubiak, Raiders given hints that they might not make moves?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50433312/las-vegas-raiders-2026-trade-deadline-approach"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50433312/las-vegas-raiders-2026-trade-deadline-approach"
+            }
+          ],
+          "id": "a415-969aaee013c848f6",
+          "feedRank": 4,
+          "compactHeadline": "Why the Raiders are better off standing pat at the NFL trade deadline"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-f8bfa964db1f1e81"
           ],
@@ -87,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T16:35:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.92,
           "freshnessBasis": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Jessie Bates III to Jacksonville.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +159,11 @@
             }
           ],
           "id": "a415-90c3d01bc95b7b61",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "2026 NFL trade deadline updates: Jessie Bates III, Jacoby Brissett on the move"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-5ba5ee8ca0df8170"
           ],
@@ -116,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T16:33:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.45,
+          "ageHours": 0.95,
           "freshnessBasis": "The Jaguars bolstered their secondary one day before the NFL trade deadline, acquiring veteran safety Jessie Bates III from the Falcons.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +188,11 @@
             }
           ],
           "id": "a415-7dea192132e74cd8",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "Jaguars bolster secondary, land Jessie Bates III in trade with Falcons"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-567c8c6934c8012e"
           ],
@@ -145,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T11:00:03Z",
           "timePrecision": "exact",
-          "ageHours": 6.01,
+          "ageHours": 6.52,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -159,66 +217,8 @@
             }
           ],
           "id": "a415-ea96d46825e75c17",
-          "feedRank": 5,
-          "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances to make postseason"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-22e021e206a318cd"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "Jets DE Will McDonald IV, frustrated by lack of playing time, has requested a trade, sources told NFL Network's Ian Rapoport. Jets say they have no plans to trade him.",
-          "text": "Jets DE Will McDonald IV, frustrated by lack of playing time, has requested a trade, sources told NFL Network's Ian Rapoport. Jets say they have no plans to trade him.",
-          "entities": [],
-          "occurredAt": "2026-11-09T15:40:42Z",
-          "timePrecision": "exact",
-          "ageHours": 1.34,
-          "freshnessBasis": "Jets DE Will McDonald IV, frustrated by lack of playing time, has requested a trade, sources told NFL Network's Ian Rapoport. Jets say they have no plans to trade him.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50432695/jets-pass-rusher-mcdonald-iv-requests-trade"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50432695/jets-pass-rusher-mcdonald-iv-requests-trade"
-            }
-          ],
-          "id": "a415-5468c07e17a8a010",
-          "feedRank": 6,
-          "compactHeadline": "Sources: Jets DE Will McDonald IV, frustrated by lack of use, requests trade"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f3a21b337af2378b"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Texans WR Tank Dell scored a touchdown Sunday in his second game back from a gruesome knee injury.",
-          "text": "Texans WR Tank Dell scored a touchdown Sunday in his second game back from a gruesome knee injury.",
-          "entities": [],
-          "occurredAt": "2026-11-09T05:24:56Z",
-          "timePrecision": "exact",
-          "ageHours": 11.6,
-          "freshnessBasis": "Texans WR Tank Dell scored a touchdown Sunday in his second game back from a gruesome knee injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50428998/grateful-tank-dell-105-receiving-yards-2nd-game-back-knee-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50428998/grateful-tank-dell-105-receiving-yards-2nd-game-back-knee-injury"
-            }
-          ],
-          "id": "a415-2415906be9fdda28",
           "feedRank": 7,
-          "compactHeadline": "'Grateful' Tank Dell has 105 receiving yards in 2nd game back from knee injury"
+          "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances to make postseason"
         }
       ]
     },
@@ -238,7 +238,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T05:10:03Z",
           "timePrecision": "exact",
-          "ageHours": 11.85,
+          "ageHours": 12.35,
           "freshnessBasis": "Jalen Duren will miss at least two more weeks because of a hamstring injury, the Detroit Pistons announced Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -267,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T07:04:35Z",
           "timePrecision": "exact",
-          "ageHours": 9.94,
+          "ageHours": 10.44,
           "freshnessBasis": "Boston Celtics (8-2, second in the Eastern Conference) vs. Philadelphia 76ers (9-2, first in the Eastern Conference)",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:32:12Z",
           "timePrecision": "exact",
-          "ageHours": 18.48,
+          "ageHours": 18.98,
           "freshnessBasis": "Charlotte Hornets second-year guard Kon Knueppel has a left hamstring strain and will be out for at least four weeks before he is reevaluated.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 19.25,
+          "ageHours": 19.75,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T04:59:35Z",
           "timePrecision": "exact",
-          "ageHours": 12.02,
+          "ageHours": 12.52,
           "freshnessBasis": "— Giannis Antetokounmpo had 29 points, 14 rebounds, and three assists in the Miami Heat’s 114-108 win over the Sacramento Kings on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T04:48:47Z",
           "timePrecision": "exact",
-          "ageHours": 12.2,
+          "ageHours": 12.7,
           "freshnessBasis": "— Darius Garland had 24 points and 10 assists, Brook Lopez added 20 points and the Los Angeles Clippers ended a seven-game losing streak with a 139-123 victory over the New Orleans Pelicans on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T09:11:50Z",
           "timePrecision": "exact",
-          "ageHours": 7.82,
+          "ageHours": 8.32,
           "freshnessBasis": "Detroit Red Wings (7-8-3, in the Atlantic Division) vs. St. Louis Blues (7-8-2, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T09:11:49Z",
           "timePrecision": "exact",
-          "ageHours": 7.82,
+          "ageHours": 8.32,
           "freshnessBasis": "Philadelphia Flyers (4-10-5, in the Metropolitan Division) vs. Vancouver Canucks (3-15-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T04:48:43Z",
           "timePrecision": "exact",
-          "ageHours": 12.2,
+          "ageHours": 12.7,
           "freshnessBasis": "The Devils announced Connor Hellebuyck will not face the Jets on Tuesday night in his first trip to Winnipeg since his contentious trade demand was granted.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T03:20:34Z",
           "timePrecision": "exact",
-          "ageHours": 13.67,
+          "ageHours": 14.17,
           "freshnessBasis": "— Connor Hellebuyck made 23 saves for his first shutout with New Jersey and the Devils beat the Toronto Maple Leafs 4-0 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T02:28:34Z",
           "timePrecision": "exact",
-          "ageHours": 14.54,
+          "ageHours": 15.04,
           "freshnessBasis": "— Mark Scheifele scored on a 5-on-3 power play with 1.6 seconds left and the Winnipeg Jets beat the Tampa Bay Lightning 4-3 on Sunday after blowing a late three-goal lead.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T14:36:12Z",
           "timePrecision": "exact",
-          "ageHours": 2.41,
+          "ageHours": 2.91,
           "freshnessBasis": "Find out more about which NHL prospects are playing Division I hockey this season.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T11:31:34Z",
           "timePrecision": "exact",
-          "ageHours": 5.49,
+          "ageHours": 5.99,
           "freshnessBasis": "William Saliba stepped up his comeback by playing 45 minutes for Arsenal's Under-21s on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:08:27Z",
           "timePrecision": "exact",
-          "ageHours": 22.87,
+          "ageHours": 23.38,
           "freshnessBasis": "\"Poetry in motion\" was the serenade from the Liverpool fans at Crystal Palace. And for a moment in their 3-1 victory, that's exactly what the Reds were.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T14:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.93,
+          "ageHours": 3.43,
           "freshnessBasis": "Man United have a penchant for waking up *after* games have already started -- and it's why they face Premier League relegation.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T13:49:14Z",
           "timePrecision": "exact",
-          "ageHours": 3.2,
+          "ageHours": 3.7,
           "freshnessBasis": "Man United came back to draw Aston Villa, but that shouldn't save Carrick's job. Plus, Barça escape Atletico with victory, and Man City's defensive woes continue.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T13:06:45Z",
           "timePrecision": "exact",
-          "ageHours": 3.9,
+          "ageHours": 4.4,
           "freshnessBasis": "Manchester United's Patrick Dorgu has said that he is \"not happy\" despite scoring a 96th-minute equaliser in the chaotic 4-4 draw with Aston Villa on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T12:46:43Z",
           "timePrecision": "exact",
-          "ageHours": 4.24,
+          "ageHours": 4.74,
           "freshnessBasis": "Sir Jim Ratcliffe's naive backroom appointments have left Manchester United in their worst position for 40 years and staring relegation in the face.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T14:07:44Z",
           "timePrecision": "exact",
-          "ageHours": 2.89,
+          "ageHours": 3.39,
           "freshnessBasis": "After every team in MLS is eliminated from postseason contention, ESPN details the best and worst of their seasons, and their priorities for 2027.",
           "status": "active",
           "sourceUrls": [
@@ -797,6 +797,69 @@
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-ca0c10f8850a9a8f"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "USMNT's Neil Pierre could potentially see minutes against Haiti in this month's Concacaf Nations League quarterfinals.",
+          "text": "USMNT's Neil Pierre could potentially see minutes against Haiti in this month's Concacaf Nations League quarterfinals.",
+          "entities": [],
+          "occurredAt": "2026-11-09T17:14:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.27,
+          "freshnessBasis": "USMNT's Neil Pierre could potentially see minutes against Haiti in this month's Concacaf Nations League quarterfinals.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50433219/pierre-brothers-face-usmnt-haiti-nations-league-qfs"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50433219/pierre-brothers-face-usmnt-haiti-nations-league-qfs"
+            }
+          ],
+          "id": "a415-ee045b2af93f15bf",
+          "feedRank": 27,
+          "compactHeadline": "Pierre brothers keep family rivalry alive for USMNT-Haiti Nations League QFs"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-c1ef138177b56da9"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Before the World Cup, many wondered if Americans would stick around afterward. Betting data says yes, they did.",
+          "text": "Before the World Cup, many wondered if Americans would stick around afterward. Betting data says yes, they did.",
+          "entities": [],
+          "occurredAt": "2026-11-09T17:21:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "Before the World Cup, many wondered if Americans would stick around afterward. Betting data says yes, they did.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/espn/betting/story/_/id/50411508/united-states-soccer-betting-2026-world-cup-premier-mls"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/espn/betting/story/_/id/50411508/united-states-soccer-betting-2026-world-cup-premier-mls"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/espn/betting/story/_/id/50411508/united-states-soccer-betting-2026-world-cup-premier-mls"
+            }
+          ],
+          "id": "a415-7f4a15d68d83da8d",
+          "feedRank": 28,
+          "compactHeadline": "'The World Cup never really ended': U.S.-based betting sees rise in wagering on MLS, European soccer"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-751a3acbf472a385"
           ],
@@ -823,40 +886,6 @@
           "id": "a415-59d6cb365affca5c",
           "feedRank": 27,
           "compactHeadline": "Pierre brothers could face off in USMNT-Haiti Nations League QFs"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-434217ed949aaf5e"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Before the World Cup, many wondered if Americans stick around afterwards. Betting data says yes, they did.",
-          "text": "Before the World Cup, many wondered if Americans stick around afterwards. Betting data says yes, they did.",
-          "entities": [],
-          "occurredAt": "2026-11-09T16:15:18Z",
-          "timePrecision": "exact",
-          "ageHours": 0.76,
-          "freshnessBasis": "Before the World Cup, many wondered if Americans stick around afterwards. Betting data says yes, they did.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/espn/betting/story/_/id/50411508/united-states-soccer-betting-2026-world-cup-premier-mls"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/espn/betting/story/_/id/50411508/united-states-soccer-betting-2026-world-cup-premier-mls"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/espn/betting/story/_/id/50411508/united-states-soccer-betting-2026-world-cup-premier-mls"
-            }
-          ],
-          "id": "a415-557a02e6f69e97fc",
-          "feedRank": 28,
-          "compactHeadline": "'The World Cup never really ended': US-based betting sees rise in wagering on MLS, European soccer"
         }
       ]
     },
@@ -874,9 +903,9 @@
           "headline": "ESPN has signed a five-year deal to remain the sole broadcast partner of the College Football Playoff as it expands to 24 teams. The deal is worth nearly $1.7 billion, sources told ESPN's Heather Dinich.",
           "text": "ESPN has signed a five-year deal to remain the sole broadcast partner of the College Football Playoff as it expands to 24 teams. The deal is worth nearly $1.7 billion, sources told ESPN's Heather Dinich.",
           "entities": [],
-          "occurredAt": "2026-11-09T16:55:42Z",
+          "occurredAt": "2026-11-09T17:27:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.05,
           "freshnessBasis": "ESPN has signed a five-year deal to remain the sole broadcast partner of the College Football Playoff as it expands to 24 teams. The deal is worth nearly $1.7 billion, sources told ESPN's Heather Dinich.",
           "status": "active",
           "sourceUrls": [
@@ -905,7 +934,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T16:37:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.39,
+          "ageHours": 0.89,
           "freshnessBasis": "The CFP is making the tournament bigger. Bigger isn't better, and this one could really miss.",
           "status": "active",
           "sourceUrls": [
@@ -934,7 +963,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T12:12:36Z",
           "timePrecision": "exact",
-          "ageHours": 4.81,
+          "ageHours": 5.31,
           "freshnessBasis": "Week 10 brought the drama! Our bowl gurus take a look at how the postseason picture shifted.",
           "status": "active",
           "sourceUrls": [
@@ -954,6 +983,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-714a38da8fbf5154"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
+          "text": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
+          "entities": [],
+          "occurredAt": "2026-11-09T17:09:14Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50420955/connelly-how-week-10-biggest-games-won"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50420955/connelly-how-week-10-biggest-games-won"
+            }
+          ],
+          "id": "a415-8a9e03376911cdeb",
+          "feedRank": 32,
+          "compactHeadline": "Connelly: How Week 10's top games were won, what it means for CFP"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-fdf6ffc53287ee01"
           ],
           "type": "RESULT",
@@ -963,7 +1021,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T04:03:37Z",
           "timePrecision": "exact",
-          "ageHours": 12.96,
+          "ageHours": 13.46,
           "freshnessBasis": "No. 2 Utah (9-0) at No. 22 Arizona (7-2), Nov. 14 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -977,11 +1035,11 @@
             }
           ],
           "id": "a415-cbe0bdfdac82dfdf",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Top-25 Big 12 matchup features Utah visiting Arizona"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c32d6d55b7f3a3cc"
           ],
@@ -992,7 +1050,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T16:50:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "5-star offensive tackle Mark Matthews has committed to Georgia 24 hours after decommitting from Texas A&M.",
           "status": "active",
           "sourceUrls": [
@@ -1006,37 +1064,8 @@
             }
           ],
           "id": "a415-b410f87612accc6f",
-          "feedRank": 33,
-          "compactHeadline": "5-star tackle Mark Matthews commits to Georgia after dropping pledge to Texas A&M"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-5c93216c38ce8418"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "In the wake of Saturday's loss to in-state rival Michigan State, coach Kyle Whittingham says Michigan's starting QB against Oregon has yet to be determined.",
-          "text": "In the wake of Saturday's loss to in-state rival Michigan State, coach Kyle Whittingham says Michigan's starting QB against Oregon has yet to be determined.",
-          "entities": [],
-          "occurredAt": "2026-11-09T16:29:39Z",
-          "timePrecision": "exact",
-          "ageHours": 0.52,
-          "freshnessBasis": "In the wake of Saturday's loss to in-state rival Michigan State, coach Kyle Whittingham says Michigan's starting QB against Oregon has yet to be determined.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50433271/whittingham-michigan-starting-qb-determined-vs-oregon"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50433271/whittingham-michigan-starting-qb-determined-vs-oregon"
-            }
-          ],
-          "id": "a415-49cef1aeb9ee7df4",
           "feedRank": 34,
-          "compactHeadline": "Michigan's starting QB vs. Oregon yet to be determined, says Whittingham"
+          "compactHeadline": "5-star tackle Mark Matthews commits to Georgia after dropping pledge to Texas A&M"
         }
       ]
     }
@@ -1062,7 +1091,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 140,
-    "publishedItemCount": 34,
+    "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
