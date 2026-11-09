@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-09T02:00:55Z",
+  "generatedAt": "2026-11-09T02:31:05Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "d129a81e63c38dee5bedb61263e4573468d976b798dfecced17f81b5748342be",
+  "sourceCandidateHash": "840dd9902ddfe9e928efcd02af194d509dab9c0691630fc03f3b4c81202863a8",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T01:03:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.95,
+          "ageHours": 1.46,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T15:31:14Z",
           "timePrecision": "exact",
-          "ageHours": 10.49,
+          "ageHours": 11.0,
           "freshnessBasis": "Pedro Martinez appealed to both MLB players and owners to find a solution to their CBA talks, saying \"get something done and don't lock out baseball for the fans.\"",
           "status": "active",
           "sourceUrls": [
@@ -78,6 +78,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-24808176bc2f8741"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Gracen Halton suffered a broken left ankle against the Raiders, an injury that will end his rookie season after eight games.",
+          "text": "Gracen Halton suffered a broken left ankle against the Raiders, an injury that will end his rookie season after eight games.",
+          "entities": [],
+          "occurredAt": "2026-11-09T02:21:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "Gracen Halton suffered a broken left ankle against the Raiders, an injury that will end his rookie season after eight games.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50428583/49ers-gracen-halton-season-broken-ankle"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50428583/49ers-gracen-halton-season-broken-ankle"
+            }
+          ],
+          "id": "a415-08fab59f6e111f52",
+          "feedRank": 3,
+          "compactHeadline": "49ers lose DT Gracen Halton to season-ending ankle fracture"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-18a202a3565da307"
           ],
           "type": "INJURY",
@@ -85,9 +114,9 @@
           "headline": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
           "text": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
           "entities": [],
-          "occurredAt": "2026-11-09T01:56:19Z",
+          "occurredAt": "2026-11-09T02:11:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
+          "ageHours": 0.33,
           "freshnessBasis": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +130,11 @@
             }
           ],
           "id": "a415-8eeff28abd871d6a",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Herbert to undergo testing after exiting Chargers' 44-22 loss with finger injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-eb6d43542fd97844"
           ],
@@ -116,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:44:35Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 2.78,
           "freshnessBasis": "— J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +159,11 @@
             }
           ],
           "id": "a415-3ade32be909069d2",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Winston, McCarthy combine to lead Giants to 19-11 win and hand Eagles 7th straight loss"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-8555b396b34aca4d"
           ],
@@ -145,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:32:52Z",
           "timePrecision": "exact",
-          "ageHours": 2.47,
+          "ageHours": 2.97,
           "freshnessBasis": "The Rams do not believe Puka Nacua suffered a torn ACL, but the imaging Monday will tell more, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -159,40 +188,40 @@
             }
           ],
           "id": "a415-53fc660701d25cf4",
-          "feedRank": 5,
+          "feedRank": 6,
           "compactHeadline": "Sources: Puka Nacua set for tests on late-game knee injury; Rams believe ACL OK"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
-            "cand-31a912d054e65307"
+            "cand-b5840684ccf364be"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Detroit Lions have repeated a mantra all week in the aftermath of a scary neck injury to All-Pro linebacker Jack Campbell.",
-          "text": "The Detroit Lions have repeated a mantra all week in the aftermath of a scary neck injury to All-Pro linebacker Jack Campbell.",
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
+          "text": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
           "entities": [],
-          "occurredAt": "2026-11-08T22:29:36Z",
+          "occurredAt": "2026-11-09T02:10:49Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
-          "freshnessBasis": "— The Detroit Lions have repeated a mantra all week in the aftermath of a scary neck injury to All-Pro linebacker Jack Campbell.",
+          "ageHours": 0.34,
+          "freshnessBasis": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nfl/recap?gameId=401873042"
+            "https://www.espn.com/nfl/story/_/id/50426396/jets-frustrated-geno-smith-membou"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873042"
+              "url": "https://www.espn.com/nfl/story/_/id/50426396/jets-frustrated-geno-smith-membou"
             }
           ],
-          "id": "a415-83aabb5b1a4bc9f2",
-          "feedRank": 6,
-          "compactHeadline": "Lions grind past Dolphins 19-9 as Jahmyr Gibbs scores and Jake Bates makes 4 field goals"
+          "id": "a415-f082150fed856264",
+          "feedRank": 7,
+          "compactHeadline": "Jets begin to unravel on and off field as losing streak hits 4 games"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-3abb6ea7eab776d1"
           ],
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T00:27:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.56,
+          "ageHours": 2.06,
           "freshnessBasis": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
           "status": "active",
           "sourceUrls": [
@@ -217,37 +246,8 @@
             }
           ],
           "id": "a415-ddf6157ce9109882",
-          "feedRank": 7,
-          "compactHeadline": "Dak Prescott: Cowboys can make playoffs without making trade"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-362b748d64466263"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
-          "text": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
-          "entities": [],
-          "occurredAt": "2026-11-09T01:13:16Z",
-          "timePrecision": "exact",
-          "ageHours": 0.79,
-          "freshnessBasis": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50426396/jets-frustrated-geno-smith-membou"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50426396/jets-frustrated-geno-smith-membou"
-            }
-          ],
-          "id": "a415-f7744c6799bf4844",
           "feedRank": 8,
-          "compactHeadline": "Jets begin to unravel on and off field as losing streak hits four games"
+          "compactHeadline": "Dak Prescott: Cowboys can make playoffs without making trade"
         }
       ]
     },
@@ -267,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:28:50Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.04,
           "freshnessBasis": "Jalen Duren will miss at least two more weeks because of a hamstring injury, the Detroit Pistons announced Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:32:12Z",
           "timePrecision": "exact",
-          "ageHours": 3.48,
+          "ageHours": 3.98,
           "freshnessBasis": "Charlotte Hornets second-year guard Kon Knueppel has a left hamstring strain and will be out for at least four weeks before he is reevaluated.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
+          "ageHours": 4.75,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T01:52:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 0.64,
           "freshnessBasis": "— Austin Reaves scored 43 points as the Los Angeles Lakers held off the Detroit Pistons 121-116 at Little Caesars Arena without Luka Doncic on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:55:40Z",
           "timePrecision": "exact",
-          "ageHours": 8.09,
+          "ageHours": 8.59,
           "freshnessBasis": "Warriors star Stephen Curry scored 17 of his 41 points in the final seven minutes of a 126-119 overtime win over the Magic, setting another late-career NBA record.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T00:15:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.75,
+          "ageHours": 2.26,
           "freshnessBasis": "A man was arrested on Friday night at LeBron James' Brentwood, California, home, a Los Angeles Police Department spokesperson confirmed to ESPN on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -438,6 +438,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9513e2b9f48497ab"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Mark Scheifele scored on a 5-on-3 power play with 1.6 seconds left and the Winnipeg Jets beat the Tampa Bay Lightning 4-3 on Sunday after blowing a late three-goal lead.",
+          "text": "Mark Scheifele scored on a 5-on-3 power play with 1.6 seconds left and the Winnipeg Jets beat the Tampa Bay Lightning 4-3 on Sunday after blowing a late three-goal lead.",
+          "entities": [],
+          "occurredAt": "2026-11-09T02:28:34Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "— Mark Scheifele scored on a 5-on-3 power play with 1.6 seconds left and the Winnipeg Jets beat the Tampa Bay Lightning 4-3 on Sunday after blowing a late three-goal lead.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892677"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892677"
+            }
+          ],
+          "id": "a415-dd0d44e1df727847",
+          "feedRank": 15,
+          "compactHeadline": "Scheifele scores on power play with 1.6 seconds left to lift Jets past Lightning, 4-3"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-21a471f5c1056ef5"
           ],
           "type": "RESULT",
@@ -447,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:16:35Z",
           "timePrecision": "exact",
-          "ageHours": 2.74,
+          "ageHours": 3.24,
           "freshnessBasis": "— Tomas Hertl scored two goals and the Vegas Golden Knights won their third straight game, 4-1 over the Buffalo Sabres on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -461,11 +490,11 @@
             }
           ],
           "id": "a415-f7aa8da3e12f2f94",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Tomas Hertl scores twice as Golden Knights beat Sabres 4-1 for third straight win"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-a5d9725648823058"
           ],
@@ -476,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 16.82,
+          "ageHours": 17.32,
           "freshnessBasis": "Florida Panthers (9-6-2, in the Atlantic Division) vs. Boston Bruins (12-4-1, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -490,11 +519,11 @@
             }
           ],
           "id": "a415-aa2bc40584b7aa5d",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Bruins try to keep win streak alive, host the Panthers"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-a1c6dec99165f861"
           ],
@@ -505,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T09:11:37Z",
           "timePrecision": "exact",
-          "ageHours": 16.82,
+          "ageHours": 17.32,
           "freshnessBasis": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -519,11 +548,11 @@
             }
           ],
           "id": "a415-b6fecd0b7f8c0ada",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "New York brings 3-game win streak into matchup against Edmonton"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-a1287d2427f69b44"
           ],
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:14:35Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 5.28,
           "freshnessBasis": "— Elias Lindholm, Mikey Eyssimont and Morgan Geekie each scored a goal in an opening period that started out testy, carrying the Boston Bruins past the Florida Panthers 4-1 on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -548,37 +577,8 @@
             }
           ],
           "id": "a415-49abebce7aed12d9",
-          "feedRank": 18,
-          "compactHeadline": "Elias Lindholm scores 1st of Boston's 3 goals in 1st period, carrying Bruins past Panthers, 4-1"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-f77e1240a0b4f630"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
-          "text": "Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-08T06:32:37Z",
-          "timePrecision": "exact",
-          "ageHours": 19.47,
-          "freshnessBasis": "— Leon Draisaitl had two goals and an assist, Connor McDavid added three more assists and the Edmonton Oilers beat the struggling Vancouver Canucks 4-2 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892673"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892673"
-            }
-          ],
-          "id": "a415-59e1ae8eb969867a",
           "feedRank": 19,
-          "compactHeadline": "Draisaitl scores twice, McDavid has 3 assists to extend streak and Oilers beat skidding Canucks 4-2"
+          "compactHeadline": "Elias Lindholm scores 1st of Boston's 3 goals in 1st period, carrying Bruins past Panthers, 4-1"
         }
       ]
     },
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:08:27Z",
           "timePrecision": "exact",
-          "ageHours": 7.87,
+          "ageHours": 8.38,
           "freshnessBasis": "\"Poetry in motion\" was the serenade from the Liverpool fans at Crystal Palace. And for a moment in their 3-1 victory, that's exactly what the Reds were.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:27:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.56,
+          "ageHours": 4.07,
           "freshnessBasis": "Bruno Guimarães saluted \"unbelievable\" Arsenal after they stretched their lead at the top of the Premier League with a gritty 1-0 win over Hull.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:15:01Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.27,
           "freshnessBasis": "Leeds have condemned alleged racist abuse of defender Jayden Bogle on social media following Saturday's 1-0 Premier League win over Tottenham at Elland Road.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.53,
           "freshnessBasis": "Andoni Iraola admitted Liverpool \"needed\" their 3-1 victory over Crystal Palace after a disappointing week for his team.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 9.26,
+          "ageHours": 9.77,
           "freshnessBasis": "Diego Gómez scored another stunner as Brighton enjoyed a happy homecoming by climbing to second in the Premier League with a 2-0 win over 10-man Brentford at the Amex Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:29:50Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
+          "ageHours": 10.02,
           "freshnessBasis": "Sunderland ended their winless run in the Premier League with a hard-fought 1-0 win over Chelsea at the Stadium of Light.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:54:28Z",
           "timePrecision": "exact",
-          "ageHours": 23.11,
+          "ageHours": 23.61,
           "freshnessBasis": "Sergi Solans and Zach Booth scored early and Real Salt Lake clinched a playoff spot while eliminating the LA Galaxy with a 2-1 Decision Day victory over the Galaxy on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:35:48Z",
           "timePrecision": "exact",
-          "ageHours": 23.42,
+          "ageHours": 23.92,
           "freshnessBasis": "- Kaick Ferreira, known simply as \"Kaick\", scored the go-ahead goal in the 88th and FC Dallas beat Colorado 3-1 on Saturday night to eliminati the Rapids from playoff contention.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T02:35:02Z",
           "timePrecision": "exact",
-          "ageHours": 23.43,
+          "ageHours": 23.93,
           "freshnessBasis": "- Ariel Lassiter opened the scoring in the third minute, Kristoffer Velde added a goal and the Portland Timbers beat Austin FC 2-0 on Saturday night to clinch a spot in the MLS Cup playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T10:48:49Z",
           "timePrecision": "exact",
-          "ageHours": 15.2,
+          "ageHours": 15.7,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:58Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.77,
           "freshnessBasis": "No. 8 Texas (7-2) at No. 24 LSU (6-3), Nov. 14 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:57Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.77,
           "freshnessBasis": "No. 11 Wake Forest (8-1) at No. 25 SMU (7-2), Nov. 14 at 12 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.28,
+          "ageHours": 5.78,
           "freshnessBasis": "No. 15 USC (7-2) at No. 6 Indiana (8-1), Nov. 14 at 3:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:44:50Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 2.77,
           "freshnessBasis": "A day after losing to rival Michigan State 15-6, Michigan fired offensive coordinator Jason Beck, the program announced Sunday afternoon. The Wolverines are 5-4 and have the No. 17 scoring offense in the Big Ten.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:22:19Z",
           "timePrecision": "exact",
-          "ageHours": 2.64,
+          "ageHours": 3.15,
           "freshnessBasis": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 5.25,
+          "ageHours": 5.75,
           "freshnessBasis": "Louisiana (6-3) at UL Monroe (2-7), Nov. 12 at 9 p.m. EST.",
           "status": "active",
           "sourceUrls": [
