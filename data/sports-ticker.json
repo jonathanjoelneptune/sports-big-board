@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-09T18:30:58Z",
+  "generatedAt": "2026-11-09T19:00:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "494a1c060bfc126f4f02e3c7ff91f7e10d7f578e596077d61b32cf54df057a86",
+  "sourceCandidateHash": "339ab93f845dcdfbdce0510a16a71930e8c3ebe5e30abbca9b48365b5e4a49e3",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T01:03:42Z",
           "timePrecision": "exact",
-          "ageHours": 17.45,
+          "ageHours": 17.95,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-42d2e5fd4a0adc20"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Chiefs quarterback Patrick Mahomes is considered day-to-day after suffering an injury to his throwing elbow.",
+          "text": "Chiefs quarterback Patrick Mahomes is considered day-to-day after suffering an injury to his throwing elbow.",
+          "entities": [],
+          "occurredAt": "2026-11-09T18:58:18Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "Chiefs quarterback Patrick Mahomes is considered day-to-day after suffering an injury to his throwing elbow.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50434564/chiefs-qb-patrick-mahomes-day-day-elbow-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50434564/chiefs-qb-patrick-mahomes-day-day-elbow-injury"
+            }
+          ],
+          "id": "a415-f203dfde23fba17f",
+          "feedRank": 2,
+          "compactHeadline": "Chiefs QB Patrick Mahomes day-to-day with elbow injury"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-df359358c6eb6573"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Lions added to their injury-plagued secondary Monday, acquiring safety Andre Cisco in a trade with the Jets, sources told ESPN.",
+          "text": "The Lions added to their injury-plagued secondary Monday, acquiring safety Andre Cisco in a trade with the Jets, sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-11-09T18:56:42Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "The Lions added to their injury-plagued secondary Monday, acquiring safety Andre Cisco in a trade with the Jets, sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50434559/sources-jets-trade-safety-andre-cisco-lions"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50434559/sources-jets-trade-safety-andre-cisco-lions"
+            }
+          ],
+          "id": "a415-0a0df603f2e682ce",
+          "feedRank": 3,
+          "compactHeadline": "Sources: Jets trade safety Andre Cisco to injury-plagued Lions"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-acec131518e7d7e5"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Jaguars bolstered their defense, acquiring safety Jessie Bates III from the Falcons and defensive tackle Davon Godchaux from the Saints.",
+          "text": "The Jaguars bolstered their defense, acquiring safety Jessie Bates III from the Falcons and defensive tackle Davon Godchaux from the Saints.",
+          "entities": [],
+          "occurredAt": "2026-11-09T18:59:33Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "The Jaguars bolstered their defense, acquiring safety Jessie Bates III from the Falcons and defensive tackle Davon Godchaux from the Saints.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50432277/sources-jaguars-get-jessie-bates-iii-trade-falcons"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50432277/sources-jaguars-get-jessie-bates-iii-trade-falcons"
+            }
+          ],
+          "id": "a415-54b29ee34027c2cc",
+          "feedRank": 4,
+          "compactHeadline": "Jaguars bolster defense, trade for safety Jessie Bates, DT Davon Godchaux"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-f1d7bb2679b6d961"
           ],
           "type": "INJURY",
@@ -58,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:02:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.48,
+          "ageHours": 0.98,
           "freshnessBasis": "Giants coach John Harbaugh says he feels \"fairly good\" about quarterback J.J. McCarthy's availability this week after he suffered a hip injury in Sunday's win against the Eagles.",
           "status": "active",
           "sourceUrls": [
@@ -72,11 +159,11 @@
             }
           ],
           "id": "a415-63beb560bef00b48",
-          "feedRank": 2,
+          "feedRank": 5,
           "compactHeadline": "Harbaugh: Giants 'feel fairly good' about McCarthy (hip) playing vs. Commanders"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-acf17854d18e1142"
           ],
@@ -87,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:05:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.92,
           "freshnessBasis": "The Packers, Bears, Lions and Vikings are a combined 25-8 and all hold playoff spots right now. Can anyone stop the NFC North -- and who will win the division?",
           "status": "active",
           "sourceUrls": [
@@ -101,23 +188,23 @@
             }
           ],
           "id": "a415-a18c1321b20602c8",
-          "feedRank": 3,
+          "feedRank": 6,
           "compactHeadline": "Is the NFC North the best division ever? Sizing up wins for Packers, Lions, Bears"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
-            "cand-56920d8b57bc565a"
+            "cand-a4efbad8f5755fac"
           ],
           "type": "TRADE",
           "priority": 78,
-          "headline": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Jessie Bates III and Davon Godchaux to Jacksonville.",
-          "text": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Jessie Bates III and Davon Godchaux to Jacksonville.",
+          "headline": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Andre Cisco to the Lions.",
+          "text": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Andre Cisco to the Lions.",
           "entities": [],
-          "occurredAt": "2026-11-09T18:26:34Z",
+          "occurredAt": "2026-11-09T18:38:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Jessie Bates III and Davon Godchaux to Jacksonville.",
+          "ageHours": 0.37,
+          "freshnessBasis": "The NFL trade deadline is Tuesday at 4 p.m. ET. We're following all the action, including Andre Cisco to the Lions.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50043471/2026-trade-deadline-updates-latest-news-deals-terms"
@@ -129,96 +216,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/50043471/2026-trade-deadline-updates-latest-news-deals-terms"
             }
           ],
-          "id": "a415-c46eae9783dc635c",
-          "feedRank": 4,
-          "compactHeadline": "2026 NFL trade deadline updates: Davon Godchaux, Jessie Bates III on the move"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-3458a5c19467e741"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The NFL trade deadline is on Tuesday at 4 p.m. ET. Has Kubiak, Raiders given hints that they might not make moves?",
-          "text": "The NFL trade deadline is on Tuesday at 4 p.m. ET. Has Kubiak, Raiders given hints that they might not make moves?",
-          "entities": [],
-          "occurredAt": "2026-11-09T18:24:48Z",
-          "timePrecision": "exact",
-          "ageHours": 0.1,
-          "freshnessBasis": "The NFL trade deadline is on Tuesday at 4 p.m. ET. Has Kubiak, Raiders given hints that they might not make moves?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50433312/las-vegas-raiders-2026-trade-deadline-approach"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50433312/las-vegas-raiders-2026-trade-deadline-approach"
-            }
-          ],
-          "id": "a415-969aaee013c848f6",
-          "feedRank": 5,
-          "compactHeadline": "Why the Raiders are better off standing pat at the NFL trade deadline"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-6889aedd3dd44529"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The NFL trade deadline is Tuesday.",
-          "text": "The NFL trade deadline is Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-11-09T18:23:26Z",
-          "timePrecision": "exact",
-          "ageHours": 0.13,
-          "freshnessBasis": "The NFL trade deadline is Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50434265/watch-2026-nfl-trade-deadline-coverage"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50434265/watch-2026-nfl-trade-deadline-coverage"
-            }
-          ],
-          "id": "a415-2d7af726b0dfeb32",
-          "feedRank": 6,
-          "compactHeadline": "Where to watch 2026 NFL trade deadline coverage"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-5ba5ee8ca0df8170"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The Jaguars bolstered their secondary one day before the NFL trade deadline, acquiring veteran safety Jessie Bates III from the Falcons.",
-          "text": "The Jaguars bolstered their secondary one day before the NFL trade deadline, acquiring veteran safety Jessie Bates III from the Falcons.",
-          "entities": [],
-          "occurredAt": "2026-11-09T17:39:56Z",
-          "timePrecision": "exact",
-          "ageHours": 0.85,
-          "freshnessBasis": "The Jaguars bolstered their secondary one day before the NFL trade deadline, acquiring veteran safety Jessie Bates III from the Falcons.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50432277/sources-jaguars-get-jessie-bates-iii-trade-falcons"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50432277/sources-jaguars-get-jessie-bates-iii-trade-falcons"
-            }
-          ],
-          "id": "a415-7dea192132e74cd8",
+          "id": "a415-b8a83e67a9b253fb",
           "feedRank": 7,
-          "compactHeadline": "Jaguars bolster secondary, land Jessie Bates III in trade with Falcons"
+          "compactHeadline": "2026 NFL trade deadline updates: Andre Cisco, Davon Godchaux on the move"
         }
       ]
     },
@@ -238,7 +238,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T05:10:03Z",
           "timePrecision": "exact",
-          "ageHours": 13.35,
+          "ageHours": 13.85,
           "freshnessBasis": "Jalen Duren will miss at least two more weeks because of a hamstring injury, the Detroit Pistons announced Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -267,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T07:04:35Z",
           "timePrecision": "exact",
-          "ageHours": 11.44,
+          "ageHours": 11.94,
           "freshnessBasis": "Boston Celtics (8-2, second in the Eastern Conference) vs. Philadelphia 76ers (9-2, first in the Eastern Conference)",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:32:12Z",
           "timePrecision": "exact",
-          "ageHours": 19.98,
+          "ageHours": 20.48,
           "freshnessBasis": "Charlotte Hornets second-year guard Kon Knueppel has a left hamstring strain and will be out for at least four weeks before he is reevaluated.",
           "status": "active",
           "sourceUrls": [
@@ -316,6 +316,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-0a1e0e07ad4d8204"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The NBA is finalizing Miami as host of the 2028 All-Star Weekend, sources told ESPN's Shams Charania on Monday.",
+          "text": "The NBA is finalizing Miami as host of the 2028 All-Star Weekend, sources told ESPN's Shams Charania on Monday.",
+          "entities": [],
+          "occurredAt": "2026-11-09T18:59:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "The NBA is finalizing Miami as host of the 2028 All-Star Weekend, sources told ESPN's Shams Charania on Monday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50434463/nba-finalizing-miami-2028-all-star-weekend-host"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50434463/nba-finalizing-miami-2028-all-star-weekend-host"
+            }
+          ],
+          "id": "a415-573c142a1df4ed4c",
+          "feedRank": 11,
+          "compactHeadline": "Sources: NBA finalizing Miami as 2028 All-Star Weekend host"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-d83a33f651ddedbe"
           ],
           "type": "TRADE",
@@ -325,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 20.75,
+          "ageHours": 21.25,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -339,11 +368,11 @@
             }
           ],
           "id": "a415-34bcdaaf37456a26",
-          "feedRank": 11,
+          "feedRank": 12,
           "compactHeadline": "Thunder get Nique Clifford in trade with Kings"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-69e507f853b7ef00"
           ],
@@ -354,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T04:59:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.52,
+          "ageHours": 14.02,
           "freshnessBasis": "— Giannis Antetokounmpo had 29 points, 14 rebounds, and three assists in the Miami Heat’s 114-108 win over the Sacramento Kings on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -368,37 +397,8 @@
             }
           ],
           "id": "a415-3d7a7b3c4724e9c8",
-          "feedRank": 12,
-          "compactHeadline": "Giannis Antetokounmpo scores 29 points to lead the Heat to a 114-108 win over the struggling Kings"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-6e3650ced942b0b4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Darius Garland had 24 points and 10 assists, Brook Lopez added 20 points and the Los Angeles Clippers ended a seven-game losing streak with a 139-123 victory over the New Orleans Pelicans on Sunday night.",
-          "text": "Darius Garland had 24 points and 10 assists, Brook Lopez added 20 points and the Los Angeles Clippers ended a seven-game losing streak with a 139-123 victory over the New Orleans Pelicans on Sunday night.",
-          "entities": [],
-          "occurredAt": "2026-11-09T04:48:47Z",
-          "timePrecision": "exact",
-          "ageHours": 13.7,
-          "freshnessBasis": "— Darius Garland had 24 points and 10 assists, Brook Lopez added 20 points and the Los Angeles Clippers ended a seven-game losing streak with a 139-123 victory over the New Orleans Pelicans on Sunday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909950"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909950"
-            }
-          ],
-          "id": "a415-d6cbda7ec04bad31",
           "feedRank": 13,
-          "compactHeadline": "Clippers beat Pelicans to end 7-game losing streak"
+          "compactHeadline": "Giannis Antetokounmpo scores 29 points to lead the Heat to a 114-108 win over the struggling Kings"
         }
       ]
     },
@@ -418,7 +418,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T09:11:50Z",
           "timePrecision": "exact",
-          "ageHours": 9.32,
+          "ageHours": 9.82,
           "freshnessBasis": "Detroit Red Wings (7-8-3, in the Atlantic Division) vs. St. Louis Blues (7-8-2, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T09:11:49Z",
           "timePrecision": "exact",
-          "ageHours": 9.32,
+          "ageHours": 9.82,
           "freshnessBasis": "Philadelphia Flyers (4-10-5, in the Metropolitan Division) vs. Vancouver Canucks (3-15-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T04:48:43Z",
           "timePrecision": "exact",
-          "ageHours": 13.7,
+          "ageHours": 14.2,
           "freshnessBasis": "The Devils announced Connor Hellebuyck will not face the Jets on Tuesday night in his first trip to Winnipeg since his contentious trade demand was granted.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T03:20:34Z",
           "timePrecision": "exact",
-          "ageHours": 15.17,
+          "ageHours": 15.67,
           "freshnessBasis": "— Connor Hellebuyck made 23 saves for his first shutout with New Jersey and the Devils beat the Toronto Maple Leafs 4-0 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T02:28:34Z",
           "timePrecision": "exact",
-          "ageHours": 16.04,
+          "ageHours": 16.54,
           "freshnessBasis": "— Mark Scheifele scored on a 5-on-3 power play with 1.6 seconds left and the Winnipeg Jets beat the Tampa Bay Lightning 4-3 on Sunday after blowing a late three-goal lead.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T14:36:12Z",
           "timePrecision": "exact",
-          "ageHours": 3.91,
+          "ageHours": 4.41,
           "freshnessBasis": "Find out more about which NHL prospects are playing Division I hockey this season.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T11:31:34Z",
           "timePrecision": "exact",
-          "ageHours": 6.99,
+          "ageHours": 7.49,
           "freshnessBasis": "William Saliba stepped up his comeback by playing 45 minutes for Arsenal's Under-21s on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T17:33:43Z",
           "timePrecision": "exact",
-          "ageHours": 0.95,
+          "ageHours": 1.45,
           "freshnessBasis": "Chelsea boss Xabi Alonso does not believe his side were bullied during their 1-0 defeat to Sunderland on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:28:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.54,
           "freshnessBasis": "Man United's hierarchy are continuing to discuss Carrick's position with bosses keen to take their time before making a decision, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T14:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.43,
+          "ageHours": 4.93,
           "freshnessBasis": "Man United have a penchant for waking up *after* games have already started -- and it's why they face Premier League relegation.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T13:49:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.7,
+          "ageHours": 5.2,
           "freshnessBasis": "Man United came back to draw Aston Villa, but that shouldn't save Carrick's job. Plus, Barça escape Atletico with victory, and Man City's defensive woes continue.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T13:06:45Z",
           "timePrecision": "exact",
-          "ageHours": 5.4,
+          "ageHours": 5.9,
           "freshnessBasis": "Manchester United's Patrick Dorgu has said that he is \"not happy\" despite scoring a 96th-minute equaliser in the chaotic 4-4 draw with Aston Villa on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T14:07:44Z",
           "timePrecision": "exact",
-          "ageHours": 4.39,
+          "ageHours": 4.89,
           "freshnessBasis": "After every team in MLS is eliminated from postseason contention, ESPN details the best and worst of their seasons, and their priorities for 2027.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T17:14:39Z",
           "timePrecision": "exact",
-          "ageHours": 1.27,
+          "ageHours": 1.77,
           "freshnessBasis": "USMNT's Neil Pierre could potentially see minutes against Haiti in this month's Concacaf Nations League quarterfinals.",
           "status": "active",
           "sourceUrls": [
@@ -836,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T17:31:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.99,
+          "ageHours": 1.49,
           "freshnessBasis": "Before the World Cup, many wondered if Americans would stick around afterward. Betting data says yes, they did.",
           "status": "active",
           "sourceUrls": [
@@ -905,7 +905,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:16:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
+          "ageHours": 0.73,
           "freshnessBasis": "With quarterback Josh Hoover still on the mend from an arm injury, Curt Cignetti says he'll \"see how the week plays out\" before naming a starter for Saturday's affair against USC.",
           "status": "active",
           "sourceUrls": [
@@ -934,7 +934,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:12:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.31,
+          "ageHours": 0.81,
           "freshnessBasis": "Tennessee's most productive pass rusher, Tyree Weathersby, will miss the rest of the season after suffering a leg injury during Saturday's win over Kentucky.",
           "status": "active",
           "sourceUrls": [
@@ -963,7 +963,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:10:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.83,
           "freshnessBasis": "Alabama starting tight end Josh Ford, who played with a broken arm the last month, will likely miss the rest of the season with a lower-body injury, coach Kalen DeBoer told reporters on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -992,7 +992,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T18:16:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.75,
           "freshnessBasis": "ESPN has signed a five-year deal to remain the sole broadcast partner of the College Football Playoff as it expands to 24 teams. The deal is worth nearly $1.7 billion, sources told ESPN's Heather Dinich.",
           "status": "active",
           "sourceUrls": [
@@ -1019,9 +1019,9 @@
           "headline": "The expanded College Football Playoff is official and begins next season. Here's what you need to know.",
           "text": "The expanded College Football Playoff is official and begins next season. Here's what you need to know.",
           "entities": [],
-          "occurredAt": "2026-11-09T18:18:09Z",
+          "occurredAt": "2026-11-09T18:47:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
+          "ageHours": 0.23,
           "freshnessBasis": "The expanded College Football Playoff is official and begins next season. Here's what you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -1048,9 +1048,9 @@
           "headline": "ESPN will be the exclusive worldwide media rights holder to the new 24-team College Football Playoff. ESPN chairman Jimmy Pitaro said the deal \"reinforces our position as the preeminent destination for college sports.\"",
           "text": "ESPN will be the exclusive worldwide media rights holder to the new 24-team College Football Playoff. ESPN chairman Jimmy Pitaro said the deal \"reinforces our position as the preeminent destination for college sports.\"",
           "entities": [],
-          "occurredAt": "2026-11-09T17:54:48Z",
+          "occurredAt": "2026-11-09T18:37:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.6,
+          "ageHours": 0.39,
           "freshnessBasis": "ESPN will be the exclusive worldwide media rights holder to the new 24-team College Football Playoff. ESPN chairman Jimmy Pitaro said the deal \"reinforces our position as the preeminent destination for college sports.\"",
           "status": "active",
           "sourceUrls": [
