@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-09T03:31:04Z",
+  "generatedAt": "2026-11-09T04:00:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "439c85dd5084907fef3e08f01023b5bf4f8737fe8257f8b83422cbb4c456ad07",
+  "sourceCandidateHash": "b64df254dff0e1e4c696dd99cd1aafa85df00518ebda1185c1316ca24c00d3af",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T01:03:42Z",
           "timePrecision": "exact",
-          "ageHours": 2.46,
+          "ageHours": 2.95,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T15:31:14Z",
           "timePrecision": "exact",
-          "ageHours": 12.0,
+          "ageHours": 12.5,
           "freshnessBasis": "Pedro Martinez appealed to both MLB players and owners to find a solution to their CBA talks, saying \"get something done and don't lock out baseball for the fans.\"",
           "status": "active",
           "sourceUrls": [
@@ -78,35 +78,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-18a202a3565da307"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
-          "text": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
-          "entities": [],
-          "occurredAt": "2026-11-09T03:25:38Z",
-          "timePrecision": "exact",
-          "ageHours": 0.09,
-          "freshnessBasis": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50428280/herbert-injures-finger-chargers-loss-testing"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50428280/herbert-injures-finger-chargers-loss-testing"
-            }
-          ],
-          "id": "a415-8eeff28abd871d6a",
-          "feedRank": 3,
-          "compactHeadline": "Herbert to undergo testing after exiting Chargers' 44-22 loss with finger injury"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-f3a21b337af2378b"
           ],
           "type": "INJURY",
@@ -114,9 +85,9 @@
           "headline": "Texans WR Tank Dell scored a touchdown Sunday in his second game back from a gruesome knee injury.",
           "text": "Texans WR Tank Dell scored a touchdown Sunday in his second game back from a gruesome knee injury.",
           "entities": [],
-          "occurredAt": "2026-11-09T03:24:42Z",
+          "occurredAt": "2026-11-09T03:41:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.33,
           "freshnessBasis": "Texans WR Tank Dell scored a touchdown Sunday in his second game back from a gruesome knee injury.",
           "status": "active",
           "sourceUrls": [
@@ -130,8 +101,37 @@
             }
           ],
           "id": "a415-2415906be9fdda28",
-          "feedRank": 4,
+          "feedRank": 3,
           "compactHeadline": "'Grateful' Tank Dell has 105 receiving yards in 2nd game back from knee injury"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-18a202a3565da307"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
+          "text": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
+          "entities": [],
+          "occurredAt": "2026-11-09T03:25:38Z",
+          "timePrecision": "exact",
+          "ageHours": 0.59,
+          "freshnessBasis": "Los Angeles Chargers quarterback Justin Herbert, who was sacked eight times and threw his NFL-leading 11th interception, left Sunday's 44-22 loss to the Houston Texans in the second half with an injury to the middle finger on his left (non-throwing) hand.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50428280/herbert-injures-finger-chargers-loss-testing"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50428280/herbert-injures-finger-chargers-loss-testing"
+            }
+          ],
+          "id": "a415-8eeff28abd871d6a",
+          "feedRank": 4,
+          "compactHeadline": "Herbert to undergo testing after exiting Chargers' 44-22 loss with finger injury"
         },
         {
           "rank": 3,
@@ -145,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T02:37:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.9,
+          "ageHours": 1.4,
           "freshnessBasis": "Gracen Halton suffered a broken left ankle against the Raiders, an injury that will end his rookie season after eight games.",
           "status": "active",
           "sourceUrls": [
@@ -165,35 +165,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-eb6d43542fd97844"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
-          "text": "J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
-          "entities": [],
-          "occurredAt": "2026-11-08T23:44:35Z",
-          "timePrecision": "exact",
-          "ageHours": 3.77,
-          "freshnessBasis": "— J.J. McCarthy may as well have been any New York Giants fan nervously watching on TV as the injured quarterback tossed a football to keep warm and paced around the locker room.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/recap?gameId=401873044"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873044"
-            }
-          ],
-          "id": "a415-3ade32be909069d2",
-          "feedRank": 6,
-          "compactHeadline": "Winston, McCarthy combine to lead Giants to 19-11 win and hand Eagles 7th straight loss"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-8555b396b34aca4d"
           ],
           "type": "INJURY",
@@ -203,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:32:52Z",
           "timePrecision": "exact",
-          "ageHours": 3.97,
+          "ageHours": 4.47,
           "freshnessBasis": "The Rams do not believe Puka Nacua suffered a torn ACL, but the imaging Monday will tell more, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +188,11 @@
             }
           ],
           "id": "a415-53fc660701d25cf4",
-          "feedRank": 7,
+          "feedRank": 6,
           "compactHeadline": "Sources: Puka Nacua set for tests on late-game knee injury; Rams believe ACL OK"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-b5840684ccf364be"
           ],
@@ -232,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T02:10:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.34,
+          "ageHours": 1.84,
           "freshnessBasis": "New York players were seen slamming helmets during their 35-12 loss in Kansas City, where they failed to score a TD.",
           "status": "active",
           "sourceUrls": [
@@ -246,8 +217,37 @@
             }
           ],
           "id": "a415-f082150fed856264",
-          "feedRank": 8,
+          "feedRank": 7,
           "compactHeadline": "Jets begin to unravel on and off field as losing streak hits 4 games"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-3abb6ea7eab776d1"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
+          "text": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
+          "entities": [],
+          "occurredAt": "2026-11-09T00:27:12Z",
+          "timePrecision": "exact",
+          "ageHours": 3.56,
+          "freshnessBasis": "Dallas quarterback Dak Prescott said the Cowboys have enough talent to be a playoff team without a trade deadline addition.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50427153/dak-prescott-cowboys-make-playoffs-making-trade"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50427153/dak-prescott-cowboys-make-playoffs-making-trade"
+            }
+          ],
+          "id": "a415-ddf6157ce9109882",
+          "feedRank": 8,
+          "compactHeadline": "Dak Prescott: Cowboys can make playoffs without making trade"
         }
       ]
     },
@@ -267,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:28:50Z",
           "timePrecision": "exact",
-          "ageHours": 4.04,
+          "ageHours": 4.54,
           "freshnessBasis": "Jalen Duren will miss at least two more weeks because of a hamstring injury, the Detroit Pistons announced Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:32:12Z",
           "timePrecision": "exact",
-          "ageHours": 4.98,
+          "ageHours": 5.48,
           "freshnessBasis": "Charlotte Hornets second-year guard Kon Knueppel has a left hamstring strain and will be out for at least four weeks before he is reevaluated.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T21:45:55Z",
           "timePrecision": "exact",
-          "ageHours": 5.75,
+          "ageHours": 6.25,
           "freshnessBasis": "The Thunder have acquired 2025 first-round pick Nique Clifford in a trade with the Kings.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T03:22:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 0.64,
           "freshnessBasis": "— Cooper Flagg had 25 points and a career-high 12 assists for his third consecutive double-double and fourth of the season as the Dallas Mavericks beat the Brooklyn Nets 130-93 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T02:53:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.62,
+          "ageHours": 1.12,
           "freshnessBasis": "— Ayo Dosunmu scored 26 points and LaMelo Ball added 24 points and five assists to help the Minnesota Timberwolves beat the Utah Jazz 115-100 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:55:40Z",
           "timePrecision": "exact",
-          "ageHours": 9.59,
+          "ageHours": 10.09,
           "freshnessBasis": "Warriors star Stephen Curry scored 17 of his 41 points in the final seven minutes of a 126-119 overtime win over the Magic, setting another late-career NBA record.",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T03:20:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.67,
           "freshnessBasis": "— Connor Hellebuyck made 23 saves for his first shutout with New Jersey and the Devils beat the Toronto Maple Leafs 4-0 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T02:28:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.04,
+          "ageHours": 1.54,
           "freshnessBasis": "— Mark Scheifele scored on a 5-on-3 power play with 1.6 seconds left and the Winnipeg Jets beat the Tampa Bay Lightning 4-3 on Sunday after blowing a late three-goal lead.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:16:35Z",
           "timePrecision": "exact",
-          "ageHours": 4.24,
+          "ageHours": 4.74,
           "freshnessBasis": "— Tomas Hertl scored two goals and the Vegas Golden Knights won their third straight game, 4-1 over the Buffalo Sabres on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -525,6 +525,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-76be382974e85285"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Cutter Gauthier continued his scoring rampage with his third hat trick in eight days, and captain Mikael Granlund had a goal and three assists in the Anaheim Ducks' fifth consecutive victory, 5-2 over the Pittsburgh Penguins on Sunday night.",
+          "text": "Cutter Gauthier continued his scoring rampage with his third hat trick in eight days, and captain Mikael Granlund had a goal and three assists in the Anaheim Ducks' fifth consecutive victory, 5-2 over the Pittsburgh Penguins on Sunday night.",
+          "entities": [],
+          "occurredAt": "2026-11-09T03:51:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "— Cutter Gauthier continued his scoring rampage with his third hat trick in eight days, and captain Mikael Granlund had a goal and three assists in the Anaheim Ducks' fifth consecutive victory, 5-2 over the Pittsburgh Penguins on Sunday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892679"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892679"
+            }
+          ],
+          "id": "a415-3b397568540aebff",
+          "feedRank": 18,
+          "compactHeadline": "Cutter Gauthier gets his 3rd hat trick in November, propelling the prolific Ducks past Penguins 5-2"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-0dadc9c97b7be695"
           ],
           "type": "NEWS",
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-09T03:27:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.56,
           "freshnessBasis": "— Matt Coronato scored at 4:08 of overtime to give the Calgary Flames a 4-3 victory over the Philadelphia Flyers on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -548,11 +577,11 @@
             }
           ],
           "id": "a415-ce433f5afb17d7fb",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Matt Coronato scores at 4:08 of overtime in Flames' 4-3 victory over Flyers"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-a5d9725648823058"
           ],
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 18.32,
+          "ageHours": 18.82,
           "freshnessBasis": "Florida Panthers (9-6-2, in the Atlantic Division) vs. Boston Bruins (12-4-1, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -577,37 +606,8 @@
             }
           ],
           "id": "a415-aa2bc40584b7aa5d",
-          "feedRank": 19,
-          "compactHeadline": "Bruins try to keep win streak alive, host the Panthers"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a1c6dec99165f861"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
-          "text": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
-          "entities": [],
-          "occurredAt": "2026-11-08T09:11:37Z",
-          "timePrecision": "exact",
-          "ageHours": 18.32,
-          "freshnessBasis": "New York Rangers (10-7-1, in the Metropolitan Division) vs. Edmonton Oilers (12-3-3, in the Pacific Division)",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/preview?gameId=401892680"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/preview?gameId=401892680"
-            }
-          ],
-          "id": "a415-b6fecd0b7f8c0ada",
           "feedRank": 20,
-          "compactHeadline": "New York brings 3-game win streak into matchup against Edmonton"
+          "compactHeadline": "Bruins try to keep win streak alive, host the Panthers"
         }
       ]
     },
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T18:08:27Z",
           "timePrecision": "exact",
-          "ageHours": 9.38,
+          "ageHours": 9.88,
           "freshnessBasis": "\"Poetry in motion\" was the serenade from the Liverpool fans at Crystal Palace. And for a moment in their 3-1 victory, that's exactly what the Reds were.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T22:27:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.07,
+          "ageHours": 5.56,
           "freshnessBasis": "Bruno Guimarães saluted \"unbelievable\" Arsenal after they stretched their lead at the top of the Premier League with a gritty 1-0 win over Hull.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:15:01Z",
           "timePrecision": "exact",
-          "ageHours": 7.27,
+          "ageHours": 7.77,
           "freshnessBasis": "Leeds have condemned alleged racist abuse of defender Jayden Bogle on social media following Saturday's 1-0 Premier League win over Tottenham at Elland Road.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T17:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.03,
           "freshnessBasis": "Andoni Iraola admitted Liverpool \"needed\" their 3-1 victory over Crystal Palace after a disappointing week for his team.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:45:09Z",
           "timePrecision": "exact",
-          "ageHours": 10.77,
+          "ageHours": 11.26,
           "freshnessBasis": "Diego Gómez scored another stunner as Brighton enjoyed a happy homecoming by climbing to second in the Premier League with a 2-0 win over 10-man Brentford at the Amex Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T16:29:50Z",
           "timePrecision": "exact",
-          "ageHours": 11.02,
+          "ageHours": 11.52,
           "freshnessBasis": "Sunderland ended their winless run in the Premier League with a hard-fought 1-0 win over Chelsea at the Stadium of Light.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T10:48:49Z",
           "timePrecision": "exact",
-          "ageHours": 16.7,
+          "ageHours": 17.2,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:58Z",
           "timePrecision": "exact",
-          "ageHours": 6.77,
+          "ageHours": 7.27,
           "freshnessBasis": "No. 8 Texas (7-2) at No. 24 LSU (6-3), Nov. 14 at 7:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -871,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:57Z",
           "timePrecision": "exact",
-          "ageHours": 6.77,
+          "ageHours": 7.27,
           "freshnessBasis": "No. 11 Wake Forest (8-1) at No. 25 SMU (7-2), Nov. 14 at 12 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:44:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.78,
+          "ageHours": 7.28,
           "freshnessBasis": "No. 15 USC (7-2) at No. 6 Indiana (8-1), Nov. 14 at 3:30 p.m. EST.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:44:50Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.27,
           "freshnessBasis": "A day after losing to rival Michigan State 15-6, Michigan fired offensive coordinator Jason Beck, the program announced Sunday afternoon. The Wolverines are 5-4 and have the No. 17 scoring offense in the Big Ten.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T23:22:19Z",
           "timePrecision": "exact",
-          "ageHours": 4.15,
+          "ageHours": 4.64,
           "freshnessBasis": "From Notre Dame's CJ Carr to Alabama's consistency, we examine the keys to victory on a statement Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-08T20:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 6.75,
+          "ageHours": 7.25,
           "freshnessBasis": "Louisiana (6-3) at UL Monroe (2-7), Nov. 12 at 9 p.m. EST.",
           "status": "active",
           "sourceUrls": [
