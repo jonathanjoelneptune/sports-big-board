@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-11T02:31:31Z",
+  "generatedAt": "2026-11-11T03:01:32Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "c1edc0000b2c83986064bcc28ce9aaf6502b4ae3948d7f9831e228c27f0bcd1b",
+  "sourceCandidateHash": "646d09978e835ce0b038796a793b218d676d63f59912b51d158bcf092520a4d2",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-374a125971c64bb2"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "Braves GM Alex Anthopoulos dismissed the possibility of the team moving on from Ronald Acuna Jr., saying, \"I have no idea where that stuff came from.\"",
+          "text": "Braves GM Alex Anthopoulos dismissed the possibility of the team moving on from Ronald Acuna Jr., saying, \"I have no idea where that stuff came from.\"",
+          "entities": [],
+          "occurredAt": "2026-11-11T02:49:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.2,
+          "freshnessBasis": "Braves GM Alex Anthopoulos dismissed the possibility of the team moving on from Ronald Acuna Jr., saying, \"I have no idea where that stuff came from.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50448746/braves-gm-emphatically-shuts-ronald-acuna-trade-rumors"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50448746/braves-gm-emphatically-shuts-ronald-acuna-trade-rumors"
+            }
+          ],
+          "id": "a415-39a6cd23b9775587",
+          "feedRank": 1,
+          "compactHeadline": "Braves GM emphatically shuts down Ronald Acuna trade speculation: 'We need him'"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-4184211a9c596cc6"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-11T01:40:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.86,
+          "ageHours": 1.36,
           "freshnessBasis": "Cubs pitcher Ben Brown had successful cervical spine surgery Monday in New York, general manager Carter Hawkins said on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-09fa61d203975705",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Cubs' Ben Brown undergoes successful spine surgery, GM says"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-529da6a3baa002e3"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T22:15:36Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.77,
           "freshnessBasis": "New York Yankees starter Max Fried had a bone spur taken out of his throwing elbow, but he is expected to begin his throwing program in December.",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +95,8 @@
             }
           ],
           "id": "a415-4bfdf6e27501b47c",
-          "feedRank": 2,
-          "compactHeadline": "Yankees' Fried has bone spur removed, to start throwing again in Dec."
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-f449dd7819029ab1"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Mets are scheduled to meet with left-handed ace Tarik Skubal, the prize of this offseason's free agent class, next week in California, a source told ESPN.",
-          "text": "The Mets are scheduled to meet with left-handed ace Tarik Skubal, the prize of this offseason's free agent class, next week in California, a source told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-11-11T02:13:56Z",
-          "timePrecision": "exact",
-          "ageHours": 0.29,
-          "freshnessBasis": "The Mets are scheduled to meet with left-handed ace Tarik Skubal, the prize of this offseason's free agent class, next week in California, a source told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50447896/source-mets-meet-prized-ace-tarik-skubal-next-week"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50447896/source-mets-meet-prized-ace-tarik-skubal-next-week"
-            }
-          ],
-          "id": "a415-73be61514eef8f5d",
           "feedRank": 3,
-          "compactHeadline": "Source: Mets to meet with prized ace Tarik Skubal next week"
+          "compactHeadline": "Yankees' Fried has bone spur removed, to start throwing again in Dec."
         },
         {
           "rank": 4,
@@ -108,9 +108,9 @@
           "headline": "The Brewers' Pat Murphy became the first to win NL Manager of the Year in three straight seasons Tuesday, while Will Venable of the White Sox won AL honors.",
           "text": "The Brewers' Pat Murphy became the first to win NL Manager of the Year in three straight seasons Tuesday, while Will Venable of the White Sox won AL honors.",
           "entities": [],
-          "occurredAt": "2026-11-11T01:58:00Z",
+          "occurredAt": "2026-11-11T02:59:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.56,
+          "ageHours": 0.03,
           "freshnessBasis": "The Brewers' Pat Murphy became the first to win NL Manager of the Year in three straight seasons Tuesday, while Will Venable of the White Sox won AL honors.",
           "status": "active",
           "sourceUrls": [
@@ -130,6 +130,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-f449dd7819029ab1"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Mets are scheduled to meet with left-handed ace Tarik Skubal, the prize of this offseason's free agent class, next week in California, a source told ESPN.",
+          "text": "The Mets are scheduled to meet with left-handed ace Tarik Skubal, the prize of this offseason's free agent class, next week in California, a source told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-11-11T02:13:56Z",
+          "timePrecision": "exact",
+          "ageHours": 0.79,
+          "freshnessBasis": "The Mets are scheduled to meet with left-handed ace Tarik Skubal, the prize of this offseason's free agent class, next week in California, a source told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50447896/source-mets-meet-prized-ace-tarik-skubal-next-week"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50447896/source-mets-meet-prized-ace-tarik-skubal-next-week"
+            }
+          ],
+          "id": "a415-73be61514eef8f5d",
+          "feedRank": 5,
+          "compactHeadline": "Source: Mets to meet with prized ace Tarik Skubal next week"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-4d11e3d4812078fc"
           ],
           "type": "NEWS",
@@ -139,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-11-11T00:59:06Z",
           "timePrecision": "exact",
-          "ageHours": 1.54,
+          "ageHours": 2.04,
           "freshnessBasis": "Everyone in the Milwaukee clubhouse has their favorite Murphy story. Here are the best of the best.",
           "status": "active",
           "sourceUrls": [
@@ -153,37 +182,8 @@
             }
           ],
           "id": "a415-5bdf9cd22f30b0f5",
-          "feedRank": 5,
-          "compactHeadline": "How Pat Murphy's leadership led Brewers to World Series title"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-878a905af4bec632"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Dodgers have hired Pedro Guerrero as a hitting coach, bringing him back to the organization that drafted him as a player.",
-          "text": "The Dodgers have hired Pedro Guerrero as a hitting coach, bringing him back to the organization that drafted him as a player.",
-          "entities": [],
-          "occurredAt": "2026-11-10T22:32:06Z",
-          "timePrecision": "exact",
-          "ageHours": 3.99,
-          "freshnessBasis": "The Dodgers have hired Pedro Guerrero as a hitting coach, bringing him back to the organization that drafted him as a player.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50446625/dodgers-hire-pedro-guerrero-away-marlins-hitting-coach"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50446625/dodgers-hire-pedro-guerrero-away-marlins-hitting-coach"
-            }
-          ],
-          "id": "a415-86cfb12954b79ce2",
           "feedRank": 6,
-          "compactHeadline": "Dodgers hire Pedro Guerrero away from Marlins as new hitting coach"
+          "compactHeadline": "How Pat Murphy's leadership led Brewers to World Series title"
         }
       ]
     },
@@ -194,6 +194,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-f78e3488d6faa6fa"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Chiefs have obtained needed help at wide receiver, acquiring Josh Downs in a trade with the Colts.",
+          "text": "The Chiefs have obtained needed help at wide receiver, acquiring Josh Downs in a trade with the Colts.",
+          "entities": [],
+          "occurredAt": "2026-11-11T02:42:31Z",
+          "timePrecision": "exact",
+          "ageHours": 0.32,
+          "freshnessBasis": "The Chiefs have obtained needed help at wide receiver, acquiring Josh Downs in a trade with the Colts.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50445576/chiefs-trade-colts-wr-josh-downs"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50445576/chiefs-trade-colts-wr-josh-downs"
+            }
+          ],
+          "id": "a415-2686e73de1f7f2fc",
+          "feedRank": 7,
+          "compactHeadline": "Chiefs snag needed help at WR, trade for Colts' Josh Downs"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-ecca45fe2d7b4c0f"
           ],
           "type": "TRADE",
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-11T01:45:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.27,
           "freshnessBasis": "No. 1 pick Fernando Mendoza was officially named the Raiders' starting quarterback Tuesday after the team traded Kirk Cousins to the Vikings.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +246,11 @@
             }
           ],
           "id": "a415-f88b7835744684d1",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Raiders name Fernando Mendoza starting QB after trading Kirk Cousins"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-f0c9079c8d65848d"
           ],
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T23:03:30Z",
           "timePrecision": "exact",
-          "ageHours": 3.47,
+          "ageHours": 3.97,
           "freshnessBasis": "The 49ers completed a trade with the Colts for Keenan Allen in a move that will bolster their injury-plagued WR corps.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-d6623633d85fc3bb",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "49ers trade for Colts' Keenan Allen to bolster injury-plagued WR room"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-c4405706c36c806b"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T23:27:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.06,
+          "ageHours": 3.56,
           "freshnessBasis": "Colts RB Jonathan Taylor and QB Daniel Jones were the subject of trade overtures in recent days and weeks but were not traded before Tuesday's trade deadline.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-5f255bd47e097d4b",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "RB Jonathan Taylor, QB Daniel Jones remain with Colts as trade deadline passes"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-c6cfa911f876d2a6"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T23:23:02Z",
           "timePrecision": "exact",
-          "ageHours": 3.14,
+          "ageHours": 3.64,
           "freshnessBasis": "The Bills traded for Titans safety Amani Hooker, giving up a second-round pick in exchange for Hooker and a fifth-round pick.",
           "status": "active",
           "sourceUrls": [
@@ -304,11 +333,11 @@
             }
           ],
           "id": "a415-f4a8a6cd19f2b4c8",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Bills fill major need at safety, trade for Titans' Amani Hooker"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-38161bae086af29e"
           ],
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T22:33:26Z",
           "timePrecision": "exact",
-          "ageHours": 3.97,
+          "ageHours": 4.47,
           "freshnessBasis": "The Dolphins have put quarterback Malik Wills on injured reserve because of a groin injury. He's eligible to return in Week 14.",
           "status": "active",
           "sourceUrls": [
@@ -333,37 +362,8 @@
             }
           ],
           "id": "a415-6ef7c95d969aa30b",
-          "feedRank": 11,
-          "compactHeadline": "Dolphins put QB Malik Willis on IR with groin injury"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-64c86d412500ac2b"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The Ravens acquired Falcons starting center Ryan Neuzil in exchange for backup guard Andrew Vorhees and a conditional 2028 sixth-round pick.",
-          "text": "The Ravens acquired Falcons starting center Ryan Neuzil in exchange for backup guard Andrew Vorhees and a conditional 2028 sixth-round pick.",
-          "entities": [],
-          "occurredAt": "2026-11-10T23:07:30Z",
-          "timePrecision": "exact",
-          "ageHours": 3.4,
-          "freshnessBasis": "The Ravens acquired Falcons starting center Ryan Neuzil in exchange for backup guard Andrew Vorhees and a conditional 2028 sixth-round pick.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50446499/falcons-trade-center-neuzil-ravens-guard-vorhees-pick"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50446499/falcons-trade-center-neuzil-ravens-guard-vorhees-pick"
-            }
-          ],
-          "id": "a415-99da24939b0abd0b",
           "feedRank": 12,
-          "compactHeadline": "Falcons trade center Ryan Neuzil to Ravens for guard Andrew Vorhees, pick"
+          "compactHeadline": "Dolphins put QB Malik Willis on IR with groin injury"
         }
       ]
     },
@@ -374,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-951d0bc557972ea5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Milwaukee Bucks 85, New York Knicks 117.",
+          "text": "Highlightly final: Milwaukee Bucks 85, New York Knicks 117.",
+          "entities": [],
+          "occurredAt": "2026-11-11T00:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.53,
+          "freshnessBasis": "Highlightly final: Milwaukee Bucks 85, New York Knicks 117.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-11-10",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-ca58400c307c6db8",
+          "feedRank": 13,
+          "compactHeadline": "New York Knicks beat Milwaukee Bucks 117-85"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-5fca2637125b31a9"
           ],
           "type": "TRADE",
@@ -381,9 +410,9 @@
           "headline": "Jaylen Brown and Jayson Tatum kept their distance during pregame warmups ahead of Tuesday night's Celtics-76ers matchup, before Tatum tried to dap up Brown before tip but was given the cold shoulder from the 76ers forward.",
           "text": "Jaylen Brown and Jayson Tatum kept their distance during pregame warmups ahead of Tuesday night's Celtics-76ers matchup, before Tatum tried to dap up Brown before tip but was given the cold shoulder from the 76ers forward.",
           "entities": [],
-          "occurredAt": "2026-11-11T02:25:38Z",
+          "occurredAt": "2026-11-11T02:47:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.23,
           "freshnessBasis": "Jaylen Brown and Jayson Tatum kept their distance during pregame warmups ahead of Tuesday night's Celtics-76ers matchup, before Tatum tried to dap up Brown before tip but was given the cold shoulder from the 76ers forward.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +426,11 @@
             }
           ],
           "id": "a415-6410ff2058a7d3ee",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "76ers' Brown gives Tatum frosty reception early in 1st post-trade matchup"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-75e25cc9f4bd57b9"
           ],
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T18:33:51Z",
           "timePrecision": "exact",
-          "ageHours": 7.96,
+          "ageHours": 8.46,
           "freshnessBasis": "Raptors star Kawhi Leonard will miss at least one more week as he continues to recover from a knee injury.",
           "status": "active",
           "sourceUrls": [
@@ -426,43 +455,8 @@
             }
           ],
           "id": "a415-e00d78e4771ebd51",
-          "feedRank": 14,
-          "compactHeadline": "Raptors say Kawhi Leonard will miss at least 1 more week due to knee swelling"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-6e41b7df78ada59f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Stephen Curry scored 25 points in 20-plus minutes, Yaxel Lendeborg had 23 points, seven rebounds and four assists, and the Golden State Warriors won their eighth straight game by running away from the undermanned New Orleans Pelicans early for a...",
-          "text": "Stephen Curry scored 25 points in 20-plus minutes, Yaxel Lendeborg had 23 points, seven rebounds and four assists, and the Golden State Warriors won their eighth straight game by running away from the undermanned New Orleans Pelicans early for a...",
-          "entities": [],
-          "occurredAt": "2026-11-10T03:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: New Orleans Pelicans 87, Golden State Warriors 138.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nba/recap?gameId=401909959"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-09",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909959"
-            }
-          ],
-          "id": "a415-85b12c6b5f3a43c1",
           "feedRank": 15,
-          "compactHeadline": "Stephen Curry, Brandin Podziemski each score 25 as Warriors run away from Pelicans for 138-87 win"
+          "compactHeadline": "Raptors say Kawhi Leonard will miss at least 1 more week due to knee swelling"
         },
         {
           "rank": 4,
@@ -476,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T22:39:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.87,
+          "ageHours": 4.37,
           "freshnessBasis": "The Warriors will be without reserve guard Brandon Williams for at least a week after he strained his left hamstring during Monday night's win, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T22:13:15Z",
           "timePrecision": "exact",
-          "ageHours": 4.3,
+          "ageHours": 4.8,
           "freshnessBasis": "The Futures Basketball League announced plans Tuesday to launch in April 2027, targeting the top 120 under-18 players in the country.",
           "status": "active",
           "sourceUrls": [
@@ -521,35 +515,6 @@
           "id": "a415-c2b3688079b7910f",
           "feedRank": 17,
           "compactHeadline": "Futures Basketball League to launch in April for U18 players"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d84dd9572f65ca00"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Stephen Curry scored 25 points in 20-plus minutes, Yaxel Lendeborg added 23 points, and the Warriors won their eighth straight game by 51 points against the short-handed Pelicans on Monday night.",
-          "text": "Stephen Curry scored 25 points in 20-plus minutes, Yaxel Lendeborg added 23 points, and the Warriors won their eighth straight game by 51 points against the short-handed Pelicans on Monday night.",
-          "entities": [],
-          "occurredAt": "2026-11-10T21:33:03Z",
-          "timePrecision": "exact",
-          "ageHours": 4.97,
-          "freshnessBasis": "Stephen Curry scored 25 points in 20-plus minutes, Yaxel Lendeborg added 23 points, and the Warriors won their eighth straight game by 51 points against the short-handed Pelicans on Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50439821/warriors-beat-pelicans-51-points-8th-straight-win"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50439821/warriors-beat-pelicans-51-points-8th-straight-win"
-            }
-          ],
-          "id": "a415-a5392301f5123419",
-          "feedRank": 18,
-          "compactHeadline": "Warriors blow out Pelicans by 51 points for 8th straight win"
         }
       ]
     },
@@ -560,6 +525,99 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e2d81df001689795"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Gabriel Landeskog scored his second goal of the game early in the third period to put the Colorado Avalanche ahead for good in a 6-3 win over the Toronto Maple Leafs on Tuesday night.",
+          "text": "Gabriel Landeskog scored his second goal of the game early in the third period to put the Colorado Avalanche ahead for good in a 6-3 win over the Toronto Maple Leafs on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-11-11T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Colorado Avalanche 6, Toronto Maple Leafs 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892683"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-11-10",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892683"
+            }
+          ],
+          "id": "a415-eb8932370f698930",
+          "feedRank": 18,
+          "compactHeadline": "Landeskog scores twice and the Avalanche hand the Maple Leafs their 4th straight loss, 6-3"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-2d46da265ea99aaf"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New Jersey Devils 2, Winnipeg Jets 4.",
+          "text": "Highlightly final: New Jersey Devils 2, Winnipeg Jets 4.",
+          "entities": [],
+          "occurredAt": "2026-11-11T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: New Jersey Devils 2, Winnipeg Jets 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-11-10",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-88cbbda72137ae04",
+          "feedRank": 19,
+          "compactHeadline": "Winnipeg Jets beat New Jersey Devils 4-2"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-e7aab857e404f418"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Washington Capitals 3, Ottawa Senators 2.",
+          "text": "Highlightly final: Washington Capitals 3, Ottawa Senators 2.",
+          "entities": [],
+          "occurredAt": "2026-11-11T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.03,
+          "freshnessBasis": "Highlightly final: Washington Capitals 3, Ottawa Senators 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-11-10",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-9baf42f572d1d6bc",
+          "feedRank": 20,
+          "compactHeadline": "Washington Capitals beat Ottawa Senators 3-2"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-95526c22a204cae6"
           ],
           "type": "TRADE",
@@ -569,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-11T02:26:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.59,
           "freshnessBasis": "The Flyers have not received a formal trade request from Matvei Michkov and were surprised to hear he wanted to play elsewhere, sources told ESPN on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -583,46 +641,11 @@
             }
           ],
           "id": "a415-204f4cdbe9d72e5c",
-          "feedRank": 19,
+          "feedRank": 21,
           "compactHeadline": "Sources: Flyers have not received formal trade request from Matvei Michkov"
         },
         {
-          "rank": 2,
-          "candidateIds": [
-            "cand-f07825feea351e9b"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ivar Stenberg scored the only goal in a shootout that lasted eight rounds, and the San Jose Sharks beat the New York Islanders 3-2 on Monday night to snap a five-game losing streak.",
-          "text": "Ivar Stenberg scored the only goal in a shootout that lasted eight rounds, and the San Jose Sharks beat the New York Islanders 3-2 on Monday night to snap a five-game losing streak.",
-          "entities": [],
-          "occurredAt": "2026-11-10T03:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: New York Islanders 2, San Jose Sharks 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892682"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-09",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892682"
-            }
-          ],
-          "id": "a415-37d31c2bea958a6f",
-          "feedRank": 20,
-          "compactHeadline": "Ivar Stenberg leads the Sharks past the Islanders 3-2 in a shootout to stop their 5-game skid"
-        },
-        {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-0433c1371acf5b49"
           ],
@@ -633,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T18:28:25Z",
           "timePrecision": "exact",
-          "ageHours": 8.05,
+          "ageHours": 8.55,
           "freshnessBasis": "Evander Kane, 35, has signed a deal to play in Russia for the rest of the KHL season, with HC Sibir Novosibirsk.",
           "status": "active",
           "sourceUrls": [
@@ -647,11 +670,11 @@
             }
           ],
           "id": "a415-5459ddf9c32e8c83",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Canucks winger Evander Kane signs deal for rest of KHL season"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-511c56e23cd708d7"
           ],
@@ -662,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-11T01:30:11Z",
           "timePrecision": "exact",
-          "ageHours": 1.02,
+          "ageHours": 1.52,
           "freshnessBasis": "At the annual fall meeting that follows Hockey Hall of Fame weekend in Toronto, NHL general managers discussed ways to use technology and other means to help on-ice officials, among other topics, on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -676,37 +699,8 @@
             }
           ],
           "id": "a415-3197e8c810f1ffdd",
-          "feedRank": 22,
-          "compactHeadline": "NHL general managers discuss ways technology can help officials at fall meeting"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-5a4b790cb9570daa"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Alex Ovechkin didn't weigh in on CAS' decision to allow Russian players back in hockey worlds, but said they just want to represent their country.",
-          "text": "Alex Ovechkin didn't weigh in on CAS' decision to allow Russian players back in hockey worlds, but said they just want to represent their country.",
-          "entities": [],
-          "occurredAt": "2026-11-10T23:30:11Z",
-          "timePrecision": "exact",
-          "ageHours": 3.02,
-          "freshnessBasis": "Alex Ovechkin didn't weigh in on CAS' decision to allow Russian players back in hockey worlds, but said they just want to represent their country.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50444702/ovechkin-weigh-allowing-russians-worlds"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50444702/ovechkin-weigh-allowing-russians-worlds"
-            }
-          ],
-          "id": "a415-d37dec47a89fe584",
           "feedRank": 23,
-          "compactHeadline": "Ovechkin says Russians want to play for country, doesn't weigh in on worlds"
+          "compactHeadline": "NHL general managers discuss ways technology can help officials at fall meeting"
         }
       ]
     },
@@ -726,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.53,
+          "ageHours": 8.03,
           "freshnessBasis": "Highlightly final: Brighton U21 3, Millwall U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -755,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T15:45:05Z",
           "timePrecision": "exact",
-          "ageHours": 10.77,
+          "ageHours": 11.27,
           "freshnessBasis": "Injured Tottenham attacker Xavi Simons has spoken of the anguish he felt watching the club's relegation battle last season, but is working \"endless hours\" to return for Roberto De Zerbi's side.",
           "status": "active",
           "sourceUrls": [
@@ -784,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T13:23:27Z",
           "timePrecision": "exact",
-          "ageHours": 13.13,
+          "ageHours": 13.63,
           "freshnessBasis": "Virgil van Dijk has said he is \"not in any panic\" about his Liverpool future despite the fact his contract is set to expire next summer.",
           "status": "active",
           "sourceUrls": [
@@ -813,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T04:46:47Z",
           "timePrecision": "exact",
-          "ageHours": 21.75,
+          "ageHours": 22.25,
           "freshnessBasis": "Australia coach Tony Popovic has waved off links to the Crystal Palace job as \"speculation\", and while providing no assurances he'll remain beyond his expiring contract, confirmed that talks with Football Australia have commenced around an extension.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +836,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T21:49:29Z",
           "timePrecision": "exact",
-          "ageHours": 4.7,
+          "ageHours": 5.2,
           "freshnessBasis": "Manchester City star Erling Haaland has collaborated with popular YouTuber \"MrBeast\" in a series of various soccer challenges.",
           "status": "active",
           "sourceUrls": [
@@ -877,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T17:37:03Z",
           "timePrecision": "exact",
-          "ageHours": 8.91,
+          "ageHours": 9.41,
           "freshnessBasis": "Former San Diego FC forward Cédric Bakambu has filed a housing discrimination lawsuit in federal court.",
           "status": "active",
           "sourceUrls": [
@@ -903,6 +897,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-87e9165531e6f176"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Kirby Smart and the Georgia Bulldogs, fresh off a convincing victory at Ole Miss on Saturday, leapt into the No. 1 spot of the College Football Playoff rankings on Tuesday night, unseating Miami, which lost at Notre Dame, its first defeat of the season.",
+          "text": "Kirby Smart and the Georgia Bulldogs, fresh off a convincing victory at Ole Miss on Saturday, leapt into the No. 1 spot of the College Football Playoff rankings on Tuesday night, unseating Miami, which lost at Notre Dame, its first defeat of the season.",
+          "entities": [],
+          "occurredAt": "2026-11-11T02:59:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "Kirby Smart and the Georgia Bulldogs, fresh off a convincing victory at Ole Miss on Saturday, leapt into the No. 1 spot of the College Football Playoff rankings on Tuesday night, unseating Miami, which lost at Notre Dame, its first defeat of the season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50448424/georgia-takes-cfp-top-spot-notre-dame-leaps-no-5"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50448424/georgia-takes-cfp-top-spot-notre-dame-leaps-no-5"
+            }
+          ],
+          "id": "a415-577dfb9a70bd8da5",
+          "feedRank": 30,
+          "compactHeadline": "Georgia jumps into CFP's top spot, followed by Utah, Alabama, UCLA"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-0f41927d4765699d"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "A conference-by-conference look at which teams are contending for the playoff, who's close, and who's out.",
+          "text": "A conference-by-conference look at which teams are contending for the playoff, who's close, and who's out.",
+          "entities": [],
+          "occurredAt": "2026-11-11T02:49:09Z",
+          "timePrecision": "exact",
+          "ageHours": 0.21,
+          "freshnessBasis": "A conference-by-conference look at which teams are contending for the playoff, who's close, and who's out.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50422353/cfp-playoff-2026-bubble-watch-week-10"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50422353/cfp-playoff-2026-bubble-watch-week-10"
+            }
+          ],
+          "id": "a415-fe44011b1d4d51ca",
+          "feedRank": 31,
+          "compactHeadline": "College Football Playoff Bubble Watch after second ranking"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-3d505680cbc38d3e"
           ],
           "type": "PLAYOFF",
@@ -912,7 +964,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T19:58:16Z",
           "timePrecision": "exact",
-          "ageHours": 6.55,
+          "ageHours": 7.05,
           "freshnessBasis": "The annual Army-Navy game, one of the most storied rivalries in college football, will be played a week earlier beginning next season to avoid conflicts with the expanded College Football Playoff.",
           "status": "active",
           "sourceUrls": [
@@ -926,40 +978,11 @@
             }
           ],
           "id": "a415-5c2f114c191d04f3",
-          "feedRank": 30,
+          "feedRank": 32,
           "compactHeadline": "Army, Navy to meet a week earlier in '27 to avoid College Football Playoff"
         },
         {
-          "rank": 2,
-          "candidateIds": [
-            "cand-4934d8e3f027b5d1"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "A conference-by-conference look at which teams are contending for the playoff, who's close, and who's out.",
-          "text": "A conference-by-conference look at which teams are contending for the playoff, who's close, and who's out.",
-          "entities": [],
-          "occurredAt": "2026-11-10T18:11:46Z",
-          "timePrecision": "exact",
-          "ageHours": 8.33,
-          "freshnessBasis": "A conference-by-conference look at which teams are contending for the playoff, who's close, and who's out.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50422353/cfp-playoff-2026-bubble-watch-week-10"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50422353/cfp-playoff-2026-bubble-watch-week-10"
-            }
-          ],
-          "id": "a415-7b78733aad57aae1",
-          "feedRank": 31,
-          "compactHeadline": "College Football Playoff Bubble Watch after Week 10"
-        },
-        {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-ebeb9cbd2478662a"
           ],
@@ -970,7 +993,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T14:53:32Z",
           "timePrecision": "exact",
-          "ageHours": 11.63,
+          "ageHours": 12.13,
           "freshnessBasis": "Oregon State sophomore quarterback Braden Atkinson, the country's leading passer, has signed a deal to return to Oregon State for the 2027 season, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -984,11 +1007,11 @@
             }
           ],
           "id": "a415-ef92314e2e869954",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Sources: Oregon State QB Braden Atkinson re-signs for 2027"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-b881d353c8f93d2f"
           ],
@@ -999,7 +1022,7 @@
           "entities": [],
           "occurredAt": "2026-11-10T05:02:49Z",
           "timePrecision": "exact",
-          "ageHours": 21.48,
+          "ageHours": 21.98,
           "freshnessBasis": "Outside linebacker Teitum Tuioti was carted off in the fourth quarter of the Ducks' win against Ohio State on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1013,11 +1036,11 @@
             }
           ],
           "id": "a415-419ec71207e4f00a",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "Oregon linebacker Teitum Tuioti out for season with knee injury"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-2e71f73d6595083b"
           ],
@@ -1028,7 +1051,7 @@
           "entities": [],
           "occurredAt": "2026-11-11T00:31:46Z",
           "timePrecision": "exact",
-          "ageHours": 2.0,
+          "ageHours": 2.5,
           "freshnessBasis": "Like so much of this college football season, the Heisman race is officially in a state of flux.",
           "status": "active",
           "sourceUrls": [
@@ -1042,37 +1065,8 @@
             }
           ],
           "id": "a415-96b47a72bfec4195",
-          "feedRank": 34,
-          "compactHeadline": "Heisman race after Week 10: CJ Carr, new contenders emerge"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-6b84b91fd852eb04"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Deion Sanders reiterated Tuesday that the blame for Colorado's struggles stops with him, saying, \"I'm not getting it done all the way around.\"",
-          "text": "Deion Sanders reiterated Tuesday that the blame for Colorado's struggles stops with him, saying, \"I'm not getting it done all the way around.\"",
-          "entities": [],
-          "occurredAt": "2026-11-11T00:04:21Z",
-          "timePrecision": "exact",
-          "ageHours": 2.45,
-          "freshnessBasis": "Deion Sanders reiterated Tuesday that the blame for Colorado's struggles stops with him, saying, \"I'm not getting it done all the way around.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50446834/deion-sanders-says-blame-colorado-3-6-season-solely-him"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50446834/deion-sanders-says-blame-colorado-3-6-season-solely-him"
-            }
-          ],
-          "id": "a415-9abcf6cbb432c60a",
           "feedRank": 35,
-          "compactHeadline": "Deion Sanders says blame for Colorado's 3-6 season solely on him: 'Don't say we'"
+          "compactHeadline": "Heisman race after Week 10: CJ Carr, new contenders emerge"
         }
       ]
     }
@@ -1097,7 +1091,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 103,
+    "freshCandidateCount": 104,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
