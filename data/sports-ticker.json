@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-15T19:00:47Z",
+  "generatedAt": "2026-11-15T19:30:55Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "ab33d40d85f61903adb6e92215fd18f1307d90302759880beb47295de4f1acaa",
+  "sourceCandidateHash": "032fa6479b5f168bd08ad38d1bab7d2573c784646e98533cad82eafcd069f303",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-230bb61705b59884"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "Left-hander Tim Hill is staying with the Yankees, agreeing to a one-year, $2.25 million contract, sources told ESPN.",
+          "text": "Left-hander Tim Hill is staying with the Yankees, agreeing to a one-year, $2.25 million contract, sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-11-15T19:24:15Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "Left-hander Tim Hill is staying with the Yankees, agreeing to a one-year, $2.25 million contract, sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50492078/tim-hill-yankees-agree-1-year-225m-deal-sources-say"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50492078/tim-hill-yankees-agree-1-year-225m-deal-sources-say"
+            }
+          ],
+          "id": "a415-98041a216b591e44",
+          "feedRank": 1,
+          "compactHeadline": "Tim Hill, Yankees agree to 1-year, $2.25M deal, sources say"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-06b4cf070724cb6c"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T00:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 18.28,
+          "ageHours": 18.78,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -37,7 +66,7 @@
             }
           ],
           "id": "a415-831ba4b2a8b784e5",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
         }
       ]
@@ -49,6 +78,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-0e42cd7e64001938"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Lions star Aidan Hutchinson is feared to have suffered a significant injury to his right knee while celebrating a sack Sunday, sources told NFL Network.",
+          "text": "Lions star Aidan Hutchinson is feared to have suffered a significant injury to his right knee while celebrating a sack Sunday, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-11-15T19:28:58Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "Lions star Aidan Hutchinson is feared to have suffered a significant injury to his right knee while celebrating a sack Sunday, sources told NFL Network.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50491838/sources-lions-hutchinson-feared-significant-knee-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50491838/sources-lions-hutchinson-feared-significant-knee-injury"
+            }
+          ],
+          "id": "a415-d34d469fb9a33687",
+          "feedRank": 3,
+          "compactHeadline": "Sources: Lions DE Aidan Hutchinson feared to have suffered significant knee injury"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-0d1a67008e7532ee"
           ],
           "type": "INJURY",
@@ -58,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.75,
+          "ageHours": 1.25,
           "freshnessBasis": "Patriots QB Drake Maye and Lions DE Aidan Hutchinson were injured on the same play Sunday, taking star power out of the Munich game.",
           "status": "active",
           "sourceUrls": [
@@ -72,11 +130,11 @@
             }
           ],
           "id": "a415-765bb8cb38c165d4",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Patriots' Drake Maye, Lions' Aidan Hutchinson both injured on same play in Munich"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-e6328efea145ba4a"
           ],
@@ -87,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T16:43:34Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 2.79,
           "freshnessBasis": "Baker Mayfield's status against the Lions in Week 11 is in question because of an injury he suffered to his foot and ankle area, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +159,11 @@
             }
           ],
           "id": "a415-a5a17fa5cc237b17",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Sources: Baker Mayfield's status uncertain for Bucs' Week 11 game vs. Lions"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-7f229dcf18fe2af6"
           ],
@@ -116,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:02:01Z",
           "timePrecision": "exact",
-          "ageHours": 4.98,
+          "ageHours": 5.48,
           "freshnessBasis": "The Chiefs sought medical opinions from two renowned baseball doctors last week on Patrick Mahomes' injured elbow, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +188,11 @@
             }
           ],
           "id": "a415-1b3deb92d9a3cb1b",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "Sources: Chiefs had renowned baseball doctors weigh in on Patrick Mahomes' elbow"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-d7d4f742c3280f1c"
           ],
@@ -145,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T13:02:23Z",
           "timePrecision": "exact",
-          "ageHours": 5.97,
+          "ageHours": 6.48,
           "freshnessBasis": "The Patriots placed RB TreVeyon Henderson on injured reserve while he deals with an unexplained neurological issue.",
           "status": "active",
           "sourceUrls": [
@@ -159,11 +217,11 @@
             }
           ],
           "id": "a415-0a44cd13487ed1c1",
-          "feedRank": 5,
+          "feedRank": 7,
           "compactHeadline": "Patriots place RB TreVeyon Henderson on IR with still unexplained illness"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-514d730fa596695c"
           ],
@@ -174,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T13:47:12Z",
           "timePrecision": "exact",
-          "ageHours": 5.23,
+          "ageHours": 5.73,
           "freshnessBasis": "The Raiders had a plan to start Fernando Mendoza in Week 12 against the Browns even if they had not traded Kirk Cousins, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -188,37 +246,8 @@
             }
           ],
           "id": "a415-efd9780905d23ce8",
-          "feedRank": 6,
+          "feedRank": 8,
           "compactHeadline": "Sources: Raiders planned to start Fernando Mendoza soon even if no Cousins trade"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e8154e5d85f8df3c"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Detroit Lions receiver Amon-Ra St. Brown caught two touchdown passes in his German homecoming and Jahmyr Gibbs ran for 153 yards and two scores in a 35-10 win over the New England Patriots, who",
-          "text": "Detroit Lions receiver Amon-Ra St. Brown caught two touchdown passes in his German homecoming and Jahmyr Gibbs ran for 153 yards and two scores in a 35-10 win over the New England Patriots, who",
-          "entities": [],
-          "occurredAt": "2026-11-15T17:54:34Z",
-          "timePrecision": "exact",
-          "ageHours": 1.1,
-          "freshnessBasis": "— Detroit Lions receiver Amon-Ra St. Brown caught two touchdown passes in his German homecoming and Jahmyr Gibbs ran for 153 yards and two scores in a 35-10 win over the New England Patriots, who",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/recap?gameId=401873053"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873053"
-            }
-          ],
-          "id": "a415-c7110958f35ae5a5",
-          "feedRank": 7,
-          "compactHeadline": "St. Brown and Gibbs score 2 TDs each in Lions' 35-10 rout over Patriots after Maye injured in Munich"
         }
       ]
     },
@@ -238,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T07:04:37Z",
           "timePrecision": "exact",
-          "ageHours": 11.94,
+          "ageHours": 12.44,
           "freshnessBasis": "Portland Trail Blazers (9-3, fourth in the Western Conference) vs. Minnesota Timberwolves (9-4, fifth in the Western Conference)",
           "status": "active",
           "sourceUrls": [
@@ -252,7 +281,7 @@
             }
           ],
           "id": "a415-48bed5bb5c03645f",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Portland faces Minnesota on 3-game win streak"
         },
         {
@@ -267,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T07:04:35Z",
           "timePrecision": "exact",
-          "ageHours": 11.94,
+          "ageHours": 12.44,
           "freshnessBasis": "Dallas Mavericks (7-6, 10th in the Western Conference) vs. Boston Celtics (10-2, first in the Eastern Conference)",
           "status": "active",
           "sourceUrls": [
@@ -281,7 +310,7 @@
             }
           ],
           "id": "a415-8820308aa98bf96b",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Celtics face the Mavericks on 5-game win streak"
         },
         {
@@ -296,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T17:30:29Z",
           "timePrecision": "exact",
-          "ageHours": 1.51,
+          "ageHours": 2.01,
           "freshnessBasis": "After the star forward found the back of the net against Haiti, he had a specific celebration in mind: Damian Lillard's iconic \"Dame Time\" motion.",
           "status": "active",
           "sourceUrls": [
@@ -310,40 +339,11 @@
             }
           ],
           "id": "a415-9a5c72fee77d13ad",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "USMNT's Balogun does 'Dame Time' celebration after goal vs. Haiti"
         },
         {
           "rank": 4,
-          "candidateIds": [
-            "cand-5c0b9acce26997ac"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "In his first game as the primary offensive engine in place of the injured Stephen Curry, Warriors rookie Yaxel Lendeborg went 1-of-13 shooting in a 123-85 blowout loss to the Spurs. \"I was flustered the entire game,\" he said. \"Couldn't make a damn layup.\"",
-          "text": "In his first game as the primary offensive engine in place of the injured Stephen Curry, Warriors rookie Yaxel Lendeborg went 1-of-13 shooting in a 123-85 blowout loss to the Spurs. \"I was flustered the entire game,\" he said. \"Couldn't make a damn layup.\"",
-          "entities": [],
-          "occurredAt": "2026-11-14T19:23:28Z",
-          "timePrecision": "exact",
-          "ageHours": 23.62,
-          "freshnessBasis": "In his first game as the primary offensive engine in place of the injured Stephen Curry, Warriors rookie Yaxel Lendeborg went 1-of-13 shooting in a 123-85 blowout loss to the Spurs. \"I was flustered the entire game,\" he said. \"Couldn't make a damn layup.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50478016/warriors-yaxel-lendeborg-struggles-blowout-loss-spurs-says-was-flustered-entire-game"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50478016/warriors-yaxel-lendeborg-struggles-blowout-loss-spurs-says-was-flustered-entire-game"
-            }
-          ],
-          "id": "a415-846ed20ce8ef296b",
-          "feedRank": 11,
-          "compactHeadline": "Warriors' Yaxel Lendeborg (1-for-13) 'flustered' in blowout loss to Spurs"
-        },
-        {
-          "rank": 5,
           "candidateIds": [
             "cand-cd7b1c7fd60d71cb"
           ],
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:50:36Z",
           "timePrecision": "exact",
-          "ageHours": 15.17,
+          "ageHours": 15.67,
           "freshnessBasis": "— Giannis Antetokounmpo had 34 points, 14 rebounds and eight assists, some of the spectacular variety, and the Miami Heat beat the Detroit...",
           "status": "active",
           "sourceUrls": [
@@ -372,7 +372,7 @@
           "compactHeadline": "Antetokounmpo scores 34, Heat block 14 shots and roll past Pistons 137-117 for 4th straight win"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-db039ce8d4a48b75"
           ],
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 15.22,
+          "ageHours": 15.72,
           "freshnessBasis": "— Cedric Coward had 23 points and 12 rebounds and Taylor Hendricks scored a career-high 22 as Memphis built an early lead and defeated the Brooklyn Nets 129-110 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -399,6 +399,35 @@
           "id": "a415-1e57e30c5d4d9ee2",
           "feedRank": 13,
           "compactHeadline": "Cedric Coward has 23 points and 12 rebounds as Grizzlies beat Nets 129-110"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-62f27c74d915d067"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Norman Powell scored 23 points, Matas Buzelis added 18 points and nine rebounds, and the short-handed Chicago Bulls won for the second night in a row with a 117-106 victory over the Minnesota Timberwolves on Saturday.",
+          "text": "Norman Powell scored 23 points, Matas Buzelis added 18 points and nine rebounds, and the short-handed Chicago Bulls won for the second night in a row with a 117-106 victory over the Minnesota Timberwolves on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-11-15T03:36:36Z",
+          "timePrecision": "exact",
+          "ageHours": 15.91,
+          "freshnessBasis": "— Norman Powell scored 23 points, Matas Buzelis added 18 points and nine rebounds, and the short-handed Chicago Bulls won for the second night in a row with a 117-106 victory over the Minnesota Timberwolves on Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401909984"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909984"
+            }
+          ],
+          "id": "a415-d4e3afcd0e0f812b",
+          "feedRank": 14,
+          "compactHeadline": "Bulls overcome travel delay and injuries to beat the Timberwolves 117-106"
         }
       ]
     },
@@ -418,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:33:25Z",
           "timePrecision": "exact",
-          "ageHours": 13.46,
+          "ageHours": 13.96,
           "freshnessBasis": "Dallas captain Jamie Benn scored his 1,000th career NHL point during Saturday night's game with a goal against the Buffalo Sabres.",
           "status": "active",
           "sourceUrls": [
@@ -432,7 +461,7 @@
             }
           ],
           "id": "a415-64b7e42b17b06db9",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Jamie Benn records 1,000th NHL point with goal in Stars' win"
         },
         {
@@ -447,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 9.82,
+          "ageHours": 10.32,
           "freshnessBasis": "Florida Panthers (12-7-2, in the Atlantic Division) vs. Dallas Stars (11-6-2, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -461,7 +490,7 @@
             }
           ],
           "id": "a415-12ecdd7335a544c5",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Panthers take on the Stars on 3-game winning streak"
         },
         {
@@ -476,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 13.24,
+          "ageHours": 13.74,
           "freshnessBasis": "— Simon Holmstrom had his first career hat trick, Matthew Schaefer added three assists and the New York Islanders rolled to a 6-2 victory over the Anaheim Ducks on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -490,7 +519,7 @@
             }
           ],
           "id": "a415-132f427016be8713",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Simon Holmstrom has first hat trick in Islanders' 6-2 win over Ducks 6-2"
         },
         {
@@ -505,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.57,
+          "ageHours": 14.07,
           "freshnessBasis": "— Mason Marchment flicked in a wrist shot in the fifth round of a shootout to lift the San Jose Sharks to a 6-5 win over the Utah Mammoth on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -519,7 +548,7 @@
             }
           ],
           "id": "a415-29b5bef47e9b9ff2",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "Marchment lifts Sharks to shootout win over Mammoth"
         },
         {
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T04:13:45Z",
           "timePrecision": "exact",
-          "ageHours": 14.78,
+          "ageHours": 15.29,
           "freshnessBasis": "— Jake Oettinger made 22 saves to lead the Dallas Stars to a 2-0 win over the Buffalo Sabres on Saturday night, just two days after being pulled after allowing a season-high six goals.",
           "status": "active",
           "sourceUrls": [
@@ -548,7 +577,7 @@
             }
           ],
           "id": "a415-a038cab2fc964402",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Oettinger makes 22 saves as the Stars beat the Sabres 2-0"
         },
         {
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T04:02:35Z",
           "timePrecision": "exact",
-          "ageHours": 14.97,
+          "ageHours": 15.47,
           "freshnessBasis": "— Connor McDavid extended his season-opening points streak to 21 games with an assist, Devon Levi made 19 saves for his first NHL shutout and the Edmonton Oilers beat Toronto 1-0 on Saturday night to hand the Maple Leafs their sixth straight home loss.",
           "status": "active",
           "sourceUrls": [
@@ -577,7 +606,7 @@
             }
           ],
           "id": "a415-a0461b63719ed867",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "McDavid extends season-opening points streak to 21 games, Oilers beat Maple Leafs 1-0"
         }
       ]
@@ -598,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-14T21:55:14Z",
           "timePrecision": "exact",
-          "ageHours": 21.09,
+          "ageHours": 21.59,
           "freshnessBasis": "Declan Rice has hinted he is likely to sign a new contract at Arsenal to extend his stay at the club beyond 2028.",
           "status": "active",
           "sourceUrls": [
@@ -612,7 +641,7 @@
             }
           ],
           "id": "a415-a90c245fecfae5ec",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "'Extremely lucky' Declan Rice hints new Arsenal contract will be signed soon"
         },
         {
@@ -627,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:46:50Z",
           "timePrecision": "exact",
-          "ageHours": 4.23,
+          "ageHours": 4.73,
           "freshnessBasis": "Erling Haaland says he is \"incredibly happy\" at Manchester City and his focus is on performing and not on the potential sanctions against the club.",
           "status": "active",
           "sourceUrls": [
@@ -641,7 +670,7 @@
             }
           ],
           "id": "a415-65270bdc052471a2",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Haaland 'incredibly happy' at Man City, not thinking about possible sanctions"
         },
         {
@@ -656,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:25:57Z",
           "timePrecision": "exact",
-          "ageHours": 4.58,
+          "ageHours": 5.08,
           "freshnessBasis": "Bruno Guimarães has labelled Arsenal teammate Declan Rice a \"machine\" and said he's been learning a lot by playing alongside him.",
           "status": "active",
           "sourceUrls": [
@@ -670,7 +699,7 @@
             }
           ],
           "id": "a415-2a30daffe744c26b",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Arsenal's Bruno Guimarães: Learning a lot from 'machine' Declan Rice"
         },
         {
@@ -685,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T16:01:24Z",
           "timePrecision": "exact",
-          "ageHours": 2.99,
+          "ageHours": 3.49,
           "freshnessBasis": "Arsenal are the latest team to join a long list of admirers following Middlesbrough striker Will Lankshear. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +728,7 @@
             }
           ],
           "id": "a415-a17dddb6149d6ee1",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Transfer rumors, news: Arsenal eye former Tottenham striker Will Lankshear"
         }
       ]
@@ -725,7 +754,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:13:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.78,
+          "ageHours": 1.29,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -739,7 +768,7 @@
             }
           ],
           "id": "a415-5b2a336fbb3bf915",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Allstate Playoff Predictor"
         },
         {
@@ -754,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T15:40:13Z",
           "timePrecision": "exact",
-          "ageHours": 3.34,
+          "ageHours": 3.85,
           "freshnessBasis": "We assess how the selection committee could stack the top teams in the country after Week 11.",
           "status": "active",
           "sourceUrls": [
@@ -768,7 +797,7 @@
             }
           ],
           "id": "a415-f4af20857a6f01c9",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "College Football Playoff top 12 projection after Week 11"
         },
         {
@@ -783,7 +812,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T07:22:35Z",
           "timePrecision": "exact",
-          "ageHours": 11.64,
+          "ageHours": 12.14,
           "freshnessBasis": "— Kirby Vorhees ran for career highs of 197 yards and four of Washington State's school-record nine rushing touchdowns on 12 carries, including a Pac-12 Conference",
           "status": "active",
           "sourceUrls": [
@@ -797,7 +826,7 @@
             }
           ],
           "id": "a415-990dc735a3041436",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "Kirby Vorhees has 4 of 9 TD runs by Washington State in skid-busting 73-7 romp over Colorado State"
         },
         {
@@ -812,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T15:44:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.77,
           "freshnessBasis": "Lane Kiffin said it was fair to question LSU's 6-4 record after Saturday's loss to Texas, a defeat that likely knocked the Tigers out of playoff contention.",
           "status": "active",
           "sourceUrls": [
@@ -826,7 +855,7 @@
             }
           ],
           "id": "a415-352c6196f666b5b7",
-          "feedRank": 27,
+          "feedRank": 28,
           "compactHeadline": "Lane Kiffin understands frustration as LSU's CFP hopes dashed with Texas loss"
         },
         {
@@ -841,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:23:38Z",
           "timePrecision": "exact",
-          "ageHours": 4.62,
+          "ageHours": 5.12,
           "freshnessBasis": "In a back-and-forth thriller, Utah rallied to remain undefeated after Devon Dampier hit Creed Whittemore on a 70-yard score late in a 40-39 win over Arizona.",
           "status": "active",
           "sourceUrls": [
@@ -855,7 +884,7 @@
             }
           ],
           "id": "a415-ca362b032d02dd18",
-          "feedRank": 28,
+          "feedRank": 29,
           "compactHeadline": "No. 2 Utah survives, stays unbeaten on late 70-yard TD in thriller vs. Arizona"
         },
         {
@@ -870,7 +899,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:30:15Z",
           "timePrecision": "exact",
-          "ageHours": 13.51,
+          "ageHours": 14.01,
           "freshnessBasis": "Wake Forest dominated SMU on the gridiron Saturday -- and added insult to injury after the game.",
           "status": "active",
           "sourceUrls": [
@@ -884,7 +913,7 @@
             }
           ],
           "id": "a415-bdc7e346f3af6adf",
-          "feedRank": 29,
+          "feedRank": 30,
           "compactHeadline": "Wake Forest's post-blowout jab at SMU tops college football Week 11 trolls"
         }
       ]
@@ -910,8 +939,8 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 102,
-    "publishedItemCount": 29,
+    "freshCandidateCount": 105,
+    "publishedItemCount": 30,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
