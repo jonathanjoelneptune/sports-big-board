@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-15T05:30:55Z",
+  "generatedAt": "2026-11-15T13:01:16Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "401be498f47d840a8625f127abeea2bf7bf5d01412d0028ec4f979c46038f3b8",
+  "sourceCandidateHash": "a50f46c3cf8e921f1ab8cdafcd2abccdd8a87e8247731069bfb98946a3d2439b",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T00:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 12.29,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -39,35 +39,6 @@
           "id": "a415-831ba4b2a8b784e5",
           "feedRank": 1,
           "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-2a0b8300d856ca3b"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Veteran catcher Tyler Heineman and the Los Angeles Angels have agreed to a one-year contract for $1,237,500, the same salary he made this year.",
-          "text": "Veteran catcher Tyler Heineman and the Los Angeles Angels have agreed to a one-year contract for $1,237,500, the same salary he made this year.",
-          "entities": [],
-          "occurredAt": "2026-11-14T05:51:07Z",
-          "timePrecision": "exact",
-          "ageHours": 23.66,
-          "freshnessBasis": "Veteran catcher Tyler Heineman and the Los Angeles Angels have agreed to a one-year contract for $1,237,500, the same salary he made this year.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50477559/angels-tyler-heineman-avoid-arbitration-1-year-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50477559/angels-tyler-heineman-avoid-arbitration-1-year-deal"
-            }
-          ],
-          "id": "a415-0c90fa8f6d68c0ac",
-          "feedRank": 2,
-          "compactHeadline": "Angels, catcher Tyler Heineman avoid arbitration with 1-year contract"
         }
       ]
     },
@@ -78,6 +49,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-7f229dcf18fe2af6"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Chiefs sought medical opinions from two renowned baseball doctors last week on Patrick Mahomes' injured elbow, sources told ESPN.",
+          "text": "The Chiefs sought medical opinions from two renowned baseball doctors last week on Patrick Mahomes' injured elbow, sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-11-15T12:30:04Z",
+          "timePrecision": "exact",
+          "ageHours": 0.52,
+          "freshnessBasis": "The Chiefs sought medical opinions from two renowned baseball doctors last week on Patrick Mahomes' injured elbow, sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50481210/sources-baseball-doctors-consulted-patrick-mahomes-elbow"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50481210/sources-baseball-doctors-consulted-patrick-mahomes-elbow"
+            }
+          ],
+          "id": "a415-1b3deb92d9a3cb1b",
+          "feedRank": 2,
+          "compactHeadline": "Sources: Chiefs had renowned baseball doctors weigh in on Patrick Mahomes' elbow"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-514d730fa596695c"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Raiders had a plan to start Fernando Mendoza in Week 12 against the Browns even if they had not traded Kirk Cousins, sources told NFL Network.",
+          "text": "The Raiders had a plan to start Fernando Mendoza in Week 12 against the Browns even if they had not traded Kirk Cousins, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-11-15T12:18:34Z",
+          "timePrecision": "exact",
+          "ageHours": 0.71,
+          "freshnessBasis": "The Raiders had a plan to start Fernando Mendoza in Week 12 against the Browns even if they had not traded Kirk Cousins, sources told NFL Network.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50485164/sources-raiders-had-fernando-mendoza-plan-even-no-cousins-trade"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50485164/sources-raiders-had-fernando-mendoza-plan-even-no-cousins-trade"
+            }
+          ],
+          "id": "a415-efd9780905d23ce8",
+          "feedRank": 3,
+          "compactHeadline": "Sources: Raiders planned to start Fernando Mendoza soon even if no Cousins trade"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-8b69618e9a5be66f"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Not all Super Bowl MVPs were quarterbacks or offensive stars. We listed 10 standout individual defensive performances.",
+          "text": "Not all Super Bowl MVPs were quarterbacks or offensive stars. We listed 10 standout individual defensive performances.",
+          "entities": [],
+          "occurredAt": "2026-11-15T10:56:58Z",
+          "timePrecision": "exact",
+          "ageHours": 2.07,
+          "freshnessBasis": "Not all Super Bowl MVPs were quarterbacks or offensive stars. We listed 10 standout individual defensive performances.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50454197/top-10-super-bowl-individual-defensive-performances"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50454197/top-10-super-bowl-individual-defensive-performances"
+            }
+          ],
+          "id": "a415-0d09e52a6ea05b24",
+          "feedRank": 4,
+          "compactHeadline": "Ranking the top 10 Super Bowl performances by a defender"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-d7d4f742c3280f1c"
           ],
           "type": "INJURY",
@@ -87,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T01:39:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
+          "ageHours": 11.37,
           "freshnessBasis": "The Patriots placed RB TreVeyon Henderson on injured reserve while he deals with an unexplained neurological issue.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +159,11 @@
             }
           ],
           "id": "a415-0a44cd13487ed1c1",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Patriots place RB TreVeyon Henderson on IR with still unexplained illness"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-e98a8963a9681a72"
           ],
@@ -116,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-14T20:41:30Z",
           "timePrecision": "exact",
-          "ageHours": 8.82,
+          "ageHours": 16.33,
           "freshnessBasis": "The Steelers have activated defensive tackle Derrick Harmon from injured reserve after he missed the past four games with a foot injury.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +188,11 @@
             }
           ],
           "id": "a415-c34dfb32a41afe9e",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "Steelers activate DT Derrick Harmon from IR ahead of key Bengals clash"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-ff308e74d563d040"
           ],
@@ -145,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-14T18:52:47Z",
           "timePrecision": "exact",
-          "ageHours": 10.64,
+          "ageHours": 18.14,
           "freshnessBasis": "Chiefs running back Kenneth Walker III will miss Sunday's game due to a groin injury.",
           "status": "active",
           "sourceUrls": [
@@ -159,95 +217,8 @@
             }
           ],
           "id": "a415-b2d247b1b8dc35f5",
-          "feedRank": 5,
-          "compactHeadline": "Chiefs' Kenneth Walker III (groin) to sit out vs. Falcons"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-a41bb2c1cc08f48e"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The NFL, trying to avoid further travel issues from Friday's FAA ground stop, has reassigned officials to Week 10 games within driving distance of their homes.",
-          "text": "The NFL, trying to avoid further travel issues from Friday's FAA ground stop, has reassigned officials to Week 10 games within driving distance of their homes.",
-          "entities": [],
-          "occurredAt": "2026-11-14T16:35:07Z",
-          "timePrecision": "exact",
-          "ageHours": 12.93,
-          "freshnessBasis": "The NFL, trying to avoid further travel issues from Friday's FAA ground stop, has reassigned officials to Week 10 games within driving distance of their homes.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50479995/nfl-reassigns-backup-refs-work-games-closer-home"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50479995/nfl-reassigns-backup-refs-work-games-closer-home"
-            }
-          ],
-          "id": "a415-ddcb56b3ae894037",
-          "feedRank": 6,
-          "compactHeadline": "NFL reassigns backup refs to work games closer to home"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-3d43d1316e72089e"
-          ],
-          "type": "RETURN",
-          "priority": 72,
-          "headline": "The New Orleans Saints activated running back Travis Etienne Jr. off injured reserve prior to their game against the Carolina Panthers, the team announced Saturday.",
-          "text": "The New Orleans Saints activated running back Travis Etienne Jr. off injured reserve prior to their game against the Carolina Panthers, the team announced Saturday.",
-          "entities": [],
-          "occurredAt": "2026-11-14T22:13:44Z",
-          "timePrecision": "exact",
-          "ageHours": 7.29,
-          "freshnessBasis": "The New Orleans Saints activated running back Travis Etienne Jr. off injured reserve prior to their game against the Carolina Panthers, the team announced Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50483551/saints-rb-travis-etienne-activated-ir-game-vs-panthers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50483551/saints-rb-travis-etienne-activated-ir-game-vs-panthers"
-            }
-          ],
-          "id": "a415-c429aeb6d848596f",
           "feedRank": 7,
-          "compactHeadline": "Saints RB Travis Etienne Jr. activated off IR for game vs. Panthers"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b1c9c70ba6f4196a"
-          ],
-          "type": "RETURN",
-          "priority": 72,
-          "headline": "Panthers wide receiver Xavier Legette, sidelined since injuring his knee in a Week 2 blowout win over the Falcons, has been activated from injured reserve.",
-          "text": "Panthers wide receiver Xavier Legette, sidelined since injuring his knee in a Week 2 blowout win over the Falcons, has been activated from injured reserve.",
-          "entities": [],
-          "occurredAt": "2026-11-14T19:06:19Z",
-          "timePrecision": "exact",
-          "ageHours": 10.41,
-          "freshnessBasis": "Panthers wide receiver Xavier Legette, sidelined since injuring his knee in a Week 2 blowout win over the Falcons, has been activated from injured reserve.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50481450/panthers-xavier-legette-week-2-activated-ir"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50481450/panthers-xavier-legette-week-2-activated-ir"
-            }
-          ],
-          "id": "a415-2ed20a5c1fcd1617",
-          "feedRank": 8,
-          "compactHeadline": "Panthers WR Xavier Legette, out since Week 2 with knee injury, activated from IR"
+          "compactHeadline": "Chiefs' Kenneth Walker III (groin) to sit out vs. Falcons"
         }
       ]
     },
@@ -258,6 +229,64 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-20e8233252d7c11b"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Portland Trail Blazers (9-3, fourth in the Western Conference) vs. Minnesota Timberwolves (9-4, fifth in the Western Conference)",
+          "text": "Portland Trail Blazers (9-3, fourth in the Western Conference) vs. Minnesota Timberwolves (9-4, fifth in the Western Conference)",
+          "entities": [],
+          "occurredAt": "2026-11-15T07:04:37Z",
+          "timePrecision": "exact",
+          "ageHours": 5.94,
+          "freshnessBasis": "Portland Trail Blazers (9-3, fourth in the Western Conference) vs. Minnesota Timberwolves (9-4, fifth in the Western Conference)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/preview?gameId=401909999"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/preview?gameId=401909999"
+            }
+          ],
+          "id": "a415-48bed5bb5c03645f",
+          "feedRank": 8,
+          "compactHeadline": "Portland faces Minnesota on 3-game win streak"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-1def8663364f5e09"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Dallas Mavericks (7-6, 10th in the Western Conference) vs. Boston Celtics (10-2, first in the Eastern Conference)",
+          "text": "Dallas Mavericks (7-6, 10th in the Western Conference) vs. Boston Celtics (10-2, first in the Eastern Conference)",
+          "entities": [],
+          "occurredAt": "2026-11-15T07:04:35Z",
+          "timePrecision": "exact",
+          "ageHours": 5.94,
+          "freshnessBasis": "Dallas Mavericks (7-6, 10th in the Western Conference) vs. Boston Celtics (10-2, first in the Eastern Conference)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/preview?gameId=401909989"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/preview?gameId=401909989"
+            }
+          ],
+          "id": "a415-8820308aa98bf96b",
+          "feedRank": 9,
+          "compactHeadline": "Celtics face the Mavericks on 5-game win streak"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-5c0b9acce26997ac"
           ],
           "type": "INJURY",
@@ -267,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-14T19:23:28Z",
           "timePrecision": "exact",
-          "ageHours": 10.12,
+          "ageHours": 17.63,
           "freshnessBasis": "In his first game as the primary offensive engine in place of the injured Stephen Curry, Warriors rookie Yaxel Lendeborg went 1-of-13 shooting in a 123-85 blowout loss to the Spurs. \"I was flustered the entire game,\" he said. \"Couldn't make a damn layup.\"",
           "status": "active",
           "sourceUrls": [
@@ -281,11 +310,11 @@
             }
           ],
           "id": "a415-846ed20ce8ef296b",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Warriors' Yaxel Lendeborg (1-for-13) 'flustered' in blowout loss to Spurs"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-cd7b1c7fd60d71cb"
           ],
@@ -296,7 +325,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:50:36Z",
           "timePrecision": "exact",
-          "ageHours": 1.67,
+          "ageHours": 9.18,
           "freshnessBasis": "— Giannis Antetokounmpo had 34 points, 14 rebounds and eight assists, some of the spectacular variety, and the Miami Heat beat the Detroit...",
           "status": "active",
           "sourceUrls": [
@@ -310,11 +339,11 @@
             }
           ],
           "id": "a415-64a209d560b11b73",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Antetokounmpo scores 34, Heat block 14 shots and roll past Pistons 137-117 for 4th straight win"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-db039ce8d4a48b75"
           ],
@@ -325,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:47:36Z",
           "timePrecision": "exact",
-          "ageHours": 1.72,
+          "ageHours": 9.23,
           "freshnessBasis": "— Cedric Coward had 23 points and 12 rebounds and Taylor Hendricks scored a career-high 22 as Memphis built an early lead and defeated the Brooklyn Nets 129-110 on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -339,11 +368,11 @@
             }
           ],
           "id": "a415-1e57e30c5d4d9ee2",
-          "feedRank": 11,
+          "feedRank": 12,
           "compactHeadline": "Cedric Coward has 23 points and 12 rebounds as Grizzlies beat Nets 129-110"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-62f27c74d915d067"
           ],
@@ -354,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:36:36Z",
           "timePrecision": "exact",
-          "ageHours": 1.91,
+          "ageHours": 9.41,
           "freshnessBasis": "— Norman Powell scored 23 points, Matas Buzelis added 18 points and nine rebounds, and the short-handed Chicago Bulls won for the second night in a row with a 117-106 victory over the Minnesota Timberwolves on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -368,66 +397,8 @@
             }
           ],
           "id": "a415-d4e3afcd0e0f812b",
-          "feedRank": 12,
-          "compactHeadline": "Bulls overcome travel delay and injuries to beat the Timberwolves 117-106"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-16fc0eb511e553e3"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Tyrese Proctor posted his first triple-double with 24 points, 11 rebounds and a career-best 10 assists in leading the short-handed Cleveland Cavaliers to a 127-117 victory over the Dallas Mavericks on Saturday night.",
-          "text": "Tyrese Proctor posted his first triple-double with 24 points, 11 rebounds and a career-best 10 assists in leading the short-handed Cleveland Cavaliers to a 127-117 victory over the Dallas Mavericks on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-15T03:24:38Z",
-          "timePrecision": "exact",
-          "ageHours": 2.1,
-          "freshnessBasis": "— Tyrese Proctor posted his first triple-double with 24 points, 11 rebounds and a career-best 10 assists in leading the short-handed Cleveland Cavaliers to a 127-117 victory over the Dallas Mavericks on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909981"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909981"
-            }
-          ],
-          "id": "a415-319094f87b5f1f66",
           "feedRank": 13,
-          "compactHeadline": "Tyrese Proctor has a triple-double as short-handed Cavaliers top Mavericks 127-117"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-bbd4107b5b8e369f"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Former college players, content creators and even some Sixers fans chased the same opportunity to get noticed by the Delaware Blue Coats.",
-          "text": "Former college players, content creators and even some Sixers fans chased the same opportunity to get noticed by the Delaware Blue Coats.",
-          "entities": [],
-          "occurredAt": "2026-11-14T13:18:19Z",
-          "timePrecision": "exact",
-          "ageHours": 16.21,
-          "freshnessBasis": "Former college players, content creators and even some Sixers fans chased the same opportunity to get noticed by the Delaware Blue Coats.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50463046/nba-g-league-delaware-blue-coats-200-dollar-tryout"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50463046/nba-g-league-delaware-blue-coats-200-dollar-tryout"
-            }
-          ],
-          "id": "a415-81721124029a93b2",
-          "feedRank": 14,
-          "compactHeadline": "The price of a pro hoop dream starts with a $200 G League tryout"
+          "compactHeadline": "Bulls overcome travel delay and injuries to beat the Timberwolves 117-106"
         }
       ]
     },
@@ -445,9 +416,9 @@
           "headline": "Dallas captain Jamie Benn scored his 1,000th career NHL point during Saturday night's game with a goal against the Buffalo Sabres.",
           "text": "Dallas captain Jamie Benn scored his 1,000th career NHL point during Saturday night's game with a goal against the Buffalo Sabres.",
           "entities": [],
-          "occurredAt": "2026-11-15T05:24:14Z",
+          "occurredAt": "2026-11-15T05:33:25Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 7.46,
           "freshnessBasis": "Dallas captain Jamie Benn scored his 1,000th career NHL point during Saturday night's game with a goal against the Buffalo Sabres.",
           "status": "active",
           "sourceUrls": [
@@ -461,11 +432,69 @@
             }
           ],
           "id": "a415-64b7e42b17b06db9",
-          "feedRank": 15,
+          "feedRank": 14,
           "compactHeadline": "Jamie Benn records 1,000th NHL point with goal in Stars' win"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-8fc15ca65f844ee7"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Florida Panthers (12-7-2, in the Atlantic Division) vs. Dallas Stars (11-6-2, in the Central Division)",
+          "text": "Florida Panthers (12-7-2, in the Atlantic Division) vs. Dallas Stars (11-6-2, in the Central Division)",
+          "entities": [],
+          "occurredAt": "2026-11-15T09:11:38Z",
+          "timePrecision": "exact",
+          "ageHours": 3.83,
+          "freshnessBasis": "Florida Panthers (12-7-2, in the Atlantic Division) vs. Dallas Stars (11-6-2, in the Central Division)",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/preview?gameId=401892722"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/preview?gameId=401892722"
+            }
+          ],
+          "id": "a415-12ecdd7335a544c5",
+          "feedRank": 15,
+          "compactHeadline": "Panthers take on the Stars on 3-game winning streak"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-ca5d48aea0de3756"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Simon Holmstrom had his first career hat trick, Matthew Schaefer added three assists and the New York Islanders rolled to a 6-2 victory over the Anaheim Ducks on Saturday night.",
+          "text": "Simon Holmstrom had his first career hat trick, Matthew Schaefer added three assists and the New York Islanders rolled to a 6-2 victory over the Anaheim Ducks on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-11-15T05:46:41Z",
+          "timePrecision": "exact",
+          "ageHours": 7.24,
+          "freshnessBasis": "— Simon Holmstrom had his first career hat trick, Matthew Schaefer added three assists and the New York Islanders rolled to a 6-2 victory over the Anaheim Ducks on Saturday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892719"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892719"
+            }
+          ],
+          "id": "a415-132f427016be8713",
+          "feedRank": 16,
+          "compactHeadline": "Simon Holmstrom has first hat trick in Islanders' 6-2 win over Ducks 6-2"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-94f5fa0f736ff54c"
           ],
@@ -476,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
+          "ageHours": 7.58,
           "freshnessBasis": "— Mason Marchment flicked in a wrist shot in the fifth round of a shootout to lift the San Jose Sharks to a 6-5 win over the Utah Mammoth on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -490,11 +519,11 @@
             }
           ],
           "id": "a415-29b5bef47e9b9ff2",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Marchment lifts Sharks to shootout win over Mammoth"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-1a75b627ce8a67e3"
           ],
@@ -505,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T04:13:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.29,
+          "ageHours": 8.79,
           "freshnessBasis": "— Jake Oettinger made 22 saves to lead the Dallas Stars to a 2-0 win over the Buffalo Sabres on Saturday night, just two days after being pulled after allowing a season-high six goals.",
           "status": "active",
           "sourceUrls": [
@@ -519,11 +548,11 @@
             }
           ],
           "id": "a415-a038cab2fc964402",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "Oettinger makes 22 saves as the Stars beat the Sabres 2-0"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-c4f3057a2b7782fe"
           ],
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T04:02:35Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
+          "ageHours": 8.98,
           "freshnessBasis": "— Connor McDavid extended his season-opening points streak to 21 games with an assist, Devon Levi made 19 saves for his first NHL shutout and the Edmonton Oilers beat Toronto 1-0 on Saturday night to hand the Maple Leafs their sixth straight home loss.",
           "status": "active",
           "sourceUrls": [
@@ -548,66 +577,8 @@
             }
           ],
           "id": "a415-a0461b63719ed867",
-          "feedRank": 18,
-          "compactHeadline": "McDavid extends season-opening points streak to 21 games, Oilers beat Maple Leafs 1-0"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-6996e27347046431"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Connor Hellebuyck recovered from a shaky start to make 43 saves, remaining unbeaten in net with New Jersey as the surging Devils defeated the Washington Capitals 7-4 on Saturday night.",
-          "text": "Connor Hellebuyck recovered from a shaky start to make 43 saves, remaining unbeaten in net with New Jersey as the surging Devils defeated the Washington Capitals 7-4 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-15T03:53:38Z",
-          "timePrecision": "exact",
-          "ageHours": 1.62,
-          "freshnessBasis": "— Connor Hellebuyck recovered from a shaky start to make 43 saves, remaining unbeaten in net with New Jersey as the surging Devils defeated the Washington Capitals 7-4 on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892714"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892714"
-            }
-          ],
-          "id": "a415-0fe040717db3758d",
           "feedRank": 19,
-          "compactHeadline": "Connor Hellebuyck makes 43 saves and improves to 7-0 with Devils in 7-4 win over Capitals"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-01fc8ef1d28aec24"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ryan Hartman and Danila Yurov scored two goals each, Jesper Wallstedt stopped 30 shots, and the Minnesota Wild beat the Boston Bruins 6-2 on Saturday night to extend their road winning streak to eight games.",
-          "text": "Ryan Hartman and Danila Yurov scored two goals each, Jesper Wallstedt stopped 30 shots, and the Minnesota Wild beat the Boston Bruins 6-2 on Saturday night to extend their road winning streak to eight games.",
-          "entities": [],
-          "occurredAt": "2026-11-15T03:28:35Z",
-          "timePrecision": "exact",
-          "ageHours": 2.04,
-          "freshnessBasis": "— Ryan Hartman and Danila Yurov scored two goals each, Jesper Wallstedt stopped 30 shots, and the Minnesota Wild beat the Boston Bruins 6-2 on Saturday night to extend their road winning streak to eight games.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892709"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892709"
-            }
-          ],
-          "id": "a415-9967e7a9433b98b3",
-          "feedRank": 20,
-          "compactHeadline": "Wild beat Bruins 6-2 behind two goals from Ryan Hartman, extending road winning streak to 8 games"
+          "compactHeadline": "McDavid extends season-opening points streak to 21 games, Oilers beat Maple Leafs 1-0"
         }
       ]
     },
@@ -627,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-14T21:55:14Z",
           "timePrecision": "exact",
-          "ageHours": 7.59,
+          "ageHours": 15.1,
           "freshnessBasis": "Declan Rice has hinted he is likely to sign a new contract at Arsenal to extend his stay at the club beyond 2028.",
           "status": "active",
           "sourceUrls": [
@@ -641,74 +612,44 @@
             }
           ],
           "id": "a415-a90c245fecfae5ec",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "'Extremely lucky' Declan Rice hints new Arsenal contract will be signed soon"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-4315a33d075fdf2f"
+            "cand-9ba462d7a377fe98"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Pochettino makes as much sense as anyone to take the Man United job, so now what? Let's look at the mess he's inheriting and what's at the top of his to-do list.",
-          "text": "Pochettino makes as much sense as anyone to take the Man United job, so now what? Let's look at the mess he's inheriting and what's at the top of his to-do list.",
+          "headline": "Arsenal are the latest team to join a long list of admirers following Middlesbrough striker Will Lankshear. Transfer Talk has the latest.",
+          "text": "Arsenal are the latest team to join a long list of admirers following Middlesbrough striker Will Lankshear. Transfer Talk has the latest.",
           "entities": [],
-          "occurredAt": "2026-11-14T08:34:30Z",
+          "occurredAt": "2026-11-15T12:31:26Z",
           "timePrecision": "exact",
-          "ageHours": 20.94,
-          "freshnessBasis": "Pochettino makes as much sense as anyone to take the Man United job, so now what? Let's look at the mess he's inheriting and what's at the top of his to-do list.",
+          "ageHours": 0.5,
+          "freshnessBasis": "Arsenal are the latest team to join a long list of admirers following Middlesbrough striker Will Lankshear. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50462231/mauricio-pochettino-manchester-united-transfer-usmnt"
+            "https://www.espn.com/soccer/story/_/id/50489327/transfer-rumors-news-gossip-arsenal-tottenham-lankshear"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50462231/mauricio-pochettino-manchester-united-transfer-usmnt"
+              "url": "https://www.espn.com/soccer/story/_/id/50489327/transfer-rumors-news-gossip-arsenal-tottenham-lankshear"
             }
           ],
-          "id": "a415-37a2529a6deed155",
-          "feedRank": 22,
-          "compactHeadline": "Man United, Pochettino's to-do list based on what's gone wrong this season"
+          "id": "a415-a17dddb6149d6ee1",
+          "feedRank": 21,
+          "compactHeadline": "Transfer rumors, news: Arsenal eye former Tottenham striker Will Lankshear"
         }
       ]
     },
     {
       "league": "MLS",
       "seasonState": "active",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-bc455d755911d708"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Alden Global Capital co-founder Heath Freeman is purchasing the San Jose Earthquakes from John Fisher, following MLS owners' approval of the sale Thursday.",
-          "text": "Alden Global Capital co-founder Heath Freeman is purchasing the San Jose Earthquakes from John Fisher, following MLS owners' approval of the sale Thursday.",
-          "entities": [],
-          "occurredAt": "2026-11-14T05:59:42Z",
-          "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Alden Global Capital co-founder Heath Freeman is purchasing the San Jose Earthquakes from John Fisher, following MLS owners' approval of the sale Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50474340/san-jose-earthquakes-sold-625-million-heath-freeman"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50474340/san-jose-earthquakes-sold-625-million-heath-freeman"
-            }
-          ],
-          "id": "a415-96642c1e4fd6c1f1",
-          "feedRank": 23,
-          "compactHeadline": "Sources: San Jose Earthquakes sold for $625 million to Heath Freeman"
-        }
-      ]
+      "items": []
     },
     {
       "league": "NCAAF",
@@ -717,6 +658,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-043f260cebc45184"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Kirby Vorhees ran for career highs of 197 yards and four of Washington State's school-record nine rushing touchdowns on 12 carries, including a Pac-12 Conference",
+          "text": "Kirby Vorhees ran for career highs of 197 yards and four of Washington State's school-record nine rushing touchdowns on 12 carries, including a Pac-12 Conference",
+          "entities": [],
+          "occurredAt": "2026-11-15T07:22:35Z",
+          "timePrecision": "exact",
+          "ageHours": 5.64,
+          "freshnessBasis": "— Kirby Vorhees ran for career highs of 197 yards and four of Washington State's school-record nine rushing touchdowns on 12 carries, including a Pac-12 Conference",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401860917"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401860917"
+            }
+          ],
+          "id": "a415-990dc735a3041436",
+          "feedRank": 22,
+          "compactHeadline": "Kirby Vorhees has 4 of 9 TD runs by Washington State in skid-busting 73-7 romp over Colorado State"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-605c3358a51678f3"
           ],
           "type": "INJURY",
@@ -724,9 +694,9 @@
           "headline": "Wake Forest dominated SMU on the gridiron Saturday -- and added insult to injury after the game.",
           "text": "Wake Forest dominated SMU on the gridiron Saturday -- and added insult to injury after the game.",
           "entities": [],
-          "occurredAt": "2026-11-15T05:04:02Z",
+          "occurredAt": "2026-11-15T05:30:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.45,
+          "ageHours": 7.52,
           "freshnessBasis": "Wake Forest dominated SMU on the gridiron Saturday -- and added insult to injury after the game.",
           "status": "active",
           "sourceUrls": [
@@ -740,153 +710,124 @@
             }
           ],
           "id": "a415-bdc7e346f3af6adf",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Wake Forest's post-blowout jab at SMU tops college football Week 11 trolls"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-dd72d98a4d057cca"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jackson Arnold threw a long fourth-quarter touchdown pass and ran for another score and UNLV beat No. 23 New Mexico 21-17 on Saturday night, spoiling the Lobos’ first home game in The Associated Press poll.",
-          "text": "Jackson Arnold threw a long fourth-quarter touchdown pass and ran for another score and UNLV beat No. 23 New Mexico 21-17 on Saturday night, spoiling the Lobos’ first home game in The Associated Press poll.",
-          "entities": [],
-          "occurredAt": "2026-11-15T05:25:35Z",
-          "timePrecision": "exact",
-          "ageHours": 0.09,
-          "freshnessBasis": "— Jackson Arnold threw a long fourth-quarter touchdown pass and ran for another score and UNLV beat No. 23 New Mexico 21-17 on Saturday night, spoiling the Lobos’ first home game in The Associated Press poll.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401864539"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401864539"
-            }
-          ],
-          "id": "a415-1981029fa81ba1c7",
-          "feedRank": 25,
-          "compactHeadline": "Jackson Arnold rallies UNLV past No. 23 New Mexico, 21-17"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-d0d8bbd19f0b6916"
+            "cand-e79b3b0fd0676b21"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "KJ Jackson threw for 188 yards and two touchdowns and Arkansas took advantage of four turnovers by South Carolina to beat the No. 17 Gamecocks 34-6 on Saturday night.",
-          "text": "KJ Jackson threw for 188 yards and two touchdowns and Arkansas took advantage of four turnovers by South Carolina to beat the No. 17 Gamecocks 34-6 on Saturday night.",
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Find out which teams our experts think will make this season's CFP.",
+          "text": "Find out which teams our experts think will make this season's CFP.",
           "entities": [],
-          "occurredAt": "2026-11-15T05:21:34Z",
+          "occurredAt": "2026-11-15T07:48:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
-          "freshnessBasis": "— KJ Jackson threw for 188 yards and two touchdowns and Arkansas took advantage of four turnovers by South Carolina to beat the No. 17 Gamecocks 34-6 on Saturday night.",
+          "ageHours": 5.21,
+          "freshnessBasis": "Find out which teams our experts think will make this season's CFP.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856882"
+            "https://www.espn.com/college-football/story/_/page/playoffpredictions111426/cfp-predictions-week-11"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856882"
+              "url": "https://www.espn.com/college-football/story/_/page/playoffpredictions111426/cfp-predictions-week-11"
             }
           ],
-          "id": "a415-372daeabe640e27c",
-          "feedRank": 26,
-          "compactHeadline": "Turnovers, red-zone struggles doom No. 20 South Carolina in 34-6 loss to Arkansas"
+          "id": "a415-eb65ee6dcf806b44",
+          "feedRank": 24,
+          "compactHeadline": "Predicting the College Football Playoff: Who's most likely to make the field?"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-ca1ca7c8e36c48c5"
+            "cand-5654df37847a8157"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Aiden McCown was 17-of-29 passing for 275 yards and four touchdowns, Blake Thomas had four receptions for 100 yards and two TDs and Lamar beat East Texas A&M 45-26 on Saturday for the Cardinals' fourth consecutive win.",
-          "text": "Aiden McCown was 17-of-29 passing for 275 yards and four touchdowns, Blake Thomas had four receptions for 100 yards and two TDs and Lamar beat East Texas A&M 45-26 on Saturday for the Cardinals' fourth consecutive win.",
+          "headline": "Baylor Hayes threw for 309 yards and two touchdowns and Tulsa never trailed in a 38-21 win over Florida Atlantic on Saturday night to become eligible for a bowl game.",
+          "text": "Baylor Hayes threw for 309 yards and two touchdowns and Tulsa never trailed in a 38-21 win over Florida Atlantic on Saturday night to become eligible for a bowl game.",
           "entities": [],
-          "occurredAt": "2026-11-15T05:06:35Z",
+          "occurredAt": "2026-11-15T11:26:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
-          "freshnessBasis": "— Aiden McCown was 17-of-29 passing for 275 yards and four touchdowns, Blake Thomas had four receptions for 100 yards and two TDs and Lamar beat East Texas A&M 45-26 on Saturday for the Cardinals' fourth consecutive win.",
+          "ageHours": 1.58,
+          "freshnessBasis": "— Baylor Hayes threw for 309 yards and two touchdowns and Tulsa never trailed in a 38-21 win over Florida Atlantic on Saturday night to become eligible for a bowl game.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401869146"
+            "http://www.espn.com/ncf/recap?gameId=401862826"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401869146"
+              "url": "http://www.espn.com/ncf/recap?gameId=401862826"
             }
           ],
-          "id": "a415-b63eb8d14edc06b5",
-          "feedRank": 27,
-          "compactHeadline": "Aiden McCown throws 4 TD passes for Lamar in 45-26 win over East Texas A&M"
+          "id": "a415-e8d8804d70891097",
+          "feedRank": 25,
+          "compactHeadline": "Hayes leads Tulsa in another offensive eruption, beating Florida Atlantic 38-21"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-7f9d0264a2a34ced"
+            "cand-dcd325c064f9f662"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Arch Manning — like his grandfather and uncle before him — has a Death Valley comeback story to tell.",
-          "text": "Arch Manning — like his grandfather and uncle before him — has a Death Valley comeback story to tell.",
+          "headline": "In a back-and-forth thriller, Utah rallied to remain undefeated after Devon Dampier hit Creed Whittemore on a 70-yard score late in Saturday's 40-39 win over Arizona.",
+          "text": "In a back-and-forth thriller, Utah rallied to remain undefeated after Devon Dampier hit Creed Whittemore on a 70-yard score late in Saturday's 40-39 win over Arizona.",
           "entities": [],
-          "occurredAt": "2026-11-15T05:03:35Z",
+          "occurredAt": "2026-11-15T10:58:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
-          "freshnessBasis": "— Arch Manning — like his grandfather and uncle before him — has a Death Valley comeback story to tell.",
+          "ageHours": 2.05,
+          "freshnessBasis": "In a back-and-forth thriller, Utah rallied to remain undefeated after Devon Dampier hit Creed Whittemore on a 70-yard score late in Saturday's 40-39 win over Arizona.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856885"
+            "https://www.espn.com/college-football/story/_/id/50488650/no-2-utah-survives-late-70-yard-td-thriller-vs-arizona"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856885"
+              "url": "https://www.espn.com/college-football/story/_/id/50488650/no-2-utah-survives-late-70-yard-td-thriller-vs-arizona"
             }
           ],
-          "id": "a415-63cade6760e193b1",
-          "feedRank": 28,
-          "compactHeadline": "Arch Manning leads No. 8 Texas to a late score and a dramatic 22-21 win over No. 24 LSU"
+          "id": "a415-ca362b032d02dd18",
+          "feedRank": 26,
+          "compactHeadline": "No. 2 Utah survives, stays unbeaten on late 70-yard TD in thriller vs. Arizona"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-722d378ffdf10dd4"
+            "cand-b40f13cb24b5e006"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Treynor Cleeland threw four touchdown passes, Samuel Gbatu Jr. had eight receptions for 172 yards and two TDs, and UC Davis beat Idaho 28-24 on Saturday night to end the Vandals win streak at four.",
-          "text": "Treynor Cleeland threw four touchdown passes, Samuel Gbatu Jr. had eight receptions for 172 yards and two TDs, and UC Davis beat Idaho 28-24 on Saturday night to end the Vandals win streak at four.",
+          "headline": "Keali’i Ah Yat threw two of his three touchdown passes to Eli Gillman, and Montana beat Idaho State 38-30 on Saturday night.",
+          "text": "Keali’i Ah Yat threw two of his three touchdown passes to Eli Gillman, and Montana beat Idaho State 38-30 on Saturday night.",
           "entities": [],
-          "occurredAt": "2026-11-15T05:00:35Z",
+          "occurredAt": "2026-11-15T08:55:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.51,
-          "freshnessBasis": "— Treynor Cleeland threw four touchdown passes, Samuel Gbatu Jr. had eight receptions for 172 yards and two TDs, and UC Davis beat Idaho 28-24 on Saturday night to end the Vandals win streak at four.",
+          "ageHours": 4.09,
+          "freshnessBasis": "— Keali’i Ah Yat threw two of his three touchdown passes to Eli Gillman, and Montana beat Idaho State 38-30 on Saturday night.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401868099"
+            "http://www.espn.com/ncf/recap?gameId=401868109"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401868099"
+              "url": "http://www.espn.com/ncf/recap?gameId=401868109"
             }
           ],
-          "id": "a415-e07df0485c9bea76",
-          "feedRank": 29,
-          "compactHeadline": "Cleeland throws 4 touchdown passes, 2 to Gbatu, as UC Davis snaps Idaho's 4-game win streak"
+          "id": "a415-cd4fb517385d681d",
+          "feedRank": 27,
+          "compactHeadline": "Ah Yat throws 3 TD passes, 2 to Gillman, Montana beats Idaho State 38-30"
         }
       ]
     }
@@ -911,8 +852,8 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 99,
-    "publishedItemCount": 29,
+    "freshCandidateCount": 100,
+    "publishedItemCount": 27,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
