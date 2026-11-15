@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-15T22:30:56Z",
+  "generatedAt": "2026-11-15T23:01:05Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "b7f94d84f099d9e24a33f0e0862e5f5f4843b25f6a0971b85069d1ed93766282",
+  "sourceCandidateHash": "cd02003f20e2e61ba0d5e9f86ebcdfa30c02affe3847721ee121c730fa12f2ed",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T19:44:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.78,
+          "ageHours": 3.28,
           "freshnessBasis": "Left-hander Tim Hill is staying with the Yankees, agreeing to a one-year, $2.25 million contract, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T00:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 21.78,
+          "ageHours": 22.29,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -78,6 +78,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e1fefcaee9e8ecbf"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Brock Bowers was ruled out of Sunday's matchup against the Seahawks after suffering a right ankle injury in the opening quarter.",
+          "text": "Brock Bowers was ruled out of Sunday's matchup against the Seahawks after suffering a right ankle injury in the opening quarter.",
+          "entities": [],
+          "occurredAt": "2026-11-15T22:54:58Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "Brock Bowers was ruled out of Sunday's matchup against the Seahawks after suffering a right ankle injury in the opening quarter.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50495181/raiders-lose-te-brock-bowers-ankle-injury-vs-seahawks"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50495181/raiders-lose-te-brock-bowers-ankle-injury-vs-seahawks"
+            }
+          ],
+          "id": "a415-41bc4ab02d20929a",
+          "feedRank": 3,
+          "compactHeadline": "Raiders lose TE Brock Bowers to ankle injury vs. Seahawks"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-31e59100a6dc2e8b"
           ],
           "type": "INJURY",
@@ -85,9 +114,9 @@
           "headline": "An already short-handed Texans running back room took another hit Sunday when Woody Marks was ruled out with a concussion sustained against the Browns.",
           "text": "An already short-handed Texans running back room took another hit Sunday when Woody Marks was ruled out with a concussion sustained against the Browns.",
           "entities": [],
-          "occurredAt": "2026-11-15T22:27:49Z",
+          "occurredAt": "2026-11-15T22:46:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.24,
           "freshnessBasis": "An already short-handed Texans running back room took another hit Sunday when Woody Marks was ruled out with a concussion sustained against the Browns.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +130,11 @@
             }
           ],
           "id": "a415-41be76a07cf070c9",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Texans lose RB Woody Marks to concussion in loss to Browns"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-5bd9d95a8b26544a"
           ],
@@ -116,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T22:26:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
+          "ageHours": 0.57,
           "freshnessBasis": "Jets quarterback Geno Smith suffered an ankle injury in the third quarter and was replaced by rookie Cade Klubnik on Sunday at MetLife Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +159,11 @@
             }
           ],
           "id": "a415-ebe296c109bca671",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Jets QB Geno Smith suffers ankle injury, replaced by rookie Cade Klubnik"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-0e42cd7e64001938"
           ],
@@ -145,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T20:20:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.68,
           "freshnessBasis": "Lions star Aidan Hutchinson is feared to have suffered a significant injury to his right knee while celebrating a sack, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -159,11 +188,11 @@
             }
           ],
           "id": "a415-d34d469fb9a33687",
-          "feedRank": 5,
+          "feedRank": 6,
           "compactHeadline": "Sources: Lions DE Aidan Hutchinson feared to have suffered significant knee injury"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-a3ba738d5e064e62"
           ],
@@ -174,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T20:12:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.31,
+          "ageHours": 2.81,
           "freshnessBasis": "Patriots quarterback Drake Maye suffered an ankle injury in Sunday's loss to the Lions.",
           "status": "active",
           "sourceUrls": [
@@ -188,66 +217,37 @@
             }
           ],
           "id": "a415-9d55a66c52598d2a",
-          "feedRank": 6,
-          "compactHeadline": "Patriots QB Drake Maye knocked out of blowout loss to Lions with ankle injury"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0d1a67008e7532ee"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Patriots QB Drake Maye and Lions DE Aidan Hutchinson were injured on the same play Sunday, taking star power out of the Munich game.",
-          "text": "Patriots QB Drake Maye and Lions DE Aidan Hutchinson were injured on the same play Sunday, taking star power out of the Munich game.",
-          "entities": [],
-          "occurredAt": "2026-11-15T18:16:05Z",
-          "timePrecision": "exact",
-          "ageHours": 4.25,
-          "freshnessBasis": "Patriots QB Drake Maye and Lions DE Aidan Hutchinson were injured on the same play Sunday, taking star power out of the Munich game.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50490533/patriots-drake-maye-lions-aidan-hutchinson-injured"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50490533/patriots-drake-maye-lions-aidan-hutchinson-injured"
-            }
-          ],
-          "id": "a415-765bb8cb38c165d4",
           "feedRank": 7,
-          "compactHeadline": "Patriots' Drake Maye, Lions' Aidan Hutchinson both injured on same play in Munich"
+          "compactHeadline": "Patriots QB Drake Maye knocked out of blowout loss to Lions with ankle injury"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-e6328efea145ba4a"
+            "cand-311a766f556b041d"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Baker Mayfield's status against the Lions in Week 11 is in question because of an injury he suffered to his foot and ankle area, sources told NFL Network.",
-          "text": "Baker Mayfield's status against the Lions in Week 11 is in question because of an injury he suffered to his foot and ankle area, sources told NFL Network.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Kirk Cousins began his second stint with Minnesota by showing just how much of a difference he can make for the Vikings' offense.",
+          "text": "Kirk Cousins began his second stint with Minnesota by showing just how much of a difference he can make for the Vikings' offense.",
           "entities": [],
-          "occurredAt": "2026-11-15T16:43:34Z",
+          "occurredAt": "2026-11-15T22:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 5.79,
-          "freshnessBasis": "Baker Mayfield's status against the Lions in Week 11 is in question because of an injury he suffered to his foot and ankle area, sources told NFL Network.",
+          "ageHours": 0.24,
+          "freshnessBasis": "— Kirk Cousins began his second stint with Minnesota by showing just how much of a difference he can make for the Vikings' offense.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50486637/sources-baker-mayfield-status-uncertain-vs-lions"
+            "http://www.espn.com/nfl/recap?gameId=401873060"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50486637/sources-baker-mayfield-status-uncertain-vs-lions"
+              "url": "http://www.espn.com/nfl/recap?gameId=401873060"
             }
           ],
-          "id": "a415-a5a17fa5cc237b17",
+          "id": "a415-eba102d25d636bd0",
           "feedRank": 8,
-          "compactHeadline": "Sources: Baker Mayfield's status uncertain for Bucs' Week 11 game vs. Lions"
+          "compactHeadline": "Kirk Cousins has triumphant return as Vikings sack Jordan Love 8 times in 30-10 win over Packers"
         }
       ]
     },
@@ -267,7 +267,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T07:04:37Z",
           "timePrecision": "exact",
-          "ageHours": 15.44,
+          "ageHours": 15.94,
           "freshnessBasis": "Portland Trail Blazers (9-3, fourth in the Western Conference) vs. Minnesota Timberwolves (9-4, fifth in the Western Conference)",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +296,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T07:04:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.44,
+          "ageHours": 15.94,
           "freshnessBasis": "Dallas Mavericks (7-6, 10th in the Western Conference) vs. Boston Celtics (10-2, first in the Eastern Conference)",
           "status": "active",
           "sourceUrls": [
@@ -316,16 +316,16 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-ee9173f1b1700451"
+            "cand-d856b36344baa6a1"
           ],
           "type": "NEWS",
           "priority": 64,
           "headline": "LeBron James moved past Hall of Fame point guard Jason Kidd for third on the NBA's career assists list with 12,092.",
           "text": "LeBron James moved past Hall of Fame point guard Jason Kidd for third on the NBA's career assists list with 12,092.",
           "entities": [],
-          "occurredAt": "2026-11-15T21:51:23Z",
+          "occurredAt": "2026-11-15T22:58:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.66,
+          "ageHours": 0.04,
           "freshnessBasis": "LeBron James moved past Hall of Fame point guard Jason Kidd for third on the NBA's career assists list with 12,092.",
           "status": "active",
           "sourceUrls": [
@@ -338,9 +338,9 @@
               "url": "https://www.espn.com/nba/story/_/id/50493152/lebron-james-passes-jason-kidd-nba-assists-list"
             }
           ],
-          "id": "a415-ebb6834fa06c7083",
+          "id": "a415-16058d6de3c1db88",
           "feedRank": 11,
-          "compactHeadline": "LeBron James dishes 11 assists in 76ers win, climbs to third in NBA ranks"
+          "compactHeadline": "LeBron James dishes 11 assists in 76ers win, passing Kidd for third in NBA ranks"
         },
         {
           "rank": 4,
@@ -354,7 +354,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T20:56:14Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
+          "ageHours": 2.08,
           "freshnessBasis": "Thirty years after \"Space Jam,\" those who shared the summer with Jordan remember the basketball that unfolded offscreen.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T17:30:29Z",
           "timePrecision": "exact",
-          "ageHours": 5.01,
+          "ageHours": 5.51,
           "freshnessBasis": "After the star forward found the back of the net against Haiti, he had a specific celebration in mind: Damian Lillard's iconic \"Dame Time\" motion.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:50:36Z",
           "timePrecision": "exact",
-          "ageHours": 18.67,
+          "ageHours": 19.17,
           "freshnessBasis": "— Giannis Antetokounmpo had 34 points, 14 rebounds and eight assists, some of the spectacular variety, and the Miami Heat beat the Detroit...",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +447,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T19:36:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.91,
+          "ageHours": 3.41,
           "freshnessBasis": "Stars captain Jamie Benn scored his 1,000th career NHL point with a goal against the Sabres.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 13.32,
+          "ageHours": 13.82,
           "freshnessBasis": "Florida Panthers (12-7-2, in the Atlantic Division) vs. Dallas Stars (11-6-2, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 16.74,
+          "ageHours": 17.24,
           "freshnessBasis": "— Simon Holmstrom had his first career hat trick, Matthew Schaefer added three assists and the New York Islanders rolled to a 6-2 victory over the Anaheim Ducks on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T05:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 17.07,
+          "ageHours": 17.58,
           "freshnessBasis": "— Mason Marchment flicked in a wrist shot in the fifth round of a shootout to lift the San Jose Sharks to a 6-5 win over the Utah Mammoth on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T04:13:45Z",
           "timePrecision": "exact",
-          "ageHours": 18.29,
+          "ageHours": 18.79,
           "freshnessBasis": "— Jake Oettinger made 22 saves to lead the Dallas Stars to a 2-0 win over the Buffalo Sabres on Saturday night, just two days after being pulled after allowing a season-high six goals.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T04:02:35Z",
           "timePrecision": "exact",
-          "ageHours": 18.47,
+          "ageHours": 18.98,
           "freshnessBasis": "— Connor McDavid extended his season-opening points streak to 21 games with an assist, Devon Levi made 19 saves for his first NHL shutout and the Edmonton Oilers beat Toronto 1-0 on Saturday night to hand the Maple Leafs their sixth straight home loss.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:46:50Z",
           "timePrecision": "exact",
-          "ageHours": 7.74,
+          "ageHours": 8.24,
           "freshnessBasis": "Erling Haaland says he is \"incredibly happy\" at Manchester City and his focus is on performing and not on the potential sanctions against the club.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:25:57Z",
           "timePrecision": "exact",
-          "ageHours": 8.08,
+          "ageHours": 8.59,
           "freshnessBasis": "Bruno Guimarães has labelled Arsenal teammate Declan Rice a \"machine\" and said he's been learning a lot by playing alongside him.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T20:57:36Z",
           "timePrecision": "exact",
-          "ageHours": 1.56,
+          "ageHours": 2.06,
           "freshnessBasis": "Bruno Fernandes' future at Manchester United is reportedly uncertain with his contract expiring next summer. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -725,7 +725,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T21:09:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.35,
+          "ageHours": 1.85,
           "freshnessBasis": "Clemson lost starting QB Tait Reynolds for the rest of the season with a torn meniscus, while backup Christopher Vizzina has a concussion.",
           "status": "active",
           "sourceUrls": [
@@ -752,9 +752,9 @@
           "headline": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
           "text": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
           "entities": [],
-          "occurredAt": "2026-11-15T22:14:42Z",
+          "occurredAt": "2026-11-15T22:56:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
+          "ageHours": 0.08,
           "freshnessBasis": "The updated SP+ rankings, plus strength of schedule and résumé SP+, after this weekend's results.",
           "status": "active",
           "sourceUrls": [
@@ -783,7 +783,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:13:44Z",
           "timePrecision": "exact",
-          "ageHours": 4.29,
+          "ageHours": 4.79,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -812,7 +812,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T15:40:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.85,
+          "ageHours": 7.35,
           "freshnessBasis": "We assess how the selection committee could stack the top teams in the country after Week 11.",
           "status": "active",
           "sourceUrls": [
@@ -841,7 +841,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T22:00:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.51,
+          "ageHours": 1.01,
           "freshnessBasis": "— John Mateer accounted for 181 yards of offense and Oklahoma held on to beat No. 19 Mississippi 24-17 on Sunday, a day after the Southeastern Conference game was originally scheduled to be played.",
           "status": "active",
           "sourceUrls": [
@@ -870,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T07:22:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.14,
+          "ageHours": 15.64,
           "freshnessBasis": "— Kirby Vorhees ran for career highs of 197 yards and four of Washington State's school-record nine rushing touchdowns on 12 carries, including a Pac-12 Conference",
           "status": "active",
           "sourceUrls": [
@@ -910,7 +910,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 104,
+    "freshCandidateCount": 102,
     "publishedItemCount": 29,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
