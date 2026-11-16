@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-16T00:01:48Z",
+  "generatedAt": "2026-11-16T00:31:14Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "1aacb07978d4af8a08bf81caffc37d5b69d54af51bde1b3ad73c529df52d1e85",
+  "sourceCandidateHash": "c3273834dd657dea7564331659c74d61cfca68d1828303b535dc0da4fc9d9db2",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T19:44:18Z",
           "timePrecision": "exact",
-          "ageHours": 4.29,
+          "ageHours": 4.78,
           "freshnessBasis": "Left-hander Tim Hill is staying with the Yankees, agreeing to a one-year, $2.25 million contract, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T00:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 23.3,
+          "ageHours": 23.79,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -87,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Carolina Panthers 20, New Orleans Saints 17.",
           "status": "active",
           "sourceUrls": [
@@ -113,6 +113,41 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-d2c6da9d149ac407"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Drew Lock passed for 240 yards and two touchdowns, including a game-breaking 71-yard scoring toss to Jaxon Smith-Njigba, and the Seattle Seahawks beat Las Vegas 21-13 on Sunday to spoil the debut start of Raiders rookie quarterback Fernando Mendoza.",
+          "text": "Drew Lock passed for 240 yards and two touchdowns, including a game-breaking 71-yard scoring toss to Jaxon Smith-Njigba, and the Seattle Seahawks beat Las Vegas 21-13 on Sunday to spoil the debut start of Raiders rookie quarterback Fernando Mendoza.",
+          "entities": [],
+          "occurredAt": "2026-11-15T21:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.44,
+          "freshnessBasis": "Highlightly final: Seattle Seahawks 21, Las Vegas Raiders 13.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873062"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873062"
+            }
+          ],
+          "id": "a415-0653648e6f0382c2",
+          "feedRank": 4,
+          "compactHeadline": "Seahawks beat Raiders 21-13 as Drew Lock throws for 2 TDs and Seattle sacks Fernando Mendoza 6 times"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-090784d9af01814d"
           ],
           "type": "RESULT",
@@ -122,7 +157,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Minnesota Vikings 30, Green Bay Packers 10.",
           "status": "active",
           "sourceUrls": [
@@ -142,11 +177,11 @@
             }
           ],
           "id": "a415-eca2c6bc56287792",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Kirk Cousins has triumphant return as Vikings sack Jordan Love 8 times in 30-10 win over Packers"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-1b6895b9b644b86e"
           ],
@@ -157,7 +192,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Miami Dolphins 22, Indianapolis Colts 24.",
           "status": "active",
           "sourceUrls": [
@@ -177,11 +212,11 @@
             }
           ],
           "id": "a415-504b1529aa9514b0",
-          "feedRank": 5,
+          "feedRank": 6,
           "compactHeadline": "Colts' struggling offense does just enough to beat Dolphins 24-22 and snap 5-game skid"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-07dcb67097adb70d"
           ],
@@ -192,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.02,
           "freshnessBasis": "Highlightly final: New England Patriots 10, Detroit Lions 35.",
           "status": "active",
           "sourceUrls": [
@@ -212,66 +247,37 @@
             }
           ],
           "id": "a415-eaac5a384b308057",
-          "feedRank": 6,
-          "compactHeadline": "St. Brown and Gibbs score 2 TDs each in Lions' 35-10 rout of Patriots after Maye injured in Munich"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e1fefcaee9e8ecbf"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Brock Bowers was ruled out of Sunday's matchup against the Seahawks after suffering a right ankle injury in the opening quarter.",
-          "text": "Brock Bowers was ruled out of Sunday's matchup against the Seahawks after suffering a right ankle injury in the opening quarter.",
-          "entities": [],
-          "occurredAt": "2026-11-15T23:09:20Z",
-          "timePrecision": "exact",
-          "ageHours": 0.87,
-          "freshnessBasis": "Brock Bowers was ruled out of Sunday's matchup against the Seahawks after suffering a right ankle injury in the opening quarter.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50495181/raiders-lose-te-brock-bowers-ankle-injury-vs-seahawks"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50495181/raiders-lose-te-brock-bowers-ankle-injury-vs-seahawks"
-            }
-          ],
-          "id": "a415-41bc4ab02d20929a",
           "feedRank": 7,
-          "compactHeadline": "Raiders lose TE Brock Bowers to ankle injury vs. Seahawks"
+          "compactHeadline": "St. Brown and Gibbs score 2 TDs each in Lions' 35-10 rout of Patriots after Maye injured in Munich"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-31e59100a6dc2e8b"
+            "cand-5bd9d95a8b26544a"
           ],
           "type": "INJURY",
           "priority": 78,
-          "headline": "An already short-handed Texans running back room took another hit Sunday when Woody Marks was ruled out with a concussion sustained against the Browns.",
-          "text": "An already short-handed Texans running back room took another hit Sunday when Woody Marks was ruled out with a concussion sustained against the Browns.",
+          "headline": "Jets quarterback Geno Smith suffered an ankle injury in the third quarter and was replaced by rookie Cade Klubnik on Sunday at MetLife Stadium.",
+          "text": "Jets quarterback Geno Smith suffered an ankle injury in the third quarter and was replaced by rookie Cade Klubnik on Sunday at MetLife Stadium.",
           "entities": [],
-          "occurredAt": "2026-11-15T22:46:35Z",
+          "occurredAt": "2026-11-16T00:23:53Z",
           "timePrecision": "exact",
-          "ageHours": 1.25,
-          "freshnessBasis": "An already short-handed Texans running back room took another hit Sunday when Woody Marks was ruled out with a concussion sustained against the Browns.",
+          "ageHours": 0.12,
+          "freshnessBasis": "Jets quarterback Geno Smith suffered an ankle injury in the third quarter and was replaced by rookie Cade Klubnik on Sunday at MetLife Stadium.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50493317/texans-lose-rb-woody-marks-concussion-browns"
+            "https://www.espn.com/nfl/story/_/id/50493391/jets-qb-geno-smith-suffers-ankle-injury-bills"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50493317/texans-lose-rb-woody-marks-concussion-browns"
+              "url": "https://www.espn.com/nfl/story/_/id/50493391/jets-qb-geno-smith-suffers-ankle-injury-bills"
             }
           ],
-          "id": "a415-41be76a07cf070c9",
+          "id": "a415-ebe296c109bca671",
           "feedRank": 8,
-          "compactHeadline": "Texans lose RB Woody Marks to concussion in loss to Browns"
+          "compactHeadline": "Jets QB Geno Smith suffers ankle injury, replaced by rookie Cade Klubnik"
         }
       ]
     },
@@ -286,27 +292,33 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Charlotte Hornets 105, Los Angeles Clippers 113.",
-          "text": "Highlightly final: Charlotte Hornets 105, Los Angeles Clippers 113.",
+          "headline": "Darius Garland scored 27 points, Max Strus had 14 off the bench and the Los Angeles Clippers beat the Charlotte Hornets for the 17th straight time with a 113-105 victory Sunday.",
+          "text": "Darius Garland scored 27 points, Max Strus had 14 off the bench and the Los Angeles Clippers beat the Charlotte Hornets for the 17th straight time with a 113-105 victory Sunday.",
           "entities": [],
           "occurredAt": "2026-11-15T21:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.02,
           "freshnessBasis": "Highlightly final: Charlotte Hornets 105, Los Angeles Clippers 113.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://highlightly.net",
+            "http://www.espn.com/nba/recap?gameId=401909987"
           ],
           "sources": [
             {
               "provider": "Highlightly",
               "sourceId": "highlightly-basketball-2026-11-15",
               "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909987"
             }
           ],
           "id": "a415-2bb6d6e87f61b316",
           "feedRank": 9,
-          "compactHeadline": "Los Angeles Clippers beat Charlotte Hornets 113-105"
+          "compactHeadline": "Darius Garland scores 27 as Clippers run win streak over Hornets to 17 with 113-105 win"
         },
         {
           "rank": 2,
@@ -315,13 +327,48 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Los Angeles Lakers 131, Phoenix Suns 123.",
-          "text": "Highlightly final: Los Angeles Lakers 131, Phoenix Suns 123.",
+          "headline": "Luka Doncic scored 43 points and the Los Angeles Lakers stretched their winning streak to eight games by holding off the Phoenix Suns 131-123 on Sunday.",
+          "text": "Luka Doncic scored 43 points and the Los Angeles Lakers stretched their winning streak to eight games by holding off the Phoenix Suns 131-123 on Sunday.",
           "entities": [],
           "occurredAt": "2026-11-15T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.52,
           "freshnessBasis": "Highlightly final: Los Angeles Lakers 131, Phoenix Suns 123.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nba/recap?gameId=401909986"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-11-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909986"
+            }
+          ],
+          "id": "a415-a48b7c882619edfe",
+          "feedRank": 10,
+          "compactHeadline": "Luka Doncic scores 43, Lakers stretch winning streak to 8 with 131-123 win over Suns"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-35b0a7ccb67bf38c"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: San Antonio Spurs 110, Utah Jazz 102.",
+          "text": "Highlightly final: San Antonio Spurs 110, Utah Jazz 102.",
+          "entities": [],
+          "occurredAt": "2026-11-15T22:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.52,
+          "freshnessBasis": "Highlightly final: San Antonio Spurs 110, Utah Jazz 102.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -333,12 +380,12 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-a48b7c882619edfe",
-          "feedRank": 10,
-          "compactHeadline": "Los Angeles Lakers beat Phoenix Suns 131-123"
+          "id": "a415-07440f7c42d06413",
+          "feedRank": 11,
+          "compactHeadline": "San Antonio Spurs beat Utah Jazz 110-102"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-3addc29308b34ddf"
           ],
@@ -349,7 +396,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Brooklyn Nets 110, Memphis Grizzlies 129.",
           "status": "active",
           "sourceUrls": [
@@ -369,11 +416,11 @@
             }
           ],
           "id": "a415-819100a6d615ce4c",
-          "feedRank": 11,
+          "feedRank": 12,
           "compactHeadline": "Cedric Coward has 23 points and 12 rebounds as Grizzlies beat Nets 129-110"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-091fa97a26bf3ebb"
           ],
@@ -384,7 +431,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Chicago Bulls 117, Minnesota Timberwolves 106.",
           "status": "active",
           "sourceUrls": [
@@ -404,11 +451,11 @@
             }
           ],
           "id": "a415-db50ecc9334387a0",
-          "feedRank": 12,
+          "feedRank": 13,
           "compactHeadline": "Bulls overcome travel delay and injuries to beat the Timberwolves 117-106"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-df8f4709d6ac251f"
           ],
@@ -419,7 +466,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Detroit Pistons 117, Miami Heat 137.",
           "status": "active",
           "sourceUrls": [
@@ -439,43 +486,8 @@
             }
           ],
           "id": "a415-e3b5ec964cc6885e",
-          "feedRank": 13,
-          "compactHeadline": "Antetokounmpo scores 34, Heat block 14 shots and roll past Pistons 137-117 for 4th straight win"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f2823ebe3b27a173"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Tyrese Proctor posted his first triple-double with 24 points, 11 rebounds and a career-best 10 assists in leading the short-handed Cleveland Cavaliers to a 127-117 victory over the Dallas Mavericks on Saturday night.",
-          "text": "Tyrese Proctor posted his first triple-double with 24 points, 11 rebounds and a career-best 10 assists in leading the short-handed Cleveland Cavaliers to a 127-117 victory over the Dallas Mavericks on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-11-15T00:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Dallas Mavericks 117, Cleveland Cavaliers 127.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nba/recap?gameId=401909981"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-11-14",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909981"
-            }
-          ],
-          "id": "a415-35e5be3931e4c3b9",
           "feedRank": 14,
-          "compactHeadline": "Tyrese Proctor has a triple-double as short-handed Cavaliers top Mavericks 127-117"
+          "compactHeadline": "Antetokounmpo scores 34, Heat block 14 shots and roll past Pistons 137-117 for 4th straight win"
         }
       ]
     },
@@ -495,7 +507,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T19:36:17Z",
           "timePrecision": "exact",
-          "ageHours": 4.43,
+          "ageHours": 4.92,
           "freshnessBasis": "Stars captain Jamie Benn scored his 1,000th career NHL point with a goal against the Sabres.",
           "status": "active",
           "sourceUrls": [
@@ -524,7 +536,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.52,
           "freshnessBasis": "Highlightly final: New York Islanders 6, Anaheim Ducks 2.",
           "status": "active",
           "sourceUrls": [
@@ -559,7 +571,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.52,
           "freshnessBasis": "Highlightly final: Buffalo Sabres 0, Dallas Stars 2.",
           "status": "active",
           "sourceUrls": [
@@ -594,7 +606,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: San Jose Sharks 6, Utah Mammoth 5.",
           "status": "active",
           "sourceUrls": [
@@ -629,7 +641,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T09:11:38Z",
           "timePrecision": "exact",
-          "ageHours": 14.84,
+          "ageHours": 15.33,
           "freshnessBasis": "Florida Panthers (12-7-2, in the Atlantic Division) vs. Dallas Stars (11-6-2, in the Central Division)",
           "status": "active",
           "sourceUrls": [
@@ -658,7 +670,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.52,
           "freshnessBasis": "Highlightly final: Calgary Flames 3, Los Angeles Kings 2.",
           "status": "active",
           "sourceUrls": [
@@ -693,7 +705,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T23:51:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 0.67,
           "freshnessBasis": "Prime Minister Andy Burnham says he would \"urge caution\" on scrapping the Saturday 3pm blackout.",
           "status": "active",
           "sourceUrls": [
@@ -722,7 +734,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:46:50Z",
           "timePrecision": "exact",
-          "ageHours": 9.25,
+          "ageHours": 9.74,
           "freshnessBasis": "Erling Haaland says he is \"incredibly happy\" at Manchester City and his focus is on performing and not on the potential sanctions against the club.",
           "status": "active",
           "sourceUrls": [
@@ -751,7 +763,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T14:25:57Z",
           "timePrecision": "exact",
-          "ageHours": 9.6,
+          "ageHours": 10.09,
           "freshnessBasis": "Bruno Guimarães has labelled Arsenal teammate Declan Rice a \"machine\" and said he's been learning a lot by playing alongside him.",
           "status": "active",
           "sourceUrls": [
@@ -780,7 +792,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T20:57:36Z",
           "timePrecision": "exact",
-          "ageHours": 3.07,
+          "ageHours": 3.56,
           "freshnessBasis": "Bruno Fernandes' future at Manchester United is reportedly uncertain with his contract expiring next summer. Transfer Talk has the latest.",
           "status": "active",
           "sourceUrls": [
@@ -820,7 +832,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Ole Miss Rebels 17, Oklahoma Sooners 24.",
           "status": "active",
           "sourceUrls": [
@@ -852,43 +864,31 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-cac750d544a04547"
+            "cand-09dd266520a1fd54"
           ],
-          "type": "RESULT",
+          "type": "INJURY",
           "priority": 78,
-          "headline": "Lane Kiffin said it was fair to question LSU's 6-4 record after Saturday's loss to Texas, a defeat that likely knocked the Tigers out of playoff contention.",
-          "text": "Lane Kiffin said it was fair to question LSU's 6-4 record after Saturday's loss to Texas, a defeat that likely knocked the Tigers out of playoff contention.",
+          "headline": "Mike Matthews sustained the injury during Tennessee's win Saturday at Texas A&M.",
+          "text": "Mike Matthews sustained the injury during Tennessee's win Saturday at Texas A&M.",
           "entities": [],
-          "occurredAt": "2026-11-15T00:30:00Z",
+          "occurredAt": "2026-11-16T00:25:29Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Texas Longhorns 22, LSU Tigers 21.",
+          "ageHours": 0.1,
+          "freshnessBasis": "Mike Matthews sustained the injury during Tennessee's win Saturday at Texas A&M.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/college-football/story/_/id/50488081/kiffin-understands-frustration-lsu-playoff-hopes-dashed",
-            "http://www.espn.com/ncf/recap?gameId=401856885"
+            "https://www.espn.com/college-football/story/_/id/50496356/tennessee-leading-receiver-mike-matthews-season"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-14",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50488081/kiffin-understands-frustration-lsu-playoff-hopes-dashed"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856885"
+              "url": "https://www.espn.com/college-football/story/_/id/50496356/tennessee-leading-receiver-mike-matthews-season"
             }
           ],
-          "id": "a415-1a7f2fecdac929b1",
+          "id": "a415-7152bce6e40b4727",
           "feedRank": 26,
-          "compactHeadline": "Late score lifts Texas Longhorns past LSU Tigers 22-21"
+          "compactHeadline": "Source: Tennessee leading receiver Mike Matthews out for season"
         },
         {
           "rank": 3,
@@ -902,7 +902,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T03:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.02,
           "freshnessBasis": "Highlightly final: Utah Utes 40, Arizona Wildcats 39.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +943,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.02,
           "freshnessBasis": "Highlightly final: Texas Tech Red Raiders 52, Oklahoma State Cowboys 27.",
           "status": "active",
           "sourceUrls": [
@@ -984,7 +984,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T21:09:56Z",
           "timePrecision": "exact",
-          "ageHours": 2.86,
+          "ageHours": 3.36,
           "freshnessBasis": "Clemson lost starting QB Tait Reynolds for the rest of the season with a torn meniscus, while backup Christopher Vizzina has a concussion.",
           "status": "active",
           "sourceUrls": [
@@ -1013,7 +1013,7 @@
           "entities": [],
           "occurredAt": "2026-11-15T00:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.28,
+          "ageHours": 23.77,
           "freshnessBasis": "Highlightly final: South Carolina Gamecocks 6, Arkansas Razorbacks 34.",
           "status": "active",
           "sourceUrls": [
@@ -1059,7 +1059,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 117,
+    "freshCandidateCount": 120,
     "publishedItemCount": 30,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
