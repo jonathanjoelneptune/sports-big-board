@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-18T16:01:56Z",
+  "generatedAt": "2026-11-18T16:31:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "841d97a5a15e86cc6ec974ffebf6176da97222d2f40becaac0a290c2d09ef7b5",
+  "sourceCandidateHash": "1cecf518926ab9d5560422931d1e6738a7e28dc767964f6c2a57a52a9f7880f8",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T05:48:29Z",
           "timePrecision": "exact",
-          "ageHours": 10.22,
+          "ageHours": 10.72,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,64 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-79340132f281026c"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Royals are trading third baseman Maikel Garcia to the Mariners in exchange for right-hander Bryce Miller as part of a six-player trade, sources told ESPN.",
+          "text": "The Royals are trading third baseman Maikel Garcia to the Mariners in exchange for right-hander Bryce Miller as part of a six-player trade, sources told ESPN.",
+          "entities": [],
+          "occurredAt": "2026-11-18T16:28:42Z",
+          "timePrecision": "exact",
+          "ageHours": 0.05,
+          "freshnessBasis": "The Royals are trading third baseman Maikel Garcia to the Mariners in exchange for right-hander Bryce Miller as part of a six-player trade, sources told ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50521866/sources-royals-trade-maikel-garcia-mariners-miller"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50521866/sources-royals-trade-maikel-garcia-mariners-miller"
+            }
+          ],
+          "id": "a415-7952c89f23e4626a",
+          "feedRank": 2,
+          "compactHeadline": "Sources: Royals trade Maikel Garcia to Mariners for Bryce Miller"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-1b3d7819c1811bbe"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "We've got you covered on all the major MLB hot stove signings and trades.",
+          "text": "We've got you covered on all the major MLB hot stove signings and trades.",
+          "entities": [],
+          "occurredAt": "2026-11-18T16:12:05Z",
+          "timePrecision": "exact",
+          "ageHours": 0.33,
+          "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50328768/free-agency-tracker-offseason-trades-moves-2026-2027"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50328768/free-agency-tracker-offseason-trades-moves-2026-2027"
+            }
+          ],
+          "id": "a415-b604ed1e7c551502",
+          "feedRank": 3,
+          "compactHeadline": "MLB free agency tracker: 2026-27 offseason trades, moves"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-416f5507c976db2d"
           ],
           "type": "SIGNING",
@@ -52,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-17T22:44:27Z",
           "timePrecision": "exact",
-          "ageHours": 17.29,
+          "ageHours": 17.79,
           "freshnessBasis": "Yankees closer David Bednar and Twins catcher Ryan Jeffers accepted the qualifying offer, returning to their respective teams on a one-year deal worth $23.15M.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +124,11 @@
             }
           ],
           "id": "a415-665276d65c4d5fa0",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Yankees' Bednar, Twins' Jeffers accept $23.15M qualifying offer"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-0c8dd8c951bb4382"
           ],
@@ -81,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-11-17T21:42:30Z",
           "timePrecision": "exact",
-          "ageHours": 18.32,
+          "ageHours": 18.82,
           "freshnessBasis": "The White Sox and free agent starting pitcher Dustin May have agreed on a 3-year, $52.5M contract. The right-hander went 7-9 with a 4.70 ERA last season.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +153,11 @@
             }
           ],
           "id": "a415-9c98e11b892b9eb8",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "White Sox, pitcher Dustin May reach 3-year, $52.5M contract"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-7516df180dfde21b"
           ],
@@ -110,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.36,
+          "ageHours": 0.86,
           "freshnessBasis": "Tarik Skubal has met with multiple teams that are expected to pursue him, but the Mets are considered the favorite to land the star pitcher, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -124,37 +182,8 @@
             }
           ],
           "id": "a415-80c940ac2f5e93cf",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "Sources: Mets favorite to sign Tarik Skubal as teams ramp up pursuit of FA ace"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e291ac46fd344d1e"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-          "text": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-          "entities": [],
-          "occurredAt": "2026-11-18T14:22:24Z",
-          "timePrecision": "exact",
-          "ageHours": 1.66,
-          "freshnessBasis": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50453514/tarik-skubal-free-agency-updates"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50453514/tarik-skubal-free-agency-updates"
-            }
-          ],
-          "id": "a415-b09e526fdf36fa48",
-          "feedRank": 5,
-          "compactHeadline": "Tarik Skubal free agency tracker: Latest on top MLB free agent"
         }
       ]
     },
@@ -174,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T13:14:25Z",
           "timePrecision": "exact",
-          "ageHours": 2.79,
+          "ageHours": 3.29,
           "freshnessBasis": "Steelers guard Mason McCormick does not need surgery after he was carted off the field with an ankle injury, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -188,7 +217,7 @@
             }
           ],
           "id": "a415-bc9770f538d8c3c7",
-          "feedRank": 6,
+          "feedRank": 7,
           "compactHeadline": "Sources: Steelers G Mason McCormick avoided fracture, won't need ankle surgery"
         },
         {
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T11:41:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.34,
+          "ageHours": 4.84,
           "freshnessBasis": "The Titans placed wide receiver Wan'Dale Robinson on injured reserve Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -217,7 +246,7 @@
             }
           ],
           "id": "a415-f35d908a1549cfbd",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Titans put WR Wan'Dale Robinson on IR due to ankle injury"
         },
         {
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T11:00:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.53,
           "freshnessBasis": "Kelce's greatest Arrowhead moments include his first catch, lots of playoff magic, and meeting the love of his life, Taylor Swift.",
           "status": "active",
           "sourceUrls": [
@@ -246,7 +275,7 @@
             }
           ],
           "id": "a415-3814afbab0103949",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Kansas City Chiefs tight end Travis Kelce's top moments at Arrowhead Stadium"
         },
         {
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T05:06:06Z",
           "timePrecision": "exact",
-          "ageHours": 10.93,
+          "ageHours": 11.43,
           "freshnessBasis": "Cardinals quarterback Gardner Minshew II had surgery on his right ulnar collateral ligament on Monday, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -275,7 +304,7 @@
             }
           ],
           "id": "a415-89b2276c69bad850",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Source: Cardinals' Gardner Minshew has surgery to repair right UCL"
         },
         {
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-11-17T22:30:15Z",
           "timePrecision": "exact",
-          "ageHours": 17.53,
+          "ageHours": 18.03,
           "freshnessBasis": "Dolphins DT Jordan Phillips will miss the rest of the season with torn biceps, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -304,7 +333,7 @@
             }
           ],
           "id": "a415-28513247505c8864",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Source: Jordan Phillips latest Dolphins DT to suffer season-ending injury"
         },
         {
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:39:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 0.88,
           "freshnessBasis": "Christian Parker will remain as the Cowboys' defensive coordinator, but Mike Pettine will call the defense on game day, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -333,7 +362,7 @@
             }
           ],
           "id": "a415-1a4e666bcc84991f",
-          "feedRank": 11,
+          "feedRank": 12,
           "compactHeadline": "Sources: Pettine to take over defensive playcalling for Cowboys; Parker still DC"
         }
       ]
@@ -354,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:13:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.8,
+          "ageHours": 1.3,
           "freshnessBasis": "— Cade Cunningham scored 27 points, Daniss Jenkins had 21 of his 25 in the second half and the Detroit Pistons snapped San Antonio's 12-game winning streak, toppling the Spurs 105-93 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -368,7 +397,7 @@
             }
           ],
           "id": "a415-63cae7e5d56339bc",
-          "feedRank": 12,
+          "feedRank": 13,
           "compactHeadline": "Cunningham, Jenkins lead surge as Pistons snap Spurs' 12-game winning streak with 105-93 victory"
         },
         {
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:17:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.74,
+          "ageHours": 1.24,
           "freshnessBasis": "— Brice Sensabaugh scored a season-high 40 points, including 25 in the fourth quarter, and the Utah Jazz beat the Los Angeles Clippers 132-107 on Tuesday night for just their second victory of the season.",
           "status": "active",
           "sourceUrls": [
@@ -397,7 +426,7 @@
             }
           ],
           "id": "a415-80c7f57086b4a00a",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Brice Sensabaugh scores 40 points and leads huge 4th quarter as Jazz beat Clippers for 2nd win"
         },
         {
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:15:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.78,
+          "ageHours": 1.28,
           "freshnessBasis": "— Jaden McDaniels hit a go-ahead layup with 2.6 seconds remaining after Minnesota stole a Portland inbounds pass and the Timberwolves rallied to beat the Trail Blazers 106-105...",
           "status": "active",
           "sourceUrls": [
@@ -426,7 +455,7 @@
             }
           ],
           "id": "a415-b19301e00d1adb68",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "McDaniels scores with 2.6 seconds left to lift Timberwolves to 106-105 win over Trail Blazers"
         },
         {
@@ -441,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:12:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.82,
+          "ageHours": 1.32,
           "freshnessBasis": "— Jalen Brunson converted a tiebreaking four-point play with 1:25 left in the fourth quarter, Karl-Anthony Towns had 16 points and 16 rebounds and the New York Knicks beat Toronto 111-102 on Tuesday night, their 15th consecutive win over the Raptors.",
           "status": "active",
           "sourceUrls": [
@@ -455,7 +484,7 @@
             }
           ],
           "id": "a415-aa87cace07f2f02e",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Jalen Brunson converts tiebreaking 4-point play, scores 31 as Knicks win 15th straight over Raptors"
         },
         {
@@ -470,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T13:18:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.72,
+          "ageHours": 3.22,
           "freshnessBasis": "Quentin Grimes went 16-for-24 overall and 10-for-14 from the 3, becoming the second player in Lakers history to hit 10 or more 3s in a single game in L.A.'s 118-114 win over Charlotte.",
           "status": "active",
           "sourceUrls": [
@@ -484,7 +513,7 @@
             }
           ],
           "id": "a415-bc842b360c4d04df",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Quentin Grimes becomes 2nd in Lakers history to hit 10 or more 3s in single game"
         },
         {
@@ -499,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-11-17T23:23:13Z",
           "timePrecision": "exact",
-          "ageHours": 16.65,
+          "ageHours": 17.14,
           "freshnessBasis": "The Raptors said Tuesday that while Kawhi Leonard is progressing in his recovery from left knee swelling, he will remain out for at least another week.",
           "status": "active",
           "sourceUrls": [
@@ -513,7 +542,7 @@
             }
           ],
           "id": "a415-c5e8906632dbe2cf",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "Raptors say Kawhi Leonard progressing but out at least another week"
         }
       ]
@@ -534,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:16:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.76,
+          "ageHours": 1.26,
           "freshnessBasis": "— Frank Nazar and Tyler Bertuzzi each scored twice for the Chicago Blackhawks, who lost center Connor Bedard to injury while handing the Toronto Maple Leafs their seventh straight loss, 6-3 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -548,7 +577,7 @@
             }
           ],
           "id": "a415-3897dddfac7f5f59",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Blackhawks lose Connor Bedard to injury as they hand Maple Leafs 7th straight loss, 6-3"
         },
         {
@@ -563,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:19:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Philadelphia Flyers (7-11-6, in the Metropolitan Division) vs. Ottawa Senators (14-6-2, in the Atlantic Division)",
           "status": "active",
           "sourceUrls": [
@@ -577,7 +606,7 @@
             }
           ],
           "id": "a415-5fce959d9c5d5d29",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Senators bring 3-game win streak into matchup against the Flyers"
         },
         {
@@ -592,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:19:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Dallas Stars (13-6-2, in the Central Division) vs. Vegas Golden Knights (13-6-4, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -606,7 +635,7 @@
             }
           ],
           "id": "a415-c017917f2eff5eb2",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Golden Knights bring 3-game losing streak into matchup against the Stars"
         },
         {
@@ -621,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:19:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Buffalo Sabres (8-9-4, in the Atlantic Division) vs. Washington Capitals (10-9, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -635,7 +664,7 @@
             }
           ],
           "id": "a415-ef89320bfd5f554d",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Washington brings losing streak into game against Buffalo"
         },
         {
@@ -650,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:19:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Minnesota Wild (16-3-4, in the Central Division) vs. Calgary Flames (10-11-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -664,7 +693,7 @@
             }
           ],
           "id": "a415-68d40c1e4a95c55c",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Wild bring win streak into matchup against the Flames"
         },
         {
@@ -679,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:19:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Vancouver Canucks (5-17-1, in the Pacific Division) vs. Seattle Kraken (9-8-1, in the Pacific Division)",
           "status": "active",
           "sourceUrls": [
@@ -693,7 +722,7 @@
             }
           ],
           "id": "a415-c3003c1d15c10f55",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Kraken bring 3-game losing streak into matchup against the Canucks"
         }
       ]
@@ -714,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:04:23Z",
           "timePrecision": "exact",
-          "ageHours": 0.96,
+          "ageHours": 1.46,
           "freshnessBasis": "Manchester United are prepared to mount legal action if they find evidence that JJ Gabriel has been illegally approached by other clubs while under contract, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -728,7 +757,7 @@
             }
           ],
           "id": "a415-e05adbc56ee94713",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Man United to take legal action if JJ Gabriel was illegally approached - sources"
         },
         {
@@ -743,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T12:02:03Z",
           "timePrecision": "exact",
-          "ageHours": 4.0,
+          "ageHours": 4.5,
           "freshnessBasis": "Based on a simple combination of ability and tactical importance, we've reranked the best players in order at the top Premier League clubs.",
           "status": "active",
           "sourceUrls": [
@@ -757,7 +786,7 @@
             }
           ],
           "id": "a415-e80980cff4f6ed47",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Reranking the MVP for each of the top Premier League clubs"
         },
         {
@@ -770,9 +799,9 @@
           "headline": "Mauricio Pochettino arrived at Manchester United for his first day as head coach on Wednesday but said he requires \"time\" to turn the club's fortunes around.",
           "text": "Mauricio Pochettino arrived at Manchester United for his first day as head coach on Wednesday but said he requires \"time\" to turn the club's fortunes around.",
           "entities": [],
-          "occurredAt": "2026-11-18T15:54:14Z",
+          "occurredAt": "2026-11-18T16:23:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.14,
           "freshnessBasis": "Mauricio Pochettino arrived at Manchester United for his first day as head coach on Wednesday but said he requires \"time\" to turn the club's fortunes around.",
           "status": "active",
           "sourceUrls": [
@@ -786,7 +815,7 @@
             }
           ],
           "id": "a415-be0e35fdfa617424",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "Mauricio Pochettino arrives at Man United: 'You will see, give me time'"
         },
         {
@@ -801,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T14:13:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
+          "ageHours": 2.31,
           "freshnessBasis": "Some of Europe's greatest teams have suffered relegation as punishment. What might lie ahead for Man City? Past scandals provide a few potential answers.",
           "status": "active",
           "sourceUrls": [
@@ -815,37 +844,8 @@
             }
           ],
           "id": "a415-5d2fbf67f5c5ac57",
-          "feedRank": 27,
-          "compactHeadline": "How fallen giants and their fans bounce back from scandal, relegation"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-716fdb9e0ec24fb0"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Manchester City are in talks with Matheus Nunes about extending his contract at the Etihad Stadium, sources have told ESPN.",
-          "text": "Manchester City are in talks with Matheus Nunes about extending his contract at the Etihad Stadium, sources have told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-11-17T17:06:27Z",
-          "timePrecision": "exact",
-          "ageHours": 22.92,
-          "freshnessBasis": "Manchester City are in talks with Matheus Nunes about extending his contract at the Etihad Stadium, sources have told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50511813/matheus-nunes-man-city-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50511813/matheus-nunes-man-city-deal"
-            }
-          ],
-          "id": "a415-76aa40ebce6d4370",
           "feedRank": 28,
-          "compactHeadline": "Matheus Nunes in talks to extend Man City deal - sources"
+          "compactHeadline": "How fallen giants and their fans bounce back from scandal, relegation"
         }
       ]
     },
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-17T21:08:44Z",
           "timePrecision": "exact",
-          "ageHours": 18.89,
+          "ageHours": 19.39,
           "freshnessBasis": "The ownership groups of MLS side FC Cincinnati and the NWSL's Racing Louisville FC are nearing an agreement that would relocate the NWSL team to Cincinnati in 2028, multiple sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T11:45:57Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.77,
           "freshnessBasis": "Breaking down postseason X factors for every CFP top-25 team.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T12:37:24Z",
           "timePrecision": "exact",
-          "ageHours": 3.41,
+          "ageHours": 3.91,
           "freshnessBasis": "Alabama stayed at No. 3 despite some struggles while two-loss Texas jumped one-loss Notre Dame for No. 5 in the CFP's latest rankings.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:13:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.81,
+          "ageHours": 1.31,
           "freshnessBasis": "— D'Shawntae Jones ran for 121 yards and two touchdowns, and Miami (Ohio) beat Kent State 20-3 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -987,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T15:13:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.81,
+          "ageHours": 1.31,
           "freshnessBasis": "— Nick Poulos accounted for three touchdowns, including the go-ahead score with 1:16 remaining, as Ohio rallied in the fourth quarter to beat Ball State 35-28 on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -1016,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T11:43:40Z",
           "timePrecision": "exact",
-          "ageHours": 4.3,
+          "ageHours": 4.8,
           "freshnessBasis": "We're nearing the end of the season. How have our opinions about the top quarterbacks changed?",
           "status": "active",
           "sourceUrls": [
@@ -1045,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T04:25:53Z",
           "timePrecision": "exact",
-          "ageHours": 11.6,
+          "ageHours": 12.1,
           "freshnessBasis": "Ranking the teams who should be most upset about their latest CFP ranking.",
           "status": "active",
           "sourceUrls": [
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 114,
+    "freshCandidateCount": 113,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
