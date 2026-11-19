@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-19T20:01:03Z",
+  "generatedAt": "2026-11-19T20:30:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "a3516fdfed964e0505716f11cebbee3d2348311a876ce0363bdf848df947ea67",
+  "sourceCandidateHash": "ee7818a0bb7ef97be5dcde6435973202d3ebd62683bbc79d9e61538a81df289e",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-f9085fa2ad62e8a3"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "Newly signed White Sox pitcher Dustin May said he's excited to join another young, up-and-coming team after signing a three-year, $52.5 million contract.",
+          "text": "Newly signed White Sox pitcher Dustin May said he's excited to join another young, up-and-coming team after signing a three-year, $52.5 million contract.",
+          "entities": [],
+          "occurredAt": "2026-11-19T20:21:54Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "Newly signed White Sox pitcher Dustin May said he's excited to join another young, up-and-coming team after signing a three-year, $52.5 million contract.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50533206/dustin-excited-tap-young-energy-white-sox"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50533206/dustin-excited-tap-young-energy-white-sox"
+            }
+          ],
+          "id": "a415-b425cca9660e5f8d",
+          "feedRank": 1,
+          "compactHeadline": "Dustin May excited to tap into young 'energy' with White Sox"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-06b4cf070724cb6c"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T06:07:09Z",
           "timePrecision": "exact",
-          "ageHours": 13.9,
+          "ageHours": 14.4,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-831ba4b2a8b784e5",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-7fef06083784f778"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T22:32:22Z",
           "timePrecision": "exact",
-          "ageHours": 21.48,
+          "ageHours": 21.98,
           "freshnessBasis": "The Angels acquired infielder Jace Jung from the Tigers for cash on Wednesday, giving the 2022 first-round draft pick a fresh start.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-fb231e3dd5a10d30",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Angels acquire infielder Jace Jung from Tigers for cash"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-4aae537c7693def7"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T22:31:31Z",
           "timePrecision": "exact",
-          "ageHours": 21.49,
+          "ageHours": 21.99,
           "freshnessBasis": "The Red Sox traded for catcher Nick Fortes, who started 78 games behind the plate for the Rays last season, while sending a minor league pitcher to Tampa Bay.",
           "status": "active",
           "sourceUrls": [
@@ -95,37 +124,8 @@
             }
           ],
           "id": "a415-55fe0dae34e8bb22",
-          "feedRank": 3,
-          "compactHeadline": "Red Sox acquire catcher Nick Fortes in trade with Rays"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e9bf7839375cc083"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Jets quarterback Geno Smith says he intends to play Sunday against the Chargers despite still walking with a noticeable limp due to an ankle injury.",
-          "text": "Jets quarterback Geno Smith says he intends to play Sunday against the Chargers despite still walking with a noticeable limp due to an ankle injury.",
-          "entities": [],
-          "occurredAt": "2026-11-18T21:09:21Z",
-          "timePrecision": "exact",
-          "ageHours": 22.86,
-          "freshnessBasis": "Jets quarterback Geno Smith says he intends to play Sunday against the Chargers despite still walking with a noticeable limp due to an ankle injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50523800/jets-qb-geno-smith-ankle-intends-play-vs-chargers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/mlb/story/_/id/50523800/jets-qb-geno-smith-ankle-intends-play-vs-chargers"
-            }
-          ],
-          "id": "a415-596a941b89d09c5d",
           "feedRank": 4,
-          "compactHeadline": "Jets QB Geno Smith (ankle) intends to play vs. Chargers: 'That's the plan'"
+          "compactHeadline": "Red Sox acquire catcher Nick Fortes in trade with Rays"
         },
         {
           "rank": 5,
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T21:55:57Z",
           "timePrecision": "exact",
-          "ageHours": 22.09,
+          "ageHours": 22.58,
           "freshnessBasis": "The Twins have signed free agent right-hander Sonny Gray to a two-year contract, the team announced. The deal is for $55 million and includes an opt-out after the first season, sources told ESPN's Jeff Passan.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T22:12:29Z",
           "timePrecision": "exact",
-          "ageHours": 21.81,
+          "ageHours": 22.31,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -194,6 +194,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-c7835ee613447501"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
+          "text": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
+          "entities": [],
+          "occurredAt": "2026-11-19T20:04:31Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50533151/buccaneers-baker-mayfield-hopes-play-foot-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50533151/buccaneers-baker-mayfield-hopes-play-foot-injury"
+            }
+          ],
+          "id": "a415-8ff65984482b5f06",
+          "feedRank": 7,
+          "compactHeadline": "Bucs QB Baker Mayfield hopes to play Sunday despite foot injury: 'I feel ready'"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-b66d94084abd9dff"
           ],
           "type": "INJURY",
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:09:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.86,
+          "ageHours": 1.36,
           "freshnessBasis": "— If ever there was a time for an NFL team to overlook somebody, it just might be Sunday afternoon at Arrowhead Stadium, where the Kansas City Chiefs will continue their pursuit of another AFC West title against the injured, downtrodden Arizona...",
           "status": "active",
           "sourceUrls": [
@@ -217,40 +246,69 @@
             }
           ],
           "id": "a415-2af405b5efcfd886",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Chiefs are flying high but can ill afford to overlook the lowly Cardinals when they meet Sunday"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
-            "cand-ffeb8760380d0b5f"
+            "cand-4cd47698fc818d70"
           ],
           "type": "CONTRACT",
           "priority": 76,
-          "headline": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension, sources said.",
-          "text": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension, sources said.",
+          "headline": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension.",
+          "text": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension.",
           "entities": [],
-          "occurredAt": "2026-11-19T18:16:18Z",
+          "occurredAt": "2026-11-19T20:24:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.75,
-          "freshnessBasis": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension, sources said.",
+          "ageHours": 0.11,
+          "freshnessBasis": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50532392/sources-broncos-sign-cb-riley-moss-four-year-extension"
+            "https://www.espn.com/nfl/story/_/id/50532392/broncos-sign-cb-riley-moss-four-year-extension"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50532392/sources-broncos-sign-cb-riley-moss-four-year-extension"
+              "url": "https://www.espn.com/nfl/story/_/id/50532392/broncos-sign-cb-riley-moss-four-year-extension"
             }
           ],
-          "id": "a415-238e6a8a24a5f78b",
-          "feedRank": 8,
-          "compactHeadline": "Sources: Broncos sign CB Riley Moss to four-year extension"
+          "id": "a415-65f938fc0c51611b",
+          "feedRank": 9,
+          "compactHeadline": "Broncos sign cornerback Riley Moss to four-year extension"
         },
         {
-          "rank": 3,
+          "rank": 4,
+          "candidateIds": [
+            "cand-03d00c27b4ef995d"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Dallas Cowboys have made their biggest move of the season to try to fix a broken defense, just in time for consecutive games against last-place...",
+          "text": "The Dallas Cowboys have made their biggest move of the season to try to fix a broken defense, just in time for consecutive games against last-place...",
+          "entities": [],
+          "occurredAt": "2026-11-19T20:21:50Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "— The Dallas Cowboys have made their biggest move of the season to try to fix a broken defense, just in time for consecutive games against last-place...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/preview?gameId=401873073"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/preview?gameId=401873073"
+            }
+          ],
+          "id": "a415-1dde8edf04fd5a44",
+          "feedRank": 10,
+          "compactHeadline": "Cowboys face last-place Titans with new play-caller on defense and fading playoff hopes"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-d4da202325d2df50"
           ],
@@ -261,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T11:39:28Z",
           "timePrecision": "exact",
-          "ageHours": 8.36,
+          "ageHours": 8.86,
           "freshnessBasis": "Mediocre record, questions at quarterback, rinse, repeat. Maybe next year the Falcons can start making progress.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +333,11 @@
             }
           ],
           "id": "a415-db5e83d40cd3fc6c",
-          "feedRank": 9,
+          "feedRank": 11,
           "compactHeadline": "Falcons seek change, but keep ending up in the same spot"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-4ead747887d2077b"
           ],
@@ -290,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:37:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.39,
+          "ageHours": 0.89,
           "freshnessBasis": "— John Harbaugh had no time this week for analyzing what has made the Jacksonville Jaguars one of the NFL's top teams.",
           "status": "active",
           "sourceUrls": [
@@ -304,66 +362,8 @@
             }
           ],
           "id": "a415-5d8c87935a49766b",
-          "feedRank": 10,
-          "compactHeadline": "Jaguars visit the Giants in a matchup of two unexpected division leaders"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0a96739f1a7ce4d3"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Houston enters \"Thursday Night Football\" against the Indianapolis Colts with a 32.4% chance of making the playoffs.",
-          "text": "Houston enters \"Thursday Night Football\" against the Indianapolis Colts with a 32.4% chance of making the playoffs.",
-          "entities": [],
-          "occurredAt": "2026-11-19T15:06:06Z",
-          "timePrecision": "exact",
-          "ageHours": 4.92,
-          "freshnessBasis": "Houston enters \"Thursday Night Football\" against the Indianapolis Colts with a 32.4% chance of making the playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50502967/texans-playoff-hopes-kamari-lassiter-cj-stroud"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50502967/texans-playoff-hopes-kamari-lassiter-cj-stroud"
-            }
-          ],
-          "id": "a415-e189c2e4db0ead26",
-          "feedRank": 11,
-          "compactHeadline": "How Houston has banded together through backbreaking losses and adversity"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-c18c4619dd465595"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Will this year's draft class have a major impact on Carolina's second half of the season and potential postseason?",
-          "text": "Will this year's draft class have a major impact on Carolina's second half of the season and potential postseason?",
-          "entities": [],
-          "occurredAt": "2026-11-19T13:48:26Z",
-          "timePrecision": "exact",
-          "ageHours": 6.21,
-          "freshnessBasis": "Will this year's draft class have a major impact on Carolina's second half of the season and potential postseason?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50517510/freeling-hunter-top-panthers-rookie-report-week-11"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50517510/freeling-hunter-top-panthers-rookie-report-week-11"
-            }
-          ],
-          "id": "a415-2696e2c9f3344ec4",
           "feedRank": 12,
-          "compactHeadline": "Monroe Freeling, Lee Hunter top Panthers' rookie report at Week 11"
+          "compactHeadline": "Jaguars visit the Giants in a matchup of two unexpected division leaders"
         }
       ]
     },
@@ -374,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9e1eb6e109248c1c"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Spurs guard Dylan Harper has been diagnosed with a left hip rotator strain, avoiding any major injury, sources told ESPN's Shams Charania on Thursday.",
+          "text": "Spurs guard Dylan Harper has been diagnosed with a left hip rotator strain, avoiding any major injury, sources told ESPN's Shams Charania on Thursday.",
+          "entities": [],
+          "occurredAt": "2026-11-19T20:17:53Z",
+          "timePrecision": "exact",
+          "ageHours": 0.22,
+          "freshnessBasis": "Spurs guard Dylan Harper has been diagnosed with a left hip rotator strain, avoiding any major injury, sources told ESPN's Shams Charania on Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50533303/sources-spurs-dylan-harper-1-3-weeks-hip-strain"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50533303/sources-spurs-dylan-harper-1-3-weeks-hip-strain"
+            }
+          ],
+          "id": "a415-15a3b12cce737892",
+          "feedRank": 13,
+          "compactHeadline": "Sources: Spurs' Dylan Harper out 1-3 weeks with hip strain"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-0026d65ed994eb88"
           ],
           "type": "STREAK",
@@ -383,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T17:56:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.07,
+          "ageHours": 2.57,
           "freshnessBasis": "Luka Doncic said his performance in Wednesday's loss to Utah, in which he shot 10-of-28 and had nine turnovers, was \"unacceptable\" as the Lakers' win streak ended at nine.",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +426,11 @@
             }
           ],
           "id": "a415-ad1abadcebde7b33",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Luka Doncic's shot goes cold as Jazz end Lakers' winning streak at 9"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-f852e8fe0f557435"
           ],
@@ -412,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:14:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.78,
+          "ageHours": 1.27,
           "freshnessBasis": "Timberwolves guard Anthony Edwards said he has \"no clue\" when he will return to play from right knee surgery weeks ago, but was optimistic about his long-term prognosis.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +455,11 @@
             }
           ],
           "id": "a415-3ee2b6acfadf637b",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Timberwolves' Edwards has 'no clue' on when he will return"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-894050f6ddf3eb0f"
           ],
@@ -441,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T14:14:35Z",
           "timePrecision": "exact",
-          "ageHours": 5.77,
+          "ageHours": 6.27,
           "freshnessBasis": "— Keyonte George scored nine of his 30 points in the fourth quarter, and the Utah Jazz improbably snapped the Los Angeles Lakers' nine-game winning streak with a 109-97 victory Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -455,11 +484,11 @@
             }
           ],
           "id": "a415-bf90d6b9c27b6f70",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Jazz snap Lakers' 9-game winning streak with 109-97 victory behind Keyonte George's 30 points"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-8088d35c6ba9de00"
           ],
@@ -470,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:34:35Z",
           "timePrecision": "exact",
-          "ageHours": 16.44,
+          "ageHours": 16.94,
           "freshnessBasis": "— Cooper Flagg scored 33 points, P.J. Washington Jr. added 21 and the Dallas Mavericks stopped a three-game losing streak with a 116-94 victory over the Golden State Warriors on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -484,37 +513,8 @@
             }
           ],
           "id": "a415-445fa603eee863d8",
-          "feedRank": 16,
-          "compactHeadline": "Cooper Flagg scores 33 as Mavericks keep Warriors winless since Stephen Curry's injury"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-d5ae186e7b00ba92"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Spurs ruled guard Dylan Harper out for Thursday's game against the Clippers due to left hip soreness following his slip on the court Tuesday.",
-          "text": "The Spurs ruled guard Dylan Harper out for Thursday's game against the Clippers due to left hip soreness following his slip on the court Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-11-19T00:16:31Z",
-          "timePrecision": "exact",
-          "ageHours": 19.74,
-          "freshnessBasis": "The Spurs ruled guard Dylan Harper out for Thursday's game against the Clippers due to left hip soreness following his slip on the court Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50525196/spurs-rule-harper-hip-soreness-slip-court"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50525196/spurs-rule-harper-hip-soreness-slip-court"
-            }
-          ],
-          "id": "a415-94c67f224b1018ba",
           "feedRank": 17,
-          "compactHeadline": "Spurs rule Dylan Harper out with hip soreness after slip on court"
+          "compactHeadline": "Cooper Flagg scores 33 as Mavericks keep Warriors winless since Stephen Curry's injury"
         },
         {
           "rank": 6,
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:58:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.54,
           "freshnessBasis": "The latest entry in the Grand Theft Auto series is tied with \"The Legend of Zelda: Ocarina of Time\" with a 99 rating on Metacritic.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T09:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 10.82,
+          "ageHours": 11.32,
           "freshnessBasis": "Montreal Canadiens (13-5-4, in the Atlantic Division) vs. Carolina Hurricanes (16-3-2, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T06:19:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.69,
+          "ageHours": 14.19,
           "freshnessBasis": "— Vincent Trocheck scored a goal and assisted another to help the Utah Mammoth beat the Colorado Avalanche 4-1 on Wednesday night and snap a six-game losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T16:17:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.73,
+          "ageHours": 4.23,
           "freshnessBasis": "This NHL season has been filled with memorable moments and outstanding achievements. These do not make that list.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:27:35Z",
           "timePrecision": "exact",
-          "ageHours": 16.56,
+          "ageHours": 17.06,
           "freshnessBasis": "— Jake Evans scored the go-ahead goal, captain Nick Suzuki ended his team's long power-play drought and the Montreal Canadiens defeated the New Jersey Devils 3-2 on Wednesday night to halt a two-game skid.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 16.57,
+          "ageHours": 17.07,
           "freshnessBasis": "— David Pastrnak had a goal and an assist as the Boston Bruins beat Detroit 4-1 on Wednesday night and spoiled the Red Wings' Centennial celebration game.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T13:50:09Z",
           "timePrecision": "exact",
-          "ageHours": 6.18,
+          "ageHours": 6.68,
           "freshnessBasis": "After 10 games, we have enough data to predict every Premier League team's final spot in the standings for the 2026-27 season.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:52:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 0.63,
           "freshnessBasis": "Erling Haaland said it is \"natural\" for him to take on more responsibility as one of Manchester City's captains this season, but wants to do it in his own way.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T17:16:14Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 3.25,
           "freshnessBasis": "Mauricio Pochettino has said his first job as Manchester United's new head coach is to remind the players how to win after a miserable start to the season.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T13:19:26Z",
           "timePrecision": "exact",
-          "ageHours": 6.69,
+          "ageHours": 7.19,
           "freshnessBasis": "Chelsea's Valentín Barco has said he is confident that he's still a long way away from reaching his full potential.",
           "status": "active",
           "sourceUrls": [
@@ -830,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T13:08:47Z",
           "timePrecision": "exact",
-          "ageHours": 6.87,
+          "ageHours": 7.37,
           "freshnessBasis": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
           "status": "active",
           "sourceUrls": [
@@ -865,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T18:29:23Z",
           "timePrecision": "exact",
-          "ageHours": 1.53,
+          "ageHours": 2.03,
           "freshnessBasis": "Inter Miami CF star Lionel Messi remains the highest-paid player in MLS, though the number of players making at least $10 million grew to five.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T18:16:35Z",
           "timePrecision": "exact",
-          "ageHours": 1.74,
+          "ageHours": 2.24,
           "freshnessBasis": "— No. 7 Alabama has a clear path to the final Southeastern Conference title game and a spot in the College Football Playoff.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:01:31Z",
           "timePrecision": "exact",
-          "ageHours": 16.99,
+          "ageHours": 17.49,
           "freshnessBasis": "South Carolina star QB LaNorris Sellers is set to play in Saturday's game vs. No. 1 Georgia after not appearing on the injury report Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -958,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:37:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.39,
+          "ageHours": 0.89,
           "freshnessBasis": "Hall of Fame linebacker and Penn State radio analyst Jack Ham will return to the broadcast booth on Saturday, just two weeks after suffering a medical emergency.",
           "status": "active",
           "sourceUrls": [
@@ -992,7 +992,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:27:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.56,
+          "ageHours": 1.06,
           "freshnessBasis": "\"College GameDay\" heads to University of Miami for Week 12.",
           "status": "active",
           "sourceUrls": [
@@ -1021,7 +1021,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T17:08:28Z",
           "timePrecision": "exact",
-          "ageHours": 2.88,
+          "ageHours": 3.37,
           "freshnessBasis": "What to expect in Week 12, from top games and players to teams on upset alert.",
           "status": "active",
           "sourceUrls": [
@@ -1050,7 +1050,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:58:35Z",
           "timePrecision": "exact",
-          "ageHours": 16.04,
+          "ageHours": 16.54,
           "freshnessBasis": "— Messiah Burch ran for 200 yards and scored twice for the second consecutive game and Buffalo won its sixth-straight game 40-21 over Central Michigan on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -1090,7 +1090,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 107,
+    "freshCandidateCount": 108,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
