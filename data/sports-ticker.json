@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-19T21:30:56Z",
+  "generatedAt": "2026-11-19T22:00:56Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "b3b17b3ea13cb5638f2cbc77e916efcdb4d41f941208e59c3d42385d560583e7",
+  "sourceCandidateHash": "f98760b35be37049cc0b78bfef6fc5f47438325f6583dd3accf7d1c77c1e0fb8",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T20:21:54Z",
           "timePrecision": "exact",
-          "ageHours": 1.15,
+          "ageHours": 1.65,
           "freshnessBasis": "Newly signed White Sox pitcher Dustin May said he's excited to join another young, up-and-coming team after signing a three-year, $52.5 million contract.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T06:07:09Z",
           "timePrecision": "exact",
-          "ageHours": 15.4,
+          "ageHours": 15.9,
           "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-a377f7cb57adf963"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
+          "text": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
+          "entities": [],
+          "occurredAt": "2026-11-19T21:53:40Z",
+          "timePrecision": "exact",
+          "ageHours": 0.12,
+          "freshnessBasis": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50534187/pete-rose-posthumously-pardoned-president-donald-trump"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50534187/pete-rose-posthumously-pardoned-president-donald-trump"
+            }
+          ],
+          "id": "a415-362814c964804186",
+          "feedRank": 3,
+          "compactHeadline": "Pete Rose posthumously pardoned by President Donald Trump"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-7fef06083784f778"
           ],
           "type": "TRADE",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T22:32:22Z",
           "timePrecision": "exact",
-          "ageHours": 22.98,
+          "ageHours": 23.48,
           "freshnessBasis": "The Angels acquired infielder Jace Jung from the Tigers for cash on Wednesday, giving the 2022 first-round draft pick a fresh start.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +124,11 @@
             }
           ],
           "id": "a415-fb231e3dd5a10d30",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Angels acquire infielder Jace Jung from Tigers for cash"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-4aae537c7693def7"
           ],
@@ -110,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-11-18T22:31:31Z",
           "timePrecision": "exact",
-          "ageHours": 22.99,
+          "ageHours": 23.49,
           "freshnessBasis": "The Red Sox traded for catcher Nick Fortes, who started 78 games behind the plate for the Rays last season, while sending a minor league pitcher to Tampa Bay.",
           "status": "active",
           "sourceUrls": [
@@ -124,37 +153,8 @@
             }
           ],
           "id": "a415-55fe0dae34e8bb22",
-          "feedRank": 4,
-          "compactHeadline": "Red Sox acquire catcher Nick Fortes in trade with Rays"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-3c54b60bef4c4376"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The Twins have signed free agent right-hander Sonny Gray to a two-year contract, the team announced. The deal is for $55 million and includes an opt-out after the first season, sources told ESPN's Jeff Passan.",
-          "text": "The Twins have signed free agent right-hander Sonny Gray to a two-year contract, the team announced. The deal is for $55 million and includes an opt-out after the first season, sources told ESPN's Jeff Passan.",
-          "entities": [],
-          "occurredAt": "2026-11-18T21:55:57Z",
-          "timePrecision": "exact",
-          "ageHours": 23.58,
-          "freshnessBasis": "The Twins have signed free agent right-hander Sonny Gray to a two-year contract, the team announced. The deal is for $55 million and includes an opt-out after the first season, sources told ESPN's Jeff Passan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50523817/twins-sign-veteran-right-hander-sonny-gray-two-year-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50523817/twins-sign-veteran-right-hander-sonny-gray-two-year-deal"
-            }
-          ],
-          "id": "a415-244bff66672187dc",
           "feedRank": 5,
-          "compactHeadline": "Twins reunite with veteran right-hander Sonny Gray on two-year deal"
+          "compactHeadline": "Red Sox acquire catcher Nick Fortes in trade with Rays"
         }
       ]
     },
@@ -174,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T21:25:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.6,
           "freshnessBasis": "— If ever there was a time for an NFL team to overlook somebody, it just might be Sunday afternoon at Arrowhead Stadium, where the Kansas City Chiefs will continue their pursuit of another AFC West title against the injured, downtrodden Arizona...",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T21:21:24Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
+          "ageHours": 0.66,
           "freshnessBasis": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T21:25:03Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.6,
           "freshnessBasis": "— The Dallas Cowboys have made their biggest move of the season to try to fix a broken defense, just in time for consecutive games against last-place...",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T20:24:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 1.61,
           "freshnessBasis": "The Broncos locked up a key piece of their secondary by signing cornerback Riley Moss to a four-year extension.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T21:25:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.6,
           "freshnessBasis": "— John Harbaugh had no time this week for analyzing what has made the Jacksonville Jaguars one of the NFL's top teams.",
           "status": "active",
           "sourceUrls": [
@@ -310,31 +310,36 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-d4da202325d2df50"
+            "cand-04d0a55748db8819"
           ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Mediocre record, questions at quarterback, rinse, repeat. Maybe next year the Falcons can start making progress.",
-          "text": "Mediocre record, questions at quarterback, rinse, repeat. Maybe next year the Falcons can start making progress.",
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Six quarterbacks and six receivers ranked in the top 25? Mel Kiper Jr. stacks the best players on the 2027 draft board as of mid-November.",
+          "text": "Six quarterbacks and six receivers ranked in the top 25? Mel Kiper Jr. stacks the best players on the 2027 draft board as of mid-November.",
           "entities": [],
-          "occurredAt": "2026-11-19T11:39:28Z",
+          "occurredAt": "2026-11-19T21:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.86,
-          "freshnessBasis": "Mediocre record, questions at quarterback, rinse, repeat. Maybe next year the Falcons can start making progress.",
+          "ageHours": 0.27,
+          "freshnessBasis": "Six quarterbacks and six receivers ranked in the top 25? Mel Kiper Jr. stacks the best players on the 2027 draft board as of mid-November.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50524413/falcons-matt-ryan-michael-penix-kevin-stefanski"
+            "https://www.espn.com/nfl/draft2027/story/_/id/50182998/2027-nfl-draft-rankings-kiper-big-board-top-prospects"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50524413/falcons-matt-ryan-michael-penix-kevin-stefanski"
+              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50182998/2027-nfl-draft-rankings-kiper-big-board-top-prospects"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/nfl/draft2027/story/_/id/50182998/2027-nfl-draft-rankings-kiper-big-board-top-prospects"
             }
           ],
-          "id": "a415-db5e83d40cd3fc6c",
+          "id": "a415-e3d081ae5ead5a7f",
           "feedRank": 11,
-          "compactHeadline": "Falcons seek change, but keep ending up in the same spot"
+          "compactHeadline": "2027 NFL draft Big Board rankings: Mel Kiper's top 25 prospects, best by position"
         }
       ]
     },
@@ -354,7 +359,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T20:36:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.91,
+          "ageHours": 1.41,
           "freshnessBasis": "Spurs guard Dylan Harper has been diagnosed with a left hip rotator strain, avoiding any major injury, sources told ESPN's Shams Charania on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +388,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T17:56:59Z",
           "timePrecision": "exact",
-          "ageHours": 3.57,
+          "ageHours": 4.07,
           "freshnessBasis": "Luka Doncic said his performance in Wednesday's loss to Utah, in which he shot 10-of-28 and had nine turnovers, was \"unacceptable\" as the Lakers' win streak ended at nine.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +417,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:14:28Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 2.77,
           "freshnessBasis": "Timberwolves guard Anthony Edwards said he has \"no clue\" when he will return to play from right knee surgery weeks ago, but was optimistic about his long-term prognosis.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +446,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T14:14:35Z",
           "timePrecision": "exact",
-          "ageHours": 7.27,
+          "ageHours": 7.77,
           "freshnessBasis": "— Keyonte George scored nine of his 30 points in the fourth quarter, and the Utah Jazz improbably snapped the Los Angeles Lakers' nine-game winning streak with a 109-97 victory Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +475,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:34:35Z",
           "timePrecision": "exact",
-          "ageHours": 17.94,
+          "ageHours": 18.44,
           "freshnessBasis": "— Cooper Flagg scored 33 points, P.J. Washington Jr. added 21 and the Dallas Mavericks stopped a three-game losing streak with a 116-94 victory over the Golden State Warriors on Wednesday night.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +504,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:58:50Z",
           "timePrecision": "exact",
-          "ageHours": 1.54,
+          "ageHours": 2.04,
           "freshnessBasis": "The latest entry in the Grand Theft Auto series is tied with \"The Legend of Zelda: Ocarina of Time\" with a 99 rating on Metacritic.",
           "status": "active",
           "sourceUrls": [
@@ -534,7 +539,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T09:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 12.32,
+          "ageHours": 12.82,
           "freshnessBasis": "Montreal Canadiens (13-5-4, in the Atlantic Division) vs. Carolina Hurricanes (16-3-2, in the Metropolitan Division)",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +568,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T06:19:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.19,
+          "ageHours": 15.69,
           "freshnessBasis": "— Vincent Trocheck scored a goal and assisted another to help the Utah Mammoth beat the Colorado Avalanche 4-1 on Wednesday night and snap a six-game losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +597,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T16:17:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.23,
+          "ageHours": 5.73,
           "freshnessBasis": "This NHL season has been filled with memorable moments and outstanding achievements. These do not make that list.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +626,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:27:35Z",
           "timePrecision": "exact",
-          "ageHours": 18.06,
+          "ageHours": 18.56,
           "freshnessBasis": "— Jake Evans scored the go-ahead goal, captain Nick Suzuki ended his team's long power-play drought and the Montreal Canadiens defeated the New Jersey Devils 3-2 on Wednesday night to halt a two-game skid.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +655,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:26:35Z",
           "timePrecision": "exact",
-          "ageHours": 18.07,
+          "ageHours": 18.57,
           "freshnessBasis": "— David Pastrnak had a goal and an assist as the Boston Bruins beat Detroit 4-1 on Wednesday night and spoiled the Red Wings' Centennial celebration game.",
           "status": "active",
           "sourceUrls": [
@@ -666,6 +671,35 @@
           "id": "a415-08d853bfd781a6ba",
           "feedRank": 22,
           "compactHeadline": "Bruins beat Red Wings 4-1, spoil Detroit's Centennial celebration game"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-65d34b4308b71136"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "The Carolina Hurricanes lead Stanley Cup odds, while the Edmonton Oilers rise based on their strong record.",
+          "text": "The Carolina Hurricanes lead Stanley Cup odds, while the Edmonton Oilers rise based on their strong record.",
+          "entities": [],
+          "occurredAt": "2026-11-19T21:39:32Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "The Carolina Hurricanes lead Stanley Cup odds, while the Edmonton Oilers rise based on their strong record.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/espn/betting/story/_/id/44686270/2026-nhl-stanley-cup-playoffs-championship-odds"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/espn/betting/story/_/id/44686270/2026-nhl-stanley-cup-playoffs-championship-odds"
+            }
+          ],
+          "id": "a415-461a644f622cfdcb",
+          "feedRank": 23,
+          "compactHeadline": "Stanley Cup odds: Standings-leading Oilers rise up championship odds board"
         }
       ]
     },
@@ -685,7 +719,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T13:50:09Z",
           "timePrecision": "exact",
-          "ageHours": 7.68,
+          "ageHours": 8.18,
           "freshnessBasis": "After 10 games, we have enough data to predict every Premier League team's final spot in the standings for the 2026-27 season.",
           "status": "active",
           "sourceUrls": [
@@ -699,7 +733,7 @@
             }
           ],
           "id": "a415-d54295a005cbd00b",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Predicting how all 20 Premier League teams will finish the season"
         },
         {
@@ -712,9 +746,9 @@
           "headline": "Video footage of Mauricio Pochettino's first training session as Manchester United head coach has appeared on YouTube after it was filmed by a drone operator.",
           "text": "Video footage of Mauricio Pochettino's first training session as Manchester United head coach has appeared on YouTube after it was filmed by a drone operator.",
           "entities": [],
-          "occurredAt": "2026-11-19T21:05:48Z",
+          "occurredAt": "2026-11-19T21:34:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
+          "ageHours": 0.45,
           "freshnessBasis": "Video footage of Mauricio Pochettino's first training session as Manchester United head coach has appeared on YouTube after it was filmed by a drone operator.",
           "status": "active",
           "sourceUrls": [
@@ -728,7 +762,7 @@
             }
           ],
           "id": "a415-962b8ca9138deb70",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Mauricio Pochettino's 1st Man United training session filmed by drone operator"
         },
         {
@@ -743,7 +777,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T20:30:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.01,
+          "ageHours": 1.51,
           "freshnessBasis": "Erling Haaland said it is \"natural\" for him to take on more responsibility as one of Manchester City's captains this season, but wants to do it in his own way.",
           "status": "active",
           "sourceUrls": [
@@ -757,7 +791,7 @@
             }
           ],
           "id": "a415-06a5bcaba4ec40ed",
-          "feedRank": 25,
+          "feedRank": 26,
           "compactHeadline": "Leader in his own way Haaland making 'natural' progression as City veteran"
         },
         {
@@ -772,7 +806,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T17:16:14Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
+          "ageHours": 4.75,
           "freshnessBasis": "Mauricio Pochettino has said his first job as Manchester United's new head coach is to remind the players how to win after a miserable start to the season.",
           "status": "active",
           "sourceUrls": [
@@ -786,7 +820,7 @@
             }
           ],
           "id": "a415-ff36e4eb5f646da2",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "Mauricio Pochettino: Man United players must relearn 'about being winners'"
         },
         {
@@ -801,7 +835,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T13:19:26Z",
           "timePrecision": "exact",
-          "ageHours": 8.19,
+          "ageHours": 8.69,
           "freshnessBasis": "Chelsea's Valentín Barco has said he is confident that he's still a long way away from reaching his full potential.",
           "status": "active",
           "sourceUrls": [
@@ -815,37 +849,8 @@
             }
           ],
           "id": "a415-7510d2b03bfb2599",
-          "feedRank": 27,
-          "compactHeadline": "Valentín Barco on Chelsea career so far: 'I think I can give a lot more'"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-2ddee71c8fc962ea"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
-          "text": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
-          "entities": [],
-          "occurredAt": "2026-11-19T13:08:47Z",
-          "timePrecision": "exact",
-          "ageHours": 8.37,
-          "freshnessBasis": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50530231/gta-vi-messi-ronaldo-manchester-united"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50530231/gta-vi-messi-ronaldo-manchester-united"
-            }
-          ],
-          "id": "a415-ea55443b4e9ea182",
           "feedRank": 28,
-          "compactHeadline": "Messi vs. Ronaldo, Man Utd hire Moyes: GTA V came out in a different soccer world"
+          "compactHeadline": "Valentín Barco on Chelsea career so far: 'I think I can give a lot more'"
         }
       ]
     },
@@ -865,7 +870,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T18:29:23Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.53,
           "freshnessBasis": "Inter Miami CF star Lionel Messi remains the highest-paid player in MLS, though the number of players making at least $10 million grew to five.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +905,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T18:16:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.24,
+          "ageHours": 3.74,
           "freshnessBasis": "— No. 7 Alabama has a clear path to the final Southeastern Conference title game and a spot in the College Football Playoff.",
           "status": "active",
           "sourceUrls": [
@@ -929,7 +934,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T03:01:31Z",
           "timePrecision": "exact",
-          "ageHours": 18.49,
+          "ageHours": 18.99,
           "freshnessBasis": "South Carolina star QB LaNorris Sellers is set to play in Saturday's game vs. No. 1 Georgia after not appearing on the injury report Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -949,6 +954,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-e26fd4a56b9c2608"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "James Madison is leaving the Sun Belt Conference for the American Conference a year earlier than planned, in 2027 rather than 2028.",
+          "text": "James Madison is leaving the Sun Belt Conference for the American Conference a year earlier than planned, in 2027 rather than 2028.",
+          "entities": [],
+          "occurredAt": "2026-11-19T21:30:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.5,
+          "freshnessBasis": "James Madison is leaving the Sun Belt Conference for the American Conference a year earlier than planned, in 2027 rather than 2028.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50534149/james-madison-moving-american-conference-2027"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50534149/james-madison-moving-american-conference-2027"
+            }
+          ],
+          "id": "a415-9c1f24f094ba7fda",
+          "feedRank": 32,
+          "compactHeadline": "James Madison moving to American Conference in 2027"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-b4c81898fb7220dc"
           ],
           "type": "NEWS",
@@ -958,7 +992,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T21:15:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 0.76,
           "freshnessBasis": "Michigan receiver Andrew Marsh is facing a misdemeanor charge of indecent exposure stemming from a February incident involving a food service driver.",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1006,11 @@
             }
           ],
           "id": "a415-e0f84cac49fb3d65",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Michigan WR Andrew Marsh facing misdemeanor indecent exposure charge"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-c9137b86908ea765"
           ],
@@ -987,7 +1021,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:37:38Z",
           "timePrecision": "exact",
-          "ageHours": 1.89,
+          "ageHours": 2.39,
           "freshnessBasis": "Hall of Fame linebacker and Penn State radio analyst Jack Ham will return to the broadcast booth on Saturday, just two weeks after suffering a medical emergency.",
           "status": "active",
           "sourceUrls": [
@@ -1006,11 +1040,11 @@
             }
           ],
           "id": "a415-ae026959d9ccf3e6",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "Hall of Famer Jack Ham returning to broadcast booth after health scare"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-9a2f89a0a2823003"
           ],
@@ -1021,7 +1055,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T19:27:21Z",
           "timePrecision": "exact",
-          "ageHours": 2.06,
+          "ageHours": 2.56,
           "freshnessBasis": "\"College GameDay\" heads to University of Miami for Week 12.",
           "status": "active",
           "sourceUrls": [
@@ -1035,37 +1069,8 @@
             }
           ],
           "id": "a415-4f80dd42e90eff68",
-          "feedRank": 34,
-          "compactHeadline": "2026 'College GameDay' Week 12: Virginia Tech vs. Miami"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-13abc8365e4389c4"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "What to expect in Week 12, from top games and players to teams on upset alert.",
-          "text": "What to expect in Week 12, from top games and players to teams on upset alert.",
-          "entities": [],
-          "occurredAt": "2026-11-19T17:08:28Z",
-          "timePrecision": "exact",
-          "ageHours": 4.37,
-          "freshnessBasis": "What to expect in Week 12, from top games and players to teams on upset alert.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/page/gamedaykickoff111926/week-12-top-games-upsets-preview"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/page/gamedaykickoff111926/week-12-top-games-upsets-preview"
-            }
-          ],
-          "id": "a415-fafba832a944c170",
           "feedRank": 35,
-          "compactHeadline": "Week 12 Game Day Kickoff: Appreciating Jeremiah Smith's greatness"
+          "compactHeadline": "2026 'College GameDay' Week 12: Virginia Tech vs. Miami"
         }
       ]
     }
@@ -1090,7 +1095,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 108,
+    "freshCandidateCount": 106,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
