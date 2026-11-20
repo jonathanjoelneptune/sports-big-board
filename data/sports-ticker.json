@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-20T05:30:58Z",
+  "generatedAt": "2026-11-20T13:01:05Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e62bc61dd76d7a168c6750f028ec775f7c317e5ccbc3b3346f04fd02f97f59a1",
+  "sourceCandidateHash": "672b2236a71e0d692759ffa53e81d43f432bb3ea3b2fa0d8d3c4cdeb2a9b9b5c",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-06b4cf070724cb6c"
+          ],
+          "type": "MILESTONE",
+          "priority": 82,
+          "headline": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "text": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "entities": [],
+          "occurredAt": "2026-11-20T06:03:44Z",
+          "timePrecision": "exact",
+          "ageHours": 6.96,
+          "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
+            }
+          ],
+          "id": "a415-831ba4b2a8b784e5",
+          "feedRank": 1,
+          "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-96f27841e5363811"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T03:00:38Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
+          "ageHours": 10.01,
           "freshnessBasis": "The Rockies acquired pitchers Luis Castillo and Davis Martin from the White Sox for left-hander Sean Sullivan and catching prospect Douglas Veliz.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +66,11 @@
             }
           ],
           "id": "a415-59a1c63b99cfa489",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Rockies acquire pitchers Luis Castillo, Davis Martin from White Sox"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-13fc3c5e7eb81b0f"
           ],
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T03:35:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
+          "ageHours": 9.43,
           "freshnessBasis": "The Mets reached a three-year, $12 million deal with Darwinzon Hernandez, a source told ESPN, helping a relief corps that underwent an overhaul this past summer.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,40 @@
             }
           ],
           "id": "a415-5004c84890847d75",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Source: Mets reach 3-year, $12 million deal with Darwinzon Hernandez"
         },
         {
-          "rank": 3,
+          "rank": 4,
+          "candidateIds": [
+            "cand-2d058f818046c805"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 64,
+          "headline": "We tackle the toughest questions and burning issues as the owners and players negotiate on a new CBA.",
+          "text": "We tackle the toughest questions and burning issues as the owners and players negotiate on a new CBA.",
+          "entities": [],
+          "occurredAt": "2026-11-20T11:53:39Z",
+          "timePrecision": "exact",
+          "ageHours": 1.12,
+          "freshnessBasis": "We tackle the toughest questions and burning issues as the owners and players negotiate on a new CBA.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49425027/mlb-labor-cba-owners-players-union-salary-cap-draft-proposals-mlbpa-negotiations-latest-updates"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49425027/mlb-labor-cba-owners-players-union-salary-cap-draft-proposals-mlbpa-negotiations-latest-updates"
+            }
+          ],
+          "id": "a415-d8a155d009be22f9",
+          "feedRank": 4,
+          "compactHeadline": "MLB labor battle: Latest updates, full coverage on CBA, salary cap, more"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-f9085fa2ad62e8a3"
           ],
@@ -81,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T20:21:54Z",
           "timePrecision": "exact",
-          "ageHours": 9.15,
+          "ageHours": 16.65,
           "freshnessBasis": "Newly signed White Sox pitcher Dustin May said he's excited to join another young, up-and-coming team after signing a three-year, $52.5 million contract.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +153,11 @@
             }
           ],
           "id": "a415-b425cca9660e5f8d",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Dustin May excited to tap into young 'energy' with White Sox"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-1b3d7819c1811bbe"
           ],
@@ -110,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T01:09:38Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 11.86,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -124,37 +182,8 @@
             }
           ],
           "id": "a415-b604ed1e7c551502",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "MLB free agency tracker: 2026-27 offseason trades, moves"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-a377f7cb57adf963"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
-          "text": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
-          "entities": [],
-          "occurredAt": "2026-11-19T22:38:47Z",
-          "timePrecision": "exact",
-          "ageHours": 6.87,
-          "freshnessBasis": "President Donald Trump said he has posthumously pardoned Pete Rose more than two years after the baseball star's death and a year after he was reinstated by MLB.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50534187/pete-rose-posthumously-pardoned-president-donald-trump"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50534187/pete-rose-posthumously-pardoned-president-donald-trump"
-            }
-          ],
-          "id": "a415-362814c964804186",
-          "feedRank": 5,
-          "compactHeadline": "Pete Rose posthumously pardoned by President Donald Trump"
         }
       ]
     },
@@ -165,6 +194,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-85dfd5aa41183a4a"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Thanks to the scuffling NFC East and a friendly schedule the next week, the Cowboys still have a playoff shot.",
+          "text": "Thanks to the scuffling NFC East and a friendly schedule the next week, the Cowboys still have a playoff shot.",
+          "entities": [],
+          "occurredAt": "2026-11-20T12:12:06Z",
+          "timePrecision": "exact",
+          "ageHours": 0.82,
+          "freshnessBasis": "Thanks to the scuffling NFC East and a friendly schedule the next week, the Cowboys still have a playoff shot.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50534234/cowboys-titans-eagles-nfc-east-thanksgiving"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50534234/cowboys-titans-eagles-nfc-east-thanksgiving"
+            }
+          ],
+          "id": "a415-e1622b3e8093b965",
+          "feedRank": 7,
+          "compactHeadline": "With Titans, Eagles up next, it's now or never for Cowboys"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-04c4bc351cadd373"
           ],
           "type": "INJURY",
@@ -174,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T05:03:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
+          "ageHours": 7.96,
           "freshnessBasis": "Texans defensive end Chris Braswell suffered a serious-looking knee injury on the opening kickoff of Thursday night's game against the Colts.",
           "status": "active",
           "sourceUrls": [
@@ -188,11 +246,11 @@
             }
           ],
           "id": "a415-3087dd3f770467b1",
-          "feedRank": 6,
+          "feedRank": 8,
           "compactHeadline": "Texans lose Chris Braswell to serious-looking knee injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-0c9b4343a862f545"
           ],
@@ -203,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T04:40:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.83,
+          "ageHours": 8.34,
           "freshnessBasis": "Bears defensive tackle Jeffery Simmons said the knee injury that held him to limited participation in practice this week wouldn't keep him from playing Sunday against the Saints.",
           "status": "active",
           "sourceUrls": [
@@ -217,124 +275,95 @@
             }
           ],
           "id": "a415-351df1f5ef402736",
-          "feedRank": 7,
+          "feedRank": 9,
           "compactHeadline": "Bears' Jeffery Simmons says knee injury a non-issue, expects to play vs. Saints"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-b66d94084abd9dff"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "If ever there was a time for an NFL team to overlook somebody, it just might be Sunday afternoon at Arrowhead Stadium, where the Kansas City Chiefs will continue their pursuit of another AFC West title against the injured, downtrodden Arizona...",
-          "text": "If ever there was a time for an NFL team to overlook somebody, it just might be Sunday afternoon at Arrowhead Stadium, where the Kansas City Chiefs will continue their pursuit of another AFC West title against the injured, downtrodden Arizona...",
-          "entities": [],
-          "occurredAt": "2026-11-19T21:25:04Z",
-          "timePrecision": "exact",
-          "ageHours": 8.1,
-          "freshnessBasis": "— If ever there was a time for an NFL team to overlook somebody, it just might be Sunday afternoon at Arrowhead Stadium, where the Kansas City Chiefs will continue their pursuit of another AFC West title against the injured, downtrodden Arizona...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401873067"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401873067"
-            }
-          ],
-          "id": "a415-2af405b5efcfd886",
-          "feedRank": 8,
-          "compactHeadline": "Chiefs are flying high but can ill afford to overlook the lowly Cardinals when they meet Sunday"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-c7835ee613447501"
+            "cand-bb3481adb69a4991"
           ],
-          "type": "INJURY",
+          "type": "TRADE",
           "priority": 78,
-          "headline": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
-          "text": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
+          "headline": "Kenneth Walker III and Devin Lloyd look great with their new teams in 2026. But Jaylen Waddle and Alontae Taylor haven't quite found their groove.",
+          "text": "Kenneth Walker III and Devin Lloyd look great with their new teams in 2026. But Jaylen Waddle and Alontae Taylor haven't quite found their groove.",
           "entities": [],
-          "occurredAt": "2026-11-19T21:21:24Z",
+          "occurredAt": "2026-11-20T11:42:26Z",
           "timePrecision": "exact",
-          "ageHours": 8.16,
-          "freshnessBasis": "Buccaneers quarterback Baker Mayfield is hoping to play Sunday against the Lions after he sustained a foot injury two weeks ago against the Chicago Bears.",
+          "ageHours": 1.31,
+          "freshnessBasis": "Kenneth Walker III and Devin Lloyd look great with their new teams in 2026. But Jaylen Waddle and Alontae Taylor haven't quite found their groove.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50533151/buccaneers-baker-mayfield-hopes-play-foot-injury"
+            "https://www.espn.com/nfl/story/_/id/50525533/2026-offseason-change-scenery-fits-players-new-teams"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50533151/buccaneers-baker-mayfield-hopes-play-foot-injury"
+              "url": "https://www.espn.com/nfl/story/_/id/50525533/2026-offseason-change-scenery-fits-players-new-teams"
             }
           ],
-          "id": "a415-8ff65984482b5f06",
-          "feedRank": 9,
-          "compactHeadline": "Bucs QB Baker Mayfield hopes to play Sunday despite foot injury: 'I feel ready'"
+          "id": "a415-5623ab727820dafd",
+          "feedRank": 10,
+          "compactHeadline": "NFL offseason free agent and trade acquisitions that have and have not worked"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-3332d8eeaf1fabaa"
+            "cand-718950378210b283"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Perhaps the Steelers should have stayed attached at the hip pads with the Eagles — as they were when they merged for the 1943 season to form the Steagles — to avoid such an ignominious losing streak in Philadelphia.",
-          "text": "Perhaps the Steelers should have stayed attached at the hip pads with the Eagles — as they were when they merged for the 1943 season to form the Steagles — to avoid such an ignominious losing streak in Philadelphia.",
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The moves Tennessee made might have helped the rebuilding process, but it also impacted the current team.",
+          "text": "The moves Tennessee made might have helped the rebuilding process, but it also impacted the current team.",
           "entities": [],
-          "occurredAt": "2026-11-20T00:22:33Z",
+          "occurredAt": "2026-11-20T11:00:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.14,
-          "freshnessBasis": "— Perhaps the Steelers should have stayed attached at the hip pads with the Eagles — as they were when they merged for the 1943 season to form the Steagles — to avoid such an ignominious losing streak in Philadelphia.",
+          "ageHours": 2.02,
+          "freshnessBasis": "The moves Tennessee made might have helped the rebuilding process, but it also impacted the current team.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401873076"
+            "https://www.espn.com/nfl/story/_/id/50523033/titans-defense-post-jeffery-simmons-amani-hooker-trades"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401873076"
+              "url": "https://www.espn.com/nfl/story/_/id/50523033/titans-defense-post-jeffery-simmons-amani-hooker-trades"
             }
           ],
-          "id": "a415-8887732d3edf2165",
-          "feedRank": 10,
-          "compactHeadline": "The Steelers last won in Philadelphia in 1965. Can they top an Eagles team on 7-game losing streak?"
+          "id": "a415-a61ccd41a2d41434",
+          "feedRank": 11,
+          "compactHeadline": "Titans defense crumbling post-Jeffery Simmons, Amani Hooker trades"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-f6bfb432a63d907a"
+            "cand-ee32c4e0fce91b91"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "C.J. Stroud threw for 194 yards and three touchdowns and the Houston Texans used a strong defensive performance to coast to a 26-3 win over the Indianapolis Colts on Thursday night.",
-          "text": "C.J. Stroud threw for 194 yards and three touchdowns and the Houston Texans used a strong defensive performance to coast to a 26-3 win over the Indianapolis Colts on Thursday night.",
+          "type": "LEGAL",
+          "priority": 64,
+          "headline": "Nick Pappas is the man charged with making sure international venues are up to standard to host NFL games.",
+          "text": "Nick Pappas is the man charged with making sure international venues are up to standard to host NFL games.",
           "entities": [],
-          "occurredAt": "2026-11-20T04:19:33Z",
+          "occurredAt": "2026-11-20T12:58:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.19,
-          "freshnessBasis": "— C.J. Stroud threw for 194 yards and three touchdowns and the Houston Texans used a strong defensive performance to coast to a 26-3 win over the Indianapolis Colts on Thursday night.",
+          "ageHours": 0.04,
+          "freshnessBasis": "Nick Pappas is the man charged with making sure international venues are up to standard to host NFL games.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nfl/recap?gameId=401873066"
+            "https://www.espn.com/nfl/story/_/id/50534594/mf-field-director-versus-international-games"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873066"
+              "url": "https://www.espn.com/nfl/story/_/id/50534594/mf-field-director-versus-international-games"
             }
           ],
-          "id": "a415-9d8e2d96265ec7c2",
-          "feedRank": 11,
-          "compactHeadline": "C.J. Stroud throws for 3 TDs as the Texans roll past the Colts 26-3"
+          "id": "a415-90f4da7a1c4c4e5d",
+          "feedRank": 12,
+          "compactHeadline": "NFL field director Nick Pappas tested by 9 international games"
         }
       ]
     },
@@ -345,6 +374,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-ecb1153a29481a88"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "A healthy Fred VanVleet is commanding the surging Rockets after an ACL injury derailed his 2025-26 season. Here's why he's so important.",
+          "text": "A healthy Fred VanVleet is commanding the surging Rockets after an ACL injury derailed his 2025-26 season. Here's why he's so important.",
+          "entities": [],
+          "occurredAt": "2026-11-20T12:05:18Z",
+          "timePrecision": "exact",
+          "ageHours": 0.93,
+          "freshnessBasis": "A healthy Fred VanVleet is commanding the surging Rockets after an ACL injury derailed his 2025-26 season. Here's why he's so important.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50524821/nba-houston-rockets-fred-vanvleet-injury-comeback"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50524821/nba-houston-rockets-fred-vanvleet-injury-comeback"
+            }
+          ],
+          "id": "a415-152d67111fdf4711",
+          "feedRank": 13,
+          "compactHeadline": "Fred VanVleet's 'fresh slate' is driving Houston's early season success"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-9e1eb6e109248c1c"
           ],
           "type": "INJURY",
@@ -354,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T00:22:18Z",
           "timePrecision": "exact",
-          "ageHours": 5.14,
+          "ageHours": 12.65,
           "freshnessBasis": "Spurs guard Dylan Harper has been diagnosed with a left hip rotator strain, avoiding any major injury, sources told ESPN's Shams Charania on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -368,11 +426,11 @@
             }
           ],
           "id": "a415-15a3b12cce737892",
-          "feedRank": 12,
+          "feedRank": 14,
           "compactHeadline": "Sources: Spurs' Dylan Harper out 1-3 weeks with hip strain"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-2519733361709eb9"
           ],
@@ -383,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T03:53:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.62,
+          "ageHours": 9.13,
           "freshnessBasis": "— Karl-Anthony Towns scored 17 of his 22 points in the first half and grabbed 12 rebounds against his former team to help the New York Knicks hang on and beat the",
           "status": "active",
           "sourceUrls": [
@@ -397,11 +455,11 @@
             }
           ],
           "id": "a415-ede2effd4f133558",
-          "feedRank": 13,
+          "feedRank": 15,
           "compactHeadline": "Knicks fend off the Timberwolves 102-99 behind 22 points from Karl-Anthony Towns vs. his former team"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-6060a554969e4d17"
           ],
@@ -412,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T03:45:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.76,
+          "ageHours": 9.26,
           "freshnessBasis": "— Victor Wembanyama had 32 points and 11 rebounds, Stephon Castle added 21 points and 12 assists, and the San Antonio Spurs held off the Los Angeles Clippers for a 124-112 victory on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -426,11 +484,11 @@
             }
           ],
           "id": "a415-f611a85ef7425788",
-          "feedRank": 14,
+          "feedRank": 16,
           "compactHeadline": "Wembanyama and Castle help Spurs bounce back from loss to Pistons and beat Clippers 124-112"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-aad92f31d0e699b6"
           ],
@@ -441,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T03:44:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.77,
+          "ageHours": 9.28,
           "freshnessBasis": "— Damian Lillard scored a season-high 33 points in his return to Milwaukee and the Trail Blazers won 124-114 to hand the Bucks their 12th consecutive loss on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -455,66 +513,37 @@
             }
           ],
           "id": "a415-2d34d04e71b8044f",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Lillard scores 33 in return to Milwaukee as Blazers win 124-114. Bucks have lost 12 straight"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0026d65ed994eb88"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Luka Doncic said his performance in Wednesday's loss to Utah, in which he shot 10-of-28 and had nine turnovers, was \"unacceptable\" as the Lakers' win streak ended at nine.",
-          "text": "Luka Doncic said his performance in Wednesday's loss to Utah, in which he shot 10-of-28 and had nine turnovers, was \"unacceptable\" as the Lakers' win streak ended at nine.",
-          "entities": [],
-          "occurredAt": "2026-11-19T17:56:59Z",
-          "timePrecision": "exact",
-          "ageHours": 11.57,
-          "freshnessBasis": "Luka Doncic said his performance in Wednesday's loss to Utah, in which he shot 10-of-28 and had nine turnovers, was \"unacceptable\" as the Lakers' win streak ended at nine.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50529118/luka-doncic-struggles-jazz-end-lakers-winning-streak-9"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50529118/luka-doncic-struggles-jazz-end-lakers-winning-streak-9"
-            }
-          ],
-          "id": "a415-ad1abadcebde7b33",
-          "feedRank": 16,
-          "compactHeadline": "Luka Doncic's shot goes cold as Jazz end Lakers' winning streak at 9"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-f852e8fe0f557435"
+            "cand-6106596425e2a0cb"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Timberwolves guard Anthony Edwards said he has \"no clue\" when he will return to play from right knee surgery weeks ago, but was optimistic about his long-term prognosis.",
-          "text": "Timberwolves guard Anthony Edwards said he has \"no clue\" when he will return to play from right knee surgery weeks ago, but was optimistic about his long-term prognosis.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "How has the first month unfolded for nine first-year stars? Brian Windhorst and Tim MacMahon canvass the league.",
+          "text": "How has the first month unfolded for nine first-year stars? Brian Windhorst and Tim MacMahon canvass the league.",
           "entities": [],
-          "occurredAt": "2026-11-19T19:14:28Z",
+          "occurredAt": "2026-11-20T11:57:57Z",
           "timePrecision": "exact",
-          "ageHours": 10.28,
-          "freshnessBasis": "Timberwolves guard Anthony Edwards said he has \"no clue\" when he will return to play from right knee surgery weeks ago, but was optimistic about his long-term prognosis.",
+          "ageHours": 1.05,
+          "freshnessBasis": "How has the first month unfolded for nine first-year stars? Brian Windhorst and Tim MacMahon canvass the league.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50532808/timberwolves-edwards-no-clue-return"
+            "https://www.espn.com/nba/story/_/id/50534111/rookies-dybantsa-peterson-boozer-acuff-yaxel"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50532808/timberwolves-edwards-no-clue-return"
+              "url": "https://www.espn.com/nba/story/_/id/50534111/rookies-dybantsa-peterson-boozer-acuff-yaxel"
             }
           ],
-          "id": "a415-3ee2b6acfadf637b",
-          "feedRank": 17,
-          "compactHeadline": "Timberwolves' Edwards has 'no clue' on when he will return"
+          "id": "a415-1ea4442880ce2b38",
+          "feedRank": 18,
+          "compactHeadline": "Windhorst and MacMahon: League execs, scouts examine nine rookie starts"
         }
       ]
     },
@@ -525,6 +554,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-98cbf04cb3585715"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Mark Stone picked up his 418th point with an assist in Thursday's 4-3 shootout loss to the Stars, becoming the Golden Knights' career scoring leader.",
+          "text": "Mark Stone picked up his 418th point with an assist in Thursday's 4-3 shootout loss to the Stars, becoming the Golden Knights' career scoring leader.",
+          "entities": [],
+          "occurredAt": "2026-11-20T06:39:17Z",
+          "timePrecision": "exact",
+          "ageHours": 6.36,
+          "freshnessBasis": "Mark Stone picked up his 418th point with an assist in Thursday's 4-3 shootout loss to the Stars, becoming the Golden Knights' career scoring leader.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50538736/mark-stone-becomes-golden-knight-all-scoring-leader"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50538736/mark-stone-becomes-golden-knight-all-scoring-leader"
+            }
+          ],
+          "id": "a415-28f0649bd68b417a",
+          "feedRank": 19,
+          "compactHeadline": "Mark Stone becomes Golden Knight's all-time scoring leader in loss to Stars"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-9bbff78a7f059ab2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Tyler Seguin scored the deciding goal in the shootout and the Dallas Stars beat the Vegas Golden Knights 4-3 on Thursday night for their second win at T-Mobile Arena in three days.",
+          "text": "Tyler Seguin scored the deciding goal in the shootout and the Dallas Stars beat the Vegas Golden Knights 4-3 on Thursday night for their second win at T-Mobile Arena in three days.",
+          "entities": [],
+          "occurredAt": "2026-11-20T06:05:33Z",
+          "timePrecision": "exact",
+          "ageHours": 6.93,
+          "freshnessBasis": "— Tyler Seguin scored the deciding goal in the shootout and the Dallas Stars beat the Vegas Golden Knights 4-3 on Thursday night for their second win at T-Mobile Arena in three days.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892753"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892753"
+            }
+          ],
+          "id": "a415-6c18e93db37daf71",
+          "feedRank": 20,
+          "compactHeadline": "Seguin, Stars edge Golden Knights 4-3 in shootout as Mark Stone sets Vegas’ franchise scoring record"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-23b85de01b539bd5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Berkly Catton had his first NHL hat trick, Matty Beniers had a goal and an assist, and the Seattle Kraken snapped a three-game losing streak with a 5-1 win over the Vancouver Canucks on Thursday night.",
+          "text": "Berkly Catton had his first NHL hat trick, Matty Beniers had a goal and an assist, and the Seattle Kraken snapped a three-game losing streak with a 5-1 win over the Vancouver Canucks on Thursday night.",
+          "entities": [],
+          "occurredAt": "2026-11-20T05:51:32Z",
+          "timePrecision": "exact",
+          "ageHours": 7.16,
+          "freshnessBasis": "— Berkly Catton had his first NHL hat trick, Matty Beniers had a goal and an assist, and the Seattle Kraken snapped a three-game losing streak with a 5-1 win over the Vancouver Canucks on Thursday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892752"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892752"
+            }
+          ],
+          "id": "a415-9824b0603887e7d5",
+          "feedRank": 21,
+          "compactHeadline": "Berkly Catton scores a hat trick as the Kraken beat the Canucks 5-1"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-2d823dc238f066bc"
           ],
           "type": "RESULT",
@@ -532,9 +648,9 @@
           "headline": "Brock Nelson had two goals and an assist as the Colorado Avalanche blanked Anaheim 4-0 on Thursday night, ending Cutter Gauthier's...",
           "text": "Brock Nelson had two goals and an assist as the Colorado Avalanche blanked Anaheim 4-0 on Thursday night, ending Cutter Gauthier's...",
           "entities": [],
-          "occurredAt": "2026-11-20T05:19:32Z",
+          "occurredAt": "2026-11-20T05:33:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
+          "ageHours": 7.46,
           "freshnessBasis": "— Brock Nelson had two goals and an assist as the Colorado Avalanche blanked Anaheim 4-0 on Thursday night, ending Cutter Gauthier's...",
           "status": "active",
           "sourceUrls": [
@@ -548,11 +664,11 @@
             }
           ],
           "id": "a415-2e68b9c85f58c2ab",
-          "feedRank": 18,
+          "feedRank": 22,
           "compactHeadline": "Nelson and Wedgewood lead Avalanche past Ducks 4-0, ending Gauthier’s goal streak at 10 games"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-53f1f608e90d2a73"
           ],
@@ -563,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T04:17:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.22,
+          "ageHours": 8.73,
           "freshnessBasis": "— Kirill Kaprizov and Quinn Hughes extended their point streaks to 13 games to lead the Minnesota Wild to a 4-1 victory over the Calgary Flames on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -577,11 +693,11 @@
             }
           ],
           "id": "a415-cfeb9894e76a7562",
-          "feedRank": 19,
+          "feedRank": 23,
           "compactHeadline": "Kirill Kaprizov, Quinn Hughes extend point streaks to 13 games in Wild's 4-1 win over the Flames"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-19b81e12a79220ec"
           ],
@@ -592,7 +708,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T04:06:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.41,
+          "ageHours": 8.91,
           "freshnessBasis": "— Adrian Kempe scored the only goal in a shootout and the Los Angeles Kings roared back from a three-goal deficit to beat Toronto 4-3 on Thursday night, handing the Maple Leafs their eighth straight defeat.",
           "status": "active",
           "sourceUrls": [
@@ -606,95 +722,8 @@
             }
           ],
           "id": "a415-9383992031ffb17e",
-          "feedRank": 20,
+          "feedRank": 24,
           "compactHeadline": "Kings rally from 3 down to beat skidding Maple Leafs 4-3 on Kempe's goal in shootout"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-34b6977736ebfea4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Zach Werenski scored and added an assist, Kent Johnson, Matthew Knies and Adam Fantilli also scored, and the Columbus Blue Jackets beat the Chicago Blackhawks 4-2 on Thursday night.",
-          "text": "Zach Werenski scored and added an assist, Kent Johnson, Matthew Knies and Adam Fantilli also scored, and the Columbus Blue Jackets beat the Chicago Blackhawks 4-2 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-11-20T03:52:32Z",
-          "timePrecision": "exact",
-          "ageHours": 1.64,
-          "freshnessBasis": "— Zach Werenski scored and added an assist, Kent Johnson, Matthew Knies and Adam Fantilli also scored, and the Columbus Blue Jackets beat the Chicago Blackhawks 4-2 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892748"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892748"
-            }
-          ],
-          "id": "a415-0577fe9f0441e060",
-          "feedRank": 21,
-          "compactHeadline": "Blue Jackets end 5-game skid with 4-2 win over Blackhawks"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-a217c0837eab7d57"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Travis Konecny scored 39 seconds into overtime to cap a four-point night, and the Philadelphia Flyers rallied from a 5-2 deficit to beat the Ottawa Senators 6-5 on Thursday night.",
-          "text": "Travis Konecny scored 39 seconds into overtime to cap a four-point night, and the Philadelphia Flyers rallied from a 5-2 deficit to beat the Ottawa Senators 6-5 on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-11-20T03:49:33Z",
-          "timePrecision": "exact",
-          "ageHours": 1.69,
-          "freshnessBasis": "— Travis Konecny scored 39 seconds into overtime to cap a four-point night, and the Philadelphia Flyers rallied from a 5-2 deficit to beat the Ottawa Senators 6-5 on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892743"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892743"
-            }
-          ],
-          "id": "a415-42ff648cf22eb20a",
-          "feedRank": 22,
-          "compactHeadline": "Travis Konecny scores in OT to cap Flyers' rally from 3 goals down to beat Senators 6-5"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8a9488861ac3a497"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Andrei Vasilevskiy stopped 23 shots and the Tampa Bay Lightning became the first team this season to hold Connor McDavid off the scoresheet in a 3-1 victory against the Edmonton Oilers on Thursday night.",
-          "text": "Andrei Vasilevskiy stopped 23 shots and the Tampa Bay Lightning became the first team this season to hold Connor McDavid off the scoresheet in a 3-1 victory against the Edmonton Oilers on Thursday night.",
-          "entities": [],
-          "occurredAt": "2026-11-20T03:38:32Z",
-          "timePrecision": "exact",
-          "ageHours": 1.87,
-          "freshnessBasis": "— Andrei Vasilevskiy stopped 23 shots and the Tampa Bay Lightning became the first team this season to hold Connor McDavid off the scoresheet in a 3-1 victory against the Edmonton Oilers on Thursday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892744"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892744"
-            }
-          ],
-          "id": "a415-8e0a000f94157438",
-          "feedRank": 23,
-          "compactHeadline": "Lightning top Oilers 3-1, end Connor McDavid's 23-game point streak"
         }
       ]
     },
@@ -705,6 +734,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-e702efc422740412"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Arsenal manager Mikel Arteta expects Bukayo Saka to be sidelined for another four weeks with the thigh injury that has already kept the England winger out for a month.",
+          "text": "Arsenal manager Mikel Arteta expects Bukayo Saka to be sidelined for another four weeks with the thigh injury that has already kept the England winger out for a month.",
+          "entities": [],
+          "occurredAt": "2026-11-20T12:07:50Z",
+          "timePrecision": "exact",
+          "ageHours": 0.89,
+          "freshnessBasis": "Arsenal manager Mikel Arteta expects Bukayo Saka to be sidelined for another four weeks with the thigh injury that has already kept the England winger out for a month.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50540215/arsenal-saka-saliba-arteta-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50540215/arsenal-saka-saliba-arteta-injury"
+            }
+          ],
+          "id": "a415-b6362b9efb86bbf8",
+          "feedRank": 25,
+          "compactHeadline": "Arsenal's Bukayo Saka out for a month, William Saliba available - Mikel Arteta"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-2ddee71c8fc962ea"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
+          "text": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
+          "entities": [],
+          "occurredAt": "2026-11-20T09:55:12Z",
+          "timePrecision": "exact",
+          "ageHours": 3.1,
+          "freshnessBasis": "As Grand Theft Auto VI is finally unleashed, here is what was happening in the world of soccer when the previous game was released 13 years ago",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50530231/gta-vi-messi-ronaldo-manchester-united"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50530231/gta-vi-messi-ronaldo-manchester-united"
+            }
+          ],
+          "id": "a415-ea55443b4e9ea182",
+          "feedRank": 26,
+          "compactHeadline": "Messi vs. Ronaldo, Man Utd hire Moyes: GTA V came out in a different soccer world"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-b54b743ce5e220c4"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The operator of the drone that filmed Mauricio Pochettino's first training session at Manchester United accepts it was \"unethical.\"",
+          "text": "The operator of the drone that filmed Mauricio Pochettino's first training session at Manchester United accepts it was \"unethical.\"",
+          "entities": [],
+          "occurredAt": "2026-11-20T09:55:09Z",
+          "timePrecision": "exact",
+          "ageHours": 3.1,
+          "freshnessBasis": "The operator of the drone that filmed Mauricio Pochettino's first training session at Manchester United accepts it was \"unethical.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50533559/mauricio-pochettino-man-united-training-drone-filmed-online"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50533559/mauricio-pochettino-man-united-training-drone-filmed-online"
+            }
+          ],
+          "id": "a415-bc42f544dd2a9df4",
+          "feedRank": 27,
+          "compactHeadline": "Drone operator who filmed Mauricio Pochettino at Man United apologises"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-4f232355a91a3aa8"
           ],
           "type": "STANDINGS",
@@ -714,7 +830,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T13:50:09Z",
           "timePrecision": "exact",
-          "ageHours": 15.68,
+          "ageHours": 23.18,
           "freshnessBasis": "After 10 games, we have enough data to predict every Premier League team's final spot in the standings for the 2026-27 season.",
           "status": "active",
           "sourceUrls": [
@@ -728,95 +844,8 @@
             }
           ],
           "id": "a415-d54295a005cbd00b",
-          "feedRank": 24,
+          "feedRank": 28,
           "compactHeadline": "Predicting how all 20 Premier League teams will finish the season"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-69ada59178862c8a"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Thomas Frank said he hopes never to get caught drinking from a Brighton coffee cup after he was reminded of his famous gaffe from his time at Tottenham.",
-          "text": "Thomas Frank said he hopes never to get caught drinking from a Brighton coffee cup after he was reminded of his famous gaffe from his time at Tottenham.",
-          "entities": [],
-          "occurredAt": "2026-11-19T23:16:29Z",
-          "timePrecision": "exact",
-          "ageHours": 6.24,
-          "freshnessBasis": "Thomas Frank said he hopes never to get caught drinking from a Brighton coffee cup after he was reminded of his famous gaffe from his time at Tottenham.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50534780/thomas-frank-crystal-palace-arsenal-tottenham-coffee-cup"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50534780/thomas-frank-crystal-palace-arsenal-tottenham-coffee-cup"
-            }
-          ],
-          "id": "a415-b18f8d8ccb537f9f",
-          "feedRank": 25,
-          "compactHeadline": "Thomas Frank eager to avoid repeat of Arsenal coffee cup controversy at Palace"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-d23d679e3b23c7dc"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Video footage of Mauricio Pochettino's first training session as Manchester United head coach has appeared on YouTube after it was filmed by a drone operator.",
-          "text": "Video footage of Mauricio Pochettino's first training session as Manchester United head coach has appeared on YouTube after it was filmed by a drone operator.",
-          "entities": [],
-          "occurredAt": "2026-11-19T22:28:35Z",
-          "timePrecision": "exact",
-          "ageHours": 7.04,
-          "freshnessBasis": "Video footage of Mauricio Pochettino's first training session as Manchester United head coach has appeared on YouTube after it was filmed by a drone operator.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50533559/mauricio-pochettino-man-united-training-drone-filmed-online"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50533559/mauricio-pochettino-man-united-training-drone-filmed-online"
-            }
-          ],
-          "id": "a415-962b8ca9138deb70",
-          "feedRank": 26,
-          "compactHeadline": "Mauricio Pochettino's 1st Man United training session filmed by drone operator"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-9aa301c4144357ab"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Erling Haaland said it is \"natural\" for him to take on more responsibility as one of Manchester City's captains this season, but wants to do it in his own way.",
-          "text": "Erling Haaland said it is \"natural\" for him to take on more responsibility as one of Manchester City's captains this season, but wants to do it in his own way.",
-          "entities": [],
-          "occurredAt": "2026-11-19T20:30:33Z",
-          "timePrecision": "exact",
-          "ageHours": 9.01,
-          "freshnessBasis": "Erling Haaland said it is \"natural\" for him to take on more responsibility as one of Manchester City's captains this season, but wants to do it in his own way.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50533036/erling-haaland-man-city-leader"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50533036/erling-haaland-man-city-leader"
-            }
-          ],
-          "id": "a415-06a5bcaba4ec40ed",
-          "feedRank": 27,
-          "compactHeadline": "Leader in his own way Haaland making 'natural' progression as City veteran"
         }
       ]
     },
@@ -834,9 +863,9 @@
           "headline": "FC Cincinnati rallied to eliminate Orlando City 3-1 in MLS Cup Eastern Conference wild card match on Thursday.",
           "text": "FC Cincinnati rallied to eliminate Orlando City 3-1 in MLS Cup Eastern Conference wild card match on Thursday.",
           "entities": [],
-          "occurredAt": "2026-11-20T05:06:32Z",
+          "occurredAt": "2026-11-20T08:06:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
+          "ageHours": 4.92,
           "freshnessBasis": "FC Cincinnati rallied to eliminate Orlando City 3-1 in MLS Cup Eastern Conference wild card match on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -850,7 +879,7 @@
             }
           ],
           "id": "a415-f075c8143a44c7c8",
-          "feedRank": 28,
+          "feedRank": 29,
           "compactHeadline": "Dike exits wild card loss injured as Orlando's season ends against Cincinnati"
         },
         {
@@ -865,7 +894,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T18:29:23Z",
           "timePrecision": "exact",
-          "ageHours": 11.03,
+          "ageHours": 18.53,
           "freshnessBasis": "Inter Miami CF star Lionel Messi remains the highest-paid player in MLS, though the number of players making at least $10 million grew to five.",
           "status": "active",
           "sourceUrls": [
@@ -879,7 +908,7 @@
             }
           ],
           "id": "a415-0d0f34abf8fceea5",
-          "feedRank": 29,
+          "feedRank": 30,
           "compactHeadline": "Messi leads way as MLS salaries rise; Union's Sullivan checks in at $614K"
         },
         {
@@ -929,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T23:50:21Z",
           "timePrecision": "exact",
-          "ageHours": 5.68,
+          "ageHours": 13.18,
           "freshnessBasis": "The waiver will allow Army and Navy to play 12 games apiece before the College Football Playoff selections are made and keep their rivalry game.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +972,7 @@
             }
           ],
           "id": "a415-3560eea2841715e5",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "Waiver approved allowing Army, Navy to play 13th game in 2027"
         },
         {
@@ -958,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T03:42:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
+          "ageHours": 9.31,
           "freshnessBasis": "— JT Kitna threw three touchdown passes, Bugs Mortimer set the tone with two explosive touchdowns, and Stephen F. Austin routed Northwestern State 66-0 on Thursday night.",
           "status": "active",
           "sourceUrls": [
@@ -972,7 +1001,7 @@
             }
           ],
           "id": "a415-bb176353f6eef5af",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Stephen F. Austin routs Northwestern State 66-0 to stay alive in Southland title chase"
         },
         {
@@ -987,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-19T18:16:35Z",
           "timePrecision": "exact",
-          "ageHours": 11.24,
+          "ageHours": 18.74,
           "freshnessBasis": "— No. 7 Alabama has a clear path to the final Southeastern Conference title game and a spot in the College Football Playoff.",
           "status": "active",
           "sourceUrls": [
@@ -1001,95 +1030,66 @@
             }
           ],
           "id": "a415-c6a2a113feb7d16d",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "No. 7 Alabama goes for its 4th straight win when it hosts lower-division Chattanooga"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-7e86afa019f8ca4c"
+            "cand-8d991a98f44b6aa6"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Freshman Patrick Crayton Jr. threw a 30-yard touchdown pass to Jacurri Brown with six seconds remaining, lifting Rice to a 31-27 victory over Temple on Thursday night.",
-          "text": "Freshman Patrick Crayton Jr. threw a 30-yard touchdown pass to Jacurri Brown with six seconds remaining, lifting Rice to a 31-27 victory over Temple on Thursday night.",
+          "headline": "One football team in Columbus still has national title hopes. Just not the one with Jeremiah Smith.",
+          "text": "One football team in Columbus still has national title hopes. Just not the one with Jeremiah Smith.",
           "entities": [],
-          "occurredAt": "2026-11-20T04:22:32Z",
+          "occurredAt": "2026-11-20T12:21:20Z",
           "timePrecision": "exact",
-          "ageHours": 1.14,
-          "freshnessBasis": "— Freshman Patrick Crayton Jr. threw a 30-yard touchdown pass to Jacurri Brown with six seconds remaining, lifting Rice to a 31-27 victory over Temple on Thursday night.",
+          "ageHours": 0.66,
+          "freshnessBasis": "One football team in Columbus still has national title hopes. Just not the one with Jeremiah Smith.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401862830"
+            "https://www.espn.com/college-football/story/_/id/50522496/ohio-state-club-football"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401862830"
+              "url": "https://www.espn.com/college-football/story/_/id/50522496/ohio-state-club-football"
             }
           ],
-          "id": "a415-bfd04b959f849928",
-          "feedRank": 33,
-          "compactHeadline": "Patrick Crayton and Jacurri Brown connect in waning seconds to lift Rice over Temple 31-27"
+          "id": "a415-5d41a1af480786f9",
+          "feedRank": 34,
+          "compactHeadline": "Ohio State's club team might be the Buckeyes' most dominant program"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-e26fd4a56b9c2608"
+            "cand-7b20115dd12050ed"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "James Madison is leaving the Sun Belt Conference for the American Conference a year earlier than planned, in 2027 rather than 2028.",
-          "text": "James Madison is leaving the Sun Belt Conference for the American Conference a year earlier than planned, in 2027 rather than 2028.",
+          "headline": "The basketball haven has become a legend of the fall, where the reigning national champs take center stage.",
+          "text": "The basketball haven has become a legend of the fall, where the reigning national champs take center stage.",
           "entities": [],
-          "occurredAt": "2026-11-19T21:30:55Z",
+          "occurredAt": "2026-11-20T11:45:14Z",
           "timePrecision": "exact",
-          "ageHours": 8.0,
-          "freshnessBasis": "James Madison is leaving the Sun Belt Conference for the American Conference a year earlier than planned, in 2027 rather than 2028.",
+          "ageHours": 1.26,
+          "freshnessBasis": "The basketball haven has become a legend of the fall, where the reigning national champs take center stage.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50534149/james-madison-moving-american-conference-2027"
+            "https://www.espn.com/college-football/story/_/id/50533477/bloomington-indiana-football-town"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50534149/james-madison-moving-american-conference-2027"
+              "url": "https://www.espn.com/college-football/story/_/id/50533477/bloomington-indiana-football-town"
             }
           ],
-          "id": "a415-9c1f24f094ba7fda",
-          "feedRank": 34,
-          "compactHeadline": "James Madison moving to American Conference in 2027"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b4c81898fb7220dc"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Michigan receiver Andrew Marsh is facing a misdemeanor charge of indecent exposure stemming from a February incident involving a food service driver.",
-          "text": "Michigan receiver Andrew Marsh is facing a misdemeanor charge of indecent exposure stemming from a February incident involving a food service driver.",
-          "entities": [],
-          "occurredAt": "2026-11-19T21:15:07Z",
-          "timePrecision": "exact",
-          "ageHours": 8.26,
-          "freshnessBasis": "Michigan receiver Andrew Marsh is facing a misdemeanor charge of indecent exposure stemming from a February incident involving a food service driver.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50533990/michigan-wr-marsh-facing-misdemeanor-indecent-exposure-charge"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50533990/michigan-wr-marsh-facing-misdemeanor-indecent-exposure-charge"
-            }
-          ],
-          "id": "a415-e0f84cac49fb3d65",
+          "id": "a415-b6e2f88175b1130c",
           "feedRank": 35,
-          "compactHeadline": "Michigan WR Andrew Marsh facing misdemeanor indecent exposure charge"
+          "compactHeadline": "'Another universe': How Indiana football changed Bloomington"
         }
       ]
     }
@@ -1114,7 +1114,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 121,
+    "freshCandidateCount": 115,
     "publishedItemCount": 36,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
