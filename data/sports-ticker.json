@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-21T19:31:39Z",
+  "generatedAt": "2026-11-21T20:01:37Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "35b41d53f97114ffdae09f7fab2544b3d5b55bff6da96fb6ef5d511e8d0e0ff1",
+  "sourceCandidateHash": "4c5d1e59ab6af1fdb05735608c08b97a83d1bfdb640a06e3d82bac316048ffba",
   "leagues": [
     {
       "league": "MLB",
@@ -18,13 +18,13 @@
           ],
           "type": "CONTRACT",
           "priority": 76,
-          "headline": "The Mets and 22-year-old center fielder A.J. Ewing have agreed to an eight-year, $95 million contract extension, sources told ESPN's Jeff Passan.",
-          "text": "The Mets and 22-year-old center fielder A.J. Ewing have agreed to an eight-year, $95 million contract extension, sources told ESPN's Jeff Passan.",
+          "headline": "The Mets and 22-year-old center fielder A.J. Ewing have agreed to an eight-year, $95 million contract extension, sources confirmed to ESPN.",
+          "text": "The Mets and 22-year-old center fielder A.J. Ewing have agreed to an eight-year, $95 million contract extension, sources confirmed to ESPN.",
           "entities": [],
-          "occurredAt": "2026-11-21T19:29:23Z",
+          "occurredAt": "2026-11-21T19:54:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "The Mets and 22-year-old center fielder A.J. Ewing have agreed to an eight-year, $95 million contract extension, sources told ESPN's Jeff Passan.",
+          "ageHours": 0.11,
+          "freshnessBasis": "The Mets and 22-year-old center fielder A.J. Ewing have agreed to an eight-year, $95 million contract extension, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50552088/mets-aj-ewing-reach-8-year-95m-extension-sources-say"
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-adaa04f49fa6fef2"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "Gavin Sheets is staying with the Padres after agreeing to a three-year contract, with sources telling ESPN the deal is worth $11 million.",
+          "text": "Gavin Sheets is staying with the Padres after agreeing to a three-year contract, with sources telling ESPN the deal is worth $11 million.",
+          "entities": [],
+          "occurredAt": "2026-11-21T19:40:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "Gavin Sheets is staying with the Padres after agreeing to a three-year contract, with sources telling ESPN the deal is worth $11 million.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50545784/gavin-sheets-returns-san-diego-padres-11-million-3-year-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50545784/gavin-sheets-returns-san-diego-padres-11-million-3-year-deal"
+            }
+          ],
+          "id": "a415-14e2813d667e310f",
+          "feedRank": 2,
+          "compactHeadline": "Gavin Sheets returns to Padres with 3-year, $11 million deal"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-b4fb8f57fb5ef90b"
           ],
           "type": "CONTRACT",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T15:46:04Z",
           "timePrecision": "exact",
-          "ageHours": 3.76,
+          "ageHours": 4.26,
           "freshnessBasis": "Luis Gil, a former AL Rookie of the Year, was cut loose by the Yankees, among 44 players who became MLB free agents when their teams declined to offer 2027 contracts by Friday's tender deadline.",
           "status": "active",
           "sourceUrls": [
@@ -66,37 +95,8 @@
             }
           ],
           "id": "a415-8ea0ca44f859375c",
-          "feedRank": 2,
-          "compactHeadline": "Luis Gil, former AL Rookie of the Year, cut by Yankees at tender deadline"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-9858e9d7b65fd0ed"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Gavin Sheets is staying with the San Diego Padres after agreeing to a three-year contract, the team announced Friday.",
-          "text": "Gavin Sheets is staying with the San Diego Padres after agreeing to a three-year contract, the team announced Friday.",
-          "entities": [],
-          "occurredAt": "2026-11-21T04:00:17Z",
-          "timePrecision": "exact",
-          "ageHours": 15.52,
-          "freshnessBasis": "Gavin Sheets is staying with the San Diego Padres after agreeing to a three-year contract, the team announced Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50545784/gavin-sheets-returns-san-diego-padres-11-million-3-year-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50545784/gavin-sheets-returns-san-diego-padres-11-million-3-year-deal"
-            }
-          ],
-          "id": "a415-3e579f00fdf6c1b4",
           "feedRank": 3,
-          "compactHeadline": "Gavin Sheets returns to Padres with $11 million, 3-year deal"
+          "compactHeadline": "Luis Gil, former AL Rookie of the Year, cut by Yankees at tender deadline"
         },
         {
           "rank": 4,
@@ -110,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T00:57:45Z",
           "timePrecision": "exact",
-          "ageHours": 18.57,
+          "ageHours": 19.06,
           "freshnessBasis": "The Dodgers acquired infielder Royce Lewis in a trade with the Twins, fulfilling Los Angeles' need for a versatile right-handed hitter to replace Miguel Rojas.",
           "status": "active",
           "sourceUrls": [
@@ -139,7 +139,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T00:02:31Z",
           "timePrecision": "exact",
-          "ageHours": 19.49,
+          "ageHours": 19.99,
           "freshnessBasis": "Troy Melton, who went 8-5 with a 2.76 ERA in 20 starts this season, has agreed to a six-year, $46.5M contract extension with the Tigers, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T21:23:02Z",
           "timePrecision": "exact",
-          "ageHours": 22.14,
+          "ageHours": 22.64,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -194,6 +194,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-380ac43c7d248dc9"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Steelers will activate wide receiver Roman Wilson from injured reserve on Saturday ahead of Sunday's game against the Eagles, sources told NFL Network's Ian Rapoport.",
+          "text": "The Steelers will activate wide receiver Roman Wilson from injured reserve on Saturday ahead of Sunday's game against the Eagles, sources told NFL Network's Ian Rapoport.",
+          "entities": [],
+          "occurredAt": "2026-11-21T19:58:21Z",
+          "timePrecision": "exact",
+          "ageHours": 0.05,
+          "freshnessBasis": "The Steelers will activate wide receiver Roman Wilson from injured reserve on Saturday ahead of Sunday's game against the Eagles, sources told NFL Network's Ian Rapoport.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50552701/sources-steelers-activate-wr-roman-wilson-ir-eagles-game"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50552701/sources-steelers-activate-wr-roman-wilson-ir-eagles-game"
+            }
+          ],
+          "id": "a415-2142ae8931d772ac",
+          "feedRank": 7,
+          "compactHeadline": "Sources: Steelers to activate WR Roman Wilson off IR for Eagles game"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-f372f86b9da18ae0"
           ],
           "type": "INJURY",
@@ -203,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T11:00:15Z",
           "timePrecision": "exact",
-          "ageHours": 8.52,
+          "ageHours": 9.02,
           "freshnessBasis": "Greenard speaks on his injury-filled season and outlook for the second half of the year.",
           "status": "active",
           "sourceUrls": [
@@ -217,11 +246,11 @@
             }
           ],
           "id": "a415-73c8fa48011c3286",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Edge Jonathan Greenard loves to makes plays, despite Eagles' standing"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-5d9f2a54772a95f8"
           ],
@@ -232,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T22:06:28Z",
           "timePrecision": "exact",
-          "ageHours": 21.42,
+          "ageHours": 21.92,
           "freshnessBasis": "If the QB doesn't return in 2026, New England faces an uphill battle against some of the NFL's best teams.",
           "status": "active",
           "sourceUrls": [
@@ -246,11 +275,11 @@
             }
           ],
           "id": "a415-dd04fdd928fc3dec",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Drake Maye ankle injury: Is the Patriots' season over? Can Tommy DeVito step up?"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-b2c673c82addf319"
           ],
@@ -261,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T21:59:11Z",
           "timePrecision": "exact",
-          "ageHours": 21.54,
+          "ageHours": 22.04,
           "freshnessBasis": "Ravens defensive tackle Nnamdi Madubuike has a hamstring injury and has been ruled out for Sunday's game against the Panthers.",
           "status": "active",
           "sourceUrls": [
@@ -275,11 +304,11 @@
             }
           ],
           "id": "a415-7bd8df1e715f4984",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Ravens rule out DT Nnamdi Madubuike (hamstring) vs Panthers"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-fb15d4c3d385eeff"
           ],
@@ -290,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T18:31:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.0,
+          "ageHours": 1.5,
           "freshnessBasis": "Titans defensive lineman Jaylen Harrell was involved in a serious car accident Friday and remains hospitalized, according to the team.",
           "status": "active",
           "sourceUrls": [
@@ -304,11 +333,11 @@
             }
           ],
           "id": "a415-9247acb2eeb5bb77",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Titans DL Jaylen Harrell hospitalized after car accident in Tampa"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c92356df830e7691"
           ],
@@ -319,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T20:29:34Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.53,
           "freshnessBasis": "Chiefs RB Kenneth Walker III will not play in Sunday's game against the Cardinals after not participating in practice this week due to a groin injury.",
           "status": "active",
           "sourceUrls": [
@@ -333,37 +362,8 @@
             }
           ],
           "id": "a415-f7a95937a11c1d54",
-          "feedRank": 11,
-          "compactHeadline": "Chiefs' Kenneth Walker III, two linemen out vs. Cardinals"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-bcbfd15dc964059b"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Patriots quarterback Drake Maye has a fractured right fibula, and receiver A.J. Brown has a hamstring injury, sources told ESPN's Mike Reiss and Adam Schefter.",
-          "text": "Patriots quarterback Drake Maye has a fractured right fibula, and receiver A.J. Brown has a hamstring injury, sources told ESPN's Mike Reiss and Adam Schefter.",
-          "entities": [],
-          "occurredAt": "2026-11-20T19:36:45Z",
-          "timePrecision": "exact",
-          "ageHours": 23.92,
-          "freshnessBasis": "Patriots quarterback Drake Maye has a fractured right fibula, and receiver A.J. Brown has a hamstring injury, sources told ESPN's Mike Reiss and Adam Schefter.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50542578/patriots-qb-drake-maye-fractured-fibula-sources-say"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50542578/patriots-qb-drake-maye-fractured-fibula-sources-say"
-            }
-          ],
-          "id": "a415-a431a2d6cc5adc97",
           "feedRank": 12,
-          "compactHeadline": "Patriots QB Drake Maye has fractured fibula, sources say"
+          "compactHeadline": "Chiefs' Kenneth Walker III, two linemen out vs. Cardinals"
         }
       ]
     },
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T13:07:55Z",
           "timePrecision": "exact",
-          "ageHours": 6.4,
+          "ageHours": 6.9,
           "freshnessBasis": "After recovering from Achilles surgery, Brandon Ingram is set to make his Clippers debut Monday against the Rockets, sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T12:40:52Z",
           "timePrecision": "exact",
-          "ageHours": 6.85,
+          "ageHours": 7.35,
           "freshnessBasis": "— Scottie Barnes scored 29 points, including a layup with 14 seconds left, and the Toronto Raptors ended their six-game losing streak with a 105-102 win over the Detroit Pistons in an NBA Cup game on Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T06:15:33Z",
           "timePrecision": "exact",
-          "ageHours": 13.27,
+          "ageHours": 13.77,
           "freshnessBasis": "— Nikola Jokic had 26 points, 11 assists and seven rebounds as the Denver Nuggets defeated the Houston Rockets 133-124 in a back-and-forth NBA Cup game Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T20:55:27Z",
           "timePrecision": "exact",
-          "ageHours": 22.6,
+          "ageHours": 23.1,
           "freshnessBasis": "A healthy Fred VanVleet is commanding the surging Rockets after an ACL injury derailed his 2025-26 season. Here's why he's so important.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T05:37:33Z",
           "timePrecision": "exact",
-          "ageHours": 13.9,
+          "ageHours": 14.4,
           "freshnessBasis": "— Devin Booker had 23 points and the Phoenix Suns scored the final six of the game to pull away late and beat the Utah Jazz 111-101 in an NBA Cup matchup Friday night.",
           "status": "active",
           "sourceUrls": [
@@ -528,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T18:02:43Z",
           "timePrecision": "exact",
-          "ageHours": 1.48,
+          "ageHours": 1.98,
           "freshnessBasis": "76ers forwards Jaylen Brown and Dean Wade will miss Saturday's game against the Bucks with left hamstring injuries, their second straight game out.",
           "status": "active",
           "sourceUrls": [
@@ -563,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T11:23:28Z",
           "timePrecision": "exact",
-          "ageHours": 8.14,
+          "ageHours": 8.64,
           "freshnessBasis": "Find game previews, betting intel, broadcast information, stats and highlights here.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +598,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T19:12:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.31,
+          "ageHours": 0.81,
           "freshnessBasis": "David Raya was forced off the pitch in Arsenal's clash against Newcastle.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T17:49:09Z",
           "timePrecision": "exact",
-          "ageHours": 1.71,
+          "ageHours": 2.21,
           "freshnessBasis": "Luca Williams-Barnett lived up to the hype with a sparking display on his full debut for Tottenham to inspire a 2-0 win over Ipswich.",
           "status": "active",
           "sourceUrls": [
@@ -656,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T17:48:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.73,
+          "ageHours": 2.23,
           "freshnessBasis": "Thomas Frank suffered defeat in his first game as Crystal Palace boss as Dwight McNeil's late own goal condemned them to a 3-2 loss at Coventry.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T17:47:25Z",
           "timePrecision": "exact",
-          "ageHours": 1.74,
+          "ageHours": 2.24,
           "freshnessBasis": "Bournemouth extended their winning run to nine in all competitions as Evanilson scored for the sixth Premier League game in a row in a 2-0 win over Nottingham Forest.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T17:22:21Z",
           "timePrecision": "exact",
-          "ageHours": 2.16,
+          "ageHours": 2.65,
           "freshnessBasis": "Noah Okafor scored twice as Leeds beat Chelsea 4-1 to record their first Premier League win at Stamford Bridge in 27 years.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T14:49:08Z",
           "timePrecision": "exact",
-          "ageHours": 4.71,
+          "ageHours": 5.21,
           "freshnessBasis": "Elliot Anderson struck as Manchester City ended their losing run but more points were dropped as Fulham claimed a 1-1 draw at the Etihad Stadium on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T21:49:12Z",
           "timePrecision": "exact",
-          "ageHours": 21.71,
+          "ageHours": 22.21,
           "freshnessBasis": "BJ Callaghan said he remains fully focused on leading Nashville through the MLS playoffs amid links to replacing Mauricio Pochettino as USMNT head coach.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-20T22:43:56Z",
           "timePrecision": "exact",
-          "ageHours": 20.8,
+          "ageHours": 21.29,
           "freshnessBasis": "The LA Galaxy declined to exercise their purchase option for Hirving 'Chucky' Lozano, sending the Mexican forward back to San Diego FC.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +842,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T19:12:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
+          "ageHours": 0.82,
           "freshnessBasis": "Oregon running back Dierre Hill Jr. limped off the field with an injury in the first quarter against Michigan State.",
           "status": "active",
           "sourceUrls": [
@@ -871,7 +871,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T18:43:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.8,
+          "ageHours": 1.3,
           "freshnessBasis": "Houston ruled out starting QB Conner Weigman vs. West Virginia due to injury and instead went with true freshman Keisean Henderson, the No. 4 recruit for 2026.",
           "status": "active",
           "sourceUrls": [
@@ -900,7 +900,7 @@
           "entities": [],
           "occurredAt": "2026-11-21T16:08:35Z",
           "timePrecision": "exact",
-          "ageHours": 3.38,
+          "ageHours": 3.88,
           "freshnessBasis": "Miami star wide receiver Malachi Toney is about a week and a half from returning from surgery for a high ankle sprain, coach Mario Cristobal told \"The Pat McAfee Show.\"",
           "status": "active",
           "sourceUrls": [
@@ -920,31 +920,31 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-59c53c347f1a2d85"
+            "cand-41739868cce444f4"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "John Alan Richter threw a 35-yard touchdown pass to Adjatay Dabbs, senior Reice Griffith kicked a career-high four field goals and Toledo beat Bowling Green 19-0 on Friday night for the Rockets' fifth consecutive win.",
-          "text": "John Alan Richter threw a 35-yard touchdown pass to Adjatay Dabbs, senior Reice Griffith kicked a career-high four field goals and Toledo beat Bowling Green 19-0 on Friday night for the Rockets' fifth consecutive win.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Federal lawmakers published a revised version of the Protect College Sports Act as the U.S. House of Representatives prepares to push for a vote during the first week of December. President Donald Trump also voiced his support for the bill.",
+          "text": "Federal lawmakers published a revised version of the Protect College Sports Act as the U.S. House of Representatives prepares to push for a vote during the first week of December. President Donald Trump also voiced his support for the bill.",
           "entities": [],
-          "occurredAt": "2026-11-21T06:41:32Z",
+          "occurredAt": "2026-11-21T19:48:24Z",
           "timePrecision": "exact",
-          "ageHours": 12.84,
-          "freshnessBasis": "— John Alan Richter threw a 35-yard touchdown pass to Adjatay Dabbs, senior Reice Griffith kicked a career-high four field goals and Toledo beat Bowling Green 19-0 on Friday night for the Rockets' fifth consecutive win.",
+          "ageHours": 0.22,
+          "freshnessBasis": "Federal lawmakers published a revised version of the Protect College Sports Act as the U.S. House of Representatives prepares to push for a vote during the first week of December. President Donald Trump also voiced his support for the bill.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401866468"
+            "https://www.espn.com/college-sports/story/_/id/50545220/protect-college-sports-act-revised-donald-trump-voices-support"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401866468"
+              "url": "https://www.espn.com/college-sports/story/_/id/50545220/protect-college-sports-act-revised-donald-trump-voices-support"
             }
           ],
-          "id": "a415-8cf0b6ef825ab2bc",
+          "id": "a415-aa6a4e55ec1226cd",
           "feedRank": 31,
-          "compactHeadline": "Richter throws TD pass to Dabbs, Griffith kicks 4 FGs for Toledo in 19-0 win over BGSU"
+          "compactHeadline": "Revised Protect College Sports Act allows conferences to expand up to 22 schools"
         },
         {
           "rank": 5,
@@ -953,13 +953,13 @@
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Michigan returned to QB Bryce Underwood vs. No. 4 UCLA after Tommy Carr had started the past four games, sources told ESPN.",
-          "text": "Michigan returned to QB Bryce Underwood vs. No. 4 UCLA after Tommy Carr had started the past four games, sources told ESPN.",
+          "headline": "Michigan is returning to QB Bryce Underwood vs. No. 4 UCLA after Tommy Carr had started the past four games, sources told ESPN.",
+          "text": "Michigan is returning to QB Bryce Underwood vs. No. 4 UCLA after Tommy Carr had started the past four games, sources told ESPN.",
           "entities": [],
-          "occurredAt": "2026-11-21T19:00:17Z",
+          "occurredAt": "2026-11-21T19:35:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.52,
-          "freshnessBasis": "Michigan returned to QB Bryce Underwood vs. No. 4 UCLA after Tommy Carr had started the past four games, sources told ESPN.",
+          "ageHours": 0.44,
+          "freshnessBasis": "Michigan is returning to QB Bryce Underwood vs. No. 4 UCLA after Tommy Carr had started the past four games, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50549879/sources-michigan-expected-start-bryce-underwood-vs-ucla"
@@ -978,31 +978,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-481fba5bb94780a3"
+            "cand-59c53c347f1a2d85"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The letters were adjusted back in time for Navy's kickoff.",
-          "text": "The letters were adjusted back in time for Navy's kickoff.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "John Alan Richter threw a 35-yard touchdown pass to Adjatay Dabbs, senior Reice Griffith kicked a career-high four field goals and Toledo beat Bowling Green 19-0 on Friday night for the Rockets' fifth consecutive win.",
+          "text": "John Alan Richter threw a 35-yard touchdown pass to Adjatay Dabbs, senior Reice Griffith kicked a career-high four field goals and Toledo beat Bowling Green 19-0 on Friday night for the Rockets' fifth consecutive win.",
           "entities": [],
-          "occurredAt": "2026-11-21T18:47:15Z",
+          "occurredAt": "2026-11-21T06:41:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.74,
-          "freshnessBasis": "The letters were adjusted back in time for Navy's kickoff.",
+          "ageHours": 13.33,
+          "freshnessBasis": "— John Alan Richter threw a 35-yard touchdown pass to Adjatay Dabbs, senior Reice Griffith kicked a career-high four field goals and Toledo beat Bowling Green 19-0 on Friday night for the Rockets' fifth consecutive win.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50551457/army-navy-seat-prank"
+            "http://www.espn.com/ncf/recap?gameId=401866468"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50551457/army-navy-seat-prank"
+              "url": "http://www.espn.com/ncf/recap?gameId=401866468"
             }
           ],
-          "id": "a415-2153477e44e091b9",
+          "id": "a415-8cf0b6ef825ab2bc",
           "feedRank": 33,
-          "compactHeadline": "Army pulls seating prank at Navy's football stadium ahead of Memphis game"
+          "compactHeadline": "Richter throws TD pass to Dabbs, Griffith kicks 4 FGs for Toledo in 19-0 win over BGSU"
         }
       ]
     }
@@ -1027,7 +1027,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 90,
+    "freshCandidateCount": 92,
     "publishedItemCount": 33,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
