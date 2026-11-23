@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-23T00:01:57Z",
+  "generatedAt": "2026-11-23T00:31:15Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "7cf23117d37886bc3c3ae5b8f3a9b417f7a31adee1d88336076eee0caa403f66",
+  "sourceCandidateHash": "7ebf6536c53fac3007378427b09637ffb916375b4f3e0c865efa089b3c2781a5",
   "leagues": [
     {
       "league": "MLB",
@@ -21,9 +21,9 @@
           "headline": "Tarik Skubal and the Mets agreed to a nine-year, $450 million contract, sources told ESPN. It is the richest deal for a pitcher, both by total and average annual value.",
           "text": "Tarik Skubal and the Mets agreed to a nine-year, $450 million contract, sources told ESPN. It is the richest deal for a pitcher, both by total and average annual value.",
           "entities": [],
-          "occurredAt": "2026-11-22T23:53:45Z",
+          "occurredAt": "2026-11-23T00:19:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 0.2,
           "freshnessBasis": "Tarik Skubal and the Mets agreed to a nine-year, $450 million contract, sources told ESPN. It is the richest deal for a pitcher, both by total and average annual value.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T22:12:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.82,
+          "ageHours": 2.31,
           "freshnessBasis": "Luis Gil and the Tigers are in agreement on a one-year, $2.3 million contract, sources told ESPN, as he lands a job just days after the Yankees nontendered him.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T22:16:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.75,
+          "ageHours": 2.24,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -107,6 +107,82 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-2aa65576bf05c5ac"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Geno Smith completed 17 of 21 passes for 176 yards and three touchdowns, including two to Sterling Shepard, and the New York Jets scored on their first five drives to beat the Los Angeles Chargers 27-24 on Sunday and end a five-game skid.",
+          "text": "Geno Smith completed 17 of 21 passes for 176 yards and three touchdowns, including two to Sterling Shepard, and the New York Jets scored on their first five drives to beat the Los Angeles Chargers 27-24 on Sunday and end a five-game skid.",
+          "entities": [],
+          "occurredAt": "2026-11-22T21:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.44,
+          "freshnessBasis": "Highlightly final: New York Jets 27, Los Angeles Chargers 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873074"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873074"
+            }
+          ],
+          "id": "a415-99b3e90e5baf6c03",
+          "feedRank": 4,
+          "compactHeadline": "Jets score on first 5 drives and edge Chargers 27-24 to snap 5-game skid"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-511233f0681d7574"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Jeffery Simmons recorded three sacks in the Bears' 21-13 win over the Saints on Sunday, which tied his single-game career high.",
+          "text": "Jeffery Simmons recorded three sacks in the Bears' 21-13 win over the Saints on Sunday, which tied his single-game career high.",
+          "entities": [],
+          "occurredAt": "2026-11-22T18:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 6.52,
+          "freshnessBasis": "Highlightly final: New Orleans Saints 13, Chicago Bears 21.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/nfl/story/_/id/50567207/jeffery-simmons-matches-career-high-3-sacks-bears-win",
+            "http://www.espn.com/nfl/recap?gameId=401873071"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50567207/jeffery-simmons-matches-career-high-3-sacks-bears-win"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873071"
+            }
+          ],
+          "id": "a415-bab8922733a77590",
+          "feedRank": 5,
+          "compactHeadline": "Jeffery Simmons matches career high with 3 sacks in Bears' win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-ec581a0e62a86db5"
           ],
           "type": "RESULT",
@@ -116,7 +192,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Tennessee Titans 30, Dallas Cowboys 51.",
           "status": "active",
           "sourceUrls": [
@@ -136,11 +212,11 @@
             }
           ],
           "id": "a415-ac1aa3ba1455aa15",
-          "feedRank": 4,
+          "feedRank": 6,
           "compactHeadline": "Dak Prescott continues hot streak, salutes Cowboys offense after rout of Titans"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-7b71ba0de61f4171"
           ],
@@ -151,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Tampa Bay Buccaneers 21, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -171,46 +247,11 @@
             }
           ],
           "id": "a415-60e56722ff0038dd",
-          "feedRank": 5,
+          "feedRank": 7,
           "compactHeadline": "Jared Goff throws 2 TDs, Jahmyr Gibbs runs for 2 more and Lions beat Bucs 31-21 for 6th straight win"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-511233f0681d7574"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jeffery Simmons delivered once again. That blockbuster trade for the All-Pro defensive tackle is looking like the appropriate price at the moment.",
-          "text": "Jeffery Simmons delivered once again. That blockbuster trade for the All-Pro defensive tackle is looking like the appropriate price at the moment.",
-          "entities": [],
-          "occurredAt": "2026-11-22T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 6.03,
-          "freshnessBasis": "Highlightly final: New Orleans Saints 13, Chicago Bears 21.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873071"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-22",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873071"
-            }
-          ],
-          "id": "a415-bab8922733a77590",
-          "feedRank": 6,
-          "compactHeadline": "Jeffery Simmons gets 3 sacks as the Chicago Bears beat the New Orleans Saints 21-13"
-        },
-        {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-58c7ed92b26b0337"
           ],
@@ -221,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Miami Dolphins 9, Buffalo Bills 26.",
           "status": "active",
           "sourceUrls": [
@@ -241,11 +282,11 @@
             }
           ],
           "id": "a415-c0e36c7c79397b62",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Bills' defense feasts in 26-9 win over injury-depleted Dolphins"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-92a1dfbf6f294f81"
           ],
@@ -256,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.52,
           "freshnessBasis": "Highlightly final: Arizona Cardinals 7, Kansas City Chiefs 34.",
           "status": "active",
           "sourceUrls": [
@@ -276,37 +317,8 @@
             }
           ],
           "id": "a415-5729bd7df2b35e5b",
-          "feedRank": 8,
-          "compactHeadline": "Mahomes throws 3 TD passes, Kelce catches 2 of them, as KC routs Cardinals 34-7 for 3rd straight win"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-9c9febacf0bd7d14"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "The Pittsburgh passer is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "text": "The Pittsburgh passer is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "entities": [],
-          "occurredAt": "2026-11-22T22:27:31Z",
-          "timePrecision": "exact",
-          "ageHours": 1.57,
-          "freshnessBasis": "The Pittsburgh passer is chasing records in his 22nd NFL season, and ESPN is chronicling his \"last rodeo.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
-            }
-          ],
-          "id": "a415-7a75961a3d7042a4",
           "feedRank": 9,
-          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
+          "compactHeadline": "Mahomes throws 3 TD passes, Kelce catches 2 of them, as KC routs Cardinals 34-7 for 3rd straight win"
         }
       ]
     },
@@ -326,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.53,
+          "ageHours": 4.02,
           "freshnessBasis": "Highlightly final: Detroit Pistons 97, Atlanta Hawks 107.",
           "status": "active",
           "sourceUrls": [
@@ -361,7 +373,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:43:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 0.79,
           "freshnessBasis": "Bulls guard Norman Powell was ruled out against the Nuggets and will be reevaluated later in the week because of a mild right hamstring strain.",
           "status": "active",
           "sourceUrls": [
@@ -390,7 +402,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:12:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.82,
+          "ageHours": 3.31,
           "freshnessBasis": "Gabe Vincent is finalizing a deal with the Kings to fill their 15th roster spot, league sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -419,7 +431,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.52,
           "freshnessBasis": "Highlightly final: Austin Toros Spurs 109, Oklahoma City Blue 80.",
           "status": "active",
           "sourceUrls": [
@@ -448,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.52,
           "freshnessBasis": "Highlightly final: Cleveland Charge 110, Grand Rapids Gold 126.",
           "status": "active",
           "sourceUrls": [
@@ -477,7 +489,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.52,
           "freshnessBasis": "Highlightly final: Boston Celtics 96, Sacramento Kings 97.",
           "status": "active",
           "sourceUrls": [
@@ -518,7 +530,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T17:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Carolina Hurricanes 5, New York Rangers 2.",
           "status": "active",
           "sourceUrls": [
@@ -553,7 +565,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:44:27Z",
           "timePrecision": "exact",
-          "ageHours": 5.29,
+          "ageHours": 5.78,
           "freshnessBasis": "Anaheim forward Leo Carlsson left Saturday night's game against Utah at the 3:29 mark of the second period with an upper-body injury and did not return.",
           "status": "active",
           "sourceUrls": [
@@ -582,7 +594,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.52,
           "freshnessBasis": "Highlightly final: Minnesota Wild 3, Vancouver Canucks 4.",
           "status": "active",
           "sourceUrls": [
@@ -617,7 +629,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.52,
           "freshnessBasis": "Highlightly final: Seattle Kraken 3, San Jose Sharks 4.",
           "status": "active",
           "sourceUrls": [
@@ -652,7 +664,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: Anaheim Ducks 2, Utah Mammoth 3.",
           "status": "active",
           "sourceUrls": [
@@ -687,7 +699,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T16:13:57Z",
           "timePrecision": "exact",
-          "ageHours": 7.8,
+          "ageHours": 8.29,
           "freshnessBasis": "Chicago Blackhawks captain Connor Bedard elected to undergo surgery on his right shoulder and is out indefinitely.",
           "status": "active",
           "sourceUrls": [
@@ -722,7 +734,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:34:31Z",
           "timePrecision": "exact",
-          "ageHours": 2.46,
+          "ageHours": 2.95,
           "freshnessBasis": "Manchester United captain Bruno Fernandes was not happy with the officiating in Sunday's 4-0 drubbing at Liverpool.",
           "status": "active",
           "sourceUrls": [
@@ -751,7 +763,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:37:18Z",
           "timePrecision": "exact",
-          "ageHours": 3.41,
+          "ageHours": 3.9,
           "freshnessBasis": "Mauricio Pochettino called for understanding of the \"circumstances\" that led to Manchester United suffering a 4-0 defeat Sunday against Liverpool in his first game as head coach.",
           "status": "active",
           "sourceUrls": [
@@ -780,7 +792,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T13:14:36Z",
           "timePrecision": "exact",
-          "ageHours": 10.79,
+          "ageHours": 11.28,
           "freshnessBasis": "Bruno Fernandes has confirmed Manchester United offered him a new contract but talks are on hold as he wants the club to focus on returning to winning ways.",
           "status": "active",
           "sourceUrls": [
@@ -809,7 +821,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T22:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.18,
+          "ageHours": 1.67,
           "freshnessBasis": "Mauricio Pochettino began his Manchester United career with a nightmare as his Red Devils went to Anfield and were routed 4-0 by Liverpool on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -844,7 +856,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.52,
           "freshnessBasis": "Highlightly final: FC Cincinnati 1, Nashville SC 0.",
           "status": "active",
           "sourceUrls": [
@@ -873,7 +885,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:56:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 0.58,
           "freshnessBasis": "Houston Dynamo FC midfielder Héctor Herrera was charged with driving while intoxicated on Saturday in Montgomery County, Texas, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -902,7 +914,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:57:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
+          "ageHours": 0.57,
           "freshnessBasis": "Roman Celentano made six saves for his fourth clean sheet of the season as FC Cincinnati took advantage of an early own goal to earn a 1-0 victory over Nashville SC on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -931,7 +943,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:04:31Z",
           "timePrecision": "exact",
-          "ageHours": 20.96,
+          "ageHours": 21.45,
           "freshnessBasis": "Inter Miami and star Lionel Messi are facing the prospect of an early exit from the MLS playoffs after a 3-0 home loss to the Columbus Crew in Game 1.",
           "status": "active",
           "sourceUrls": [
@@ -966,7 +978,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.02,
           "freshnessBasis": "Highlightly final: San Diego State Aztecs 22, Boise State Broncos 20.",
           "status": "active",
           "sourceUrls": [
@@ -995,7 +1007,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: Utah Utes 38, TCU Horned Frogs 17.",
           "status": "active",
           "sourceUrls": [
@@ -1030,7 +1042,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:54:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.62,
           "freshnessBasis": "After another chaotic weekend, we look at the playoff and conference races on the line with one game to go.",
           "status": "active",
           "sourceUrls": [
@@ -1050,41 +1062,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-11fc6b87869fdb2e"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Lincoln Kienholz threw a season-high five touchdown passes and Louisville's defense forced four turnovers Saturday night as the 21st-ranked Cardinals rolled to a 42-10 victory over Pittsburgh.",
-          "text": "Lincoln Kienholz threw a season-high five touchdown passes and Louisville's defense forced four turnovers Saturday night as the 21st-ranked Cardinals rolled to a 42-10 victory over Pittsburgh.",
-          "entities": [],
-          "occurredAt": "2026-11-22T00:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Pittsburgh Panthers 10, Louisville Cardinals 42.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401858306"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-21",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858306"
-            }
-          ],
-          "id": "a415-62a1f7ec1e452cb3",
-          "feedRank": 33,
-          "compactHeadline": "Lincoln Kienholz throws 5 TD passes and No. 21 Louisville forces 4 turnovers in 42-10 win over Pitt"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-040de892d14eafcc"
           ],
           "type": "RESULT",
@@ -1094,7 +1071,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.02,
           "freshnessBasis": "Highlightly final: Oklahoma State Cowboys 30, Arizona State Sun Devils 27.",
           "status": "active",
           "sourceUrls": [
@@ -1114,11 +1091,11 @@
             }
           ],
           "id": "a415-f325bb4f57cdc22e",
-          "feedRank": 34,
+          "feedRank": 33,
           "compactHeadline": "Late score lifts Oklahoma State Cowboys past Arizona State Sun Devils 30-27"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-8dcb555051e027fe"
           ],
@@ -1129,7 +1106,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.7,
+          "ageHours": 3.19,
           "freshnessBasis": "Wake Forest defensive coordinator Scottie Hazelton has signed a contract extension.",
           "status": "active",
           "sourceUrls": [
@@ -1143,8 +1120,43 @@
             }
           ],
           "id": "a415-7e02bcd652353550",
-          "feedRank": 35,
+          "feedRank": 34,
           "compactHeadline": "Wake Forest rewards DC Scottie Hazelton with contract extension"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-b6423e098b54088d"
+          ],
+          "type": "RESULT",
+          "priority": 76,
+          "headline": "UAB Blazers missed a late field-goal attempt as UTSA Roadrunners held on 19-17.",
+          "text": "UAB Blazers missed a late field-goal attempt as UTSA Roadrunners held on 19-17.",
+          "entities": [],
+          "occurredAt": "2026-11-22T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.52,
+          "freshnessBasis": "Highlightly final: UTSA Roadrunners 19, UAB Blazers 17.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401862836"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-21",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401862836"
+            }
+          ],
+          "id": "a415-b27936b00927aebe",
+          "feedRank": 35,
+          "compactHeadline": "UTSA Roadrunners survives late missed field goal to beat UAB Blazers 19-17"
         }
       ]
     }
@@ -1169,7 +1181,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 134,
+    "freshCandidateCount": 126,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
