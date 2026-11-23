@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-23T16:00:58Z",
+  "generatedAt": "2026-11-23T16:31:10Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "9548293cbb3b603abf5d59459fbf0f92b19eb538a56f036c8577338d7bba1eb6",
+  "sourceCandidateHash": "c2e5dec4320acfbce09df414991621b1b08d3c11ea997b5905813185ed7bb326",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T15:52:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
+          "ageHours": 0.64,
           "freshnessBasis": "The New York Mets continued their spending spree Monday by coming to terms on a one-year deal with first baseman Paul Goldschmidt, a source told ESPN, a day after agreeing to give Tarik Skubal the largest contract ever to a pitcher.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T13:50:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.18,
+          "ageHours": 2.68,
           "freshnessBasis": "Skubal inked the biggest contract ever for a pitcher Sunday. Here's how some of the other top hurler deals turned out, as graded by our David Schoenfield.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T13:02:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.97,
+          "ageHours": 3.47,
           "freshnessBasis": "The two-time Cy Young winner is now baseball's highest-paid pitcher. Here's how Skubal's contract impacts the league.",
           "status": "active",
           "sourceUrls": [
@@ -101,35 +101,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-06b4cf070724cb6c"
-          ],
-          "type": "MILESTONE",
-          "priority": 82,
-          "headline": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
-          "text": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
-          "entities": [],
-          "occurredAt": "2026-11-23T04:21:54Z",
-          "timePrecision": "exact",
-          "ageHours": 11.65,
-          "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
-            }
-          ],
-          "id": "a415-831ba4b2a8b784e5",
-          "feedRank": 4,
-          "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-1b3d7819c1811bbe"
           ],
           "type": "TRADE",
@@ -137,9 +108,9 @@
           "headline": "We've got you covered on all the major MLB hot stove signings and trades.",
           "text": "We've got you covered on all the major MLB hot stove signings and trades.",
           "entities": [],
-          "occurredAt": "2026-11-23T13:16:44Z",
+          "occurredAt": "2026-11-23T16:08:39Z",
           "timePrecision": "exact",
-          "ageHours": 2.74,
+          "ageHours": 0.38,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -153,8 +124,37 @@
             }
           ],
           "id": "a415-b604ed1e7c551502",
-          "feedRank": 5,
+          "feedRank": 4,
           "compactHeadline": "MLB free agency tracker: 2026-27 offseason trades, moves"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-06b4cf070724cb6c"
+          ],
+          "type": "MILESTONE",
+          "priority": 82,
+          "headline": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "text": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "entities": [],
+          "occurredAt": "2026-11-23T04:21:54Z",
+          "timePrecision": "exact",
+          "ageHours": 12.15,
+          "freshnessBasis": "Brent Burns has 1,000+ consecutive games played. Find out who else has played the most games in a row across other major leagues.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/mlb/story/_/id/47539505/most-consecutive-games-played-mlb-nfl-nba-nhl"
+            }
+          ],
+          "id": "a415-831ba4b2a8b784e5",
+          "feedRank": 5,
+          "compactHeadline": "Most consecutive games played in MLB, NFL, NBA, NHL"
         },
         {
           "rank": 6,
@@ -168,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T03:01:02Z",
           "timePrecision": "exact",
-          "ageHours": 13.0,
+          "ageHours": 13.5,
           "freshnessBasis": "Tarik Skubal and the Mets agreed to a nine-year, $450 million contract, sources told ESPN. It is the richest deal for a pitcher, both by total and average annual value.",
           "status": "active",
           "sourceUrls": [
@@ -203,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T11:09:10Z",
           "timePrecision": "exact",
-          "ageHours": 4.86,
+          "ageHours": 5.37,
           "freshnessBasis": "NFL games on Thanksgiving Day date back to 1934, and the Lions and Cowboys are always in action. We revisit top performers, the best moments and more.",
           "status": "active",
           "sourceUrls": [
@@ -232,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T11:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
+          "ageHours": 5.52,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -261,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T07:26:18Z",
           "timePrecision": "exact",
-          "ageHours": 8.58,
+          "ageHours": 9.08,
           "freshnessBasis": "49ers right tackle Colton McKivitz suffered what is believed to be a fractured and dislocated left ankle during Sunday night's 35-10 win against the Vikings, according to coach Kyle Shanahan.",
           "status": "active",
           "sourceUrls": [
@@ -290,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T13:44:44Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 2.77,
           "freshnessBasis": "Cam Skattebo's pledge to nix his trademark backflip didn't last long. Not even a week.",
           "status": "active",
           "sourceUrls": [
@@ -319,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T12:12:44Z",
           "timePrecision": "exact",
-          "ageHours": 3.8,
+          "ageHours": 4.31,
           "freshnessBasis": "— Brock Purdy and the San Francisco 49ers offense turned the much ballyhooed matchup between one of the game's top offenses and the stingiest defenses into...",
           "status": "active",
           "sourceUrls": [
@@ -348,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T07:58:45Z",
           "timePrecision": "exact",
-          "ageHours": 8.04,
+          "ageHours": 8.54,
           "freshnessBasis": "Quarterback Brock Purdy heard \"MVP\" chants in Mexico City and continued to earn praise from his teammates as he led the 49ers to a statement victory against the top-ranked Vikings defense on Sunday night",
           "status": "active",
           "sourceUrls": [
@@ -383,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T11:57:04Z",
           "timePrecision": "exact",
-          "ageHours": 4.07,
+          "ageHours": 4.57,
           "freshnessBasis": "— Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:43:58Z",
           "timePrecision": "exact",
-          "ageHours": 16.28,
+          "ageHours": 16.79,
           "freshnessBasis": "Bulls guard Norman Powell was ruled out against the Nuggets and will be reevaluated later in the week because of a mild right hamstring strain.",
           "status": "active",
           "sourceUrls": [
@@ -441,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T07:58:53Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.54,
           "freshnessBasis": "After reinforcing his career​ accolades earlier in the day on social media, Golden State Warriors forward Draymond Green closed out an 88-87 win over the Boston Celtics on Sunday with a last-second defensive stop and rousing celebration from the veteran.",
           "status": "active",
           "sourceUrls": [
@@ -470,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:12:48Z",
           "timePrecision": "exact",
-          "ageHours": 18.8,
+          "ageHours": 19.31,
           "freshnessBasis": "Gabe Vincent is finalizing a deal with the Kings to fill their 15th roster spot, league sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -499,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T04:03:33Z",
           "timePrecision": "exact",
-          "ageHours": 11.96,
+          "ageHours": 12.46,
           "freshnessBasis": "— Karl-Anthony Towns had 30 points and 13 rebounds, Jalen Brunson added 22 points, and the New York Knicks beat the Indiana Pacers 113-106 on Sunday night to extend their winning streak to five games.",
           "status": "active",
           "sourceUrls": [
@@ -519,31 +519,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-fad32e6c8bc64991"
+            "cand-ef1c157f429227db"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Nikola Jokic had 37 points, 18 rebounds and 11 assists for the 202nd triple double of his career, Jamal Murray scored eight of his season-high 45 points in overtime, and the Denver Nuggets held off the Chicago Bulls 151-145 on Sunday night.",
-          "text": "Nikola Jokic had 37 points, 18 rebounds and 11 assists for the 202nd triple double of his career, Jamal Murray scored eight of his season-high 45 points in overtime, and the Denver Nuggets held off the Chicago Bulls 151-145 on Sunday night.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Nets guard Nolan Traore has been diagnosed with a right hamstring strain and will be reevaluated in eight to 10 weeks, the team announced Monday.",
+          "text": "Nets guard Nolan Traore has been diagnosed with a right hamstring strain and will be reevaluated in eight to 10 weeks, the team announced Monday.",
           "entities": [],
-          "occurredAt": "2026-11-23T03:15:33Z",
+          "occurredAt": "2026-11-23T16:12:29Z",
           "timePrecision": "exact",
-          "ageHours": 12.76,
-          "freshnessBasis": "— Nikola Jokic had 37 points, 18 rebounds and 11 assists for the 202nd triple double of his career, Jamal Murray scored eight of his season-high 45 points in overtime, and the Denver Nuggets held off the Chicago Bulls 151-145 on Sunday night.",
+          "ageHours": 0.31,
+          "freshnessBasis": "Nets guard Nolan Traore has been diagnosed with a right hamstring strain and will be reevaluated in eight to 10 weeks, the team announced Monday.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401910032"
+            "https://www.espn.com/nba/story/_/id/50573732/nets-nolan-traore-hamstring-reevaluated-8-10-weeks"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401910032"
+              "url": "https://www.espn.com/nba/story/_/id/50573732/nets-nolan-traore-hamstring-reevaluated-8-10-weeks"
             }
           ],
-          "id": "a415-70f1e2fd3ea1bbbc",
+          "id": "a415-25b971dd6dbe4b9c",
           "feedRank": 18,
-          "compactHeadline": "Jokic's triple-double, Murray's 45 points lead Nuggets to 151-145 overtime win over Bulls"
+          "compactHeadline": "Nets' Nolan Traore has hamstring strain, to be reevaluated in 8-10 weeks"
         }
       ]
     },
@@ -561,9 +561,9 @@
           "headline": "Former Detroit Red Wings captain Dylan Larkin was moved to the Montreal Canadiens in a blockbuster deal on Sunday.",
           "text": "Former Detroit Red Wings captain Dylan Larkin was moved to the Montreal Canadiens in a blockbuster deal on Sunday.",
           "entities": [],
-          "occurredAt": "2026-11-23T14:39:05Z",
+          "occurredAt": "2026-11-23T16:22:16Z",
           "timePrecision": "exact",
-          "ageHours": 1.36,
+          "ageHours": 0.15,
           "freshnessBasis": "Former Detroit Red Wings captain Dylan Larkin was moved to the Montreal Canadiens in a blockbuster deal on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -592,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T05:44:08Z",
           "timePrecision": "exact",
-          "ageHours": 10.28,
+          "ageHours": 10.78,
           "freshnessBasis": "Roman Kantserov recorded his first NHL hat trick and added an assist as the Blackhawks used a four-goal first period to top the Canucks 6-3 on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -621,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T04:40:32Z",
           "timePrecision": "exact",
-          "ageHours": 11.34,
+          "ageHours": 11.84,
           "freshnessBasis": "— Rookie Roman Kantserov got his first NHL hat trick and added an assist as the Chicago Blackhawks used a four-goal first period to beat the Vancouver Canucks 6-3 on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T03:52:32Z",
           "timePrecision": "exact",
-          "ageHours": 12.14,
+          "ageHours": 12.64,
           "freshnessBasis": "— The surging St. Louis Blues overcame a three-goal deficit in the final 10 minutes of regulation for the first time in franchise history and then beat the Edmonton Oilers in a shootout for a dramatic 5-4 victory on Sunday night for their fourth...",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +679,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:44:27Z",
           "timePrecision": "exact",
-          "ageHours": 21.28,
+          "ageHours": 21.78,
           "freshnessBasis": "Anaheim forward Leo Carlsson left Saturday night's game against Utah at the 3:29 mark of the second period with an upper-body injury and did not return.",
           "status": "active",
           "sourceUrls": [
@@ -714,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T14:36:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.4,
+          "ageHours": 1.91,
           "freshnessBasis": "Mikel Arteta has said David Raya's shoulder injury is better than first feared and that the goalkeeper will not require surgery.",
           "status": "active",
           "sourceUrls": [
@@ -743,7 +743,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T15:07:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.9,
+          "ageHours": 1.4,
           "freshnessBasis": "Manchester United have notified the Football Association of their intention to appeal Leny Yoro's red card in the 4-0 defeat to Liverpool, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -772,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T11:16:03Z",
           "timePrecision": "exact",
-          "ageHours": 4.75,
+          "ageHours": 5.25,
           "freshnessBasis": "Luca Williams-Barnett has revealed Tottenham boss Roberto De Zerbi joked he would be playing for the under-21s before he made his dazzling full debut in Saturday's 2-0 win over Ipswich.",
           "status": "active",
           "sourceUrls": [
@@ -801,7 +801,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T15:57:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.57,
           "freshnessBasis": "Bruno Guimarães has told the Newcastle fans who booed his return to St James Park that they \"cannot delete the history I have with the club.\"",
           "status": "active",
           "sourceUrls": [
@@ -827,6 +827,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-14ea6931be68199e"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Philadelphia Union midfielder Cavan Sullivan has been selected as the MLS Young Player of the Year for his breakthrough performance as a 17-year-old.",
+          "text": "Philadelphia Union midfielder Cavan Sullivan has been selected as the MLS Young Player of the Year for his breakthrough performance as a 17-year-old.",
+          "entities": [],
+          "occurredAt": "2026-11-23T16:21:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "Philadelphia Union midfielder Cavan Sullivan has been selected as the MLS Young Player of the Year for his breakthrough performance as a 17-year-old.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50573882/philadelphia-cavan-sullivan-mls-young-player-year"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50573882/philadelphia-cavan-sullivan-mls-young-player-year"
+            }
+          ],
+          "id": "a415-b874be6eb55b71c1",
+          "feedRank": 28,
+          "compactHeadline": "Philadelphia's Cavan Sullivan wins MLS Young Player of the Year award"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-e2c97cefc4366fc0"
           ],
           "type": "RESULT",
@@ -836,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T02:26:52Z",
           "timePrecision": "exact",
-          "ageHours": 13.57,
+          "ageHours": 14.07,
           "freshnessBasis": "Pep Biel scored off a rebound from his own penalty kick in the 11th minute of stoppage time after a handball on Jack Elliot to give Charlotte FC a 2-1 win over the Chicago Fire on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -850,11 +879,11 @@
             }
           ],
           "id": "a415-75a9dd1f81b1bb7e",
-          "feedRank": 28,
+          "feedRank": 29,
           "compactHeadline": "VAR gives Charlotte late penalty in series-opening win over Chicago"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-70be35ca82fd14f6"
           ],
@@ -865,7 +894,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T14:57:49Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
+          "ageHours": 1.56,
           "freshnessBasis": "B.J. Callaghan was a fairly unassuming hire when he took over Nashville. Now he's a Supporters' Shield-winning coach being linked with the USMNT job.",
           "status": "active",
           "sourceUrls": [
@@ -879,11 +908,11 @@
             }
           ],
           "id": "a415-c7b7b324a959b435",
-          "feedRank": 29,
+          "feedRank": 30,
           "compactHeadline": "How B.J. Callaghan's long, winding coaching journey led to Nashville success"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-2dabeff98033b08b"
           ],
@@ -894,7 +923,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:56:10Z",
           "timePrecision": "exact",
-          "ageHours": 16.08,
+          "ageHours": 16.58,
           "freshnessBasis": "Houston Dynamo FC midfielder Héctor Herrera was charged with driving while intoxicated on Saturday in Montgomery County, Texas, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -908,37 +937,8 @@
             }
           ],
           "id": "a415-b14b2d8bcec105dd",
-          "feedRank": 30,
-          "compactHeadline": "Reports: Dynamo's Herrera charged with DWI, club aware of 'incident'"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-0c3674f373a4e86b"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Roman Celentano made six saves for his fourth clean sheet of the season as FC Cincinnati took advantage of an early own goal to earn a 1-0 victory over Nashville SC on Sunday.",
-          "text": "Roman Celentano made six saves for his fourth clean sheet of the season as FC Cincinnati took advantage of an early own goal to earn a 1-0 victory over Nashville SC on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-11-22T23:57:21Z",
-          "timePrecision": "exact",
-          "ageHours": 16.06,
-          "freshnessBasis": "Roman Celentano made six saves for his fourth clean sheet of the season as FC Cincinnati took advantage of an early own goal to earn a 1-0 victory over Nashville SC on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/401933731"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/401933731"
-            }
-          ],
-          "id": "a415-52d4302e23a71e7d",
           "feedRank": 31,
-          "compactHeadline": "Cincinnati stuns Shield-winners Nashville to start best-of-3 series"
+          "compactHeadline": "Reports: Dynamo's Herrera charged with DWI, club aware of 'incident'"
         }
       ]
     },
@@ -949,6 +949,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-a6512f4400d57e79"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
+          "text": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
+          "entities": [],
+          "occurredAt": "2026-11-23T16:19:20Z",
+          "timePrecision": "exact",
+          "ageHours": 0.2,
+          "freshnessBasis": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50573866/ucla-qb-dieffenbach-dealing-minor-hip-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50573866/ucla-qb-dieffenbach-dealing-minor-hip-injury"
+            }
+          ],
+          "id": "a415-96fd255ef33e7b97",
+          "feedRank": 32,
+          "compactHeadline": "Sources: UCLA QB Dieffenbach dealing with minor hip injury"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-c3ad6ffb5e1913a1"
           ],
           "type": "PLAYOFF",
@@ -958,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T12:28:39Z",
           "timePrecision": "exact",
-          "ageHours": 3.54,
+          "ageHours": 4.04,
           "freshnessBasis": "Our bowl gurus take a look at how the postseason picture shifted after Week 12.",
           "status": "active",
           "sourceUrls": [
@@ -972,11 +1001,11 @@
             }
           ],
           "id": "a415-7c6529609f5d67ab",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "2026-27 Week 12 College Football Playoff, bowl projections"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-3cc33e8a4aef6727"
           ],
@@ -987,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:54:19Z",
           "timePrecision": "exact",
-          "ageHours": 16.11,
+          "ageHours": 16.61,
           "freshnessBasis": "After another chaotic weekend, we look at the playoff and conference races on the line with one game to go.",
           "status": "active",
           "sourceUrls": [
@@ -1001,11 +1030,11 @@
             }
           ],
           "id": "a415-b21ddd067fceb583",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "What Week 12's unexpected results mean for Rivalry Week and beyond"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-8dcb555051e027fe"
           ],
@@ -1016,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.68,
+          "ageHours": 19.19,
           "freshnessBasis": "Wake Forest defensive coordinator Scottie Hazelton has signed a contract extension.",
           "status": "active",
           "sourceUrls": [
@@ -1030,37 +1059,8 @@
             }
           ],
           "id": "a415-7e02bcd652353550",
-          "feedRank": 34,
-          "compactHeadline": "Wake Forest rewards DC Scottie Hazelton with contract extension"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e4b3388930ca03d1"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Indiana State is looking for a new football coach after announcing Curt Mallory will not return for an 11th season.",
-          "text": "Indiana State is looking for a new football coach after announcing Curt Mallory will not return for an 11th season.",
-          "entities": [],
-          "occurredAt": "2026-11-22T18:26:28Z",
-          "timePrecision": "exact",
-          "ageHours": 21.58,
-          "freshnessBasis": "Indiana State is looking for a new football coach after announcing Curt Mallory will not return for an 11th season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50563345/indiana-state-not-extending-coach-curt-mallory-contract"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50563345/indiana-state-not-extending-coach-curt-mallory-contract"
-            }
-          ],
-          "id": "a415-a8239ab7a51f5c61",
           "feedRank": 35,
-          "compactHeadline": "Indiana State not extending Curt Mallory's contract, ending coach's 10-year run"
+          "compactHeadline": "Wake Forest rewards DC Scottie Hazelton with contract extension"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 110,
+    "freshCandidateCount": 109,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
