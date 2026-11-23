@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-23T00:31:15Z",
+  "generatedAt": "2026-11-23T01:01:10Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "7ebf6536c53fac3007378427b09637ffb916375b4f3e0c865efa089b3c2781a5",
+  "sourceCandidateHash": "816bb93325fe2cf6b406c920b577d96b15628ab593cfe92e17eb88f95edadad6",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T00:19:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.2,
+          "ageHours": 0.69,
           "freshnessBasis": "Tarik Skubal and the Mets agreed to a nine-year, $450 million contract, sources told ESPN. It is the richest deal for a pitcher, both by total and average annual value.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T22:12:52Z",
           "timePrecision": "exact",
-          "ageHours": 2.31,
+          "ageHours": 2.81,
           "freshnessBasis": "Luis Gil and the Tigers are in agreement on a one-year, $2.3 million contract, sources told ESPN, as he lands a job just days after the Yankees nontendered him.",
           "status": "active",
           "sourceUrls": [
@@ -81,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T22:16:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.24,
+          "ageHours": 2.74,
           "freshnessBasis": "We've got you covered on all the major MLB hot stove signings and trades.",
           "status": "active",
           "sourceUrls": [
@@ -107,6 +107,41 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-da01df40544a9673"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Rookie Jonah Coleman ran for a season-best 111 yards and three touchdowns and the Denver Broncos beat the Las Vegas Raiders 38-24 on a solemn Sunday in the Mile High City as they honored “Orange Crush” and ESPN great",
+          "text": "Rookie Jonah Coleman ran for a season-best 111 yards and three touchdowns and the Denver Broncos beat the Las Vegas Raiders 38-24 on a solemn Sunday in the Mile High City as they honored “Orange Crush” and ESPN great",
+          "entities": [],
+          "occurredAt": "2026-11-22T21:25:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.6,
+          "freshnessBasis": "Highlightly final: Las Vegas Raiders 24, Denver Broncos 38.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401873075"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-11-22",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873075"
+            }
+          ],
+          "id": "a415-e62c47c955a6d929",
+          "feedRank": 4,
+          "compactHeadline": "Jonah Coleman powers Broncos past Raiders 38-24 as Denver honors the late Tom Jackson"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-2aa65576bf05c5ac"
           ],
           "type": "RESULT",
@@ -116,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.44,
+          "ageHours": 3.94,
           "freshnessBasis": "Highlightly final: New York Jets 27, Los Angeles Chargers 24.",
           "status": "active",
           "sourceUrls": [
@@ -136,11 +171,11 @@
             }
           ],
           "id": "a415-99b3e90e5baf6c03",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Jets score on first 5 drives and edge Chargers 27-24 to snap 5-game skid"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-511233f0681d7574"
           ],
@@ -151,7 +186,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: New Orleans Saints 13, Chicago Bears 21.",
           "status": "active",
           "sourceUrls": [
@@ -177,11 +212,11 @@
             }
           ],
           "id": "a415-bab8922733a77590",
-          "feedRank": 5,
+          "feedRank": 6,
           "compactHeadline": "Jeffery Simmons matches career high with 3 sacks in Bears' win"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-ec581a0e62a86db5"
           ],
@@ -192,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Tennessee Titans 30, Dallas Cowboys 51.",
           "status": "active",
           "sourceUrls": [
@@ -212,11 +247,11 @@
             }
           ],
           "id": "a415-ac1aa3ba1455aa15",
-          "feedRank": 6,
+          "feedRank": 7,
           "compactHeadline": "Dak Prescott continues hot streak, salutes Cowboys offense after rout of Titans"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-7b71ba0de61f4171"
           ],
@@ -227,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Tampa Bay Buccaneers 21, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -247,11 +282,11 @@
             }
           ],
           "id": "a415-60e56722ff0038dd",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Jared Goff throws 2 TDs, Jahmyr Gibbs runs for 2 more and Lions beat Bucs 31-21 for 6th straight win"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-58c7ed92b26b0337"
           ],
@@ -262,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
+          "ageHours": 7.02,
           "freshnessBasis": "Highlightly final: Miami Dolphins 9, Buffalo Bills 26.",
           "status": "active",
           "sourceUrls": [
@@ -282,43 +317,8 @@
             }
           ],
           "id": "a415-c0e36c7c79397b62",
-          "feedRank": 8,
-          "compactHeadline": "Bills' defense feasts in 26-9 win over injury-depleted Dolphins"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-92a1dfbf6f294f81"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Patrick Mahomes slinging touchdown passes to Travis Kelce.",
-          "text": "Patrick Mahomes slinging touchdown passes to Travis Kelce.",
-          "entities": [],
-          "occurredAt": "2026-11-22T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 6.52,
-          "freshnessBasis": "Highlightly final: Arizona Cardinals 7, Kansas City Chiefs 34.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401873067"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-22",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873067"
-            }
-          ],
-          "id": "a415-5729bd7df2b35e5b",
           "feedRank": 9,
-          "compactHeadline": "Mahomes throws 3 TD passes, Kelce catches 2 of them, as KC routs Cardinals 34-7 for 3rd straight win"
+          "compactHeadline": "Bills' defense feasts in 26-9 win over injury-depleted Dolphins"
         }
       ]
     },
@@ -338,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 4.52,
           "freshnessBasis": "Highlightly final: Detroit Pistons 97, Atlanta Hawks 107.",
           "status": "active",
           "sourceUrls": [
@@ -373,7 +373,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:43:58Z",
           "timePrecision": "exact",
-          "ageHours": 0.79,
+          "ageHours": 1.29,
           "freshnessBasis": "Bulls guard Norman Powell was ruled out against the Nuggets and will be reevaluated later in the week because of a mild right hamstring strain.",
           "status": "active",
           "sourceUrls": [
@@ -402,7 +402,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:12:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.31,
+          "ageHours": 3.81,
           "freshnessBasis": "Gabe Vincent is finalizing a deal with the Kings to fill their 15th roster spot, league sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -431,7 +431,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
+          "ageHours": 5.02,
           "freshnessBasis": "Highlightly final: Austin Toros Spurs 109, Oklahoma City Blue 80.",
           "status": "active",
           "sourceUrls": [
@@ -460,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
+          "ageHours": 5.02,
           "freshnessBasis": "Highlightly final: Cleveland Charge 110, Grand Rapids Gold 126.",
           "status": "active",
           "sourceUrls": [
@@ -489,7 +489,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.52,
+          "ageHours": 22.02,
           "freshnessBasis": "Highlightly final: Boston Celtics 96, Sacramento Kings 97.",
           "status": "active",
           "sourceUrls": [
@@ -530,7 +530,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T17:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.02,
+          "ageHours": 7.52,
           "freshnessBasis": "Highlightly final: Carolina Hurricanes 5, New York Rangers 2.",
           "status": "active",
           "sourceUrls": [
@@ -565,7 +565,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T18:44:27Z",
           "timePrecision": "exact",
-          "ageHours": 5.78,
+          "ageHours": 6.28,
           "freshnessBasis": "Anaheim forward Leo Carlsson left Saturday night's game against Utah at the 3:29 mark of the second period with an upper-body injury and did not return.",
           "status": "active",
           "sourceUrls": [
@@ -594,7 +594,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.52,
+          "ageHours": 22.02,
           "freshnessBasis": "Highlightly final: Minnesota Wild 3, Vancouver Canucks 4.",
           "status": "active",
           "sourceUrls": [
@@ -629,7 +629,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.52,
+          "ageHours": 22.02,
           "freshnessBasis": "Highlightly final: Seattle Kraken 3, San Jose Sharks 4.",
           "status": "active",
           "sourceUrls": [
@@ -664,7 +664,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Anaheim Ducks 2, Utah Mammoth 3.",
           "status": "active",
           "sourceUrls": [
@@ -690,31 +690,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-138a79e60988a6b5"
+            "cand-54d6286287db897c"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Chicago Blackhawks captain Connor Bedard elected to undergo surgery on his right shoulder and is out indefinitely.",
-          "text": "Chicago Blackhawks captain Connor Bedard elected to undergo surgery on his right shoulder and is out indefinitely.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Tage Thompson scored twice, Zach Benson had a goal and two assists and Ukka-Pekka Luukkonen finished with 29 saves and the Buffalo Sabres beat the Tampa Bay Lightning 6-2 on Sunday.",
+          "text": "Tage Thompson scored twice, Zach Benson had a goal and two assists and Ukka-Pekka Luukkonen finished with 29 saves and the Buffalo Sabres beat the Tampa Bay Lightning 6-2 on Sunday.",
           "entities": [],
-          "occurredAt": "2026-11-22T16:13:57Z",
+          "occurredAt": "2026-11-23T00:52:33Z",
           "timePrecision": "exact",
-          "ageHours": 8.29,
-          "freshnessBasis": "Chicago Blackhawks captain Connor Bedard elected to undergo surgery on his right shoulder and is out indefinitely.",
+          "ageHours": 0.14,
+          "freshnessBasis": "— Tage Thompson scored twice, Zach Benson had a goal and two assists and Ukka-Pekka Luukkonen finished with 29 saves and the Buffalo Sabres beat the Tampa Bay Lightning 6-2 on Sunday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50556771/blackhawks-connor-bedard-elects-shoulder-surgery"
+            "http://www.espn.com/nhl/recap?gameId=401892769"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50556771/blackhawks-connor-bedard-elects-shoulder-surgery"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892769"
             }
           ],
-          "id": "a415-b26507729c352255",
+          "id": "a415-407e34354f7e6e20",
           "feedRank": 21,
-          "compactHeadline": "Blackhawks star Connor Bedard elects to have shoulder surgery"
+          "compactHeadline": "Tage Thompson scores twice as Sabres top Lightning, 6-2"
         }
       ]
     },
@@ -734,7 +734,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:34:31Z",
           "timePrecision": "exact",
-          "ageHours": 2.95,
+          "ageHours": 3.44,
           "freshnessBasis": "Manchester United captain Bruno Fernandes was not happy with the officiating in Sunday's 4-0 drubbing at Liverpool.",
           "status": "active",
           "sourceUrls": [
@@ -763,7 +763,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T20:37:18Z",
           "timePrecision": "exact",
-          "ageHours": 3.9,
+          "ageHours": 4.4,
           "freshnessBasis": "Mauricio Pochettino called for understanding of the \"circumstances\" that led to Manchester United suffering a 4-0 defeat Sunday against Liverpool in his first game as head coach.",
           "status": "active",
           "sourceUrls": [
@@ -792,7 +792,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T13:14:36Z",
           "timePrecision": "exact",
-          "ageHours": 11.28,
+          "ageHours": 11.78,
           "freshnessBasis": "Bruno Fernandes has confirmed Manchester United offered him a new contract but talks are on hold as he wants the club to focus on returning to winning ways.",
           "status": "active",
           "sourceUrls": [
@@ -821,7 +821,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T22:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 1.67,
+          "ageHours": 2.16,
           "freshnessBasis": "Mauricio Pochettino began his Manchester United career with a nightmare as his Red Devils went to Anfield and were routed 4-0 by Liverpool on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -856,7 +856,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
+          "ageHours": 4.02,
           "freshnessBasis": "Highlightly final: FC Cincinnati 1, Nashville SC 0.",
           "status": "active",
           "sourceUrls": [
@@ -885,7 +885,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:56:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.58,
+          "ageHours": 1.08,
           "freshnessBasis": "Houston Dynamo FC midfielder Héctor Herrera was charged with driving while intoxicated on Saturday in Montgomery County, Texas, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -914,7 +914,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:57:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
+          "ageHours": 1.06,
           "freshnessBasis": "Roman Celentano made six saves for his fourth clean sheet of the season as FC Cincinnati took advantage of an early own goal to earn a 1-0 victory over Nashville SC on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +943,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:04:31Z",
           "timePrecision": "exact",
-          "ageHours": 21.45,
+          "ageHours": 21.94,
           "freshnessBasis": "Inter Miami and star Lionel Messi are facing the prospect of an early exit from the MLS playoffs after a 3-0 home loss to the Columbus Crew in Game 1.",
           "status": "active",
           "sourceUrls": [
@@ -978,7 +978,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.02,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: San Diego State Aztecs 22, Boise State Broncos 20.",
           "status": "active",
           "sourceUrls": [
@@ -1007,7 +1007,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.52,
+          "ageHours": 23.02,
           "freshnessBasis": "Highlightly final: Utah Utes 38, TCU Horned Frogs 17.",
           "status": "active",
           "sourceUrls": [
@@ -1042,7 +1042,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T23:54:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.62,
+          "ageHours": 1.11,
           "freshnessBasis": "After another chaotic weekend, we look at the playoff and conference races on the line with one game to go.",
           "status": "active",
           "sourceUrls": [
@@ -1071,7 +1071,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T03:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.02,
+          "ageHours": 21.52,
           "freshnessBasis": "Highlightly final: Oklahoma State Cowboys 30, Arizona State Sun Devils 27.",
           "status": "active",
           "sourceUrls": [
@@ -1106,7 +1106,7 @@
           "entities": [],
           "occurredAt": "2026-11-22T21:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.19,
+          "ageHours": 3.69,
           "freshnessBasis": "Wake Forest defensive coordinator Scottie Hazelton has signed a contract extension.",
           "status": "active",
           "sourceUrls": [
@@ -1126,37 +1126,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-b6423e098b54088d"
+            "cand-e4b3388930ca03d1"
           ],
-          "type": "RESULT",
+          "type": "CONTRACT",
           "priority": 76,
-          "headline": "UAB Blazers missed a late field-goal attempt as UTSA Roadrunners held on 19-17.",
-          "text": "UAB Blazers missed a late field-goal attempt as UTSA Roadrunners held on 19-17.",
+          "headline": "Indiana State is looking for a new football coach after announcing Curt Mallory will not return for an 11th season.",
+          "text": "Indiana State is looking for a new football coach after announcing Curt Mallory will not return for an 11th season.",
           "entities": [],
-          "occurredAt": "2026-11-22T01:00:00Z",
+          "occurredAt": "2026-11-22T18:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: UTSA Roadrunners 19, UAB Blazers 17.",
+          "ageHours": 6.58,
+          "freshnessBasis": "Indiana State is looking for a new football coach after announcing Curt Mallory will not return for an 11th season.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401862836"
+            "https://www.espn.com/college-football/story/_/id/50563345/indiana-state-not-extending-coach-curt-mallory-contract"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-11-21",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401862836"
+              "url": "https://www.espn.com/college-football/story/_/id/50563345/indiana-state-not-extending-coach-curt-mallory-contract"
             }
           ],
-          "id": "a415-b27936b00927aebe",
+          "id": "a415-a8239ab7a51f5c61",
           "feedRank": 35,
-          "compactHeadline": "UTSA Roadrunners survives late missed field goal to beat UAB Blazers 19-17"
+          "compactHeadline": "Indiana State not extending Curt Mallory's contract, ending coach's 10-year run"
         }
       ]
     }
@@ -1181,7 +1175,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 126,
+    "freshCandidateCount": 124,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
