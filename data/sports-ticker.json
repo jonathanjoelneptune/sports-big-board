@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-24T05:31:27Z",
+  "generatedAt": "2026-11-24T13:01:41Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "94cc9f35db4c99bdf1002ed920e5b7d9ced48aac6b8366b37de94a1c53315089",
+  "sourceCandidateHash": "fdf8e981f8e3234573f501edd671d786c4efef9a523de8572341bb2781516dad",
   "leagues": [
     {
       "league": "MLB",
@@ -21,9 +21,9 @@
           "headline": "The Cubs have agreed to a five-year, $120 million contract with free agent pitcher Trevor Rogers, sources told ESPN's Jesse Rogers.",
           "text": "The Cubs have agreed to a five-year, $120 million contract with free agent pitcher Trevor Rogers, sources told ESPN's Jesse Rogers.",
           "entities": [],
-          "occurredAt": "2026-11-24T04:28:44Z",
+          "occurredAt": "2026-11-24T07:12:44Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
+          "ageHours": 5.82,
           "freshnessBasis": "The Cubs have agreed to a five-year, $120 million contract with free agent pitcher Trevor Rogers, sources told ESPN's Jesse Rogers.",
           "status": "active",
           "sourceUrls": [
@@ -43,6 +43,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-8f2fb0462668fa20"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "An MLB lockout is looming. Our experts suggest some last-minute deals.",
+          "text": "An MLB lockout is looming. Our experts suggest some last-minute deals.",
+          "entities": [],
+          "occurredAt": "2026-11-24T11:43:53Z",
+          "timePrecision": "exact",
+          "ageHours": 1.3,
+          "freshnessBasis": "An MLB lockout is looming. Our experts suggest some last-minute deals.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50541491/offseason-trades-lockout-red-sox-yankees"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50541491/offseason-trades-lockout-red-sox-yankees"
+            }
+          ],
+          "id": "a415-ec58bb861966b9b8",
+          "feedRank": 2,
+          "compactHeadline": "One trade ESPN experts would make before MLB lockout"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-4047759a845fed6d"
           ],
           "type": "SIGNING",
@@ -52,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T01:14:59Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 11.78,
           "freshnessBasis": "The Royals signed left-hander Caleb Thielbar to a one-year, $3.25 million contract, sources told ESPN on Monday, as the club continues its offseason pitching staff makeover.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +95,11 @@
             }
           ],
           "id": "a415-c47a27ab36f593f7",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Sources: Royals sign LHP Caleb Thielbar to 1-year, $3.25 million contract"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-65eafc1b9c6d3cb5"
           ],
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T20:54:45Z",
           "timePrecision": "exact",
-          "ageHours": 8.61,
+          "ageHours": 16.12,
           "freshnessBasis": "The Yankees and left-handed reliever Brent Suter are in agreement on a one-year, $4 million contract with a club option for 2028, sources told ESPN's Jeff Passan on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -95,66 +124,8 @@
             }
           ],
           "id": "a415-cbdb92befeeaf618",
-          "feedRank": 3,
-          "compactHeadline": "Sources: Yankees agree to 1-year, $4M deal with reliever Suter"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-9e4c30a64389ed20"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-          "text": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-          "entities": [],
-          "occurredAt": "2026-11-23T19:20:59Z",
-          "timePrecision": "exact",
-          "ageHours": 10.17,
-          "freshnessBasis": "Who will land the two-time Cy Young Award winner? We have all the latest updates on where things stand.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50453514/tarik-skubal-free-agency-updates"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50453514/tarik-skubal-free-agency-updates"
-            }
-          ],
-          "id": "a415-9bb41749d9c4493a",
           "feedRank": 4,
-          "compactHeadline": "Tarik Skubal free agency tracker: Latest as MLB's top free agent signs with Mets"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-8b26782aef253d97"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Luis Gil and the Tigers are in agreement on a one-year, $2.3 million contract, sources told ESPN, as he lands a job just days after the Yankees nontendered him.",
-          "text": "Luis Gil and the Tigers are in agreement on a one-year, $2.3 million contract, sources told ESPN, as he lands a job just days after the Yankees nontendered him.",
-          "entities": [],
-          "occurredAt": "2026-11-23T18:53:18Z",
-          "timePrecision": "exact",
-          "ageHours": 10.64,
-          "freshnessBasis": "Luis Gil and the Tigers are in agreement on a one-year, $2.3 million contract, sources told ESPN, as he lands a job just days after the Yankees nontendered him.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50565569/sources-free-agent-luis-gil-agrees-deal-tigers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50565569/sources-free-agent-luis-gil-agrees-deal-tigers"
-            }
-          ],
-          "id": "a415-d5020db0a9390806",
-          "feedRank": 5,
-          "compactHeadline": "Sources: Luis Gil agrees to deal with Tigers after Yankees nontender"
+          "compactHeadline": "Sources: Yankees agree to 1-year, $4M deal with reliever Suter"
         }
       ]
     },
@@ -165,6 +136,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-c5e1e1e21ac8fe17"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Get ready for Week 12 with a look at an elite AFC matchup, why the Giants are a playoff sleeper and what to expect in Micah Parson's return.",
+          "text": "Get ready for Week 12 with a look at an elite AFC matchup, why the Giants are a playoff sleeper and what to expect in Micah Parson's return.",
+          "entities": [],
+          "occurredAt": "2026-11-24T12:04:18Z",
+          "timePrecision": "exact",
+          "ageHours": 0.96,
+          "freshnessBasis": "Get ready for Week 12 with a look at an elite AFC matchup, why the Giants are a playoff sleeper and what to expect in Micah Parson's return.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50563522/week-12-seven-things-solak-thinks-chiefs-bills-giants"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50563522/week-12-seven-things-solak-thinks-chiefs-bills-giants"
+            }
+          ],
+          "id": "a415-3565d4eb9be017c4",
+          "feedRank": 5,
+          "compactHeadline": "Seven things Solak thinks for NFL Week 12: Takes on Chiefs-Bills, Giants, Lions"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-51c37830291050f5"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "If Dallas is going to catch up to New York in the division, it needs to start stringing wins together.",
+          "text": "If Dallas is going to catch up to New York in the division, it needs to start stringing wins together.",
+          "entities": [],
+          "occurredAt": "2026-11-24T11:00:15Z",
+          "timePrecision": "exact",
+          "ageHours": 2.02,
+          "freshnessBasis": "If Dallas is going to catch up to New York in the division, it needs to start stringing wins together.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50573980/dallas-cowboys-nfc-east-dak-prescott"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50573980/dallas-cowboys-nfc-east-dak-prescott"
+            }
+          ],
+          "id": "a415-d60849fa246d068a",
+          "feedRank": 6,
+          "compactHeadline": "Cowboys need to break a year-long trend to make the playoffs"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-ba4b5a8e4abccd4f"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "After failing multiple times in late-game situations earlier this season, Commanders quarterback Jayden Daniels put together a second consecutive winning drive Monday night as Washington kicked a last-second field goal to beat Cincinnati 22-20.",
+          "text": "After failing multiple times in late-game situations earlier this season, Commanders quarterback Jayden Daniels put together a second consecutive winning drive Monday night as Washington kicked a last-second field goal to beat Cincinnati 22-20.",
+          "entities": [],
+          "occurredAt": "2026-11-24T12:28:19Z",
+          "timePrecision": "exact",
+          "ageHours": 0.56,
+          "freshnessBasis": "After failing multiple times in late-game situations earlier this season, Commanders quarterback Jayden Daniels put together a second consecutive winning drive Monday night as Washington kicked a last-second field goal to beat Cincinnati 22-20.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50580514/jayden-daniels-delivers-another-late-game-drive-commanders-win-vs-bengals-mnf"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50580514/jayden-daniels-delivers-another-late-game-drive-commanders-win-vs-bengals-mnf"
+            }
+          ],
+          "id": "a415-7a2f3f6b29aadb37",
+          "feedRank": 7,
+          "compactHeadline": "Jayden Daniels again delivers in 'high-pressure' situation for Commanders"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-a2266196b7a347fc"
           ],
           "type": "STREAK",
@@ -174,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T04:58:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
+          "ageHours": 8.06,
           "freshnessBasis": "The Commanders' defense held the potent Bengals in check and Washington has won three of four.",
           "status": "active",
           "sourceUrls": [
@@ -188,81 +246,23 @@
             }
           ],
           "id": "a415-55ca5723df3fb00c",
-          "feedRank": 6,
+          "feedRank": 8,
           "compactHeadline": "Commanders building momentum, halt Bengals' 5-game win streak"
         },
         {
-          "rank": 2,
-          "candidateIds": [
-            "cand-1ede4baa69d23277"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Cornerback Will Lee III came up with a momentum-shifting play that helped stave off Baltimore's potential TD.",
-          "text": "Cornerback Will Lee III came up with a momentum-shifting play that helped stave off Baltimore's potential TD.",
-          "entities": [],
-          "occurredAt": "2026-11-23T17:00:04Z",
-          "timePrecision": "exact",
-          "ageHours": 12.52,
-          "freshnessBasis": "Cornerback Will Lee III came up with a momentum-shifting play that helped stave off Baltimore's potential TD.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50567919/carolina-panthers-rookie-lee-iii-big-play"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50567919/carolina-panthers-rookie-lee-iii-big-play"
-            }
-          ],
-          "id": "a415-d4616eaa54950833",
-          "feedRank": 7,
-          "compactHeadline": "How Panthers rookie's big play became an all-timer for Dave Canales"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-2be25f89ce85cd3d"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Rams tight end Terrance Ferguson's ankle injury will require season-ending surgery.",
-          "text": "Rams tight end Terrance Ferguson's ankle injury will require season-ending surgery.",
-          "entities": [],
-          "occurredAt": "2026-11-23T20:41:51Z",
-          "timePrecision": "exact",
-          "ageHours": 8.83,
-          "freshnessBasis": "Rams tight end Terrance Ferguson's ankle injury will require season-ending surgery.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50575889/rams-te-terrance-ferguson-needs-season-ending-ankle-surgery"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50575889/rams-te-terrance-ferguson-needs-season-ending-ankle-surgery"
-            }
-          ],
-          "id": "a415-11ee763c316ca866",
-          "feedRank": 8,
-          "compactHeadline": "Rams TE Terrance Ferguson needs season-ending ankle surgery, Sean McVay says"
-        },
-        {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-f39e3745f266d49f"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Jayden Daniels connected with rookie Antonio Williams on two long pass plays, moving the Commanders 64 yards in 34 seconds to set up Drew Stevens’",
-          "text": "Jayden Daniels connected with rookie Antonio Williams on two long pass plays, moving the Commanders 64 yards in 34 seconds to set up Drew Stevens’",
+          "headline": "Jayden Daniels and the Commanders had scored on five consecutive drives, all of them covering 50 yards or more. But their last possession was the most daunting.",
+          "text": "Jayden Daniels and the Commanders had scored on five consecutive drives, all of them covering 50 yards or more. But their last possession was the most daunting.",
           "entities": [],
-          "occurredAt": "2026-11-24T04:52:32Z",
+          "occurredAt": "2026-11-24T06:06:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.65,
-          "freshnessBasis": "— Jayden Daniels connected with rookie Antonio Williams on two long pass plays, moving the Commanders 64 yards in 34 seconds to set up Drew Stevens’",
+          "ageHours": 6.92,
+          "freshnessBasis": "— Jayden Daniels and the Commanders had scored on five consecutive drives, all of them covering 50 yards or more. But their last possession was the most daunting.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nfl/recap?gameId=401873078"
@@ -277,6 +277,35 @@
           "id": "a415-4d06b4698458a61f",
           "feedRank": 9,
           "compactHeadline": "Jayden Daniels rallies Commanders in final seconds to set up winning kick in 22-20 win over Bengals"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-1ede4baa69d23277"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Cornerback Will Lee III came up with a momentum-shifting play that helped stave off Baltimore's potential TD.",
+          "text": "Cornerback Will Lee III came up with a momentum-shifting play that helped stave off Baltimore's potential TD.",
+          "entities": [],
+          "occurredAt": "2026-11-23T17:00:04Z",
+          "timePrecision": "exact",
+          "ageHours": 20.03,
+          "freshnessBasis": "Cornerback Will Lee III came up with a momentum-shifting play that helped stave off Baltimore's potential TD.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50567919/carolina-panthers-rookie-lee-iii-big-play"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50567919/carolina-panthers-rookie-lee-iii-big-play"
+            }
+          ],
+          "id": "a415-d4616eaa54950833",
+          "feedRank": 10,
+          "compactHeadline": "How Panthers rookie's big play became an all-timer for Dave Canales"
         }
       ]
     },
@@ -287,16 +316,74 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-cb6133c2347a1c71"
+            "cand-4a1339e8bb479315"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "Our first edition of rookie rankings features 10 players standing out early from a strong 2026 draft class.",
+          "text": "Our first edition of rookie rankings features 10 players standing out early from a strong 2026 draft class.",
+          "entities": [],
+          "occurredAt": "2026-11-24T11:45:41Z",
+          "timePrecision": "exact",
+          "ageHours": 1.27,
+          "freshnessBasis": "Our first edition of rookie rankings features 10 players standing out early from a strong 2026 draft class.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50544296/nba-rookie-rankings-early-stats"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50544296/nba-rookie-rankings-early-stats"
+            }
+          ],
+          "id": "a415-0f08167685697e0d",
+          "feedRank": 11,
+          "compactHeadline": "NBA Rookie Rankings: 10 standouts in a star-studded class"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-62576434d0f560a4"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
+          "text": "Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
+          "entities": [],
+          "occurredAt": "2026-11-24T09:15:35Z",
+          "timePrecision": "exact",
+          "ageHours": 3.77,
+          "freshnessBasis": "— Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401910035"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401910035"
+            }
+          ],
+          "id": "a415-c23de92fab38ebe5",
+          "feedRank": 12,
+          "compactHeadline": "Brandin Podziemski scores 18 points as Warriors hold of Celtics 88-87 to snap five-game losing skid"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-d2227950853dc957"
           ],
           "type": "RESULT",
           "priority": 70,
           "headline": "Less than two hours prior to tipoff Monday, the San Antonio Spurs ruled Victor Wembanyama and De'Aaron Fox out of their 123-107 win over the Sacramento Kings, but the club anticipates both will play in Wednesday's game against the Portland Trail Blazers.",
           "text": "Less than two hours prior to tipoff Monday, the San Antonio Spurs ruled Victor Wembanyama and De'Aaron Fox out of their 123-107 win over the Sacramento Kings, but the club anticipates both will play in Wednesday's game against the Portland Trail Blazers.",
           "entities": [],
-          "occurredAt": "2026-11-24T05:29:06Z",
+          "occurredAt": "2026-11-24T07:01:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 6.01,
           "freshnessBasis": "Less than two hours prior to tipoff Monday, the San Antonio Spurs ruled Victor Wembanyama and De'Aaron Fox out of their 123-107 win over the Sacramento Kings, but the club anticipates both will play in Wednesday's game against the Portland Trail Blazers.",
           "status": "active",
           "sourceUrls": [
@@ -309,12 +396,41 @@
               "url": "https://www.espn.com/nba/story/_/id/50578664/spurs-victor-wembanyama-deaaron-fox-kings"
             }
           ],
-          "id": "a415-e676e8bdf6f3ca27",
-          "feedRank": 10,
-          "compactHeadline": "Spurs rule Victor Wembanyama, De'Aaron Fox out 90 minutes before tip vs. Kings"
+          "id": "a415-5585812efbe586eb",
+          "feedRank": 13,
+          "compactHeadline": "Spurs rule Victor Wembanyama, De'Aaron Fox out 90 minutes before win over Kings"
         },
         {
-          "rank": 2,
+          "rank": 4,
+          "candidateIds": [
+            "cand-b56f6b1999cfcb79"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Stephon Castle had 28 points, 11 assists and eight rebounds as the San Antonio Spurs beat the Sacramento Kings 123-107 on Monday night without Victor...",
+          "text": "Stephon Castle had 28 points, 11 assists and eight rebounds as the San Antonio Spurs beat the Sacramento Kings 123-107 on Monday night without Victor...",
+          "entities": [],
+          "occurredAt": "2026-11-24T06:08:32Z",
+          "timePrecision": "exact",
+          "ageHours": 6.89,
+          "freshnessBasis": "— Stephon Castle had 28 points, 11 assists and eight rebounds as the San Antonio Spurs beat the Sacramento Kings 123-107 on Monday night without Victor...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401910045"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401910045"
+            }
+          ],
+          "id": "a415-0f1ec8b18335e586",
+          "feedRank": 14,
+          "compactHeadline": "Castle helps Spurs stay unbeaten on road with 123-107 win over Kings minus Wemby, Fox and Harper"
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-4b8e0a8f57e43c1c"
           ],
@@ -325,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T21:49:52Z",
           "timePrecision": "exact",
-          "ageHours": 7.69,
+          "ageHours": 15.2,
           "freshnessBasis": "Guard Gabe Vincent signed a deal with the Sacramento Kings to fill their 15th roster spot, it was announced on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -339,11 +455,11 @@
             }
           ],
           "id": "a415-643ba08a1392fb27",
-          "feedRank": 11,
+          "feedRank": 15,
           "compactHeadline": "Veteran guard Gabe Vincent signs deal with Kings"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-40474e66685c3b62"
           ],
@@ -354,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T04:27:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.06,
+          "ageHours": 8.57,
           "freshnessBasis": "— Jalen Green scored 25 points, Devin Booker added 22, and the Phoenix Suns defeated the New Orleans Pelicans, 123-119 in overtime on Monday night.",
           "status": "active",
           "sourceUrls": [
@@ -368,95 +484,8 @@
             }
           ],
           "id": "a415-8f50ade7cec8bb37",
-          "feedRank": 12,
+          "feedRank": 16,
           "compactHeadline": "Jalen Green scores 25 and Devin Booker adds 22 to help the Suns top the Pelicans 123-119 in OT"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-716fac4e29a1107c"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Kevin Durant scored 32 points and Alperen Sengun and Amen Thompson each had 20 to lead the Houston Rockets to a 116-104 win over the Los Angeles Clippers on Monday night.",
-          "text": "Kevin Durant scored 32 points and Alperen Sengun and Amen Thompson each had 20 to lead the Houston Rockets to a 116-104 win over the Los Angeles Clippers on Monday night.",
-          "entities": [],
-          "occurredAt": "2026-11-24T04:08:32Z",
-          "timePrecision": "exact",
-          "ageHours": 1.38,
-          "freshnessBasis": "— Kevin Durant scored 32 points and Alperen Sengun and Amen Thompson each had 20 to lead the Houston Rockets to a 116-104 win over the Los Angeles Clippers on Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401910043"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401910043"
-            }
-          ],
-          "id": "a415-8d05d754177f0c8b",
-          "feedRank": 13,
-          "compactHeadline": "Kevin Durant scores 32 to power Rockets past Clippers 116-104"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-ed9abbd5f788afe1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jordan Hawkins scored a season-high 19 points, Buddy Hield had 17 and the Chicago Bulls got 63 points off the bench as they held on to beat the Cleveland Cavaliers 122-108 on Monday night.",
-          "text": "Jordan Hawkins scored a season-high 19 points, Buddy Hield had 17 and the Chicago Bulls got 63 points off the bench as they held on to beat the Cleveland Cavaliers 122-108 on Monday night.",
-          "entities": [],
-          "occurredAt": "2026-11-24T03:58:33Z",
-          "timePrecision": "exact",
-          "ageHours": 1.55,
-          "freshnessBasis": "— Jordan Hawkins scored a season-high 19 points, Buddy Hield had 17 and the Chicago Bulls got 63 points off the bench as they held on to beat the Cleveland Cavaliers 122-108 on Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401910041"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401910041"
-            }
-          ],
-          "id": "a415-85b3f91ba12f59e4",
-          "feedRank": 14,
-          "compactHeadline": "Bulls beat Cavaliers 122-108 behind Jordan Hawkins' 19 points and 63 off the bench"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-00280f870fd8994f"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jaden McDaniels scored a career-best 34 points and the Minnesota Timberwolves routed the Brooklyn Nets 142-116 on Monday night.",
-          "text": "Jaden McDaniels scored a career-best 34 points and the Minnesota Timberwolves routed the Brooklyn Nets 142-116 on Monday night.",
-          "entities": [],
-          "occurredAt": "2026-11-24T03:41:35Z",
-          "timePrecision": "exact",
-          "ageHours": 1.83,
-          "freshnessBasis": "— Jaden McDaniels scored a career-best 34 points and the Minnesota Timberwolves routed the Brooklyn Nets 142-116 on Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401910040"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401910040"
-            }
-          ],
-          "id": "a415-882c1217007b7f14",
-          "feedRank": 15,
-          "compactHeadline": "Jaden McDaniels scores career-best 34 for Timberwolves in 142-116 rout of Nets"
         }
       ]
     },
@@ -476,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T05:19:23Z",
           "timePrecision": "exact",
-          "ageHours": 0.2,
+          "ageHours": 7.71,
           "freshnessBasis": "Top pick Gavin McKenna's goal put the Maple Leafs ahead with just over 11 minutes left as they beat the Islanders on Monday to end their losing streak that dated back to Halloween.",
           "status": "active",
           "sourceUrls": [
@@ -490,7 +519,7 @@
             }
           ],
           "id": "a415-8ad769907994c03e",
-          "feedRank": 16,
+          "feedRank": 17,
           "compactHeadline": "Gavin McKenna scores go-ahead goal as Maple Leafs win for first time in November"
         },
         {
@@ -505,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T04:03:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.46,
+          "ageHours": 8.96,
           "freshnessBasis": "The Blackhawks said Connor Bedard had right shoulder surgery on Monday that is expected to sideline him for about four months.",
           "status": "active",
           "sourceUrls": [
@@ -519,11 +548,40 @@
             }
           ],
           "id": "a415-1599655793a64963",
-          "feedRank": 17,
+          "feedRank": 18,
           "compactHeadline": "Blackhawks' Connor Bedard has shoulder surgery, out approximately 4 months"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-438c7ce985a54eb3"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Kirill Kaprizov scored a goal and added three assists and Joel Eriksson Ek scored twice as the Minnesota Wild defeated the San Jose Sharks 5-2 on Wednesday night.",
+          "text": "Kirill Kaprizov scored a goal and added three assists and Joel Eriksson Ek scored twice as the Minnesota Wild defeated the San Jose Sharks 5-2 on Wednesday night.",
+          "entities": [],
+          "occurredAt": "2026-11-24T06:04:33Z",
+          "timePrecision": "exact",
+          "ageHours": 6.95,
+          "freshnessBasis": "— Kirill Kaprizov scored a goal and added three assists and Joel Eriksson Ek scored twice as the Minnesota Wild defeated the San Jose Sharks 5-2 on Wednesday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892779"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892779"
+            }
+          ],
+          "id": "a415-c9d4ea46fef399bc",
+          "feedRank": 19,
+          "compactHeadline": "Joel Eriksson Ek scores twice to lead Wild to 5-2 win over Sharks"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-90e84e7bef452e65"
           ],
@@ -534,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T21:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 7.77,
+          "ageHours": 15.27,
           "freshnessBasis": "The Canadiens have no concerns about newly acquired star Dylan Larkin asking Detroit for a trade, having been accused of quitting on the Red Wings after leaving in the fourth year of an eight-year contract.",
           "status": "active",
           "sourceUrls": [
@@ -548,11 +606,40 @@
             }
           ],
           "id": "a415-ea0195b56f9e782e",
-          "feedRank": 18,
+          "feedRank": 20,
           "compactHeadline": "Canadiens coach St. Louis: 'Harsh thing to say' Larkin 'quit' on Red Wings"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-62d417cdfe096c9c"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Kaapo Kakko scored the go-ahead goal for Seattle (11-9-1) with 2:25 left in the game, and the Kraken beat the Anaheim Ducks (11-13-1) Monday night, 3-2.",
+          "text": "Kaapo Kakko scored the go-ahead goal for Seattle (11-9-1) with 2:25 left in the game, and the Kraken beat the Anaheim Ducks (11-13-1) Monday night, 3-2.",
+          "entities": [],
+          "occurredAt": "2026-11-24T05:44:33Z",
+          "timePrecision": "exact",
+          "ageHours": 7.29,
+          "freshnessBasis": "— Kaapo Kakko scored the go-ahead goal for Seattle (11-9-1) with 2:25 left in the game, and the Kraken beat the Anaheim Ducks (11-13-1) Monday night, 3-2.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892778"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892778"
+            }
+          ],
+          "id": "a415-f5774a06320ac403",
+          "feedRank": 21,
+          "compactHeadline": "Kaapo Kakko scores winning goal as Kraken beat Ducks 3-2"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-1cdfb5db91be9a5d"
           ],
@@ -563,7 +650,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T04:04:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.45,
+          "ageHours": 8.95,
           "freshnessBasis": "— Linus Ullmark made 34 saves to lead the Ottawa Senators to a 2-1 victory over the Calgary Flames on Monday night.",
           "status": "active",
           "sourceUrls": [
@@ -577,66 +664,8 @@
             }
           ],
           "id": "a415-09895a2104114016",
-          "feedRank": 19,
+          "feedRank": 22,
           "compactHeadline": "Ullmark's 34-save outing powers Senators to a 2-1 win over the Flames"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-3c6e366889cff44a"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Darcy Kuemper stopped 29 shots as the Los Angeles Kings spoiled Dylan Larkin’s debut with the Montreal Canadiens with a 2-1 victory Monday night.",
-          "text": "Darcy Kuemper stopped 29 shots as the Los Angeles Kings spoiled Dylan Larkin’s debut with the Montreal Canadiens with a 2-1 victory Monday night.",
-          "entities": [],
-          "occurredAt": "2026-11-24T03:53:33Z",
-          "timePrecision": "exact",
-          "ageHours": 1.63,
-          "freshnessBasis": "— Darcy Kuemper stopped 29 shots as the Los Angeles Kings spoiled Dylan Larkin’s debut with the Montreal Canadiens with a 2-1 victory Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892774"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892774"
-            }
-          ],
-          "id": "a415-57caf5e4a0f4212e",
-          "feedRank": 20,
-          "compactHeadline": "Kuemper makes 29 saves as Kings beat Canadiens 2-1; Larkin picks up an assist in Montreal debut"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-fa7fdf01004be032"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Gabriel Vilardi had a hat trick and the Winnipeg Jets hung on for a 4-2 victory over the Utah Mammoth on Monday night.",
-          "text": "Gabriel Vilardi had a hat trick and the Winnipeg Jets hung on for a 4-2 victory over the Utah Mammoth on Monday night.",
-          "entities": [],
-          "occurredAt": "2026-11-24T03:40:32Z",
-          "timePrecision": "exact",
-          "ageHours": 1.85,
-          "freshnessBasis": "— Gabriel Vilardi had a hat trick and the Winnipeg Jets hung on for a 4-2 victory over the Utah Mammoth on Monday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892777"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892777"
-            }
-          ],
-          "id": "a415-4aef8500aeb8390d",
-          "feedRank": 21,
-          "compactHeadline": "Vilardi's 2nd career hat trick helps the Jets to a 4-2 win over the Mammoth"
         }
       ]
     },
@@ -656,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T14:36:45Z",
           "timePrecision": "exact",
-          "ageHours": 14.91,
+          "ageHours": 22.42,
           "freshnessBasis": "Mikel Arteta has said David Raya's shoulder injury is better than first feared and that the goalkeeper will not require surgery.",
           "status": "active",
           "sourceUrls": [
@@ -670,7 +699,7 @@
             }
           ],
           "id": "a415-a17e7397be5fb350",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "David Raya won't need surgery - Arsenal boss Mikel Arteta"
         },
         {
@@ -685,7 +714,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T23:23:34Z",
           "timePrecision": "exact",
-          "ageHours": 6.13,
+          "ageHours": 13.64,
           "freshnessBasis": "Everton manager David Moyes said he understood why James Tarkowski was shown a straight red card in the 4-0 defeat to Brentford.",
           "status": "active",
           "sourceUrls": [
@@ -699,11 +728,40 @@
             }
           ],
           "id": "a415-e5f4ec9f96607357",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "David Moyes accepts James Tarkowski red card in Everton defeat to Brentford"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-3e278b91a2f8ec92"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Arsenal won the Premier League in controversial fashion last season, but the set-piece goals they counted on have disappeared. Why?",
+          "text": "Arsenal won the Premier League in controversial fashion last season, but the set-piece goals they counted on have disappeared. Why?",
+          "entities": [],
+          "occurredAt": "2026-11-24T08:37:39Z",
+          "timePrecision": "exact",
+          "ageHours": 4.4,
+          "freshnessBasis": "Arsenal won the Premier League in controversial fashion last season, but the set-piece goals they counted on have disappeared. Why?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50576776/premier-league-set-piece-goal-arsenal-standings-table"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50576776/premier-league-set-piece-goal-arsenal-standings-table"
+            }
+          ],
+          "id": "a415-dc4c56cceabef72b",
+          "feedRank": 25,
+          "compactHeadline": "Premier League's set-piece goal surge is over, but Arsenal are No. 1 anyway"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-7da71a36a554d79e"
           ],
@@ -714,7 +772,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T15:07:07Z",
           "timePrecision": "exact",
-          "ageHours": 14.41,
+          "ageHours": 21.91,
           "freshnessBasis": "Manchester United have notified the Football Association of their intention to appeal Leny Yoro's red card in the 4-0 defeat to Liverpool, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -728,37 +786,8 @@
             }
           ],
           "id": "a415-edf98303ca648fca",
-          "feedRank": 24,
+          "feedRank": 26,
           "compactHeadline": "Man United to appeal Leny Yoro red card against Liverpool - sources"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-8217864b9bbdf9a8"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Luca Williams-Barnett has revealed Tottenham boss Roberto De Zerbi joked he would be playing for the under-21s before he made his dazzling full debut in Saturday's 2-0 win over Ipswich.",
-          "text": "Luca Williams-Barnett has revealed Tottenham boss Roberto De Zerbi joked he would be playing for the under-21s before he made his dazzling full debut in Saturday's 2-0 win over Ipswich.",
-          "entities": [],
-          "occurredAt": "2026-11-23T11:16:03Z",
-          "timePrecision": "exact",
-          "ageHours": 18.26,
-          "freshnessBasis": "Luca Williams-Barnett has revealed Tottenham boss Roberto De Zerbi joked he would be playing for the under-21s before he made his dazzling full debut in Saturday's 2-0 win over Ipswich.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50571947/luca-williams-barnett-tottenham-de-zerbi"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50571947/luca-williams-barnett-tottenham-de-zerbi"
-            }
-          ],
-          "id": "a415-135077779842429a",
-          "feedRank": 25,
-          "compactHeadline": "Luca Williams-Barnett fell for under-21s joke before stellar Tottenham debut"
         }
       ]
     },
@@ -778,7 +807,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T21:37:43Z",
           "timePrecision": "exact",
-          "ageHours": 7.9,
+          "ageHours": 15.4,
           "freshnessBasis": "Orlando City SC has fired interim head coach Martín Perelman and interim assistant coach Sebastián Setti after losing to FC Cincinnati in an MLS Cup Eastern Conference wild-card match.",
           "status": "active",
           "sourceUrls": [
@@ -792,11 +821,40 @@
             }
           ],
           "id": "a415-7c3412929d5de930",
-          "feedRank": 26,
+          "feedRank": 27,
           "compactHeadline": "Orlando City fires interim coach Perelman, assistant Setti after playoff exit"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-ffae22eea8e4efa4"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "FC Cincinnati will honor Cincinnati Zoo's famous hippo, Fiona, following her unexpected death last week.",
+          "text": "FC Cincinnati will honor Cincinnati Zoo's famous hippo, Fiona, following her unexpected death last week.",
+          "entities": [],
+          "occurredAt": "2026-11-24T12:51:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "FC Cincinnati will honor Cincinnati Zoo's famous hippo, Fiona, following her unexpected death last week.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50581745/fiona-hippo-fc-cincinnati-tifo-death-honoured-mls"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50581745/fiona-hippo-fc-cincinnati-tifo-death-honoured-mls"
+            }
+          ],
+          "id": "a415-9fe63c704503ee0a",
+          "feedRank": 28,
+          "compactHeadline": "Fiona the hippo to be honored by FC Cincinnati with tifo after untimely death"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-14183a5a5d1bf883"
           ],
@@ -807,7 +865,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T00:55:43Z",
           "timePrecision": "exact",
-          "ageHours": 4.6,
+          "ageHours": 12.1,
           "freshnessBasis": "MLS is gathering information regarding the reported arrest of Houston Dynamo FC midfielder Héctor Herrera for suspicion of driving while intoxicated ahead of the team's first game of the playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -821,11 +879,11 @@
             }
           ],
           "id": "a415-408f1d0c2d6a00c3",
-          "feedRank": 27,
+          "feedRank": 29,
           "compactHeadline": "Houston says Herrera available for Dynamo playoff opener amid MLS probe"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-d438944873ebf12d"
           ],
@@ -836,7 +894,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T05:20:25Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
+          "ageHours": 7.69,
           "freshnessBasis": "St. Louis City never trailed in a 3-2 victory over Los Angeles FC in the MLS Cup Western Conference first-round opener.",
           "status": "active",
           "sourceUrls": [
@@ -850,37 +908,8 @@
             }
           ],
           "id": "a415-dff099f1a8b705f0",
-          "feedRank": 28,
+          "feedRank": 30,
           "compactHeadline": "St. Louis City holds off LAFC in 3-2 victory to take first-round lead"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-d861b79ae4e46259"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "LAFC forward Son Heung-Min has backed Thomas Müller's comments about the \"careless\" playing style in the MLS and the lack of pressure that players feel due to the absence of a promotion/relegation system.",
-          "text": "LAFC forward Son Heung-Min has backed Thomas Müller's comments about the \"careless\" playing style in the MLS and the lack of pressure that players feel due to the absence of a promotion/relegation system.",
-          "entities": [],
-          "occurredAt": "2026-11-23T17:20:26Z",
-          "timePrecision": "exact",
-          "ageHours": 12.18,
-          "freshnessBasis": "LAFC forward Son Heung-Min has backed Thomas Müller's comments about the \"careless\" playing style in the MLS and the lack of pressure that players feel due to the absence of a promotion/relegation system.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50574293/son-heung-min-thomas-muller-mls-no-pressure-relegation"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50574293/son-heung-min-thomas-muller-mls-no-pressure-relegation"
-            }
-          ],
-          "id": "a415-20cc72cafe277795",
-          "feedRank": 29,
-          "compactHeadline": "Son Heung-Min: Thomas Müller spot-on about lack of pressure in MLS"
         }
       ]
     },
@@ -900,7 +929,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T22:32:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.98,
+          "ageHours": 14.49,
           "freshnessBasis": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
           "status": "active",
           "sourceUrls": [
@@ -914,7 +943,7 @@
             }
           ],
           "id": "a415-87edc5c0bbf04613",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "UCLA QB Dieffenbach not ruled out for Saturday's game vs. USC"
         },
         {
@@ -929,7 +958,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T23:57:14Z",
           "timePrecision": "exact",
-          "ageHours": 5.57,
+          "ageHours": 13.07,
           "freshnessBasis": "Iowa State running back Aiden Flora, who leads the nation in rushing, announced Monday that he has re-signed with the Cyclones for next season.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +972,7 @@
             }
           ],
           "id": "a415-b712be71ad5dddef",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Aiden Flora, nation's leading rusher, re-signs with Iowa State for next season"
         },
         {
@@ -958,7 +987,7 @@
           "entities": [],
           "occurredAt": "2026-11-24T02:51:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.66,
+          "ageHours": 10.17,
           "freshnessBasis": "Georgia's Glenn Schumann, one of the country's top defensive coordinators and part of a staff that has the Bulldogs at No. 1 in the CFP rankings, agreed to a five-year deal to become the next coach at Florida State, the school announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -972,7 +1001,7 @@
             }
           ],
           "id": "a415-dd6aa3250d84f328",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Georgia defensive coordinator Glenn Schumann agrees to coach Florida State"
         },
         {
@@ -987,7 +1016,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T20:30:43Z",
           "timePrecision": "exact",
-          "ageHours": 9.01,
+          "ageHours": 16.52,
           "freshnessBasis": "Wake Forest running back Ty Clark will miss the rest of the season, coach Jake Dickert announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -1001,7 +1030,7 @@
             }
           ],
           "id": "a415-73e7c9c42efb74f5",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "Wake Forest leading rusher Ty Clark ruled out for season"
         },
         {
@@ -1016,7 +1045,7 @@
           "entities": [],
           "occurredAt": "2026-11-23T18:40:45Z",
           "timePrecision": "exact",
-          "ageHours": 10.85,
+          "ageHours": 18.35,
           "freshnessBasis": "Syracuse has ruled starting quarterback Steve Angeli out for Saturday's game against Notre Dame due to a shoulder injury.",
           "status": "active",
           "sourceUrls": [
@@ -1030,37 +1059,8 @@
             }
           ],
           "id": "a415-dbe0b97e2687201e",
-          "feedRank": 34,
-          "compactHeadline": "Syracuse rules QB Steve Angeli (shoulder) out vs. Notre Dame"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-abbc0fdeb5c8196a"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Alabama coach Kalen DeBoer said Monday that he expects QB Keelon Russell, who is working his way back from an ankle injury, to be \"full go\" for rivalry week against Auburn.",
-          "text": "Alabama coach Kalen DeBoer said Monday that he expects QB Keelon Russell, who is working his way back from an ankle injury, to be \"full go\" for rivalry week against Auburn.",
-          "entities": [],
-          "occurredAt": "2026-11-23T18:13:53Z",
-          "timePrecision": "exact",
-          "ageHours": 11.29,
-          "freshnessBasis": "Alabama coach Kalen DeBoer said Monday that he expects QB Keelon Russell, who is working his way back from an ankle injury, to be \"full go\" for rivalry week against Auburn.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50574915/alabama-deboer-expects-qb-russell-full-go-auburn"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50574915/alabama-deboer-expects-qb-russell-full-go-auburn"
-            }
-          ],
-          "id": "a415-4404f62733355410",
           "feedRank": 35,
-          "compactHeadline": "Alabama's Kalen DeBoer expects QB Keelon Russell to be 'full go' vs. Auburn"
+          "compactHeadline": "Syracuse rules QB Steve Angeli (shoulder) out vs. Notre Dame"
         }
       ]
     }
@@ -1085,7 +1085,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 111,
+    "freshCandidateCount": 115,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
