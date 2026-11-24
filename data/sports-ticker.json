@@ -1,175 +1,33 @@
 {
   "schemaVersion": 11,
-  "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-11-24T19:31:17Z",
+  "pipelineVersion": "A4.14-legacy-browser-display-compat",
+  "generatedAt": "2026-11-24T20:01:11Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
-  "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "76e08c6d700e12ca50374728ec9baebac07042232325c2d1c1e95078d478d86b",
+  "model": "gpt-5.6-luna",
+  "sourceCandidateHash": "5629c798cc1c05351c779abb400c600cacf6ddaadccfe7148fb7dd6c04ee04f6",
   "leagues": [
     {
       "league": "MLB",
-      "seasonState": "active",
+      "seasonState": "offseason",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
-            "cand-12c5c84e45ea8703"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Right-hander Kaima Taira and the Blue Jays have agreed to a five-year, $80 million deal with an opt-out after the third season, sources told ESPN's Jeff Passan.",
-          "text": "Right-hander Kaima Taira and the Blue Jays have agreed to a five-year, $80 million deal with an opt-out after the third season, sources told ESPN's Jeff Passan.",
-          "entities": [],
-          "occurredAt": "2026-11-24T19:26:54Z",
-          "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "Right-hander Kaima Taira and the Blue Jays have agreed to a five-year, $80 million deal with an opt-out after the third season, sources told ESPN's Jeff Passan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50585003/sources-kaima-taira-blue-jays-agree-5-year-80m-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50585003/sources-kaima-taira-blue-jays-agree-5-year-80m-deal"
-            }
-          ],
-          "id": "a415-f872293c04c014fa",
-          "feedRank": 1,
-          "compactHeadline": "Sources: Japanese righty Kaima Taira, Blue Jays agree to 5-year, $80M deal"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-2c5670d0806f1d94"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The Cubs reached a 6-year, $120 million agreement with Japanese INF/OF Teruaki Sato on Tuesday, sources told ESPN's Jeff Passan.",
-          "text": "The Cubs reached a 6-year, $120 million agreement with Japanese INF/OF Teruaki Sato on Tuesday, sources told ESPN's Jeff Passan.",
-          "entities": [],
-          "occurredAt": "2026-11-24T19:16:11Z",
-          "timePrecision": "exact",
-          "ageHours": 0.25,
-          "freshnessBasis": "The Cubs reached a 6-year, $120 million agreement with Japanese INF/OF Teruaki Sato on Tuesday, sources told ESPN's Jeff Passan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50583163/sources-cubs-teruaki-sato-reach-6-year-120m-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50583163/sources-cubs-teruaki-sato-reach-6-year-120m-deal"
-            }
-          ],
-          "id": "a415-24a6eabe5fb38242",
-          "feedRank": 2,
-          "compactHeadline": "Sources: Cubs agree to 6-year, $120M deal with Japan's Teruaki Sato"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-f45482df6ed5b562"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "MLB dropped its demand for an escrow provision in its salary cap proposal, instead saying that an overage or underpayment would be accounted for in future seasons.",
-          "text": "MLB dropped its demand for an escrow provision in its salary cap proposal, instead saying that an overage or underpayment would be accounted for in future seasons.",
-          "entities": [],
-          "occurredAt": "2026-11-24T19:24:32Z",
-          "timePrecision": "exact",
-          "ageHours": 0.11,
-          "freshnessBasis": "MLB dropped its demand for an escrow provision in its salary cap proposal, instead saying that an overage or underpayment would be accounted for in future seasons.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50584880/mlb-drops-contract-escrow-provision-salary-cap-proposal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50584880/mlb-drops-contract-escrow-provision-salary-cap-proposal"
-            }
-          ],
-          "id": "a415-de3e3085ebbb85ad",
-          "feedRank": 3,
-          "compactHeadline": "MLB drops contract escrow provision in salary cap proposal"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-a49edec8c6fd6c8c"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Infielder Ha-Seong Kim and the Tigers are in agreement on a one-year, $5 million contract, sources told ESPN.",
-          "text": "Infielder Ha-Seong Kim and the Tigers are in agreement on a one-year, $5 million contract, sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-11-24T18:55:26Z",
-          "timePrecision": "exact",
-          "ageHours": 0.6,
-          "freshnessBasis": "Infielder Ha-Seong Kim and the Tigers are in agreement on a one-year, $5 million contract, sources told ESPN.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50584756/sources-tigers-ha-seong-kim-agree-1-year-5m-contract"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50584756/sources-tigers-ha-seong-kim-agree-1-year-5m-contract"
-            }
-          ],
-          "id": "a415-9b8e4d95ccc81e9d",
-          "feedRank": 4,
-          "compactHeadline": "Sources: Tigers, Ha-Seong Kim agree to 1-year, $5M contract"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-b8664df1c2c764f9"
-          ],
-          "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Left-hander Kris Bubic and the Guardians are in agreement on a one-year, $17.5 million contract, sources told ESPN's Jeff Passan on Tuesday.",
-          "text": "Left-hander Kris Bubic and the Guardians are in agreement on a one-year, $17.5 million contract, sources told ESPN's Jeff Passan on Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-11-24T18:31:24Z",
-          "timePrecision": "exact",
-          "ageHours": 1.0,
-          "freshnessBasis": "Left-hander Kris Bubic and the Guardians are in agreement on a one-year, $17.5 million contract, sources told ESPN's Jeff Passan on Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50583426/sources-guardians-lefty-kris-bubic-agree-one-year-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50583426/sources-guardians-lefty-kris-bubic-agree-one-year-deal"
-            }
-          ],
-          "id": "a415-7ee5141ef0987de8",
-          "feedRank": 5,
-          "compactHeadline": "Sources: Guardians, lefty Kris Bubic agree to one-year, $17.5M deal"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-e63c6e2d3de86b5c"
           ],
           "type": "SIGNING",
-          "priority": 76,
-          "headline": "Freddy Peralta has agreed to a five-year, $125M deal with the Orioles, who have landed an ace starter after losing Trevor Rogers, sources told ESPN.",
-          "text": "Freddy Peralta has agreed to a five-year, $125M deal with the Orioles, who have landed an ace starter after losing Trevor Rogers, sources told ESPN.",
-          "entities": [],
-          "occurredAt": "2026-11-24T17:14:06Z",
+          "priority": 86,
+          "headline": "The Orioles agreed to a five-year, $125 million deal with Freddy Peralta, adding an ace starter after losing Trevor Rogers.",
+          "text": "The Orioles agreed to a five-year, $125 million deal with Freddy Peralta, adding an ace starter after losing Trevor Rogers.",
+          "entities": [
+            "Baltimore Orioles",
+            "Freddy Peralta"
+          ],
+          "occurredAt": "2026-11-24T19:53:14Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
-          "freshnessBasis": "Freddy Peralta has agreed to a five-year, $125M deal with the Orioles, who have landed an ace starter after losing Trevor Rogers, sources told ESPN.",
+          "ageHours": 0.13,
+          "freshnessBasis": "Baltimore agreed to a five-year, $125 million deal with Freddy Peralta on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50583512/sources-freddy-peralta-orioles-5-years-125-million"
@@ -181,9 +39,168 @@
               "url": "https://www.espn.com/mlb/story/_/id/50583512/sources-freddy-peralta-orioles-5-years-125-million"
             }
           ],
-          "id": "a415-92c496d18d1922ad",
-          "feedRank": 6,
-          "compactHeadline": "Sources: Freddy Peralta stays in AL East, gets $125M deal to top Orioles rotation"
+          "id": "a3-e248101245973875",
+          "feedRank": 3,
+          "compactHeadline": "Orioles land Freddy Peralta on five-year, $125M deal"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-12c5c84e45ea8703"
+          ],
+          "type": "SIGNING",
+          "priority": 80,
+          "headline": "The Blue Jays agreed to a five-year, $80 million deal with Japanese right-hander Kaima Taira, including an opt-out after the third season.",
+          "text": "The Blue Jays agreed to a five-year, $80 million deal with Japanese right-hander Kaima Taira, including an opt-out after the third season.",
+          "entities": [
+            "Toronto Blue Jays",
+            "Kaima Taira"
+          ],
+          "occurredAt": "2026-11-24T19:51:07Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "Toronto agreed to a five-year, $80 million deal with Kaima Taira on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50585003/sources-kaima-taira-blue-jays-agree-5-year-80m-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50585003/sources-kaima-taira-blue-jays-agree-5-year-80m-deal"
+            }
+          ],
+          "id": "a3-e1c227f374bd32a5",
+          "feedRank": 8,
+          "compactHeadline": "Blue Jays agree to five-year, $80M deal with Kaima Taira"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-2c5670d0806f1d94"
+          ],
+          "type": "SIGNING",
+          "priority": 80,
+          "headline": "The Cubs reached a six-year, $120 million agreement with Japanese infielder/outfielder Teruaki Sato.",
+          "text": "The Cubs reached a six-year, $120 million agreement with Japanese infielder/outfielder Teruaki Sato.",
+          "entities": [
+            "Chicago Cubs",
+            "Teruaki Sato"
+          ],
+          "occurredAt": "2026-11-24T19:16:11Z",
+          "timePrecision": "exact",
+          "ageHours": 0.75,
+          "freshnessBasis": "Chicago reached a six-year, $120 million agreement with Teruaki Sato on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50583163/sources-cubs-teruaki-sato-reach-6-year-120m-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50583163/sources-cubs-teruaki-sato-reach-6-year-120m-deal"
+            }
+          ],
+          "id": "a3-08c473593a844f01",
+          "feedRank": 9,
+          "compactHeadline": "Cubs reach six-year, $120M agreement with Teruaki Sato"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-fac66154ebdde048"
+          ],
+          "type": "SIGNING",
+          "priority": 79,
+          "headline": "The Cubs agreed to a five-year, $120 million deal with free-agent pitcher Trevor Rogers.",
+          "text": "The Cubs agreed to a five-year, $120 million deal with free-agent pitcher Trevor Rogers.",
+          "entities": [
+            "Chicago Cubs",
+            "Trevor Rogers"
+          ],
+          "occurredAt": "2026-11-24T15:11:17Z",
+          "timePrecision": "exact",
+          "ageHours": 4.83,
+          "freshnessBasis": "Chicago agreed to a five-year, $120 million contract with Trevor Rogers on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50579432/sources-free-agent-trevor-rogers-cubs-reach-5-year-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50579432/sources-free-agent-trevor-rogers-cubs-reach-5-year-deal"
+            }
+          ],
+          "id": "a3-e63016eb89676b5b",
+          "feedRank": 13,
+          "compactHeadline": "Cubs agree to five-year, $120M deal with Trevor Rogers"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-f45482df6ed5b562"
+          ],
+          "type": "CONTRACT",
+          "priority": 77,
+          "headline": "MLB dropped its proposed escrow provision, saying salary-cap overages or underpayments would instead be accounted for in future seasons.",
+          "text": "MLB dropped its proposed escrow provision, saying salary-cap overages or underpayments would instead be accounted for in future seasons.",
+          "entities": [
+            "MLB"
+          ],
+          "occurredAt": "2026-11-24T19:58:51Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "MLB dropped its escrow provision demand from the salary-cap proposal on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50584880/mlb-drops-contract-escrow-provision-salary-cap-proposal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50584880/mlb-drops-contract-escrow-provision-salary-cap-proposal"
+            }
+          ],
+          "id": "a3-e8e8e4d5e7311826",
+          "feedRank": 26,
+          "compactHeadline": "MLB drops escrow demand from salary-cap proposal"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-a49edec8c6fd6c8c"
+          ],
+          "type": "CONTRACT",
+          "priority": 77,
+          "headline": "The Detroit Tigers agreed to a one-year, $5 million contract with infielder Ha-Seong Kim.",
+          "text": "The Detroit Tigers agreed to a one-year, $5 million contract with infielder Ha-Seong Kim.",
+          "entities": [
+            "Detroit Tigers",
+            "Ha-Seong Kim"
+          ],
+          "occurredAt": "2026-11-24T18:55:26Z",
+          "timePrecision": "exact",
+          "ageHours": 1.1,
+          "freshnessBasis": "Detroit agreed to a one-year, $5 million contract with Ha-Seong Kim on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50584756/sources-tigers-ha-seong-kim-agree-1-year-5m-contract"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50584756/sources-tigers-ha-seong-kim-agree-1-year-5m-contract"
+            }
+          ],
+          "id": "a3-8af1bc3d7e4e20f4",
+          "feedRank": 27,
+          "compactHeadline": "Tigers agree to one-year deal with Ha-Seong Kim"
         }
       ]
     },
@@ -194,133 +211,21 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c5e1e1e21ac8fe17"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Get ready for Week 12 with a look at an elite AFC matchup, why the Giants are a playoff sleeper and what to expect in Micah Parson's return.",
-          "text": "Get ready for Week 12 with a look at an elite AFC matchup, why the Giants are a playoff sleeper and what to expect in Micah Parson's return.",
-          "entities": [],
-          "occurredAt": "2026-11-24T17:03:20Z",
-          "timePrecision": "exact",
-          "ageHours": 2.47,
-          "freshnessBasis": "Get ready for Week 12 with a look at an elite AFC matchup, why the Giants are a playoff sleeper and what to expect in Micah Parson's return.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50563522/week-12-seven-things-solak-thinks-chiefs-bills-giants"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50563522/week-12-seven-things-solak-thinks-chiefs-bills-giants"
-            }
-          ],
-          "id": "a415-3565d4eb9be017c4",
-          "feedRank": 7,
-          "compactHeadline": "Seven things Solak thinks for NFL Week 12: Takes on Chiefs-Bills, Giants, Lions"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-567c8c6934c8012e"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
-          "text": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
-          "entities": [],
-          "occurredAt": "2026-11-24T16:26:57Z",
-          "timePrecision": "exact",
-          "ageHours": 3.07,
-          "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49745176/2026-nfl-playoff-predictions-afc-nfc-odds-super-bowl"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49745176/2026-nfl-playoff-predictions-afc-nfc-odds-super-bowl"
-            }
-          ],
-          "id": "a415-ea96d46825e75c17",
-          "feedRank": 8,
-          "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances to make postseason"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-29679030ed4d0dd1"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "text": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "entities": [],
-          "occurredAt": "2026-11-24T16:14:06Z",
-          "timePrecision": "exact",
-          "ageHours": 3.29,
-          "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-            }
-          ],
-          "id": "a415-dcde4a422d8ea634",
-          "feedRank": 9,
-          "compactHeadline": "2026 NFL pass rush, run stop, blocking win rate rankings"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-51c37830291050f5"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "If Dallas is going to catch up to New York in the division, it needs to start stringing wins together.",
-          "text": "If Dallas is going to catch up to New York in the division, it needs to start stringing wins together.",
-          "entities": [],
-          "occurredAt": "2026-11-24T11:00:15Z",
-          "timePrecision": "exact",
-          "ageHours": 8.52,
-          "freshnessBasis": "If Dallas is going to catch up to New York in the division, it needs to start stringing wins together.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50573980/dallas-cowboys-nfc-east-dak-prescott"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50573980/dallas-cowboys-nfc-east-dak-prescott"
-            }
-          ],
-          "id": "a415-d60849fa246d068a",
-          "feedRank": 10,
-          "compactHeadline": "Cowboys need to break a year-long trend to make the playoffs"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-ba4b5a8e4abccd4f"
           ],
           "type": "RESULT",
-          "priority": 70,
-          "headline": "After failing multiple times in late-game situations earlier this season, Commanders quarterback Jayden Daniels put together a second consecutive winning drive Monday night as Washington kicked a last-second field goal to beat Cincinnati 22-20.",
-          "text": "After failing multiple times in late-game situations earlier this season, Commanders quarterback Jayden Daniels put together a second consecutive winning drive Monday night as Washington kicked a last-second field goal to beat Cincinnati 22-20.",
-          "entities": [],
+          "priority": 82,
+          "headline": "Jayden Daniels led Washington on a late winning drive before the Commanders beat Cincinnati 22-20 on a last-second field goal.",
+          "text": "Jayden Daniels led Washington on a late winning drive before the Commanders beat Cincinnati 22-20 on a last-second field goal.",
+          "entities": [
+            "Washington Commanders",
+            "Cincinnati Bengals",
+            "Jayden Daniels"
+          ],
           "occurredAt": "2026-11-24T13:20:29Z",
           "timePrecision": "exact",
-          "ageHours": 6.18,
-          "freshnessBasis": "After failing multiple times in late-game situations earlier this season, Commanders quarterback Jayden Daniels put together a second consecutive winning drive Monday night as Washington kicked a last-second field goal to beat Cincinnati 22-20.",
+          "ageHours": 6.68,
+          "freshnessBasis": "Washington beat Cincinnati 22-20 on a last-second field goal after Jayden Daniels led the winning drive on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50580514/jayden-daniels-delivers-another-late-game-drive-commanders-win-vs-bengals-mnf"
@@ -332,117 +237,65 @@
               "url": "https://www.espn.com/nfl/story/_/id/50580514/jayden-daniels-delivers-another-late-game-drive-commanders-win-vs-bengals-mnf"
             }
           ],
-          "id": "a415-7a2f3f6b29aadb37",
-          "feedRank": 11,
-          "compactHeadline": "Jayden Daniels again delivers in 'high-pressure' situation for Commanders"
+          "id": "a3-4389affc607ad0af",
+          "feedRank": 7,
+          "compactHeadline": "Jayden Daniels leads Commanders to last-second win"
         },
         {
-          "rank": 6,
+          "rank": 2,
           "candidateIds": [
-            "cand-a2266196b7a347fc"
+            "cand-4de0a234ffa02c31"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "The Commanders' defense held the potent Bengals in check and Washington has won three of four.",
-          "text": "The Commanders' defense held the potent Bengals in check and Washington has won three of four.",
-          "entities": [],
-          "occurredAt": "2026-11-24T04:58:12Z",
+          "type": "LEAGUE_NEWS",
+          "priority": 76,
+          "headline": "The NFL intends to play 10 international games next season, the maximum allowed under the collective bargaining agreement.",
+          "text": "The NFL intends to play 10 international games next season, the maximum allowed under the collective bargaining agreement.",
+          "entities": [
+            "NFL"
+          ],
+          "occurredAt": "2026-11-24T14:04:19Z",
           "timePrecision": "exact",
-          "ageHours": 14.55,
-          "freshnessBasis": "The Commanders' defense held the potent Bengals in check and Washington has won three of four.",
+          "ageHours": 5.95,
+          "freshnessBasis": "The NFL said it intends to play 10 international games next season on Nov. 24.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50573995/2026-nfl-week-11-washington-commanders-cincinnati-bengals"
+            "https://www.espn.com/nfl/story/_/id/50573226/nfl-international-expansion-turf-players"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50573995/2026-nfl-week-11-washington-commanders-cincinnati-bengals"
+              "url": "https://www.espn.com/nfl/story/_/id/50573226/nfl-international-expansion-turf-players"
             }
           ],
-          "id": "a415-55ca5723df3fb00c",
-          "feedRank": 12,
-          "compactHeadline": "Commanders building momentum, halt Bengals' 5-game win streak"
+          "id": "a3-bb1573949073e10e",
+          "feedRank": 23,
+          "compactHeadline": "NFL plans maximum 10 international games next season"
         }
       ]
     },
     {
       "league": "NBA",
-      "seasonState": "offseason",
+      "seasonState": "active",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
-            "cand-b44503ca0b7964d8"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Timberwolves said Donte DiVincenzo has been cleared for basketball activities after Achilles surgery.",
-          "text": "The Timberwolves said Donte DiVincenzo has been cleared for basketball activities after Achilles surgery.",
-          "entities": [],
-          "occurredAt": "2026-11-24T17:38:32Z",
-          "timePrecision": "exact",
-          "ageHours": 1.88,
-          "freshnessBasis": "The Timberwolves said Donte DiVincenzo has been cleared for basketball activities after Achilles surgery.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50584000/wolves-dante-divincenzo-cleared-basketball-activities"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50584000/wolves-dante-divincenzo-cleared-basketball-activities"
-            }
-          ],
-          "id": "a415-af9d475eaea33894",
-          "feedRank": 13,
-          "compactHeadline": "Sources: Wolves' Donte DiVincenzo eyes New Year's for season debut"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-4a1339e8bb479315"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Our first edition of rookie rankings features 10 players standing out early from a strong 2026 draft class.",
-          "text": "Our first edition of rookie rankings features 10 players standing out early from a strong 2026 draft class.",
-          "entities": [],
-          "occurredAt": "2026-11-24T11:45:41Z",
-          "timePrecision": "exact",
-          "ageHours": 7.76,
-          "freshnessBasis": "Our first edition of rookie rankings features 10 players standing out early from a strong 2026 draft class.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50544296/nba-rookie-rankings-early-stats"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50544296/nba-rookie-rankings-early-stats"
-            }
-          ],
-          "id": "a415-0f08167685697e0d",
-          "feedRank": 14,
-          "compactHeadline": "NBA Rookie Rankings: 10 standouts in a star-studded class"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-62576434d0f560a4"
           ],
           "type": "STREAK",
-          "priority": 74,
-          "headline": "Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
-          "text": "Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
-          "entities": [],
+          "priority": 80,
+          "headline": "Brandin Podziemski scores 18 points as Warriors hold of Celtics 88-87 to snap five-game losing skid.",
+          "text": "Brandin Podziemski scores 18 points as Warriors hold of Celtics 88-87 to snap five-game losing skid.",
+          "entities": [
+            "Golden State Warriors",
+            "Boston Celtics",
+            "Brandin Podziemski"
+          ],
           "occurredAt": "2026-11-24T09:15:35Z",
           "timePrecision": "exact",
-          "ageHours": 10.26,
-          "freshnessBasis": "— Brandin Podziemski had 18 points and seven rebounds and the Golden State Warriors snapped a five-game losing streak by holding off Boston for an 88-87 win Sunday night, sending the Celtics to their first four-game skid in five years.",
+          "ageHours": 10.76,
+          "freshnessBasis": "Golden State beat Boston 88-87 to end a five-game losing streak on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nba/recap?gameId=401910035"
@@ -454,9 +307,75 @@
               "url": "http://www.espn.com/nba/recap?gameId=401910035"
             }
           ],
-          "id": "a415-c23de92fab38ebe5",
-          "feedRank": 15,
-          "compactHeadline": "Brandin Podziemski scores 18 points as Warriors hold of Celtics 88-87 to snap five-game losing skid"
+          "id": "a3-7138156350b2ca83",
+          "feedRank": 14,
+          "compactHeadline": "Warriors edge Celtics to snap five-game losing streak"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-00280f870fd8994f"
+          ],
+          "type": "MILESTONE",
+          "priority": 73,
+          "headline": "Jaden McDaniels scored a career-best 34 points as Minnesota routed Brooklyn 142-116.",
+          "text": "Jaden McDaniels scored a career-best 34 points as Minnesota routed Brooklyn 142-116.",
+          "entities": [
+            "Minnesota Timberwolves",
+            "Brooklyn Nets",
+            "Jaden McDaniels"
+          ],
+          "occurredAt": "2026-11-24T03:41:35Z",
+          "timePrecision": "exact",
+          "ageHours": 16.33,
+          "freshnessBasis": "Jaden McDaniels scored a career-best 34 points in Minnesota's 142-116 win over Brooklyn on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401910040"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401910040"
+            }
+          ],
+          "id": "a3-fb8e485950380dcb",
+          "feedRank": 19,
+          "compactHeadline": "McDaniels posts career-best 34 in Timberwolves rout"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-404a95c054c45197"
+          ],
+          "type": "STREAK",
+          "priority": 76,
+          "headline": "Tyler Herro scored 32 points and Milwaukee ended its 13-game losing streak with a 116-111 win over Toronto.",
+          "text": "Tyler Herro scored 32 points and Milwaukee ended its 13-game losing streak with a 116-111 win over Toronto.",
+          "entities": [
+            "Milwaukee Bucks",
+            "Toronto Raptors",
+            "Tyler Herro"
+          ],
+          "occurredAt": "2026-11-24T03:17:33Z",
+          "timePrecision": "exact",
+          "ageHours": 16.73,
+          "freshnessBasis": "Milwaukee beat Toronto 116-111 to end a 13-game losing streak on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401910039"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401910039"
+            }
+          ],
+          "id": "a3-9b11d5ff7af56622",
+          "feedRank": 24,
+          "compactHeadline": "Bucks snap 13-game skid behind Herro's 32 points"
         },
         {
           "rank": 4,
@@ -464,14 +383,19 @@
             "cand-d2227950853dc957"
           ],
           "type": "RESULT",
-          "priority": 70,
-          "headline": "Less than two hours prior to tipoff Monday, the San Antonio Spurs ruled Victor Wembanyama and De'Aaron Fox out of their 123-107 win over the Sacramento Kings, but the club anticipates both will play in Wednesday's game against the Portland Trail Blazers.",
-          "text": "Less than two hours prior to tipoff Monday, the San Antonio Spurs ruled Victor Wembanyama and De'Aaron Fox out of their 123-107 win over the Sacramento Kings, but the club anticipates both will play in Wednesday's game against the Portland Trail Blazers.",
-          "entities": [],
+          "priority": 72,
+          "headline": "San Antonio ruled out Victor Wembanyama and De'Aaron Fox shortly before tipoff, then beat Sacramento 123-107; both are expected back Wednesday.",
+          "text": "San Antonio ruled out Victor Wembanyama and De'Aaron Fox shortly before tipoff, then beat Sacramento 123-107; both are expected back Wednesday.",
+          "entities": [
+            "San Antonio Spurs",
+            "Victor Wembanyama",
+            "De'Aaron Fox",
+            "Sacramento Kings"
+          ],
           "occurredAt": "2026-11-24T07:01:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.5,
-          "freshnessBasis": "Less than two hours prior to tipoff Monday, the San Antonio Spurs ruled Victor Wembanyama and De'Aaron Fox out of their 123-107 win over the Sacramento Kings, but the club anticipates both will play in Wednesday's game against the Portland Trail Blazers.",
+          "ageHours": 13.0,
+          "freshnessBasis": "San Antonio ruled out Wembanyama and Fox before beating Sacramento 123-107 on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50578664/spurs-victor-wembanyama-deaaron-fox-kings"
@@ -483,117 +407,100 @@
               "url": "https://www.espn.com/nba/story/_/id/50578664/spurs-victor-wembanyama-deaaron-fox-kings"
             }
           ],
-          "id": "a415-5585812efbe586eb",
-          "feedRank": 16,
-          "compactHeadline": "Spurs rule Victor Wembanyama, De'Aaron Fox out 90 minutes before win over Kings"
+          "id": "a3-b0b6e110fb2b502d",
+          "feedRank": 29,
+          "compactHeadline": "Spurs beat Kings after ruling out Wembanyama and Fox"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-b56f6b1999cfcb79"
+            "cand-40474e66685c3b62"
           ],
           "type": "RESULT",
-          "priority": 70,
-          "headline": "Stephon Castle had 28 points, 11 assists and eight rebounds as the San Antonio Spurs beat the Sacramento Kings 123-107 on Monday night without Victor...",
-          "text": "Stephon Castle had 28 points, 11 assists and eight rebounds as the San Antonio Spurs beat the Sacramento Kings 123-107 on Monday night without Victor...",
-          "entities": [],
-          "occurredAt": "2026-11-24T06:08:32Z",
+          "priority": 72,
+          "headline": "Jalen Green scores 25 and Devin Booker adds 22 to help the Suns top the Pelicans 123-119 in OT.",
+          "text": "Jalen Green scores 25 and Devin Booker adds 22 to help the Suns top the Pelicans 123-119 in OT.",
+          "entities": [
+            "Phoenix Suns",
+            "New Orleans Pelicans",
+            "Jalen Green",
+            "Devin Booker"
+          ],
+          "occurredAt": "2026-11-24T04:27:34Z",
           "timePrecision": "exact",
-          "ageHours": 13.38,
-          "freshnessBasis": "— Stephon Castle had 28 points, 11 assists and eight rebounds as the San Antonio Spurs beat the Sacramento Kings 123-107 on Monday night without Victor...",
+          "ageHours": 15.56,
+          "freshnessBasis": "Phoenix beat New Orleans 123-119 in overtime on Nov. 24.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401910045"
+            "http://www.espn.com/nba/recap?gameId=401910042"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401910045"
+              "url": "http://www.espn.com/nba/recap?gameId=401910042"
             }
           ],
-          "id": "a415-0f1ec8b18335e586",
-          "feedRank": 17,
-          "compactHeadline": "Castle helps Spurs stay unbeaten on road with 123-107 win over Kings minus Wemby, Fox and Harper"
+          "id": "a3-bf0fb0278e0bd66e",
+          "feedRank": 31,
+          "compactHeadline": "Suns win overtime thriller behind Green and Booker"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-716fac4e29a1107c"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Kevin Durant scores 32 to power Rockets past Clippers 116-104.",
+          "text": "Kevin Durant scores 32 to power Rockets past Clippers 116-104.",
+          "entities": [
+            "Houston Rockets",
+            "Kevin Durant",
+            "Los Angeles Clippers"
+          ],
+          "occurredAt": "2026-11-24T04:08:32Z",
+          "timePrecision": "exact",
+          "ageHours": 15.88,
+          "freshnessBasis": "Houston beat the Clippers 116-104 behind Kevin Durant's 32 points on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401910043"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401910043"
+            }
+          ],
+          "id": "a3-b1feac45d2524167",
+          "feedRank": 32,
+          "compactHeadline": "Durant scores 32 as Rockets beat Clippers 116-104"
         }
       ]
     },
     {
       "league": "NHL",
-      "seasonState": "offseason",
+      "seasonState": "active",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
-            "cand-51067ed785ee995f"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Lightning forward Conor Geekie is expected to miss the next four to five months after undergoing shoulder surgery.",
-          "text": "Lightning forward Conor Geekie is expected to miss the next four to five months after undergoing shoulder surgery.",
-          "entities": [],
-          "occurredAt": "2026-11-24T17:44:00Z",
-          "timePrecision": "exact",
-          "ageHours": 1.79,
-          "freshnessBasis": "Lightning forward Conor Geekie is expected to miss the next four to five months after undergoing shoulder surgery.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50583955/lightning-conor-geekie-4-5-months-shoulder-surgery"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50583955/lightning-conor-geekie-4-5-months-shoulder-surgery"
-            }
-          ],
-          "id": "a415-0e1ee8a750d65974",
-          "feedRank": 18,
-          "compactHeadline": "Lightning forward Conor Geekie out 4-5 months after undergoing shoulder surgery"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-fb6c757d372cdb42"
-          ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Top pick Gavin McKenna's goal put the Maple Leafs ahead with just over 11 minutes left as they beat the Islanders on Monday to end their losing streak that dated back to Halloween.",
-          "text": "Top pick Gavin McKenna's goal put the Maple Leafs ahead with just over 11 minutes left as they beat the Islanders on Monday to end their losing streak that dated back to Halloween.",
-          "entities": [],
-          "occurredAt": "2026-11-24T05:19:23Z",
-          "timePrecision": "exact",
-          "ageHours": 14.2,
-          "freshnessBasis": "Top pick Gavin McKenna's goal put the Maple Leafs ahead with just over 11 minutes left as they beat the Islanders on Monday to end their losing streak that dated back to Halloween.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50579902/gavin-mckenna-scores-go-ahead-goal-maple-leafs-end-9-game-skid"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50579902/gavin-mckenna-scores-go-ahead-goal-maple-leafs-end-9-game-skid"
-            }
-          ],
-          "id": "a415-8ad769907994c03e",
-          "feedRank": 19,
-          "compactHeadline": "Gavin McKenna scores go-ahead goal as Maple Leafs win for first time in November"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-78bd5c4ee81bc5fd"
           ],
           "type": "INJURY",
-          "priority": 78,
-          "headline": "The Blackhawks said Connor Bedard had right shoulder surgery on Monday that is expected to sideline him for about four months.",
-          "text": "The Blackhawks said Connor Bedard had right shoulder surgery on Monday that is expected to sideline him for about four months.",
-          "entities": [],
+          "priority": 90,
+          "headline": "Blackhawks star Connor Bedard underwent right shoulder surgery and is expected to miss approximately four months.",
+          "text": "Blackhawks star Connor Bedard underwent right shoulder surgery and is expected to miss approximately four months.",
+          "entities": [
+            "Chicago Blackhawks",
+            "Connor Bedard"
+          ],
           "occurredAt": "2026-11-24T04:03:56Z",
           "timePrecision": "exact",
-          "ageHours": 15.46,
-          "freshnessBasis": "The Blackhawks said Connor Bedard had right shoulder surgery on Monday that is expected to sideline him for about four months.",
+          "ageHours": 15.95,
+          "freshnessBasis": "Chicago announced Connor Bedard underwent right shoulder surgery and faces an approximately four-month absence on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/50578959/blackhawks-connor-bedard-right-shoulder-surgery"
@@ -605,53 +512,61 @@
               "url": "https://www.espn.com/nhl/story/_/id/50578959/blackhawks-connor-bedard-right-shoulder-surgery"
             }
           ],
-          "id": "a415-1599655793a64963",
-          "feedRank": 20,
-          "compactHeadline": "Blackhawks' Connor Bedard has shoulder surgery, out approximately 4 months"
+          "id": "a3-ea90ae52dd3c02aa",
+          "feedRank": 1,
+          "compactHeadline": "Connor Bedard undergoes shoulder surgery, out four months"
         },
         {
-          "rank": 4,
+          "rank": 2,
           "candidateIds": [
-            "cand-438c7ce985a54eb3"
+            "cand-51067ed785ee995f"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Kirill Kaprizov scored a goal and added three assists and Joel Eriksson Ek scored twice as the Minnesota Wild defeated the San Jose Sharks 5-2 on Wednesday night.",
-          "text": "Kirill Kaprizov scored a goal and added three assists and Joel Eriksson Ek scored twice as the Minnesota Wild defeated the San Jose Sharks 5-2 on Wednesday night.",
-          "entities": [],
-          "occurredAt": "2026-11-24T06:04:33Z",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Tampa Bay forward Conor Geekie is expected to miss four to five months after undergoing shoulder surgery.",
+          "text": "Tampa Bay forward Conor Geekie is expected to miss four to five months after undergoing shoulder surgery.",
+          "entities": [
+            "Tampa Bay Lightning",
+            "Conor Geekie"
+          ],
+          "occurredAt": "2026-11-24T17:44:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.45,
-          "freshnessBasis": "— Kirill Kaprizov scored a goal and added three assists and Joel Eriksson Ek scored twice as the Minnesota Wild defeated the San Jose Sharks 5-2 on Wednesday night.",
+          "ageHours": 2.29,
+          "freshnessBasis": "Tampa Bay said Conor Geekie underwent shoulder surgery and will miss four to five months on Nov. 24.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892779"
+            "https://www.espn.com/nhl/story/_/id/50583955/lightning-conor-geekie-4-5-months-shoulder-surgery"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892779"
+              "url": "https://www.espn.com/nhl/story/_/id/50583955/lightning-conor-geekie-4-5-months-shoulder-surgery"
             }
           ],
-          "id": "a415-c9d4ea46fef399bc",
-          "feedRank": 21,
-          "compactHeadline": "Joel Eriksson Ek scores twice to lead Wild to 5-2 win over Sharks"
+          "id": "a3-2f4c4830c63cb11a",
+          "feedRank": 4,
+          "compactHeadline": "Lightning's Conor Geekie out four to five months after surgery"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
             "cand-90e84e7bef452e65"
           ],
           "type": "TRADE",
-          "priority": 78,
-          "headline": "The Canadiens have no concerns about newly acquired star Dylan Larkin asking Detroit for a trade, having been accused of quitting on the Red Wings after leaving in the fourth year of an eight-year contract.",
-          "text": "The Canadiens have no concerns about newly acquired star Dylan Larkin asking Detroit for a trade, having been accused of quitting on the Red Wings after leaving in the fourth year of an eight-year contract.",
-          "entities": [],
+          "priority": 76,
+          "headline": "Montreal coach Martin St. Louis said the Canadiens have no concerns about newly acquired Dylan Larkin after his departure from Detroit.",
+          "text": "Montreal coach Martin St. Louis said the Canadiens have no concerns about newly acquired Dylan Larkin after his departure from Detroit.",
+          "entities": [
+            "Montreal Canadiens",
+            "Dylan Larkin",
+            "Detroit Red Wings",
+            "Martin St. Louis"
+          ],
           "occurredAt": "2026-11-23T21:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 21.76,
-          "freshnessBasis": "The Canadiens have no concerns about newly acquired star Dylan Larkin asking Detroit for a trade, having been accused of quitting on the Red Wings after leaving in the fourth year of an eight-year contract.",
+          "ageHours": 22.26,
+          "freshnessBasis": "Montreal said it has no concerns about newly acquired Dylan Larkin after his departure from Detroit.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/50574950/canadiens-no-issue-dylan-larkin-quit-red-wings"
@@ -663,9 +578,142 @@
               "url": "https://www.espn.com/nhl/story/_/id/50574950/canadiens-no-issue-dylan-larkin-quit-red-wings"
             }
           ],
-          "id": "a415-ea0195b56f9e782e",
-          "feedRank": 22,
-          "compactHeadline": "Canadiens coach St. Louis: 'Harsh thing to say' Larkin 'quit' on Red Wings"
+          "id": "a3-9476c4e5b1a4d327",
+          "feedRank": 6,
+          "compactHeadline": "Canadiens back Dylan Larkin after Red Wings exit"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-fa7fdf01004be032"
+          ],
+          "type": "MILESTONE",
+          "priority": 76,
+          "headline": "Gabriel Vilardi scored a hat trick as Winnipeg defeated Utah 4-2.",
+          "text": "Gabriel Vilardi scored a hat trick as Winnipeg defeated Utah 4-2.",
+          "entities": [
+            "Winnipeg Jets",
+            "Utah Mammoth",
+            "Gabriel Vilardi"
+          ],
+          "occurredAt": "2026-11-24T03:40:32Z",
+          "timePrecision": "exact",
+          "ageHours": 16.34,
+          "freshnessBasis": "Gabriel Vilardi scored a hat trick in Winnipeg's 4-2 win over Utah on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892777"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892777"
+            }
+          ],
+          "id": "a3-877747aa00bb19e3",
+          "feedRank": 11,
+          "compactHeadline": "Vilardi's hat trick lifts Jets over Mammoth"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-cf94559b7d4913a1"
+          ],
+          "type": "STREAK",
+          "priority": 80,
+          "headline": "Gavin McKenna scored the go-ahead goal on a delayed penalty as Toronto rallied past the Islanders 4-2 to end a nine-game losing streak.",
+          "text": "Gavin McKenna scored the go-ahead goal on a delayed penalty as Toronto rallied past the Islanders 4-2 to end a nine-game losing streak.",
+          "entities": [
+            "Toronto Maple Leafs",
+            "New York Islanders",
+            "Gavin McKenna"
+          ],
+          "occurredAt": "2026-11-24T03:15:33Z",
+          "timePrecision": "exact",
+          "ageHours": 16.76,
+          "freshnessBasis": "Toronto beat the New York Islanders 4-2 to end a nine-game losing streak on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892776"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892776"
+            }
+          ],
+          "id": "a3-70f5c84af0157ec6",
+          "feedRank": 16,
+          "compactHeadline": "Maple Leafs rally to end nine-game skid"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-fb6c757d372cdb42"
+          ],
+          "type": "STREAK",
+          "priority": 78,
+          "headline": "Gavin McKenna scored the go-ahead goal with just over 11 minutes left as Toronto beat the Islanders for its first win in November.",
+          "text": "Gavin McKenna scored the go-ahead goal with just over 11 minutes left as Toronto beat the Islanders for its first win in November.",
+          "entities": [
+            "Toronto Maple Leafs",
+            "Gavin McKenna",
+            "New York Islanders"
+          ],
+          "occurredAt": "2026-11-24T05:19:23Z",
+          "timePrecision": "exact",
+          "ageHours": 14.7,
+          "freshnessBasis": "Gavin McKenna scored Toronto's go-ahead goal in a win over the Islanders that ended the Maple Leafs' nine-game skid.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50579902/gavin-mckenna-scores-go-ahead-goal-maple-leafs-end-9-game-skid"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50579902/gavin-mckenna-scores-go-ahead-goal-maple-leafs-end-9-game-skid"
+            }
+          ],
+          "id": "a3-92714b47a8000273",
+          "feedRank": 20,
+          "compactHeadline": "McKenna's late goal ends Maple Leafs' nine-game skid"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
+            "cand-438c7ce985a54eb3"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Kirill Kaprizov had a goal and three assists while Joel Eriksson Ek scored twice in Minnesota's 5-2 win over San Jose.",
+          "text": "Kirill Kaprizov had a goal and three assists while Joel Eriksson Ek scored twice in Minnesota's 5-2 win over San Jose.",
+          "entities": [
+            "Minnesota Wild",
+            "Kirill Kaprizov",
+            "Joel Eriksson Ek",
+            "San Jose Sharks"
+          ],
+          "occurredAt": "2026-11-24T06:04:33Z",
+          "timePrecision": "exact",
+          "ageHours": 13.94,
+          "freshnessBasis": "Minnesota beat San Jose 5-2 behind Kirill Kaprizov's four points and Joel Eriksson Ek's two goals.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892779"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892779"
+            }
+          ],
+          "id": "a3-3eba49ec52784d32",
+          "feedRank": 30,
+          "compactHeadline": "Kaprizov's four-point night powers Wild past Sharks"
         }
       ]
     },
@@ -676,46 +724,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-6cde10d6840c6935"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Tottenham Hotspur's rising star Luca Williams-Barnett has signed a new long-term contract, the club has confirmed.",
-          "text": "Tottenham Hotspur's rising star Luca Williams-Barnett has signed a new long-term contract, the club has confirmed.",
-          "entities": [],
-          "occurredAt": "2026-11-24T16:22:40Z",
-          "timePrecision": "exact",
-          "ageHours": 3.14,
-          "freshnessBasis": "Tottenham Hotspur's rising star Luca Williams-Barnett has signed a new long-term contract, the club has confirmed.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50581320/tottenham-hotspur-luca-williams-barnett-18-new-contract"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50581320/tottenham-hotspur-luca-williams-barnett-18-new-contract"
-            }
-          ],
-          "id": "a415-224d29cb25efae2f",
-          "feedRank": 23,
-          "compactHeadline": "Tottenham prodigy Luca Williams-Barnett, 18, signs new contract"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-2e345c0c05cf666e"
           ],
           "type": "SUSPENSION",
-          "priority": 64,
-          "headline": "Manchester United defender Leny Yoro's one-match suspension has been removed following a successful claim of wrongful dismissal.",
-          "text": "Manchester United defender Leny Yoro's one-match suspension has been removed following a successful claim of wrongful dismissal.",
-          "entities": [],
+          "priority": 76,
+          "headline": "Manchester United successfully appealed Leny Yoro's red card, removing the defender's one-match suspension after a wrongful-dismissal claim.",
+          "text": "Manchester United successfully appealed Leny Yoro's red card, removing the defender's one-match suspension after a wrongful-dismissal claim.",
+          "entities": [
+            "Manchester United",
+            "Leny Yoro"
+          ],
           "occurredAt": "2026-11-24T17:32:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.97,
-          "freshnessBasis": "Manchester United defender Leny Yoro's one-match suspension has been removed following a successful claim of wrongful dismissal.",
+          "ageHours": 2.47,
+          "freshnessBasis": "Manchester United won its appeal and had Leny Yoro's one-match suspension removed on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/50583223/man-united-win-appeal-leny-yoro-red-card"
@@ -727,175 +749,65 @@
               "url": "https://www.espn.com/soccer/story/_/id/50583223/man-united-win-appeal-leny-yoro-red-card"
             }
           ],
-          "id": "a415-caa5a99970714926",
-          "feedRank": 24,
-          "compactHeadline": "Man United win appeal over Leny Yoro red card"
+          "id": "a3-6deed5fc5afb5f98",
+          "feedRank": 21,
+          "compactHeadline": "Manchester United win appeal to erase Yoro suspension"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
-            "cand-1582ea168934c4d0"
+            "cand-6cde10d6840c6935"
           ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Everton manager David Moyes said he understood why James Tarkowski was shown a straight red card in the 4-0 defeat to Brentford.",
-          "text": "Everton manager David Moyes said he understood why James Tarkowski was shown a straight red card in the 4-0 defeat to Brentford.",
-          "entities": [],
-          "occurredAt": "2026-11-23T23:23:34Z",
+          "type": "SIGNING",
+          "priority": 68,
+          "headline": "Tottenham confirmed that 18-year-old prospect Luca Williams-Barnett signed a new long-term contract.",
+          "text": "Tottenham confirmed that 18-year-old prospect Luca Williams-Barnett signed a new long-term contract.",
+          "entities": [
+            "Tottenham Hotspur",
+            "Luca Williams-Barnett"
+          ],
+          "occurredAt": "2026-11-24T16:22:40Z",
           "timePrecision": "exact",
-          "ageHours": 20.13,
-          "freshnessBasis": "Everton manager David Moyes said he understood why James Tarkowski was shown a straight red card in the 4-0 defeat to Brentford.",
+          "ageHours": 3.64,
+          "freshnessBasis": "Tottenham confirmed Luca Williams-Barnett signed a new long-term contract on Nov. 24.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50577324/david-moyes-james-tarkowski-everton-brentford"
+            "https://www.espn.com/soccer/story/_/id/50581320/tottenham-hotspur-luca-williams-barnett-18-new-contract"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50577324/david-moyes-james-tarkowski-everton-brentford"
+              "url": "https://www.espn.com/soccer/story/_/id/50581320/tottenham-hotspur-luca-williams-barnett-18-new-contract"
             }
           ],
-          "id": "a415-e5f4ec9f96607357",
+          "id": "a3-3592f4bb5f47e1be",
           "feedRank": 25,
-          "compactHeadline": "David Moyes accepts James Tarkowski red card in Everton defeat to Brentford"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-3e278b91a2f8ec92"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Arsenal won the Premier League in controversial fashion last season, but the set-piece goals they counted on have disappeared. Why?",
-          "text": "Arsenal won the Premier League in controversial fashion last season, but the set-piece goals they counted on have disappeared. Why?",
-          "entities": [],
-          "occurredAt": "2026-11-24T08:37:39Z",
-          "timePrecision": "exact",
-          "ageHours": 10.89,
-          "freshnessBasis": "Arsenal won the Premier League in controversial fashion last season, but the set-piece goals they counted on have disappeared. Why?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50576776/premier-league-set-piece-goal-arsenal-standings-table"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50576776/premier-league-set-piece-goal-arsenal-standings-table"
-            }
-          ],
-          "id": "a415-dc4c56cceabef72b",
-          "feedRank": 26,
-          "compactHeadline": "Premier League's set-piece goal surge is over, but Arsenal are No. 1 anyway"
+          "compactHeadline": "Tottenham teenager Luca Williams-Barnett signs new deal"
         }
       ]
     },
     {
       "league": "MLS",
-      "seasonState": "active",
+      "seasonState": "postseason",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
-            "cand-260e5f6a8adb8f41"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Orlando City SC has fired interim head coach Martín Perelman and interim assistant coach Sebastián Setti after losing to FC Cincinnati in an MLS Cup Eastern Conference wild-card match.",
-          "text": "Orlando City SC has fired interim head coach Martín Perelman and interim assistant coach Sebastián Setti after losing to FC Cincinnati in an MLS Cup Eastern Conference wild-card match.",
-          "entities": [],
-          "occurredAt": "2026-11-23T21:37:43Z",
-          "timePrecision": "exact",
-          "ageHours": 21.89,
-          "freshnessBasis": "Orlando City SC has fired interim head coach Martín Perelman and interim assistant coach Sebastián Setti after losing to FC Cincinnati in an MLS Cup Eastern Conference wild-card match.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50576429/orlando-city-fires-perelman-playoff-exit"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50576429/orlando-city-fires-perelman-playoff-exit"
-            }
-          ],
-          "id": "a415-7c3412929d5de930",
-          "feedRank": 27,
-          "compactHeadline": "Orlando City fires interim coach Perelman, assistant Setti after playoff exit"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-ffae22eea8e4efa4"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "FC Cincinnati will honor Cincinnati Zoo's famous hippo, Fiona, following her unexpected death last week.",
-          "text": "FC Cincinnati will honor Cincinnati Zoo's famous hippo, Fiona, following her unexpected death last week.",
-          "entities": [],
-          "occurredAt": "2026-11-24T13:19:03Z",
-          "timePrecision": "exact",
-          "ageHours": 6.2,
-          "freshnessBasis": "FC Cincinnati will honor Cincinnati Zoo's famous hippo, Fiona, following her unexpected death last week.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50581745/fiona-hippo-fc-cincinnati-tifo-death-honoured-mls"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50581745/fiona-hippo-fc-cincinnati-tifo-death-honoured-mls"
-            }
-          ],
-          "id": "a415-9fe63c704503ee0a",
-          "feedRank": 28,
-          "compactHeadline": "Fiona the hippo to be honored by FC Cincinnati with tifo after untimely death"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-14183a5a5d1bf883"
-          ],
-          "type": "LEGAL",
-          "priority": 64,
-          "headline": "MLS is gathering information regarding the reported arrest of Houston Dynamo FC midfielder Héctor Herrera for suspicion of driving while intoxicated ahead of the team's first game of the playoffs.",
-          "text": "MLS is gathering information regarding the reported arrest of Houston Dynamo FC midfielder Héctor Herrera for suspicion of driving while intoxicated ahead of the team's first game of the playoffs.",
-          "entities": [],
-          "occurredAt": "2026-11-24T00:55:43Z",
-          "timePrecision": "exact",
-          "ageHours": 18.59,
-          "freshnessBasis": "MLS is gathering information regarding the reported arrest of Houston Dynamo FC midfielder Héctor Herrera for suspicion of driving while intoxicated ahead of the team's first game of the playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50577651/houston-herrera-available-dynamo-playoff-opener-mls-probe"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/50577651/houston-herrera-available-dynamo-playoff-opener-mls-probe"
-            }
-          ],
-          "id": "a415-408f1d0c2d6a00c3",
-          "feedRank": 29,
-          "compactHeadline": "Houston says Herrera available for Dynamo playoff opener amid MLS probe"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-d438944873ebf12d"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "St. Louis City never trailed in a 3-2 victory over Los Angeles FC in the MLS Cup Western Conference first-round opener.",
-          "text": "St. Louis City never trailed in a 3-2 victory over Los Angeles FC in the MLS Cup Western Conference first-round opener.",
-          "entities": [],
+          "type": "PLAYOFF",
+          "priority": 80,
+          "headline": "St. Louis City never trailed in a 3-2 win over LAFC to take the lead in their MLS Cup Western Conference first-round series.",
+          "text": "St. Louis City never trailed in a 3-2 win over LAFC to take the lead in their MLS Cup Western Conference first-round series.",
+          "entities": [
+            "St. Louis CITY SC",
+            "LAFC"
+          ],
           "occurredAt": "2026-11-24T05:20:25Z",
           "timePrecision": "exact",
-          "ageHours": 14.18,
-          "freshnessBasis": "St. Louis City never trailed in a 3-2 victory over Los Angeles FC in the MLS Cup Western Conference first-round opener.",
+          "ageHours": 14.68,
+          "freshnessBasis": "St. Louis City beat LAFC 3-2 in the MLS Cup Western Conference first-round opener on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/soccer/report/_/gameId/401933728"
@@ -907,9 +819,75 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/401933728"
             }
           ],
-          "id": "a415-dff099f1a8b705f0",
-          "feedRank": 30,
-          "compactHeadline": "St. Louis City holds off LAFC in 3-2 victory to take first-round lead"
+          "id": "a3-62c4c311d8be83b4",
+          "feedRank": 2,
+          "compactHeadline": "St. Louis City takes first-round lead over LAFC"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-260e5f6a8adb8f41"
+          ],
+          "type": "COACHING",
+          "priority": 78,
+          "headline": "Orlando City fired interim head coach Martín Perelman and assistant Sebastián Setti after its MLS playoff exit.",
+          "text": "Orlando City fired interim head coach Martín Perelman and assistant Sebastián Setti after its MLS playoff exit.",
+          "entities": [
+            "Orlando City SC",
+            "Martín Perelman",
+            "Sebastián Setti"
+          ],
+          "occurredAt": "2026-11-23T21:37:43Z",
+          "timePrecision": "exact",
+          "ageHours": 22.39,
+          "freshnessBasis": "Orlando City fired Martín Perelman and Sebastián Setti after its playoff exit on Nov. 23.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50576429/orlando-city-fires-perelman-playoff-exit"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50576429/orlando-city-fires-perelman-playoff-exit"
+            }
+          ],
+          "id": "a3-494004c4c311a22b",
+          "feedRank": 18,
+          "compactHeadline": "Orlando City fires interim coach after playoff exit"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-14183a5a5d1bf883"
+          ],
+          "type": "LEGAL",
+          "priority": 76,
+          "headline": "Houston says Héctor Herrera is available for the Dynamo's playoff opener while MLS gathers information about his reported DWI arrest.",
+          "text": "Houston says Héctor Herrera is available for the Dynamo's playoff opener while MLS gathers information about his reported DWI arrest.",
+          "entities": [
+            "Houston Dynamo FC",
+            "Héctor Herrera",
+            "MLS"
+          ],
+          "occurredAt": "2026-11-24T00:55:43Z",
+          "timePrecision": "exact",
+          "ageHours": 19.09,
+          "freshnessBasis": "Houston said Héctor Herrera is available for the playoff opener while MLS investigates his reported arrest for suspicion of driving while intoxicated.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50577651/houston-herrera-available-dynamo-playoff-opener-mls-probe"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/50577651/houston-herrera-available-dynamo-playoff-opener-mls-probe"
+            }
+          ],
+          "id": "a3-f250c18be177ebe0",
+          "feedRank": 22,
+          "compactHeadline": "Herrera available for Dynamo playoff opener amid probe"
         }
       ]
     },
@@ -920,104 +898,21 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c2d2e3a4d0014e1b"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
-          "text": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
-          "entities": [],
-          "occurredAt": "2026-11-23T22:32:30Z",
-          "timePrecision": "exact",
-          "ageHours": 20.98,
-          "freshnessBasis": "UCLA quarterback Ty Dieffenbach is dealing with a minor hip injury and is expected to be available if the Bruins make the College Football Playoff, sources said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50573866/ucla-qb-dieffenbach-not-ruled-saturday-game-vs-usc"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50573866/ucla-qb-dieffenbach-not-ruled-saturday-game-vs-usc"
-            }
-          ],
-          "id": "a415-87edc5c0bbf04613",
-          "feedRank": 31,
-          "compactHeadline": "UCLA QB Dieffenbach not ruled out for Saturday's game vs. USC"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-e2c4cbb91fbe8394"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Iowa State running back Aiden Flora, who leads the nation in rushing, announced Monday that he has re-signed with the Cyclones for next season.",
-          "text": "Iowa State running back Aiden Flora, who leads the nation in rushing, announced Monday that he has re-signed with the Cyclones for next season.",
-          "entities": [],
-          "occurredAt": "2026-11-23T23:57:14Z",
-          "timePrecision": "exact",
-          "ageHours": 19.57,
-          "freshnessBasis": "Iowa State running back Aiden Flora, who leads the nation in rushing, announced Monday that he has re-signed with the Cyclones for next season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50577520/aiden-flora-nation-leading-rusher-re-signs-iowa-state"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50577520/aiden-flora-nation-leading-rusher-re-signs-iowa-state"
-            }
-          ],
-          "id": "a415-b712be71ad5dddef",
-          "feedRank": 32,
-          "compactHeadline": "Aiden Flora, nation's leading rusher, re-signs with Iowa State for next season"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-39bdd79c0b969c5c"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "New Zealand native and ESPN's No. 8 overall prospect in the 2028 cycle, offensive tackle Lincoln Fa'alafi, committed Tuesday to Notre Dame.",
-          "text": "New Zealand native and ESPN's No. 8 overall prospect in the 2028 cycle, offensive tackle Lincoln Fa'alafi, committed Tuesday to Notre Dame.",
-          "entities": [],
-          "occurredAt": "2026-11-24T19:23:04Z",
-          "timePrecision": "exact",
-          "ageHours": 0.14,
-          "freshnessBasis": "New Zealand native and ESPN's No. 8 overall prospect in the 2028 cycle, offensive tackle Lincoln Fa'alafi, committed Tuesday to Notre Dame.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50584881/notre-dame-gets-2028-commitment-ot-lincoln-faalafi"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50584881/notre-dame-gets-2028-commitment-ot-lincoln-faalafi"
-            }
-          ],
-          "id": "a415-09d30b4925bd0b2b",
-          "feedRank": 33,
-          "compactHeadline": "Five-star OT Lincoln Fa'alafi commits to Notre Dame, to join 2028 class"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-396a4ab640b9b69a"
           ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Georgia's Glenn Schumann, one of the country's top defensive coordinators and part of a staff that has the Bulldogs at No. 1 in the CFP rankings, agreed to a five-year deal to become the next coach at Florida State, the school announced Monday.",
-          "text": "Georgia's Glenn Schumann, one of the country's top defensive coordinators and part of a staff that has the Bulldogs at No. 1 in the CFP rankings, agreed to a five-year deal to become the next coach at Florida State, the school announced Monday.",
-          "entities": [],
+          "type": "COACHING",
+          "priority": 86,
+          "headline": "Florida State agreed to a five-year deal with Georgia defensive coordinator Glenn Schumann to become its next head coach.",
+          "text": "Florida State agreed to a five-year deal with Georgia defensive coordinator Glenn Schumann to become its next head coach.",
+          "entities": [
+            "Florida State Seminoles",
+            "Glenn Schumann",
+            "Georgia Bulldogs"
+          ],
           "occurredAt": "2026-11-24T02:51:47Z",
           "timePrecision": "exact",
-          "ageHours": 16.66,
-          "freshnessBasis": "Georgia's Glenn Schumann, one of the country's top defensive coordinators and part of a staff that has the Bulldogs at No. 1 in the CFP rankings, agreed to a five-year deal to become the next coach at Florida State, the school announced Monday.",
+          "ageHours": 17.16,
+          "freshnessBasis": "Florida State agreed to a five-year deal with Glenn Schumann to become its next coach on Nov. 24.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50577665/uga-defensive-coordinator-schumann-coach-florida-state"
@@ -1029,38 +924,169 @@
               "url": "https://www.espn.com/college-football/story/_/id/50577665/uga-defensive-coordinator-schumann-coach-florida-state"
             }
           ],
-          "id": "a415-dd6aa3250d84f328",
-          "feedRank": 34,
-          "compactHeadline": "Georgia defensive coordinator Glenn Schumann agrees to coach Florida State"
+          "id": "a3-9210c4a632f81ad9",
+          "feedRank": 5,
+          "compactHeadline": "Georgia coordinator Glenn Schumann agrees to lead Florida State"
         },
         {
-          "rank": 5,
+          "rank": 2,
           "candidateIds": [
-            "cand-6795dd43ae5cabc8"
+            "cand-cbc3aafae42e33d0"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Warde Manuel's eventful decade in Ann Arbor has been marked by athletic successes and marred by controversy.",
-          "text": "Warde Manuel's eventful decade in Ann Arbor has been marked by athletic successes and marred by controversy.",
-          "entities": [],
-          "occurredAt": "2026-11-24T18:47:39Z",
+          "type": "INJURY",
+          "priority": 76,
+          "headline": "Wake Forest running back Ty Clark will miss the rest of the season, coach Jake Dickert announced.",
+          "text": "Wake Forest running back Ty Clark will miss the rest of the season, coach Jake Dickert announced.",
+          "entities": [
+            "Wake Forest Demon Deacons",
+            "Ty Clark"
+          ],
+          "occurredAt": "2026-11-23T20:30:43Z",
           "timePrecision": "exact",
-          "ageHours": 0.73,
-          "freshnessBasis": "Warde Manuel's eventful decade in Ann Arbor has been marked by athletic successes and marred by controversy.",
+          "ageHours": 23.51,
+          "freshnessBasis": "Wake Forest announced Ty Clark is out for the rest of the season on Nov. 23.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49351177/2026-michigan-warde-manuel-athletic-department-tenure-line-investigation"
+            "https://www.espn.com/college-football/story/_/id/50575731/wake-forest-leading-rusher-ry-clark-ruled-season"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49351177/2026-michigan-warde-manuel-athletic-department-tenure-line-investigation"
+              "url": "https://www.espn.com/college-football/story/_/id/50575731/wake-forest-leading-rusher-ry-clark-ruled-season"
             }
           ],
-          "id": "a415-3c4add950c6de35a",
-          "feedRank": 35,
-          "compactHeadline": "A timeline of Michigan athletics since 2017"
+          "id": "a3-2730bac4264d197d",
+          "feedRank": 10,
+          "compactHeadline": "Wake Forest leading rusher Ty Clark ruled out for season"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-dc95c8b1f085e4bb"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 80,
+          "headline": "The SEC plans to consider terminating LSU's membership at a Dec. 3 meeting, according to a federal-court filing.",
+          "text": "The SEC plans to consider terminating LSU's membership at a Dec. 3 meeting, according to a federal-court filing.",
+          "entities": [
+            "SEC",
+            "LSU Tigers"
+          ],
+          "occurredAt": "2026-11-24T16:02:28Z",
+          "timePrecision": "exact",
+          "ageHours": 3.98,
+          "freshnessBasis": "A federal-court filing said the SEC will consider terminating LSU's membership at its Dec. 3 meeting.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mens-college-basketball/story/_/id/50577602/sec-consider-termination-lsu-membership"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/mens-college-basketball/story/_/id/50577602/sec-consider-termination-lsu-membership"
+            }
+          ],
+          "id": "a3-923cf6504f8c8c2b",
+          "feedRank": 12,
+          "compactHeadline": "SEC to consider whether to terminate LSU membership"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-d733f9a00b47f670"
+          ],
+          "type": "DISCIPLINE",
+          "priority": 78,
+          "headline": "The NCAA sanctioned Liberty over tampering with two players before they entered the transfer portal, issuing show-cause penalties to two coaches and the GM.",
+          "text": "The NCAA sanctioned Liberty over tampering with two players before they entered the transfer portal, issuing show-cause penalties to two coaches and the GM.",
+          "entities": [
+            "Liberty Flames",
+            "NCAA"
+          ],
+          "occurredAt": "2026-11-24T19:51:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "The NCAA announced sanctions against Liberty and show-cause penalties for two coaches and the GM on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50585093/ncaa-sanctions-liberty-transfer-portal-tampering"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50585093/ncaa-sanctions-liberty-transfer-portal-tampering"
+            }
+          ],
+          "id": "a3-fd30dfdbf3b2f299",
+          "feedRank": 15,
+          "compactHeadline": "NCAA sanctions Liberty for transfer-portal tampering"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-e2c4cbb91fbe8394"
+          ],
+          "type": "SIGNING",
+          "priority": 74,
+          "headline": "Iowa State announced that leading rusher Aiden Flora has re-signed to play for the Cyclones next season.",
+          "text": "Iowa State announced that leading rusher Aiden Flora has re-signed to play for the Cyclones next season.",
+          "entities": [
+            "Iowa State Cyclones",
+            "Aiden Flora"
+          ],
+          "occurredAt": "2026-11-23T23:57:14Z",
+          "timePrecision": "exact",
+          "ageHours": 20.07,
+          "freshnessBasis": "Iowa State announced Aiden Flora re-signed for next season on Nov. 23.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50577520/aiden-flora-nation-leading-rusher-re-signs-iowa-state"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50577520/aiden-flora-nation-leading-rusher-re-signs-iowa-state"
+            }
+          ],
+          "id": "a3-6ea8838dc561aec3",
+          "feedRank": 17,
+          "compactHeadline": "Nation's leading rusher Aiden Flora returns to Iowa State"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-39bdd79c0b969c5c"
+          ],
+          "type": "SIGNING",
+          "priority": 65,
+          "headline": "Notre Dame landed a commitment from five-star offensive tackle Lincoln Fa'alafi, ESPN's No. 8 overall prospect in the 2028 class.",
+          "text": "Notre Dame landed a commitment from five-star offensive tackle Lincoln Fa'alafi, ESPN's No. 8 overall prospect in the 2028 class.",
+          "entities": [
+            "Notre Dame Fighting Irish",
+            "Lincoln Fa'alafi"
+          ],
+          "occurredAt": "2026-11-24T19:56:07Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "Lincoln Fa'alafi committed to Notre Dame on Nov. 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/50584881/notre-dame-gets-2028-commitment-ot-lincoln-faalafi"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/50584881/notre-dame-gets-2028-commitment-ot-lincoln-faalafi"
+            }
+          ],
+          "id": "a3-e8a50e124f9c2fbb",
+          "feedRank": 28,
+          "compactHeadline": "Five-star tackle Lincoln Fa'alafi commits to Notre Dame"
         }
       ]
     }
@@ -1079,14 +1105,5 @@
   },
   "headlineCount": 32,
   "headlineTargetChars": 80,
-  "headlineMaxChars": 96,
-  "editorFallback": {
-    "active": true,
-    "version": "A4.15",
-    "mode": "deterministic-grounded-source-selection",
-    "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 94,
-    "publishedItemCount": 35,
-    "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
-  }
+  "headlineMaxChars": 96
 }
