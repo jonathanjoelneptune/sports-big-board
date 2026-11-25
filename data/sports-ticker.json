@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-11-25T21:31:04Z",
+  "generatedAt": "2026-11-25T22:01:06Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "400943b05bac71599826a1f17a3e9a0c1ceb20850a97d559e2b634ea475c66b5",
+  "sourceCandidateHash": "12d54b8df82bbe39d3868500963bbae473313ab5c49465c23d35c0285b065192",
   "leagues": [
     {
       "league": "MLB",
@@ -17,17 +17,17 @@
             "cand-fa308511ff9ee6f6"
           ],
           "type": "LEGAL",
-          "priority": 88,
-          "headline": "MLB sued the players' association in federal court, seeking a ruling that its contemplated lockout next week would be legal.",
-          "text": "MLB sued the players' association in federal court, seeking a ruling that its contemplated lockout next week would be legal.",
+          "priority": 86,
+          "headline": "MLB sued the players’ union and asked a federal court to declare its contemplated lockout legal.",
+          "text": "MLB sued the players’ union and asked a federal court to declare its contemplated lockout legal.",
           "entities": [
             "MLB",
             "MLB Players Association"
           ],
           "occurredAt": "2026-11-25T20:02:01Z",
           "timePrecision": "exact",
-          "ageHours": 1.48,
-          "freshnessBasis": "MLB filed a federal lawsuit seeking to declare a potential lockout legal Wednesday.",
+          "ageHours": 1.98,
+          "freshnessBasis": "MLB filed a federal lawsuit seeking to validate a potential lockout Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50595155/mlb-sues-players-union-asking-court-declare-lockout-legal"
@@ -40,7 +40,7 @@
             }
           ],
           "id": "a3-6a47e1fab4e0dd9e",
-          "feedRank": 6,
+          "feedRank": 8,
           "compactHeadline": "MLB sues union over potential lockout"
         },
         {
@@ -49,16 +49,16 @@
             "cand-f81f7c1fa7b948a3"
           ],
           "type": "SIGNING",
-          "priority": 75,
+          "priority": 74,
           "headline": "Free-agent third baseman Alec Bohm agreed to a two-year deal with Kansas City, according to multiple reports.",
           "text": "Free-agent third baseman Alec Bohm agreed to a two-year deal with Kansas City, according to multiple reports.",
           "entities": [
-            "Kansas City Royals",
-            "Alec Bohm"
+            "Alec Bohm",
+            "Kansas City Royals"
           ],
           "occurredAt": "2026-11-25T17:49:01Z",
           "timePrecision": "exact",
-          "ageHours": 3.7,
+          "ageHours": 4.2,
           "freshnessBasis": "Alec Bohm agreed to a two-year contract with Kansas City Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -71,9 +71,41 @@
               "url": "https://www.espn.com/mlb/story/_/id/50594322/reports-free-agent-alec-bohm-reaches-2-year-royals"
             }
           ],
-          "id": "a3-7e1bc9cd28369f26",
-          "feedRank": 16,
-          "compactHeadline": "Royals reach two-year deal with Alec Bohm"
+          "id": "a3-0d15636797b01f0a",
+          "feedRank": 17,
+          "compactHeadline": "Alec Bohm agrees to join Royals"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6c117f4a42e2480c"
+          ],
+          "type": "LEGAL",
+          "priority": 78,
+          "headline": "Texts presented in the Luis Ortiz case allegedly show his wife urging the Guardians pitcher to delete evidence after a game tied to alleged pitch rigging.",
+          "text": "Texts presented in the Luis Ortiz case allegedly show his wife urging the Guardians pitcher to delete evidence after a game tied to alleged pitch rigging.",
+          "entities": [
+            "Luis Ortiz",
+            "Cleveland Guardians"
+          ],
+          "occurredAt": "2026-11-25T00:05:24Z",
+          "timePrecision": "exact",
+          "ageHours": 21.93,
+          "freshnessBasis": "Texts were presented as evidence in the case involving allegations that Luis Ortiz rigged a pitch.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50584679/luis-ortiz-wife-text-messages-trial-evidence"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50584679/luis-ortiz-wife-text-messages-trial-evidence"
+            }
+          ],
+          "id": "a3-89a82ec3bad67301",
+          "feedRank": 28,
+          "compactHeadline": "Texts emerge in Luis Ortiz alleged pitch-rigging case"
         }
       ]
     },
@@ -84,53 +116,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-79216959604a899c"
-          ],
-          "type": "BREAKING",
-          "priority": 94,
-          "headline": "The Steelers are releasing Aaron Rodgers after the quarterback criticized coach Mike McCarthy in a Wednesday interview, sources told ESPN.",
-          "text": "The Steelers are releasing Aaron Rodgers after the quarterback criticized coach Mike McCarthy in a Wednesday interview, sources told ESPN.",
-          "entities": [
-            "Pittsburgh Steelers",
-            "Aaron Rodgers",
-            "Mike McCarthy"
-          ],
-          "occurredAt": "2026-11-25T21:11:54Z",
-          "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "Pittsburgh decided to release Aaron Rodgers Wednesday after his public criticism of Mike McCarthy.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
-            }
-          ],
-          "id": "a3-47a162230ed884a5",
-          "feedRank": 1,
-          "compactHeadline": "Steelers release Aaron Rodgers after McCarthy dispute"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-42afd4fe43461360"
           ],
           "type": "INJURY",
-          "priority": 78,
-          "headline": "49ers quarterback Brock Purdy will not practice Wednesday because of an ankle injury suffered against Minnesota on Sunday night.",
-          "text": "49ers quarterback Brock Purdy will not practice Wednesday because of an ankle injury suffered against Minnesota on Sunday night.",
+          "priority": 77,
+          "headline": "49ers quarterback Brock Purdy will not practice Wednesday because of an ankle injury suffered against Minnesota.",
+          "text": "49ers quarterback Brock Purdy will not practice Wednesday because of an ankle injury suffered against Minnesota.",
           "entities": [
-            "San Francisco 49ers",
-            "Brock Purdy"
+            "Brock Purdy",
+            "San Francisco 49ers"
           ],
           "occurredAt": "2026-11-25T21:04:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.44,
-          "freshnessBasis": "Brock Purdy was held out of San Francisco's Wednesday practice with an ankle injury.",
+          "ageHours": 0.94,
+          "freshnessBasis": "Brock Purdy was held out of San Francisco’s Wednesday practice with an ankle injury.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50596930/49ers-brock-purdy-ankle-injury-practice-wednesday"
@@ -143,27 +142,92 @@
             }
           ],
           "id": "a3-09c133f16ece7f6a",
-          "feedRank": 5,
+          "feedRank": 3,
           "compactHeadline": "Brock Purdy misses practice with ankle injury"
         },
         {
+          "rank": 2,
+          "candidateIds": [
+            "cand-33a06c0ef5d399a2"
+          ],
+          "type": "ROSTER",
+          "priority": 82,
+          "headline": "Pittsburgh waived Aaron Rodgers after the quarterback criticized coach Mike McCarthy in a televised interview.",
+          "text": "Pittsburgh waived Aaron Rodgers after the quarterback criticized coach Mike McCarthy in a televised interview.",
+          "entities": [
+            "Aaron Rodgers",
+            "Pittsburgh Steelers",
+            "Mike McCarthy"
+          ],
+          "occurredAt": "2026-11-25T21:58:04Z",
+          "timePrecision": "exact",
+          "ageHours": 0.05,
+          "freshnessBasis": "The Steelers waived Aaron Rodgers Wednesday after his public criticism of Mike McCarthy.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
+            }
+          ],
+          "id": "a3-4a2b5e50dbb20050",
+          "feedRank": 4,
+          "compactHeadline": "Steelers waive Aaron Rodgers after McCarthy remarks"
+        },
+        {
           "rank": 3,
+          "candidateIds": [
+            "cand-dc886dc5a25d9583"
+          ],
+          "type": "INJURY",
+          "priority": 75,
+          "headline": "Ravens running back Derrick Henry re-entered concussion protocol, though Baltimore expects him to play Sunday at Houston.",
+          "text": "Ravens running back Derrick Henry re-entered concussion protocol, though Baltimore expects him to play Sunday at Houston.",
+          "entities": [
+            "Derrick Henry",
+            "Baltimore Ravens"
+          ],
+          "occurredAt": "2026-11-25T21:57:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Derrick Henry re-entered concussion protocol Wednesday ahead of Baltimore’s Sunday game.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50597502/henry-concussion-protocol-ravens-expect-play"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50597502/henry-concussion-protocol-ravens-expect-play"
+            }
+          ],
+          "id": "a3-47f600b52abbebc0",
+          "feedRank": 5,
+          "compactHeadline": "Derrick Henry back in concussion protocol"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-2763c5600db57c32"
           ],
           "type": "SIGNING",
           "priority": 74,
-          "headline": "Wide receiver Brandon Aiyuk is signing with Washington's practice squad and will reunite with college quarterback Jayden Daniels.",
-          "text": "Wide receiver Brandon Aiyuk is signing with Washington's practice squad and will reunite with college quarterback Jayden Daniels.",
+          "headline": "Brandon Aiyuk is signing with Washington’s practice squad and will reunite with college quarterback Jayden Daniels.",
+          "text": "Brandon Aiyuk is signing with Washington’s practice squad and will reunite with college quarterback Jayden Daniels.",
           "entities": [
-            "Washington Commanders",
             "Brandon Aiyuk",
+            "Washington Commanders",
             "Jayden Daniels"
           ],
           "occurredAt": "2026-11-25T19:57:26Z",
           "timePrecision": "exact",
-          "ageHours": 1.56,
-          "freshnessBasis": "Brandon Aiyuk agreed to join Washington's practice squad Wednesday.",
+          "ageHours": 2.06,
+          "freshnessBasis": "Brandon Aiyuk agreed to join Washington’s practice squad Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50595281/brandon-aiyuk-finishes-visit-commanders"
@@ -176,27 +240,60 @@
             }
           ],
           "id": "a3-b01dce8937cea0aa",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Brandon Aiyuk joins Commanders practice squad"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-f05b0e656317ac64"
+          ],
+          "type": "COACHING",
+          "priority": 76,
+          "headline": "The Steelers reaffirmed their support for Mike McCarthy and said he will remain head coach after allegations involving Aaron Rodgers.",
+          "text": "The Steelers reaffirmed their support for Mike McCarthy and said he will remain head coach after allegations involving Aaron Rodgers.",
+          "entities": [
+            "Pittsburgh Steelers",
+            "Mike McCarthy",
+            "Aaron Rodgers"
+          ],
+          "occurredAt": "2026-11-25T21:56:45Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Pittsburgh reaffirmed Mike McCarthy will remain its coach after allegations involving Aaron Rodgers.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50597534/sources-mike-mccarthy-steelers-full-support"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50597534/sources-mike-mccarthy-steelers-full-support"
+            }
+          ],
+          "id": "a3-310e48f411d74fa7",
+          "feedRank": 14,
+          "compactHeadline": "Steelers reaffirm Mike McCarthy will remain their coach"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-58b3c006ae9d0048"
           ],
           "type": "INJURY",
-          "priority": 73,
-          "headline": "Kansas City ruled running back Kenneth Walker III out of Thursday's showdown with Buffalo because of a groin injury.",
-          "text": "Kansas City ruled running back Kenneth Walker III out of Thursday's showdown with Buffalo because of a groin injury.",
+          "priority": 68,
+          "headline": "Kansas City ruled running back Kenneth Walker III out of Thursday’s showdown with Buffalo because of a groin injury.",
+          "text": "Kansas City ruled running back Kenneth Walker III out of Thursday’s showdown with Buffalo because of a groin injury.",
           "entities": [
-            "Kansas City Chiefs",
             "Kenneth Walker III",
+            "Kansas City Chiefs",
             "Buffalo Bills"
           ],
           "occurredAt": "2026-11-25T17:22:59Z",
           "timePrecision": "exact",
-          "ageHours": 4.13,
-          "freshnessBasis": "Kansas City ruled Kenneth Walker III out for Thursday's game against Buffalo Wednesday.",
+          "ageHours": 4.64,
+          "freshnessBasis": "The Chiefs ruled Kenneth Walker III out Wednesday because of a groin injury.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50594656/chiefs-rb-kenneth-walker-iii-groin-thursday-vs-bills"
@@ -208,61 +305,28 @@
               "url": "https://www.espn.com/nfl/story/_/id/50594656/chiefs-rb-kenneth-walker-iii-groin-thursday-vs-bills"
             }
           ],
-          "id": "a3-b0387f4c171aa4b5",
-          "feedRank": 10,
-          "compactHeadline": "Chiefs rule Kenneth Walker III out against Bills"
+          "id": "a3-b43cf2662a7d8a2b",
+          "feedRank": 19,
+          "compactHeadline": "Chiefs rule Kenneth Walker III out vs. Bills"
         },
         {
-          "rank": 5,
-          "candidateIds": [
-            "cand-9e9fbaed318738e0"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 77,
-          "headline": "The Steelers are starting Mason Rudolph over Aaron Rodgers in Week 12, making a notable change at quarterback.",
-          "text": "The Steelers are starting Mason Rudolph over Aaron Rodgers in Week 12, making a notable change at quarterback.",
-          "entities": [
-            "Pittsburgh Steelers",
-            "Aaron Rodgers",
-            "Mason Rudolph"
-          ],
-          "occurredAt": "2026-11-25T20:14:17Z",
-          "timePrecision": "exact",
-          "ageHours": 1.28,
-          "freshnessBasis": "Pittsburgh named Mason Rudolph its Week 12 starter over Aaron Rodgers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50589984/aaron-rodgers-benched-steelers-quarterback-rudolph-week-12"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50589984/aaron-rodgers-benched-steelers-quarterback-rudolph-week-12"
-            }
-          ],
-          "id": "a3-20b605e7f09d66b4",
-          "feedRank": 12,
-          "compactHeadline": "Steelers bench Aaron Rodgers, start Mason Rudolph in Week 12"
-        },
-        {
-          "rank": 6,
+          "rank": 7,
           "candidateIds": [
             "cand-b5c976ca00b8521e"
           ],
           "type": "INJURY",
-          "priority": 68,
-          "headline": "Chicago cornerback Kyler Gordon will miss his second straight game because of a shoulder injury against Detroit on Thanksgiving.",
-          "text": "Chicago cornerback Kyler Gordon will miss his second straight game because of a shoulder injury against Detroit on Thanksgiving.",
+          "priority": 66,
+          "headline": "Chicago ruled cornerback Kyler Gordon out for a second straight game because of a shoulder injury against Detroit.",
+          "text": "Chicago ruled cornerback Kyler Gordon out for a second straight game because of a shoulder injury against Detroit.",
           "entities": [
-            "Chicago Bears",
             "Kyler Gordon",
+            "Chicago Bears",
             "Detroit Lions"
           ],
           "occurredAt": "2026-11-25T21:18:35Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
-          "freshnessBasis": "Chicago ruled Kyler Gordon out for a second straight game Wednesday.",
+          "ageHours": 0.71,
+          "freshnessBasis": "The Bears ruled Kyler Gordon out for a second consecutive game Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50597032/bears-rule-gordon-high-stakes-game-detroit"
@@ -275,42 +339,8 @@
             }
           ],
           "id": "a3-f6194e2e996e4c29",
-          "feedRank": 17,
+          "feedRank": 22,
           "compactHeadline": "Bears rule Kyler Gordon out again"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-3926cf804a28696f"
-          ],
-          "type": "INJURY",
-          "priority": 65,
-          "headline": "Buffalo listed tight end Dalton Kincaid, cornerback Christian Benford and three other starters as questionable against Kansas City.",
-          "text": "Buffalo listed tight end Dalton Kincaid, cornerback Christian Benford and three other starters as questionable against Kansas City.",
-          "entities": [
-            "Buffalo Bills",
-            "Dalton Kincaid",
-            "Christian Benford",
-            "Kansas City Chiefs"
-          ],
-          "occurredAt": "2026-11-25T20:06:30Z",
-          "timePrecision": "exact",
-          "ageHours": 1.41,
-          "freshnessBasis": "Buffalo listed five starters as questionable for Thursday's game against Kansas City.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50596159/bills-kincaid-benford-5-starters-listed-questionable"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50596159/bills-kincaid-benford-5-starters-listed-questionable"
-            }
-          ],
-          "id": "a3-15364030911ba573",
-          "feedRank": 25,
-          "compactHeadline": "Five Bills starters listed questionable against Chiefs"
         }
       ]
     },
@@ -325,16 +355,16 @@
           ],
           "type": "LEAGUE_NEWS",
           "priority": 82,
-          "headline": "The NBA unveiled an initiative targeting nearly $11 billion to develop and renovate arenas as it advances plans for a European league.",
-          "text": "The NBA unveiled an initiative targeting nearly $11 billion to develop and renovate arenas as it advances plans for a European league.",
+          "headline": "The NBA unveiled a plan targeting nearly $11 billion to develop and renovate arenas as it advances a European league project.",
+          "text": "The NBA unveiled a plan targeting nearly $11 billion to develop and renovate arenas as it advances a European league project.",
           "entities": [
             "NBA",
             "Europe"
           ],
           "occurredAt": "2026-11-25T14:43:24Z",
           "timePrecision": "exact",
-          "ageHours": 6.79,
-          "freshnessBasis": "The NBA unveiled a nearly $11 billion arena-development initiative for its planned European league Wednesday.",
+          "ageHours": 7.29,
+          "freshnessBasis": "The NBA unveiled its $11 billion arena initiative for the planned European league Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50592672/nba-reveals-11b-initiative-arena-development-europe"
@@ -356,9 +386,9 @@
             "cand-36b3c909ced2d0a1"
           ],
           "type": "INJURY",
-          "priority": 74,
-          "headline": "Philadelphia center Joel Embiid will miss Wednesday's game against Miami because of an illness, his second straight absence.",
-          "text": "Philadelphia center Joel Embiid will miss Wednesday's game against Miami because of an illness, his second straight absence.",
+          "priority": 67,
+          "headline": "Joel Embiid missed Philadelphia's game against Miami with an illness, his second consecutive absence.",
+          "text": "Joel Embiid missed Philadelphia's game against Miami with an illness, his second consecutive absence.",
           "entities": [
             "Philadelphia 76ers",
             "Joel Embiid",
@@ -366,8 +396,8 @@
           ],
           "occurredAt": "2026-11-25T20:53:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.62,
-          "freshnessBasis": "Philadelphia ruled Joel Embiid out against Miami Wednesday because of an illness.",
+          "ageHours": 1.12,
+          "freshnessBasis": "Philadelphia ruled Joel Embiid out against Miami with an illness for his second straight missed game.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50596747/76ers-star-joel-embiid-vs-heat-due-illness"
@@ -380,59 +410,27 @@
             }
           ],
           "id": "a3-25715e4b43c77b91",
-          "feedRank": 8,
+          "feedRank": 20,
           "compactHeadline": "Joel Embiid misses second straight game with illness"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-b44503ca0b7964d8"
-          ],
-          "type": "RETURN",
-          "priority": 74,
-          "headline": "Timberwolves guard Donte DiVincenzo was cleared for basketball activities after Achilles surgery, with Minnesota targeting a possible New Year's debut.",
-          "text": "Timberwolves guard Donte DiVincenzo was cleared for basketball activities after Achilles surgery, with Minnesota targeting a possible New Year's debut.",
-          "entities": [
-            "Minnesota Timberwolves",
-            "Donte DiVincenzo"
-          ],
-          "occurredAt": "2026-11-25T12:40:51Z",
-          "timePrecision": "exact",
-          "ageHours": 8.84,
-          "freshnessBasis": "Minnesota cleared Donte DiVincenzo for basketball activities after Achilles surgery.",
-          "status": "next",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50584000/wolves-dante-divincenzo-cleared-basketball-activities"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50584000/wolves-dante-divincenzo-cleared-basketball-activities"
-            }
-          ],
-          "id": "a3-415d7a08b5013a9a",
-          "feedRank": 22,
-          "compactHeadline": "Donte DiVincenzo cleared for basketball activities after surgery"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-f25ccf6a1861e888"
           ],
           "type": "STREAK",
           "priority": 75,
-          "headline": "Boston ended a four-game losing streak by beating Washington 131-116 behind Jayson Tatum's 41 points Tuesday.",
-          "text": "Boston ended a four-game losing streak by beating Washington 131-116 behind Jayson Tatum's 41 points Tuesday.",
+          "headline": "Boston ended a four-game losing streak by beating Washington 131-116 Tuesday.",
+          "text": "Boston ended a four-game losing streak by beating Washington 131-116 Tuesday.",
           "entities": [
+            "Jayson Tatum",
             "Boston Celtics",
-            "Washington Wizards",
-            "Jayson Tatum"
+            "Washington Wizards"
           ],
           "occurredAt": "2026-11-25T03:48:34Z",
           "timePrecision": "exact",
-          "ageHours": 17.71,
-          "freshnessBasis": "Boston ended a four-game losing streak by beating Washington 131-116 behind Jayson Tatum's 41 points Tuesday.",
+          "ageHours": 18.21,
+          "freshnessBasis": "Boston ended a four-game losing streak by beating Washington 131-116 Tuesday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nba/recap?gameId=401909315"
@@ -444,9 +442,41 @@
               "url": "http://www.espn.com/nba/recap?gameId=401909315"
             }
           ],
-          "id": "a3-9e24d2c10eb1d0e8",
+          "id": "a3-df25d0af338ff481",
           "feedRank": 23,
-          "compactHeadline": "Tatum's 41 points end Celtics' four-game skid"
+          "compactHeadline": "Tatum’s 41 points end Celtics’ four-game skid"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-7dfaec1dab039bce"
+          ],
+          "type": "CONTRACT",
+          "priority": 73,
+          "headline": "Free-agent guard Kevin Porter Jr. is finalizing a two-year contract with Orlando, his agent told ESPN.",
+          "text": "Free-agent guard Kevin Porter Jr. is finalizing a two-year contract with Orlando, his agent told ESPN.",
+          "entities": [
+            "Kevin Porter Jr.",
+            "Orlando Magic"
+          ],
+          "occurredAt": "2026-11-25T19:04:58Z",
+          "timePrecision": "exact",
+          "ageHours": 2.94,
+          "freshnessBasis": "Kevin Porter Jr. began finalizing a two-year deal with Orlando Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50595534/agent-kevin-porter-jr-finalizing-2-year-deal-magic"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50595534/agent-kevin-porter-jr-finalizing-2-year-deal-magic"
+            }
+          ],
+          "id": "a3-66faab701d13f421",
+          "feedRank": 24,
+          "compactHeadline": "Kevin Porter Jr. finalizing two-year Magic deal"
         },
         {
           "rank": 5,
@@ -454,17 +484,17 @@
             "cand-f38ec4fc47bfb5a4"
           ],
           "type": "RETURN",
-          "priority": 73,
-          "headline": "Detroit center Jalen Duren practiced with the team Tuesday and is set to begin a rehab assignment in the next step of his return from injury.",
-          "text": "Detroit center Jalen Duren practiced with the team Tuesday and is set to begin a rehab assignment in the next step of his return from injury.",
+          "priority": 72,
+          "headline": "Detroit center Jalen Duren will begin a rehab assignment after practicing with the Pistons Tuesday in his recovery from injury.",
+          "text": "Detroit center Jalen Duren will begin a rehab assignment after practicing with the Pistons Tuesday in his recovery from injury.",
           "entities": [
-            "Detroit Pistons",
-            "Jalen Duren"
+            "Jalen Duren",
+            "Detroit Pistons"
           ],
           "occurredAt": "2026-11-25T12:41:31Z",
           "timePrecision": "exact",
-          "ageHours": 8.83,
-          "freshnessBasis": "Jalen Duren practiced with Detroit Tuesday and is beginning a rehab assignment.",
+          "ageHours": 9.33,
+          "freshnessBasis": "Jalen Duren practiced with Detroit Tuesday and is set to begin a rehab assignment.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50586890/jalen-duren-begin-rehab-assignment-next-step-return-injury"
@@ -476,28 +506,60 @@
               "url": "https://www.espn.com/nba/story/_/id/50586890/jalen-duren-begin-rehab-assignment-next-step-return-injury"
             }
           ],
-          "id": "a3-f98a9fa3ff7fc440",
-          "feedRank": 24,
-          "compactHeadline": "Jalen Duren set for rehab assignment"
+          "id": "a3-99ea5cbc3d3c9697",
+          "feedRank": 25,
+          "compactHeadline": "Jalen Duren takes next step toward Pistons return"
         },
         {
           "rank": 6,
+          "candidateIds": [
+            "cand-e900adfbdb9e8d13"
+          ],
+          "type": "INJURY",
+          "priority": 65,
+          "headline": "The Raptors said Kawhi Leonard's status will be revisited in a week as he continues recovering from knee swelling.",
+          "text": "The Raptors said Kawhi Leonard's status will be revisited in a week as he continues recovering from knee swelling.",
+          "entities": [
+            "Toronto Raptors",
+            "Kawhi Leonard"
+          ],
+          "occurredAt": "2026-11-25T12:40:12Z",
+          "timePrecision": "exact",
+          "ageHours": 9.35,
+          "freshnessBasis": "Toronto said Kawhi Leonard's knee-swelling status will be revisited in a week.",
+          "status": "watch",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50587249/kawhi-leonard-return-knee-swelling-least-week-away"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50587249/kawhi-leonard-return-knee-swelling-least-week-away"
+            }
+          ],
+          "id": "a3-54810dba123e70da",
+          "feedRank": 26,
+          "compactHeadline": "Kawhi Leonard's return remains at least a week away"
+        },
+        {
+          "rank": 7,
           "candidateIds": [
             "cand-40cfa6ce6b705174"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Cooper Flagg had 24 points and 12 assists as Dallas beat Denver 120-101, moving into position to win its NBA Cup group.",
-          "text": "Cooper Flagg had 24 points and 12 assists as Dallas beat Denver 120-101, moving into position to win its NBA Cup group.",
+          "headline": "Cooper Flagg had 24 points and a career-high-tying 12 assists in Dallas’ 120-101 win over Denver, moving the Mavericks into control of their NBA Cup group.",
+          "text": "Cooper Flagg had 24 points and a career-high-tying 12 assists in Dallas’ 120-101 win over Denver, moving the Mavericks into control of their NBA Cup group.",
           "entities": [
+            "Cooper Flagg",
             "Dallas Mavericks",
-            "Denver Nuggets",
-            "Cooper Flagg"
+            "Denver Nuggets"
           ],
           "occurredAt": "2026-11-25T05:51:38Z",
           "timePrecision": "exact",
-          "ageHours": 15.66,
-          "freshnessBasis": "Dallas beat Denver 120-101 behind Cooper Flagg's 24 points and 12 assists Tuesday.",
+          "ageHours": 16.16,
+          "freshnessBasis": "Dallas beat Denver 120-101 Tuesday as Cooper Flagg produced 24 points and 12 assists.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nba/recap?gameId=401909316"
@@ -509,43 +571,9 @@
               "url": "http://www.espn.com/nba/recap?gameId=401909316"
             }
           ],
-          "id": "a3-95ec816fe0df0d15",
-          "feedRank": 29,
-          "compactHeadline": "Cooper Flagg drives Mavericks into NBA Cup lead"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-c260a886fb2aaf24"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Isaiah Joe had 21 points and Daniss Jenkins added 15 to spur the Detroit Pistons past the Orlando Magic 104-86 in an NBA Cup game on Tuesday night.",
-          "text": "Isaiah Joe had 21 points and Daniss Jenkins added 15 to spur the Detroit Pistons past the Orlando Magic 104-86 in an NBA Cup game on Tuesday night.",
-          "entities": [
-            "Detroit Pistons",
-            "Orlando Magic",
-            "Isaiah Joe",
-            "Cade Cunningham"
-          ],
-          "occurredAt": "2026-11-25T02:46:32Z",
-          "timePrecision": "exact",
-          "ageHours": 18.74,
-          "freshnessBasis": "Detroit beat Orlando 104-86, giving the Magic their first NBA Cup loss.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909314"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909314"
-            }
-          ],
-          "id": "a3-30c69d1406481a77",
-          "feedRank": 31,
-          "compactHeadline": "Pistons hand Magic first NBA Cup loss without Cade Cunningham"
+          "id": "a3-33f11fb2f71fd6b4",
+          "feedRank": 30,
+          "compactHeadline": "Cooper Flagg leads Mavericks into NBA Cup driver’s seat"
         }
       ]
     },
@@ -556,145 +584,12 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-6bf81ad6a175cb6e"
-          ],
-          "type": "RETURN",
-          "priority": 79,
-          "headline": "Colorado defenseman Cale Makar returned after missing three games with a lower-body injury, reinforcing the Avalanche lineup.",
-          "text": "Colorado defenseman Cale Makar returned after missing three games with a lower-body injury, reinforcing the Avalanche lineup.",
-          "entities": [
-            "Colorado Avalanche",
-            "Cale Makar"
-          ],
-          "occurredAt": "2026-11-25T20:12:00Z",
-          "timePrecision": "exact",
-          "ageHours": 1.32,
-          "freshnessBasis": "Cale Makar returned to Colorado's lineup Wednesday after a three-game absence.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
-            }
-          ],
-          "id": "a3-e416fd3c22dd5507",
-          "feedRank": 11,
-          "compactHeadline": "Cale Makar returns to Avalanche lineup"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-6a54b8e64db56dc6"
-          ],
-          "type": "RETURN",
-          "priority": 77,
-          "headline": "Aleksander Barkov and Brad Marchand returned for Florida against Ottawa, appearing together for the first time since the 2025 Stanley Cup Final clincher.",
-          "text": "Aleksander Barkov and Brad Marchand returned for Florida against Ottawa, appearing together for the first time since the 2025 Stanley Cup Final clincher.",
-          "entities": [
-            "Florida Panthers",
-            "Aleksander Barkov",
-            "Brad Marchand",
-            "Ottawa Senators"
-          ],
-          "occurredAt": "2026-11-25T18:56:46Z",
-          "timePrecision": "exact",
-          "ageHours": 2.57,
-          "freshnessBasis": "Aleksander Barkov and Brad Marchand returned to Florida's lineup against Ottawa Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50594065/aleksander-barkov-brad-marchand-returning-vs-senators"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50594065/aleksander-barkov-brad-marchand-returning-vs-senators"
-            }
-          ],
-          "id": "a3-103a35172c98c232",
-          "feedRank": 14,
-          "compactHeadline": "Barkov and Marchand return for Panthers"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-5caba892abca518a"
-          ],
-          "type": "RETURN",
-          "priority": 75,
-          "headline": "Dylan Larkin recorded an assist in his Montreal debut, but the Kings won 2-1 behind Darcy Kuemper's 29 saves.",
-          "text": "Dylan Larkin recorded an assist in his Montreal debut, but the Kings won 2-1 behind Darcy Kuemper's 29 saves.",
-          "entities": [
-            "Montreal Canadiens",
-            "Dylan Larkin",
-            "Los Angeles Kings",
-            "Darcy Kuemper"
-          ],
-          "occurredAt": "2026-11-25T11:04:32Z",
-          "timePrecision": "exact",
-          "ageHours": 10.44,
-          "freshnessBasis": "Dylan Larkin made his Montreal debut in a 2-1 loss to Los Angeles.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50579338/center-dylan-larkin-picks-assist-debut-montreal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50579338/center-dylan-larkin-picks-assist-debut-montreal"
-            }
-          ],
-          "id": "a3-09080b669919abff",
-          "feedRank": 19,
-          "compactHeadline": "Dylan Larkin makes Canadiens debut in 2-1 loss to Kings"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-c3426aa878229f4a"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 73,
-          "headline": "St. Louis has elevated Joel Hofer over Jordan Binnington as its starting goaltender, changing the Blues' crease hierarchy.",
-          "text": "St. Louis has elevated Joel Hofer over Jordan Binnington as its starting goaltender, changing the Blues' crease hierarchy.",
-          "entities": [
-            "St. Louis Blues",
-            "Joel Hofer",
-            "Jordan Binnington"
-          ],
-          "occurredAt": "2026-11-24T22:12:58Z",
-          "timePrecision": "exact",
-          "ageHours": 23.3,
-          "freshnessBasis": "St. Louis replaced Jordan Binnington with Joel Hofer as its starting goaltender Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50586281/joel-hofer-supplants-jordan-binnington-blues-starting-goaltender"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50586281/joel-hofer-supplants-jordan-binnington-blues-starting-goaltender"
-            }
-          ],
-          "id": "a3-eaf01be44f762e79",
-          "feedRank": 28,
-          "compactHeadline": "Joel Hofer replaces Jordan Binnington as Blues starter"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-0cf7bb9751935586"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Vegas beat Edmonton 5-3 Tuesday behind two goals each from Trevor Connelly and Jack Eichel.",
-          "text": "Vegas beat Edmonton 5-3 Tuesday behind two goals each from Trevor Connelly and Jack Eichel.",
+          "type": "STREAK",
+          "priority": 79,
+          "headline": "Vegas beat Edmonton 5-3 behind two goals each from Trevor Connelly and Jack Eichel in a Pacific Division clash.",
+          "text": "Vegas beat Edmonton 5-3 behind two goals each from Trevor Connelly and Jack Eichel in a Pacific Division clash.",
           "entities": [
             "Vegas Golden Knights",
             "Edmonton Oilers",
@@ -703,8 +598,8 @@
           ],
           "occurredAt": "2026-11-25T04:17:32Z",
           "timePrecision": "exact",
-          "ageHours": 17.23,
-          "freshnessBasis": "Vegas beat Edmonton 5-3 Tuesday behind two goals each from Trevor Connelly and Jack Eichel.",
+          "ageHours": 17.73,
+          "freshnessBasis": "Vegas defeated Edmonton 5-3 Tuesday as the Oilers’ skid continued.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nhl/recap?gameId=401892780"
@@ -717,8 +612,140 @@
             }
           ],
           "id": "a3-ebc7bff2d2aab21e",
-          "feedRank": 30,
+          "feedRank": 12,
           "compactHeadline": "Golden Knights beat Oilers as Edmonton skid continues"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-6bf81ad6a175cb6e"
+          ],
+          "type": "RETURN",
+          "priority": 77,
+          "headline": "Colorado defenseman Cale Makar returned after missing three games with a lower-body injury, rejoining the Avalanche lineup Wednesday.",
+          "text": "Colorado defenseman Cale Makar returned after missing three games with a lower-body injury, rejoining the Avalanche lineup Wednesday.",
+          "entities": [
+            "Cale Makar",
+            "Colorado Avalanche"
+          ],
+          "occurredAt": "2026-11-25T20:12:00Z",
+          "timePrecision": "exact",
+          "ageHours": 1.82,
+          "freshnessBasis": "Cale Makar returned to Colorado’s lineup Wednesday after a three-game absence.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
+            }
+          ],
+          "id": "a3-e416fd3c22dd5507",
+          "feedRank": 13,
+          "compactHeadline": "Cale Makar returns to Avalanche lineup"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6a54b8e64db56dc6"
+          ],
+          "type": "RETURN",
+          "priority": 76,
+          "headline": "Florida brought Aleksander Barkov and Brad Marchand back together in the lineup for the first time since the 2025 Stanley Cup Final.",
+          "text": "Florida brought Aleksander Barkov and Brad Marchand back together in the lineup for the first time since the 2025 Stanley Cup Final.",
+          "entities": [
+            "Aleksander Barkov",
+            "Brad Marchand",
+            "Florida Panthers"
+          ],
+          "occurredAt": "2026-11-25T18:56:46Z",
+          "timePrecision": "exact",
+          "ageHours": 3.07,
+          "freshnessBasis": "Aleksander Barkov and Brad Marchand returned to Florida’s lineup Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50594065/aleksander-barkov-brad-marchand-returning-vs-senators"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50594065/aleksander-barkov-brad-marchand-returning-vs-senators"
+            }
+          ],
+          "id": "a3-103a35172c98c232",
+          "feedRank": 15,
+          "compactHeadline": "Barkov and Marchand return for Panthers"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-5caba892abca518a"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Center Dylan Larkin notches assist in 'emotional' debut with Montreal.",
+          "text": "Center Dylan Larkin notches assist in 'emotional' debut with Montreal.",
+          "entities": [
+            "Los Angeles Kings",
+            "Montreal Canadiens",
+            "Dylan Larkin",
+            "Darcy Kuemper"
+          ],
+          "occurredAt": "2026-11-25T11:04:32Z",
+          "timePrecision": "exact",
+          "ageHours": 10.94,
+          "freshnessBasis": "Los Angeles beat Montreal 2-1 and spoiled Dylan Larkin's debut with the Canadiens.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50579338/center-dylan-larkin-picks-assist-debut-montreal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50579338/center-dylan-larkin-picks-assist-debut-montreal"
+            }
+          ],
+          "id": "a3-e4b85e1b88369435",
+          "feedRank": 27,
+          "compactHeadline": "Kings spoil Dylan Larkin's Canadiens debut, 2-1"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-c3426aa878229f4a"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 70,
+          "headline": "The Blues have made Joel Hofer their starting goaltender, replacing veteran Jordan Binnington in the role.",
+          "text": "The Blues have made Joel Hofer their starting goaltender, replacing veteran Jordan Binnington in the role.",
+          "entities": [
+            "Joel Hofer",
+            "Jordan Binnington",
+            "St. Louis Blues"
+          ],
+          "occurredAt": "2026-11-24T22:12:58Z",
+          "timePrecision": "exact",
+          "ageHours": 23.8,
+          "freshnessBasis": "Joel Hofer supplanted Jordan Binnington as St. Louis’ starting goaltender Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50586281/joel-hofer-supplants-jordan-binnington-blues-starting-goaltender"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50586281/joel-hofer-supplants-jordan-binnington-blues-starting-goaltender"
+            }
+          ],
+          "id": "a3-606891766a114579",
+          "feedRank": 32,
+          "compactHeadline": "Joel Hofer supplants Jordan Binnington in St. Louis"
         }
       ]
     },
@@ -732,17 +759,16 @@
             "cand-32fd8dd65f0daf21"
           ],
           "type": "LEGAL",
-          "priority": 75,
-          "headline": "Former England forward Raheem Sterling avoided jail after admitting to dangerous driving before crashing into a metal gate.",
-          "text": "Former England forward Raheem Sterling avoided jail after admitting to dangerous driving before crashing into a metal gate.",
+          "priority": 76,
+          "headline": "Former England international Raheem Sterling avoided jail after admitting to dangerous driving before crashing into a metal gate.",
+          "text": "Former England international Raheem Sterling avoided jail after admitting to dangerous driving before crashing into a metal gate.",
           "entities": [
-            "Raheem Sterling",
-            "England"
+            "Raheem Sterling"
           ],
           "occurredAt": "2026-11-25T11:53:55Z",
           "timePrecision": "exact",
-          "ageHours": 9.62,
-          "freshnessBasis": "Raheem Sterling avoided a jail sentence after admitting dangerous driving Wednesday.",
+          "ageHours": 10.12,
+          "freshnessBasis": "Raheem Sterling avoided a jail sentence Wednesday after admitting dangerous driving.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/50591753/raheem-sterling-court-england-manchester-city-liverpool-chelsea"
@@ -754,9 +780,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/50591753/raheem-sterling-court-england-manchester-city-liverpool-chelsea"
             }
           ],
-          "id": "a3-b8d6e8e95be13fef",
-          "feedRank": 18,
-          "compactHeadline": "Raheem Sterling avoids jail for dangerous driving"
+          "id": "a3-499714f77b4bd969",
+          "feedRank": 16,
+          "compactHeadline": "Raheem Sterling avoids jail over dangerous driving"
         },
         {
           "rank": 2,
@@ -765,8 +791,8 @@
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Sunderland drew Aston Villa 0-0 as 20-year-old Jules Ahoka made his first Premier League start and helped secure a valuable point.",
-          "text": "Sunderland drew Aston Villa 0-0 as 20-year-old Jules Ahoka made his first Premier League start and helped secure a valuable point.",
+          "headline": "Sunderland drew 0-0 at Aston Villa as 20-year-old Jules Ahoka impressed in his first Premier League start.",
+          "text": "Sunderland drew 0-0 at Aston Villa as 20-year-old Jules Ahoka impressed in his first Premier League start.",
           "entities": [
             "Sunderland",
             "Aston Villa",
@@ -774,8 +800,8 @@
           ],
           "occurredAt": "2026-11-25T07:13:11Z",
           "timePrecision": "exact",
-          "ageHours": 14.3,
-          "freshnessBasis": "Sunderland drew Aston Villa 0-0 in Jules Ahoka's first Premier League start.",
+          "ageHours": 14.8,
+          "freshnessBasis": "Sunderland drew 0-0 with Aston Villa in Jules Ahoka's first Premier League start.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/espn/story/_/id/50581648/jules-ahoka-sunderland-busquets-premier-league-dr-congo"
@@ -787,9 +813,9 @@
               "url": "https://www.espn.com/espn/story/_/id/50581648/jules-ahoka-sunderland-busquets-premier-league-dr-congo"
             }
           ],
-          "id": "a3-1164b17c468f920b",
-          "feedRank": 27,
-          "compactHeadline": "Sunderland earn 0-0 draw as Ahoka impresses on first start"
+          "id": "a3-50e95306211ce986",
+          "feedRank": 29,
+          "compactHeadline": "Sunderland's Jules Ahoka shines in valuable 0-0 draw"
         }
       ]
     },
@@ -802,17 +828,17 @@
           "candidateIds": [
             "cand-9579f414befaf4e8"
           ],
-          "type": "PLAYOFF",
-          "priority": 82,
-          "headline": "MLS owners agreed to a new 16-team playoff format beginning in the 2027-28 season, a source confirmed to ESPN.",
-          "text": "MLS owners agreed to a new 16-team playoff format beginning in the 2027-28 season, a source confirmed to ESPN.",
+          "type": "LEAGUE_NEWS",
+          "priority": 78,
+          "headline": "MLS owners agreed on a new 16-team playoff format beginning in 2027-28, a source confirmed to ESPN.",
+          "text": "MLS owners agreed on a new 16-team playoff format beginning in 2027-28, a source confirmed to ESPN.",
           "entities": [
             "MLS"
           ],
           "occurredAt": "2026-11-25T19:35:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
-          "freshnessBasis": "MLS owners agreed to a new 16-team playoff format for 2027-28 Wednesday.",
+          "ageHours": 2.43,
+          "freshnessBasis": "MLS owners agreed to a 16-team playoff format for the 2027-28 season Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/50595745/mls-playoff-format-new-2027-2028-change-owners"
@@ -825,7 +851,7 @@
             }
           ],
           "id": "a3-51087b9a36d9113f",
-          "feedRank": 2,
+          "feedRank": 11,
           "compactHeadline": "MLS owners agree to 16-team playoff format"
         }
       ]
@@ -840,7 +866,7 @@
             "cand-396d498b8cac524b"
           ],
           "type": "RANKING",
-          "priority": 86,
+          "priority": 84,
           "headline": "Defending champion Indiana dropped six spots to No. 14 and out of the 12-team CFP field, while Texas and Tennessee moved ahead of Alabama.",
           "text": "Defending champion Indiana dropped six spots to No. 14 and out of the 12-team CFP field, while Texas and Tennessee moved ahead of Alabama.",
           "entities": [
@@ -851,8 +877,8 @@
           ],
           "occurredAt": "2026-11-25T07:42:16Z",
           "timePrecision": "exact",
-          "ageHours": 13.81,
-          "freshnessBasis": "Indiana fell from the CFP field in the fourth rankings released Tuesday night.",
+          "ageHours": 14.31,
+          "freshnessBasis": "The CFP rankings released Tuesday dropped Indiana to No. 14 and moved Texas and Tennessee ahead of Alabama.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50588082/indiana-top-12-cfp-rankings-texas-tennessee-leap-alabama"
@@ -865,7 +891,7 @@
             }
           ],
           "id": "a3-3f9dd7b580697438",
-          "feedRank": 3,
+          "feedRank": 1,
           "compactHeadline": "Indiana falls out of CFP field in latest rankings"
         },
         {
@@ -878,13 +904,13 @@
           "headline": "No. 20 Florida shut down receiver Vernell Brown III for the rest of the season as he undergoes knee surgery.",
           "text": "No. 20 Florida shut down receiver Vernell Brown III for the rest of the season as he undergoes knee surgery.",
           "entities": [
-            "Florida Gators",
-            "Vernell Brown III"
+            "Vernell Brown III",
+            "Florida Gators"
           ],
           "occurredAt": "2026-11-24T23:07:20Z",
           "timePrecision": "exact",
-          "ageHours": 22.4,
-          "freshnessBasis": "Florida announced Vernell Brown III would miss the rest of the season for knee surgery Tuesday.",
+          "ageHours": 22.9,
+          "freshnessBasis": "Florida announced Vernell Brown III would miss the rest of the season because of knee surgery.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50586755/no-20-florida-shuts-wr-vernell-brown-season-ending-knee-surgery"
@@ -897,7 +923,7 @@
             }
           ],
           "id": "a3-af47f28926a2b273",
-          "feedRank": 4,
+          "feedRank": 2,
           "compactHeadline": "Florida shuts down Vernell Brown for season"
         },
         {
@@ -906,16 +932,16 @@
             "cand-4312d9b479de5ab0"
           ],
           "type": "COACHING",
-          "priority": 77,
-          "headline": "Eastern Michigan parted ways with coach Chris Creighton after 13 seasons, ending his tenure with the Eagles.",
-          "text": "Eastern Michigan parted ways with coach Chris Creighton after 13 seasons, ending his tenure with the Eagles.",
+          "priority": 82,
+          "headline": "Eastern Michigan dismissed coach Chris Creighton after 13 seasons with the program.",
+          "text": "Eastern Michigan dismissed coach Chris Creighton after 13 seasons with the program.",
           "entities": [
-            "Eastern Michigan Eagles",
-            "Chris Creighton"
+            "Chris Creighton",
+            "Eastern Michigan Eagles"
           ],
           "occurredAt": "2026-11-25T19:05:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.43,
+          "ageHours": 2.93,
           "freshnessBasis": "Eastern Michigan announced Chris Creighton was out as head coach Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -928,9 +954,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/50595706/creighton-coach-eastern-michigan-13-seasons"
             }
           ],
-          "id": "a3-4ad99899417ed8f8",
-          "feedRank": 13,
-          "compactHeadline": "Eastern Michigan fires Chris Creighton after 13 seasons"
+          "id": "a3-de501969879acdec",
+          "feedRank": 6,
+          "compactHeadline": "Eastern Michigan parts with Chris Creighton"
         },
         {
           "rank": 4,
@@ -938,17 +964,17 @@
             "cand-7b78b64ddc3f4e47"
           ],
           "type": "LEGAL",
-          "priority": 76,
-          "headline": "A federal judge denied the SEC's request to block LSU from interfering with a Dec. 3 vote on the school's conference status.",
-          "text": "A federal judge denied the SEC's request to block LSU from interfering with a Dec. 3 vote on the school's conference status.",
+          "priority": 80,
+          "headline": "A federal judge denied the SEC’s request to block LSU from participating in a Dec. 3 vote on the conference’s future membership.",
+          "text": "A federal judge denied the SEC’s request to block LSU from participating in a Dec. 3 vote on the conference’s future membership.",
           "entities": [
             "LSU Tigers",
             "SEC"
           ],
           "occurredAt": "2026-11-25T20:02:54Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
-          "freshnessBasis": "A federal judge denied the SEC's temporary restraining-order request against LSU Wednesday.",
+          "ageHours": 1.97,
+          "freshnessBasis": "A federal judge denied the SEC’s temporary restraining-order request against LSU Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-sports/story/_/id/50595702/judge-denies-sec-request-tro-lsu-dec-3-vote"
@@ -960,9 +986,9 @@
               "url": "https://www.espn.com/college-sports/story/_/id/50595702/judge-denies-sec-request-tro-lsu-dec-3-vote"
             }
           ],
-          "id": "a3-52c1d13d41e26042",
-          "feedRank": 15,
-          "compactHeadline": "Judge denies SEC request in LSU dispute"
+          "id": "a3-f64c469332cf6ff9",
+          "feedRank": 9,
+          "compactHeadline": "Judge denies SEC request in LSU case"
         },
         {
           "rank": 5,
@@ -971,16 +997,16 @@
           ],
           "type": "CONTRACT",
           "priority": 74,
-          "headline": "Oklahoma State agreed to a six-year extension with coach Eric Morris, keeping him under contract through the 2032 season.",
-          "text": "Oklahoma State agreed to a six-year extension with coach Eric Morris, keeping him under contract through the 2032 season.",
+          "headline": "Oklahoma State agreed to a six-year extension with coach Eric Morris that will keep him under contract through the 2032 season.",
+          "text": "Oklahoma State agreed to a six-year extension with coach Eric Morris that will keep him under contract through the 2032 season.",
           "entities": [
-            "Oklahoma State Cowboys",
-            "Eric Morris"
+            "Eric Morris",
+            "Oklahoma State Cowboys"
           ],
           "occurredAt": "2026-11-25T17:00:56Z",
           "timePrecision": "exact",
-          "ageHours": 4.5,
-          "freshnessBasis": "Oklahoma State and Eric Morris agreed to a six-year contract extension Wednesday.",
+          "ageHours": 5.0,
+          "freshnessBasis": "Oklahoma State agreed to extend Eric Morris through the 2032 season Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50594432/sources-oklahoma-state-extends-morris-new-six-year-deal"
@@ -999,52 +1025,20 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-053a98c563d53f12"
-          ],
-          "type": "COACHING",
-          "priority": 72,
-          "headline": "Michigan athletic director Warde Manuel will remain in the job until the school finds his replacement, sources told ESPN.",
-          "text": "Michigan athletic director Warde Manuel will remain in the job until the school finds his replacement, sources told ESPN.",
-          "entities": [
-            "Michigan Wolverines",
-            "Warde Manuel"
-          ],
-          "occurredAt": "2026-11-25T16:12:47Z",
-          "timePrecision": "exact",
-          "ageHours": 5.3,
-          "freshnessBasis": "Warde Manuel agreed to remain Michigan's athletic director until a replacement is hired.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50592920/sources-manuel-stay-job-new-michigan-ad-hired"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50592920/sources-manuel-stay-job-new-michigan-ad-hired"
-            }
-          ],
-          "id": "a3-894c8b481cfbe846",
-          "feedRank": 26,
-          "compactHeadline": "Michigan AD Warde Manuel staying until replacement is hired"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
             "cand-41412eea0bcefe38"
           ],
           "type": "SUSPENSION",
-          "priority": 72,
-          "headline": "Wyoming coach Jay Sawvel will serve a one-game suspension Saturday as part of self-imposed penalties for tampering violations.",
-          "text": "Wyoming coach Jay Sawvel will serve a one-game suspension Saturday as part of self-imposed penalties for tampering violations.",
+          "priority": 70,
+          "headline": "Wyoming coach Jay Sawvel will serve a one-game suspension as part of the school’s self-imposed tampering penalties.",
+          "text": "Wyoming coach Jay Sawvel will serve a one-game suspension as part of the school’s self-imposed tampering penalties.",
           "entities": [
-            "Wyoming Cowboys",
-            "Jay Sawvel"
+            "Jay Sawvel",
+            "Wyoming Cowboys"
           ],
           "occurredAt": "2026-11-25T00:01:51Z",
           "timePrecision": "exact",
-          "ageHours": 21.49,
-          "freshnessBasis": "Wyoming announced Jay Sawvel would serve a one-game suspension Saturday Wednesday.",
+          "ageHours": 21.99,
+          "freshnessBasis": "Wyoming announced a one-game suspension for Jay Sawvel Wednesday over tampering violations.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50586972/wyoming-coach-jay-sawvel-gets-self-imposed-1-game-suspension"
@@ -1056,16 +1050,16 @@
               "url": "https://www.espn.com/college-football/story/_/id/50586972/wyoming-coach-jay-sawvel-gets-self-imposed-1-game-suspension"
             }
           ],
-          "id": "a3-bf8c3a88eb43003e",
-          "feedRank": 32,
-          "compactHeadline": "Wyoming coach Jay Sawvel accepts one-game ban"
+          "id": "a3-c4440abd3ecafae7",
+          "feedRank": 31,
+          "compactHeadline": "Wyoming coach Jay Sawvel gets one-game ban"
         }
       ]
     }
   ],
   "specialEvents": [
     {
-      "name": "Formula 1",
+      "name": "Formula 1 cost-cap ruling",
       "sport": "Formula 1",
       "items": [
         {
@@ -1074,19 +1068,18 @@
             "cand-67295fb54f0335f7"
           ],
           "type": "DISCIPLINE",
-          "priority": 77,
-          "headline": "The FIA fined Williams and Alpine for cost-cap breaches, including a £627,000 overspend by Williams and procedural violations by both teams.",
-          "text": "The FIA fined Williams and Alpine for cost-cap breaches, including a £627,000 overspend by Williams and procedural violations by both teams.",
+          "priority": 78,
+          "headline": "The FIA fined Williams and Alpine for cost-cap breaches, including a £627,000 Williams overspend and procedural violations by both teams.",
+          "text": "The FIA fined Williams and Alpine for cost-cap breaches, including a £627,000 Williams overspend and procedural violations by both teams.",
           "entities": [
-            "Formula 1",
             "FIA",
             "Williams",
             "Alpine"
           ],
           "occurredAt": "2026-11-25T17:29:22Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "The FIA announced Williams and Alpine fines for cost-cap and procedural breaches Wednesday.",
+          "ageHours": 4.53,
+          "freshnessBasis": "The FIA announced Wednesday that Williams and Alpine had breached Formula 1 cost-cap procedures.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/50594939/williams-alpine-fined-627k-fia-f1-cap"
@@ -1098,9 +1091,9 @@
               "url": "https://www.espn.com/f1/story/_/id/50594939/williams-alpine-fined-627k-fia-f1-cap"
             }
           ],
-          "id": "a3-special-97680b859050eb36",
-          "feedRank": 20,
-          "compactHeadline": "Williams and Alpine fined over F1 cost-cap breaches"
+          "id": "a3-special-72679e0a8938879c",
+          "feedRank": 18,
+          "compactHeadline": "Williams, Alpine fined over F1 cost-cap breaches"
         }
       ]
     }
