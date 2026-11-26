@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-11-26T03:00:51Z",
+  "generatedAt": "2026-11-26T03:30:49Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "3e50f00c9fc1685656192d1fb1c7753d8a3576057bb940d7c17961ca88007d86",
+  "sourceCandidateHash": "7ef8685fa90097bde10d6a4efe0063f8bb5c8e11411a9fe57eaca24b38931a32",
   "leagues": [
     {
       "league": "MLB",
@@ -14,20 +14,52 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6dbb469ae3ebcc12"
+          ],
+          "type": "INJURY",
+          "priority": 86,
+          "headline": "Dodgers right-hander Ben Casparius underwent Tommy John surgery Wednesday and will miss the 2027 season.",
+          "text": "Dodgers right-hander Ben Casparius underwent Tommy John surgery Wednesday and will miss the 2027 season.",
+          "entities": [
+            "Los Angeles Dodgers",
+            "Ben Casparius"
+          ],
+          "occurredAt": "2026-11-26T00:21:04Z",
+          "timePrecision": "exact",
+          "ageHours": 3.16,
+          "freshnessBasis": "Ben Casparius underwent Tommy John surgery Wednesday and will miss the 2027 season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50599246/dodgers-ben-casparius-tommy-john-surgery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50599246/dodgers-ben-casparius-tommy-john-surgery"
+            }
+          ],
+          "id": "a3-d02e9a5d994d8a50",
+          "feedRank": 3,
+          "compactHeadline": "Dodgers’ Ben Casparius to miss 2027 after Tommy John surgery"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-d95aff69b091e089"
           ],
           "type": "CONTRACT",
           "priority": 88,
-          "headline": "The Mets finalized a record nine-year, $450 million contract with two-time Cy Young winner Tarik Skubal.",
-          "text": "The Mets finalized a record nine-year, $450 million contract with two-time Cy Young winner Tarik Skubal.",
+          "headline": "The Mets finalized a record $450 million, nine-year contract with two-time Cy Young winner Tarik Skubal.",
+          "text": "The Mets finalized a record $450 million, nine-year contract with two-time Cy Young winner Tarik Skubal.",
           "entities": [
             "New York Mets",
             "Tarik Skubal"
           ],
           "occurredAt": "2026-11-26T01:15:29Z",
           "timePrecision": "exact",
-          "ageHours": 1.76,
-          "freshnessBasis": "Tarik Skubal finalized a record nine-year, $450 million contract with the Mets Wednesday.",
+          "ageHours": 2.26,
+          "freshnessBasis": "The Mets finalized Tarik Skubal's record nine-year, $450 million contract Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50599216/mets-owners-steve-alex-cohen-thrilled-impressive-skubal-rotation"
@@ -40,16 +72,16 @@
             }
           ],
           "id": "a3-44ec64cae46cf712",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Mets land Tarik Skubal on record $450M contract"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-b11c4abe28472868"
           ],
           "type": "SIGNING",
-          "priority": 79,
+          "priority": 80,
           "headline": "Colorado agreed to a two-year, $32 million deal with David Peterson and a three-year, $42 million contract with Patrick Sandoval.",
           "text": "Colorado agreed to a two-year, $32 million deal with David Peterson and a three-year, $42 million contract with Patrick Sandoval.",
           "entities": [
@@ -57,10 +89,10 @@
             "David Peterson",
             "Patrick Sandoval"
           ],
-          "occurredAt": "2026-11-26T02:59:28Z",
+          "occurredAt": "2026-11-26T03:03:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.02,
-          "freshnessBasis": "The Rockies agreed to contracts with David Peterson and Patrick Sandoval on Wednesday.",
+          "ageHours": 0.46,
+          "freshnessBasis": "The Rockies agreed to contracts with David Peterson and Patrick Sandoval Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50599272/sources-rockies-agree-2-year-32m-deal-lhp-peterson"
@@ -72,41 +104,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/50599272/sources-rockies-agree-2-year-32m-deal-lhp-peterson"
             }
           ],
-          "id": "a3-1c9c8fae3f56c94e",
+          "id": "a3-f41549810a20df7b",
           "feedRank": 11,
-          "compactHeadline": "Rockies add Peterson and Sandoval to rotation"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-6dbb469ae3ebcc12"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Dodgers right-hander Ben Casparius underwent Tommy John surgery and will miss the 2027 season.",
-          "text": "Dodgers right-hander Ben Casparius underwent Tommy John surgery and will miss the 2027 season.",
-          "entities": [
-            "Los Angeles Dodgers",
-            "Ben Casparius"
-          ],
-          "occurredAt": "2026-11-26T00:21:04Z",
-          "timePrecision": "exact",
-          "ageHours": 2.66,
-          "freshnessBasis": "Ben Casparius underwent Tommy John surgery Wednesday and is expected to miss the 2027 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50599246/dodgers-ben-casparius-tommy-john-surgery"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50599246/dodgers-ben-casparius-tommy-john-surgery"
-            }
-          ],
-          "id": "a3-87298a5bc1854254",
-          "feedRank": 13,
-          "compactHeadline": "Dodgers lose Ben Casparius to Tommy John surgery"
+          "compactHeadline": "Rockies agree to deals with Peterson and Sandoval"
         },
         {
           "rank": 4,
@@ -115,15 +115,15 @@
           ],
           "type": "LEGAL",
           "priority": 84,
-          "headline": "MLB sued the players' union in federal court, asking that a planned lockout next week be declared legal.",
-          "text": "MLB sued the players' union in federal court, asking that a planned lockout next week be declared legal.",
+          "headline": "MLB sued the players' association in federal court, asking that a contemplated lockout next week be declared legal.",
+          "text": "MLB sued the players' association in federal court, asking that a contemplated lockout next week be declared legal.",
           "entities": [
             "MLB",
             "MLB Players Association"
           ],
           "occurredAt": "2026-11-25T20:02:01Z",
           "timePrecision": "exact",
-          "ageHours": 6.98,
+          "ageHours": 7.48,
           "freshnessBasis": "MLB filed a federal lawsuit seeking to establish that next week's contemplated lockout is legal.",
           "status": "active",
           "sourceUrls": [
@@ -136,17 +136,49 @@
               "url": "https://www.espn.com/mlb/story/_/id/50595155/mlb-sues-players-union-asking-court-declare-lockout-legal"
             }
           ],
-          "id": "a3-6a47e1fab4e0dd9e",
-          "feedRank": 18,
-          "compactHeadline": "MLB sues union over potential lockout"
+          "id": "a3-edb439b6315eec07",
+          "feedRank": 15,
+          "compactHeadline": "MLB sues union over possible lockout"
         },
         {
           "rank": 5,
           "candidateIds": [
+            "cand-8a32c4a96e7d20d0"
+          ],
+          "type": "SIGNING",
+          "priority": 77,
+          "headline": "The Tigers agreed to a one-year, $25 million contract with right-hander Kevin Gausman, pending a physical.",
+          "text": "The Tigers agreed to a one-year, $25 million contract with right-hander Kevin Gausman, pending a physical.",
+          "entities": [
+            "Detroit Tigers",
+            "Kevin Gausman"
+          ],
+          "occurredAt": "2026-11-26T00:28:22Z",
+          "timePrecision": "exact",
+          "ageHours": 3.04,
+          "freshnessBasis": "Detroit agreed to a one-year, $25 million deal with Kevin Gausman Wednesday, pending a physical.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50599090/sources-free-agent-kevin-gausman-tigers-reach-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50599090/sources-free-agent-kevin-gausman-tigers-reach-deal"
+            }
+          ],
+          "id": "a3-0277c9ab357946e2",
+          "feedRank": 18,
+          "compactHeadline": "Tigers add Kevin Gausman on one-year deal"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-b234ac68f08a2d27"
           ],
           "type": "RECORD",
-          "priority": 73,
+          "priority": 72,
           "headline": "Cubs center fielder Pete Crow-Armstrong will receive a record $3.5 million from MLB's pre-arbitration bonus pool.",
           "text": "Cubs center fielder Pete Crow-Armstrong will receive a record $3.5 million from MLB's pre-arbitration bonus pool.",
           "entities": [
@@ -155,8 +187,8 @@
           ],
           "occurredAt": "2026-11-26T00:41:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.33,
-          "freshnessBasis": "Pete Crow-Armstrong was awarded a record $3.5 million from MLB's pre-arbitration bonus pool.",
+          "ageHours": 2.83,
+          "freshnessBasis": "MLB awarded Pete Crow-Armstrong a record $3.5 million pre-arbitration bonus Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50598513/cubs-crow-armstrong-record-pre-arbitration-bonus-pool"
@@ -169,40 +201,8 @@
             }
           ],
           "id": "a3-c477d5d70f69be83",
-          "feedRank": 19,
+          "feedRank": 23,
           "compactHeadline": "Crow-Armstrong earns record pre-arbitration bonus"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8a32c4a96e7d20d0"
-          ],
-          "type": "SIGNING",
-          "priority": 75,
-          "headline": "Detroit agreed to a one-year, $25 million contract with free-agent right-hander Kevin Gausman, pending a physical.",
-          "text": "Detroit agreed to a one-year, $25 million contract with free-agent right-hander Kevin Gausman, pending a physical.",
-          "entities": [
-            "Detroit Tigers",
-            "Kevin Gausman"
-          ],
-          "occurredAt": "2026-11-26T00:28:22Z",
-          "timePrecision": "exact",
-          "ageHours": 2.54,
-          "freshnessBasis": "The Tigers and Kevin Gausman agreed to a one-year, $25 million contract pending a physical.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/50599090/sources-free-agent-kevin-gausman-tigers-reach-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/50599090/sources-free-agent-kevin-gausman-tigers-reach-deal"
-            }
-          ],
-          "id": "a3-5768a7338342baa1",
-          "feedRank": 20,
-          "compactHeadline": "Tigers agree to one-year deal with Kevin Gausman"
         },
         {
           "rank": 7,
@@ -211,16 +211,16 @@
           ],
           "type": "SIGNING",
           "priority": 74,
-          "headline": "Free-agent third baseman Alec Bohm agreed to a two-year contract with Kansas City, according to multiple reports.",
-          "text": "Free-agent third baseman Alec Bohm agreed to a two-year contract with Kansas City, according to multiple reports.",
+          "headline": "Free-agent third baseman Alec Bohm agreed to a two-year contract with the Kansas City Royals.",
+          "text": "Free-agent third baseman Alec Bohm agreed to a two-year contract with the Kansas City Royals.",
           "entities": [
             "Kansas City Royals",
             "Alec Bohm"
           ],
           "occurredAt": "2026-11-25T17:49:01Z",
           "timePrecision": "exact",
-          "ageHours": 9.2,
-          "freshnessBasis": "Alec Bohm agreed to a two-year contract with the Royals Wednesday.",
+          "ageHours": 9.7,
+          "freshnessBasis": "Alec Bohm agreed to a two-year contract with Kansas City Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50594322/reports-free-agent-alec-bohm-reaches-2-year-royals"
@@ -232,9 +232,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/50594322/reports-free-agent-alec-bohm-reaches-2-year-royals"
             }
           ],
-          "id": "a3-a6146ff6444fd66b",
-          "feedRank": 23,
-          "compactHeadline": "Royals add Alec Bohm on two-year deal"
+          "id": "a3-4b2d0ae6e7d41201",
+          "feedRank": 25,
+          "compactHeadline": "Alec Bohm agrees to two-year deal with Royals"
         }
       ]
     },
@@ -245,20 +245,54 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-ac08a63dcf61125a"
+          ],
+          "type": "INJURY",
+          "priority": 81,
+          "headline": "Packers receiver Christian Watson suffered a concussion on a sideline hit by Rams safety Kam Kinchens, who was ejected.",
+          "text": "Packers receiver Christian Watson suffered a concussion on a sideline hit by Rams safety Kam Kinchens, who was ejected.",
+          "entities": [
+            "Green Bay Packers",
+            "Christian Watson",
+            "Los Angeles Rams",
+            "Kamren Kinchens"
+          ],
+          "occurredAt": "2026-11-26T03:21:06Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "Christian Watson suffered a concussion and Kam Kinchens was ejected after the sideline hit Wednesday night.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50600753/rams-kam-kinchens-ejected-hit-christian-watson"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50600753/rams-kam-kinchens-ejected-hit-christian-watson"
+            }
+          ],
+          "id": "a3-de63b4f32b4fd838",
+          "feedRank": 2,
+          "compactHeadline": "Watson concussed after hit; Rams' Kinchens ejected"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-7e17a5fe98f39ad9"
           ],
           "type": "INJURY",
-          "priority": 78,
-          "headline": "49ers quarterback Brock Purdy sat out Wednesday's practice while dealing with an ankle injury suffered Sunday night.",
-          "text": "49ers quarterback Brock Purdy sat out Wednesday's practice while dealing with an ankle injury suffered Sunday night.",
+          "priority": 77,
+          "headline": "49ers quarterback Brock Purdy sat out Wednesday's practice while dealing with an ankle injury suffered Sunday against Minnesota.",
+          "text": "49ers quarterback Brock Purdy sat out Wednesday's practice while dealing with an ankle injury suffered Sunday against Minnesota.",
           "entities": [
             "San Francisco 49ers",
             "Brock Purdy"
           ],
           "occurredAt": "2026-11-26T00:16:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.74,
-          "freshnessBasis": "Brock Purdy missed Wednesday's practice because of an ankle injury sustained against Minnesota.",
+          "ageHours": 3.24,
+          "freshnessBasis": "Brock Purdy did not practice Wednesday because of an ankle injury from Sunday's game.",
           "status": "watch",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50596930/49ers-brock-purdy-ankle-injury-practice-wednesday"
@@ -271,26 +305,66 @@
             }
           ],
           "id": "a3-ba86bf0b714b2a79",
-          "feedRank": 5,
+          "feedRank": 6,
           "compactHeadline": "Brock Purdy misses practice with ankle injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-33a06c0ef5d399a2",
+            "cand-f05b0e656317ac64"
+          ],
+          "type": "ROSTER",
+          "priority": 82,
+          "headline": "Pittsburgh waived Aaron Rodgers after his criticism of coach Mike McCarthy; the Steelers said McCarthy retains the organization's full support.",
+          "text": "Pittsburgh waived Aaron Rodgers after his criticism of coach Mike McCarthy; the Steelers said McCarthy retains the organization's full support.",
+          "entities": [
+            "Pittsburgh Steelers",
+            "Aaron Rodgers",
+            "Mike McCarthy"
+          ],
+          "occurredAt": "2026-11-26T03:29:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "The Steelers waived Aaron Rodgers and reaffirmed Mike McCarthy's status as coach Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching",
+            "https://www.espn.com/nfl/story/_/id/50597534/sources-mike-mccarthy-steelers-full-support"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50597534/sources-mike-mccarthy-steelers-full-support"
+            }
+          ],
+          "id": "a3-6516d3900e7ab8b3",
+          "feedRank": 9,
+          "compactHeadline": "Steelers waive Aaron Rodgers after McCarthy dispute"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-dc886dc5a25d9583"
           ],
           "type": "INJURY",
-          "priority": 76,
-          "headline": "Ravens running back Derrick Henry re-entered concussion protocol, but Baltimore expects him to play Sunday against Houston.",
-          "text": "Ravens running back Derrick Henry re-entered concussion protocol, but Baltimore expects him to play Sunday against Houston.",
+          "priority": 75,
+          "headline": "Ravens running back Derrick Henry entered concussion protocol again Wednesday, but Baltimore expects him to play Sunday.",
+          "text": "Ravens running back Derrick Henry entered concussion protocol again Wednesday, but Baltimore expects him to play Sunday.",
           "entities": [
             "Baltimore Ravens",
             "Derrick Henry"
           ],
           "occurredAt": "2026-11-25T22:33:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.45,
-          "freshnessBasis": "Derrick Henry was placed back in concussion protocol Wednesday while the Ravens said they expect him to play Sunday.",
+          "ageHours": 4.95,
+          "freshnessBasis": "Derrick Henry re-entered concussion protocol Wednesday while the Ravens said they expect him to play Sunday.",
           "status": "watch",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50597502/henry-concussion-protocol-ravens-expect-play"
@@ -302,52 +376,19 @@
               "url": "https://www.espn.com/nfl/story/_/id/50597502/henry-concussion-protocol-ravens-expect-play"
             }
           ],
-          "id": "a3-8dfce9d518909902",
-          "feedRank": 8,
-          "compactHeadline": "Ravens expect Derrick Henry to play despite protocol"
+          "id": "a3-01341f9c7737cfdf",
+          "feedRank": 10,
+          "compactHeadline": "Ravens expect Derrick Henry to play despite concussion protocol"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-33a06c0ef5d399a2"
-          ],
-          "type": "ROSTER",
-          "priority": 82,
-          "headline": "The Steelers waived Aaron Rodgers after the quarterback's public criticism of coach Mike McCarthy.",
-          "text": "The Steelers waived Aaron Rodgers after the quarterback's public criticism of coach Mike McCarthy.",
-          "entities": [
-            "Pittsburgh Steelers",
-            "Aaron Rodgers",
-            "Mike McCarthy"
-          ],
-          "occurredAt": "2026-11-26T00:09:07Z",
-          "timePrecision": "exact",
-          "ageHours": 2.86,
-          "freshnessBasis": "Pittsburgh waived Aaron Rodgers Wednesday after his public criticism of Mike McCarthy.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50595660/rodgers-heard-mccarthy-benching"
-            }
-          ],
-          "id": "a3-f6f616b1a1d0c8a6",
-          "feedRank": 9,
-          "compactHeadline": "Steelers waive Aaron Rodgers after McCarthy clash"
-        },
-        {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-90a35e819498ff02"
           ],
           "type": "SIGNING",
           "priority": 74,
-          "headline": "Brandon Aiyuk is signing with Washington's practice squad, reuniting with college quarterback Jayden Daniels.",
-          "text": "Brandon Aiyuk is signing with Washington's practice squad, reuniting with college quarterback Jayden Daniels.",
+          "headline": "Brandon Aiyuk is signing with Washington’s practice squad, reuniting the wide receiver with college quarterback Jayden Daniels.",
+          "text": "Brandon Aiyuk is signing with Washington’s practice squad, reuniting the wide receiver with college quarterback Jayden Daniels.",
           "entities": [
             "Washington Commanders",
             "Brandon Aiyuk",
@@ -355,8 +396,8 @@
           ],
           "occurredAt": "2026-11-26T00:35:42Z",
           "timePrecision": "exact",
-          "ageHours": 2.42,
-          "freshnessBasis": "Brandon Aiyuk agreed to join the Commanders' practice squad Wednesday.",
+          "ageHours": 2.92,
+          "freshnessBasis": "Brandon Aiyuk agreed to join Washington’s practice squad Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50595281/brandon-aiyuk-finishes-visit-commanders"
@@ -368,19 +409,19 @@
               "url": "https://www.espn.com/nfl/story/_/id/50595281/brandon-aiyuk-finishes-visit-commanders"
             }
           ],
-          "id": "a3-bdb1c5a68ea4df4e",
-          "feedRank": 12,
-          "compactHeadline": "Brandon Aiyuk joins Commanders practice squad"
+          "id": "a3-d5c35a7ce81fcf0d",
+          "feedRank": 13,
+          "compactHeadline": "Brandon Aiyuk joins Commanders’ practice squad"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-58b3c006ae9d0048"
           ],
           "type": "INJURY",
           "priority": 73,
-          "headline": "Kansas City ruled running back Kenneth Walker III out of Thursday's showdown with Buffalo because of a groin injury.",
-          "text": "Kansas City ruled running back Kenneth Walker III out of Thursday's showdown with Buffalo because of a groin injury.",
+          "headline": "Kansas City ruled running back Kenneth Walker III out for Thursday night's showdown with Buffalo because of a groin injury.",
+          "text": "Kansas City ruled running back Kenneth Walker III out for Thursday night's showdown with Buffalo because of a groin injury.",
           "entities": [
             "Kansas City Chiefs",
             "Kenneth Walker III",
@@ -388,8 +429,8 @@
           ],
           "occurredAt": "2026-11-25T17:22:59Z",
           "timePrecision": "exact",
-          "ageHours": 9.63,
-          "freshnessBasis": "The Chiefs ruled Kenneth Walker III out for Thursday's game against Buffalo because of a groin injury.",
+          "ageHours": 10.13,
+          "freshnessBasis": "The Chiefs ruled Kenneth Walker III out of Thursday's game against the Bills with a groin injury.",
           "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50594656/chiefs-rb-kenneth-walker-iii-groin-thursday-vs-bills"
@@ -402,40 +443,8 @@
             }
           ],
           "id": "a3-b0387f4c171aa4b5",
-          "feedRank": 16,
+          "feedRank": 14,
           "compactHeadline": "Chiefs rule Kenneth Walker III out against Bills"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b5c976ca00b8521e"
-          ],
-          "type": "INJURY",
-          "priority": 67,
-          "headline": "Chicago ruled cornerback Kyler Gordon out for a second straight game because of a shoulder injury.",
-          "text": "Chicago ruled cornerback Kyler Gordon out for a second straight game because of a shoulder injury.",
-          "entities": [
-            "Chicago Bears",
-            "Kyler Gordon"
-          ],
-          "occurredAt": "2026-11-25T21:18:35Z",
-          "timePrecision": "exact",
-          "ageHours": 5.7,
-          "freshnessBasis": "The Bears ruled Kyler Gordon out for a second consecutive game Wednesday because of his shoulder injury.",
-          "status": "next",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50597032/bears-rule-gordon-high-stakes-game-detroit"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50597032/bears-rule-gordon-high-stakes-game-detroit"
-            }
-          ],
-          "id": "a3-f6194e2e996e4c29",
-          "feedRank": 24,
-          "compactHeadline": "Bears rule Kyler Gordon out again"
         }
       ]
     },
@@ -449,9 +458,9 @@
             "cand-0e5cb9344a14aa78"
           ],
           "type": "MILESTONE",
-          "priority": 80,
-          "headline": "LeBron James posted 25 points, 12 assists and 10 rebounds for his first triple-double with Philadelphia in a 111-104 win over Miami.",
-          "text": "LeBron James posted 25 points, 12 assists and 10 rebounds for his first triple-double with Philadelphia in a 111-104 win over Miami.",
+          "priority": 82,
+          "headline": "LeBron James posted 25 points, 12 assists and 10 rebounds for his first triple-double with Philadelphia in a 111-104 NBA Cup win over Miami.",
+          "text": "LeBron James posted 25 points, 12 assists and 10 rebounds for his first triple-double with Philadelphia in a 111-104 NBA Cup win over Miami.",
           "entities": [
             "Philadelphia 76ers",
             "LeBron James",
@@ -459,8 +468,8 @@
           ],
           "occurredAt": "2026-11-25T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.01,
-          "freshnessBasis": "LeBron James recorded his first triple-double with Philadelphia in the 76ers' 111-104 win over Miami.",
+          "ageHours": 5.51,
+          "freshnessBasis": "LeBron James recorded his first triple-double with Philadelphia in Wednesday's 111-104 NBA Cup victory.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -478,9 +487,9 @@
               "url": "http://www.espn.com/nba/recap?gameId=401909317"
             }
           ],
-          "id": "a3-d4fdbfa089425aa5",
-          "feedRank": 4,
-          "compactHeadline": "LeBron records first 76ers triple-double in Cup win"
+          "id": "a3-3a00663467b93c12",
+          "feedRank": 5,
+          "compactHeadline": "LeBron records first 76ers triple-double in NBA Cup win"
         },
         {
           "rank": 2,
@@ -488,9 +497,9 @@
             "cand-243145d9e4e0c040"
           ],
           "type": "INJURY",
-          "priority": 77,
-          "headline": "Philadelphia ruled Jaylen Brown out of its 111-104 win over Miami after a recurrence of left hamstring tightness.",
-          "text": "Philadelphia ruled Jaylen Brown out of its 111-104 win over Miami after a recurrence of left hamstring tightness.",
+          "priority": 76,
+          "headline": "Philadelphia’s Jaylen Brown left Wednesday’s NBA Cup game against Miami with a recurrence of left hamstring tightness.",
+          "text": "Philadelphia’s Jaylen Brown left Wednesday’s NBA Cup game against Miami with a recurrence of left hamstring tightness.",
           "entities": [
             "Philadelphia 76ers",
             "Jaylen Brown",
@@ -498,9 +507,9 @@
           ],
           "occurredAt": "2026-11-26T02:48:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
-          "freshnessBasis": "Jaylen Brown left Philadelphia's 111-104 win over Miami and was ruled out with left hamstring tightness.",
-          "status": "watch",
+          "ageHours": 0.71,
+          "freshnessBasis": "Jaylen Brown exited Philadelphia’s Wednesday NBA Cup game with left hamstring tightness.",
+          "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50599296/76ers-jaylen-brown-exits-recurrence-hamstring-issue"
           ],
@@ -511,9 +520,9 @@
               "url": "https://www.espn.com/nba/story/_/id/50599296/76ers-jaylen-brown-exits-recurrence-hamstring-issue"
             }
           ],
-          "id": "a3-36247c8000480144",
-          "feedRank": 6,
-          "compactHeadline": "Jaylen Brown exits 76ers' win with hamstring issue"
+          "id": "a3-d85d6938680fa5e6",
+          "feedRank": 7,
+          "compactHeadline": "Jaylen Brown exits 76ers’ NBA Cup game with hamstring issue"
         },
         {
           "rank": 3,
@@ -521,17 +530,17 @@
             "cand-e3afdf4a1ca4c346"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 82,
-          "headline": "The NBA unveiled an arena initiative targeting nearly $11 billion in funding as its planned Europe league moves closer to reality.",
-          "text": "The NBA unveiled an arena initiative targeting nearly $11 billion in funding as its planned Europe league moves closer to reality.",
+          "priority": 78,
+          "headline": "The NBA unveiled a plan targeting nearly $11 billion in arena development and renovation to support its proposed Europe league.",
+          "text": "The NBA unveiled a plan targeting nearly $11 billion in arena development and renovation to support its proposed Europe league.",
           "entities": [
             "NBA",
             "Europe league"
           ],
           "occurredAt": "2026-11-25T14:43:24Z",
           "timePrecision": "exact",
-          "ageHours": 12.29,
-          "freshnessBasis": "The NBA unveiled a nearly $11 billion arena-development initiative on Nov. 25.",
+          "ageHours": 12.79,
+          "freshnessBasis": "The NBA unveiled an arena initiative targeting nearly $11 billion in funding for a Europe league Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50592672/nba-reveals-11b-initiative-arena-development-europe"
@@ -543,92 +552,67 @@
               "url": "https://www.espn.com/nba/story/_/id/50592672/nba-reveals-11b-initiative-arena-development-europe"
             }
           ],
-          "id": "a3-af6049bfa26f61b8",
-          "feedRank": 10,
-          "compactHeadline": "NBA unveils $11B arena initiative for planned Europe league"
+          "id": "a3-ddab69b0544b586e",
+          "feedRank": 20,
+          "compactHeadline": "NBA unveils $11B arena plan for Europe league"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-36b3c909ced2d0a1"
+            "cand-e0516de9b649b7f3"
           ],
-          "type": "INJURY",
-          "priority": 73,
-          "headline": "Philadelphia 76ers center Joel Embiid missed his second straight game Wednesday because of an illness.",
-          "text": "Philadelphia 76ers center Joel Embiid missed his second straight game Wednesday because of an illness.",
+          "type": "STREAK",
+          "priority": 75,
+          "headline": "New York beat Cleveland 121-102 behind Jose Alvarado's season-high 21 points and a fourth-quarter bench surge for its sixth straight win.",
+          "text": "New York beat Cleveland 121-102 behind Jose Alvarado's season-high 21 points and a fourth-quarter bench surge for its sixth straight win.",
           "entities": [
-            "Joel Embiid",
-            "Philadelphia 76ers"
+            "New York Knicks",
+            "Cleveland Cavaliers",
+            "Jose Alvarado"
           ],
-          "occurredAt": "2026-11-25T20:53:38Z",
+          "occurredAt": "2026-11-26T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.12,
-          "freshnessBasis": "Joel Embiid missed a second consecutive 76ers game because of illness on Nov. 25.",
+          "ageHours": 3.01,
+          "freshnessBasis": "The Knicks beat the Cavaliers 121-102 Wednesday to extend their winning streak to six games.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50596747/76ers-star-joel-embiid-vs-heat-due-illness"
+            "https://highlightly.net",
+            "http://www.espn.com/nba/recap?gameId=401909319"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-11-25",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50596747/76ers-star-joel-embiid-vs-heat-due-illness"
+              "url": "http://www.espn.com/nba/recap?gameId=401909319"
             }
           ],
-          "id": "a3-25715e4b43c77b91",
-          "feedRank": 14,
-          "compactHeadline": "Joel Embiid misses second straight game with illness"
+          "id": "a3-5be0c1f2ee50703d",
+          "feedRank": 24,
+          "compactHeadline": "Knicks run winning streak to six with 121-102 win"
         },
         {
           "rank": 5,
-          "candidateIds": [
-            "cand-7dfaec1dab039bce"
-          ],
-          "type": "CONTRACT",
-          "priority": 74,
-          "headline": "Free-agent guard Kevin Porter Jr. is finalizing a two-year contract to join the Orlando Magic.",
-          "text": "Free-agent guard Kevin Porter Jr. is finalizing a two-year contract to join the Orlando Magic.",
-          "entities": [
-            "Kevin Porter Jr.",
-            "Orlando Magic"
-          ],
-          "occurredAt": "2026-11-25T19:04:58Z",
-          "timePrecision": "exact",
-          "ageHours": 7.93,
-          "freshnessBasis": "Kevin Porter Jr. was reported to be finalizing a two-year Magic contract on Nov. 25.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50595534/agent-kevin-porter-jr-finalizing-2-year-deal-magic"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50595534/agent-kevin-porter-jr-finalizing-2-year-deal-magic"
-            }
-          ],
-          "id": "a3-daa66f6683a3a51f",
-          "feedRank": 25,
-          "compactHeadline": "Kevin Porter Jr. finalizing two-year deal with Magic"
-        },
-        {
-          "rank": 6,
           "candidateIds": [
             "cand-f38ec4fc47bfb5a4"
           ],
           "type": "RETURN",
           "priority": 74,
-          "headline": "Pistons center Jalen Duren practiced with Detroit Tuesday and is set to begin a rehab assignment in the next step of his return.",
-          "text": "Pistons center Jalen Duren practiced with Detroit Tuesday and is set to begin a rehab assignment in the next step of his return.",
+          "headline": "Pistons center Jalen Duren practiced with Detroit and is set to begin a rehab assignment, a significant step toward returning from injury.",
+          "text": "Pistons center Jalen Duren practiced with Detroit and is set to begin a rehab assignment, a significant step toward returning from injury.",
           "entities": [
             "Detroit Pistons",
             "Jalen Duren"
           ],
           "occurredAt": "2026-11-25T12:41:31Z",
           "timePrecision": "exact",
-          "ageHours": 14.32,
-          "freshnessBasis": "Jalen Duren practiced with Detroit and is scheduled to begin a rehab assignment after his injury.",
-          "status": "watch",
+          "ageHours": 14.82,
+          "freshnessBasis": "Jalen Duren practiced with the Pistons Tuesday and will begin a rehab assignment.",
+          "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50586890/jalen-duren-begin-rehab-assignment-next-step-return-injury"
           ],
@@ -639,9 +623,49 @@
               "url": "https://www.espn.com/nba/story/_/id/50586890/jalen-duren-begin-rehab-assignment-next-step-return-injury"
             }
           ],
-          "id": "a3-fb7a58dd06dabf29",
-          "feedRank": 26,
-          "compactHeadline": "Jalen Duren begins rehab assignment"
+          "id": "a3-e751c5a6d9ee1918",
+          "feedRank": 29,
+          "compactHeadline": "Jalen Duren begins rehab assignment for Pistons"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-d64a6814a87a0bdc"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Chicago beat Charlotte 107-105 Wednesday as Matas Buzelis scored 24 points and Charlotte lost its seventh straight.",
+          "text": "Chicago beat Charlotte 107-105 Wednesday as Matas Buzelis scored 24 points and Charlotte lost its seventh straight.",
+          "entities": [
+            "Chicago Bulls",
+            "Matas Buzelis",
+            "Josh Giddey",
+            "Charlotte Hornets"
+          ],
+          "occurredAt": "2026-11-26T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.51,
+          "freshnessBasis": "Chicago beat Charlotte 107-105 Wednesday as Matas Buzelis scored 24 points and Charlotte lost its seventh straight.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nba/recap?gameId=401909318"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-11-25",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909318"
+            }
+          ],
+          "id": "a3-1161fcc6e0c6e450",
+          "feedRank": 32,
+          "compactHeadline": "Buzelis’ 24 points help Bulls hand Hornets seventh straight loss"
         }
       ]
     },
@@ -652,34 +676,42 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-6bf81ad6a175cb6e"
+            "cand-56266e6b4926898c"
           ],
           "type": "RETURN",
-          "priority": 80,
-          "headline": "Colorado defenseman Cale Makar returned to the lineup after missing three games with a lower-body injury.",
-          "text": "Colorado defenseman Cale Makar returned to the lineup after missing three games with a lower-body injury.",
+          "priority": 81,
+          "headline": "Aleksander Barkov and Brad Marchand returned from injuries, with Marchand assisting on three goals and Barkov scoring in Florida's 5-3 win over Ottawa.",
+          "text": "Aleksander Barkov and Brad Marchand returned from injuries, with Marchand assisting on three goals and Barkov scoring in Florida's 5-3 win over Ottawa.",
           "entities": [
-            "Colorado Avalanche",
-            "Cale Makar"
+            "Florida Panthers",
+            "Aleksander Barkov",
+            "Brad Marchand",
+            "Ottawa Senators"
           ],
-          "occurredAt": "2026-11-25T20:12:00Z",
+          "occurredAt": "2026-11-26T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.81,
-          "freshnessBasis": "Cale Makar returned to Colorado's lineup after a three-game absence caused by a lower-body injury.",
+          "ageHours": 3.51,
+          "freshnessBasis": "Barkov and Marchand returned to Florida's lineup in Wednesday's 5-3 win over Ottawa.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
+            "https://highlightly.net",
+            "http://www.espn.com/nhl/recap?gameId=401892784"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-hockey-2026-11-25",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
+              "url": "http://www.espn.com/nhl/recap?gameId=401892784"
             }
           ],
-          "id": "a3-e416fd3c22dd5507",
-          "feedRank": 15,
-          "compactHeadline": "Cale Makar returns to Avalanche lineup"
+          "id": "a3-443fac5b32cb5d02",
+          "feedRank": 12,
+          "compactHeadline": "Barkov, Marchand return as Panthers beat Senators 5-3"
         },
         {
           "rank": 2,
@@ -687,9 +719,9 @@
             "cand-1ee6afe3b2012a3a"
           ],
           "type": "RETURN",
-          "priority": 79,
-          "headline": "Aleksander Barkov and Brad Marchand returned together for Florida against Ottawa, their first game as a pair since the 2025 Stanley Cup Final clincher.",
-          "text": "Aleksander Barkov and Brad Marchand returned together for Florida against Ottawa, their first game as a pair since the 2025 Stanley Cup Final clincher.",
+          "priority": 78,
+          "headline": "Aleksander Barkov and Brad Marchand returned from injuries to play together for Florida for the first time since the 2025 Stanley Cup Final.",
+          "text": "Aleksander Barkov and Brad Marchand returned from injuries to play together for Florida for the first time since the 2025 Stanley Cup Final.",
           "entities": [
             "Florida Panthers",
             "Aleksander Barkov",
@@ -697,8 +729,8 @@
           ],
           "occurredAt": "2026-11-26T01:19:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.69,
-          "freshnessBasis": "Aleksander Barkov and Brad Marchand returned to Florida's lineup together against Ottawa.",
+          "ageHours": 2.19,
+          "freshnessBasis": "Aleksander Barkov and Brad Marchand returned from injuries in Florida’s lineup Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/50594065/aleksander-barkov-brad-marchand-returning-vs-senators"
@@ -717,22 +749,54 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-6bf81ad6a175cb6e"
+          ],
+          "type": "RETURN",
+          "priority": 76,
+          "headline": "Colorado defenseman Cale Makar returned after missing three games with a lower-body injury.",
+          "text": "Colorado defenseman Cale Makar returned after missing three games with a lower-body injury.",
+          "entities": [
+            "Colorado Avalanche",
+            "Cale Makar"
+          ],
+          "occurredAt": "2026-11-25T20:12:00Z",
+          "timePrecision": "exact",
+          "ageHours": 7.31,
+          "freshnessBasis": "Cale Makar returned to Colorado's lineup Wednesday after a three-game absence.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50596079/avalanche-defenseman-cale-makar-returns-3-game-absence"
+            }
+          ],
+          "id": "a3-e416fd3c22dd5507",
+          "feedRank": 22,
+          "compactHeadline": "Cale Makar returns to Avalanche lineup"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-737ba63a83782734"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Winnipeg beat Boston 4-2 as Morgan Barron scored the tiebreaking goal late in the second period and Nico Daws made 21 saves.",
-          "text": "Winnipeg beat Boston 4-2 as Morgan Barron scored the tiebreaking goal late in the second period and Nico Daws made 21 saves.",
+          "headline": "Morgan Barron scored the tiebreaking goal late in the second period of Winnipeg’s 4-2 win over Boston Wednesday.",
+          "text": "Morgan Barron scored the tiebreaking goal late in the second period of Winnipeg’s 4-2 win over Boston Wednesday.",
           "entities": [
+            "Winnipeg Jets",
             "Morgan Barron",
             "Nico Daws",
-            "Winnipeg Jets",
             "Boston Bruins"
           ],
           "occurredAt": "2026-11-26T02:44:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
-          "freshnessBasis": "Morgan Barron's tiebreaking goal helped Winnipeg beat Boston 4-2 on Nov. 26.",
+          "ageHours": 0.77,
+          "freshnessBasis": "Morgan Barron scored the tiebreaking goal late in the second period of Winnipeg’s 4-2 win over Boston Wednesday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nhl/recap?gameId=401892781"
@@ -744,88 +808,9 @@
               "url": "http://www.espn.com/nhl/recap?gameId=401892781"
             }
           ],
-          "id": "a3-023441796a46ded7",
-          "feedRank": 27,
-          "compactHeadline": "Barron's late goal lifts Jets past Bruins 4-2"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-b858648137adbdf1"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Carolina rallied from behind with three third-period goals to beat Tampa Bay 3-1.",
-          "text": "Carolina rallied from behind with three third-period goals to beat Tampa Bay 3-1.",
-          "entities": [
-            "Carolina Hurricanes",
-            "Tampa Bay Lightning",
-            "Eric Robinson",
-            "Jaccob Slavin"
-          ],
-          "occurredAt": "2026-11-26T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.01,
-          "freshnessBasis": "Carolina rallied from behind with three third-period goals to beat Tampa Bay 3-1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892783"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-25",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892783"
-            }
-          ],
-          "id": "a3-3461c7b69ea56e54",
+          "id": "a3-2ea600aebe36ae9e",
           "feedRank": 30,
-          "compactHeadline": "Hurricanes rally past Lightning with three third-period goals"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-dd6c067c72372340"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Rasmus Dahlin, Zach Benson and Jiri Kulich each had a goal and an assist to lead the Buffalo Sabres to a 5-1 win over the New York Rangers on Wednesday night.",
-          "text": "Rasmus Dahlin, Zach Benson and Jiri Kulich each had a goal and an assist to lead the Buffalo Sabres to a 5-1 win over the New York Rangers on Wednesday night.",
-          "entities": [
-            "Buffalo Sabres",
-            "New York Rangers",
-            "Rasmus Dahlin"
-          ],
-          "occurredAt": "2026-11-26T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.01,
-          "freshnessBasis": "Rasmus Dahlin scored 17 seconds into Buffalo's 5-1 win over the Rangers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/nhl/recap?gameId=401892782"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-hockey-2026-11-25",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892782"
-            }
-          ],
-          "id": "a3-179b43c5c493e451",
-          "feedRank": 31,
-          "compactHeadline": "Dahlin strikes early in Sabres' 5-1 win"
+          "compactHeadline": "Barron’s late goal keeps Jets rolling past Bruins"
         }
       ]
     },
@@ -836,35 +821,34 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a52f7b311905fe28"
+            "cand-32fd8dd65f0daf21"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Sunderland midfielder Jules Ahoka made his first Premier League start and helped the club earn a valuable 0-0 draw at Aston Villa.",
-          "text": "Sunderland midfielder Jules Ahoka made his first Premier League start and helped the club earn a valuable 0-0 draw at Aston Villa.",
+          "type": "LEGAL",
+          "priority": 75,
+          "headline": "Former England forward Raheem Sterling avoided jail after admitting to dangerous driving before crashing into a metal gate.",
+          "text": "Former England forward Raheem Sterling avoided jail after admitting to dangerous driving before crashing into a metal gate.",
           "entities": [
-            "Jules Ahoka",
-            "Sunderland",
-            "Aston Villa"
+            "Raheem Sterling",
+            "England"
           ],
-          "occurredAt": "2026-11-25T07:13:11Z",
+          "occurredAt": "2026-11-25T11:53:55Z",
           "timePrecision": "exact",
-          "ageHours": 19.79,
-          "freshnessBasis": "Jules Ahoka made his first Premier League start in Sunderland's 0-0 draw at Aston Villa on Nov. 22.",
+          "ageHours": 15.62,
+          "freshnessBasis": "Raheem Sterling avoided a jail sentence Wednesday after admitting dangerous driving.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/espn/story/_/id/50581648/jules-ahoka-sunderland-busquets-premier-league-dr-congo"
+            "https://www.espn.com/soccer/story/_/id/50591753/raheem-sterling-court-england-manchester-city-liverpool-chelsea"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/espn/story/_/id/50581648/jules-ahoka-sunderland-busquets-premier-league-dr-congo"
+              "url": "https://www.espn.com/soccer/story/_/id/50591753/raheem-sterling-court-england-manchester-city-liverpool-chelsea"
             }
           ],
-          "id": "a3-a6aaca8f429883eb",
-          "feedRank": 32,
-          "compactHeadline": "Sunderland's Ahoka impresses in first Premier League start"
+          "id": "a3-b8d6e8e95be13fef",
+          "feedRank": 27,
+          "compactHeadline": "Raheem Sterling avoids jail for dangerous driving"
         }
       ]
     },
@@ -877,17 +861,17 @@
           "candidateIds": [
             "cand-9579f414befaf4e8"
           ],
-          "type": "PLAYOFF",
-          "priority": 80,
-          "headline": "MLS owners agreed to a new 16-team playoff format beginning with the 2027-28 season.",
-          "text": "MLS owners agreed to a new 16-team playoff format beginning with the 2027-28 season.",
+          "type": "LEAGUE_NEWS",
+          "priority": 76,
+          "headline": "MLS owners agreed to a new 16-team playoff format beginning in the 2027-28 season.",
+          "text": "MLS owners agreed to a new 16-team playoff format beginning in the 2027-28 season.",
           "entities": [
             "MLS"
           ],
           "occurredAt": "2026-11-25T19:35:17Z",
           "timePrecision": "exact",
-          "ageHours": 7.43,
-          "freshnessBasis": "MLS owners agreed Wednesday to adopt a 16-team playoff format starting in 2027-28.",
+          "ageHours": 7.93,
+          "freshnessBasis": "MLS owners agreed Wednesday to introduce a 16-team playoff format for the 2027-28 season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/50595745/mls-playoff-format-new-2027-2028-change-owners"
@@ -899,9 +883,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/50595745/mls-playoff-format-new-2027-2028-change-owners"
             }
           ],
-          "id": "a3-8294050a31424a33",
-          "feedRank": 1,
-          "compactHeadline": "MLS owners approve 16-team playoff format"
+          "id": "a3-67845425f8e6af0d",
+          "feedRank": 19,
+          "compactHeadline": "MLS owners approve 16-team playoff format for 2027-28"
         }
       ]
     },
@@ -915,7 +899,7 @@
             "cand-396d498b8cac524b"
           ],
           "type": "RANKING",
-          "priority": 85,
+          "priority": 84,
           "headline": "Defending champion Indiana dropped six spots to No. 14 and out of the 12-team CFP field, while Texas and Tennessee moved ahead of Alabama.",
           "text": "Defending champion Indiana dropped six spots to No. 14 and out of the 12-team CFP field, while Texas and Tennessee moved ahead of Alabama.",
           "entities": [
@@ -926,8 +910,8 @@
           ],
           "occurredAt": "2026-11-25T07:42:16Z",
           "timePrecision": "exact",
-          "ageHours": 19.31,
-          "freshnessBasis": "The fourth CFP rankings placed Indiana at No. 14 and outside the 12-team field Tuesday night.",
+          "ageHours": 19.81,
+          "freshnessBasis": "The latest CFP rankings moved Indiana out of the 12-team field and lifted Texas and Tennessee past Alabama Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50588082/indiana-top-12-cfp-rankings-texas-tennessee-leap-alabama"
@@ -939,9 +923,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/50588082/indiana-top-12-cfp-rankings-texas-tennessee-leap-alabama"
             }
           ],
-          "id": "a3-3f9dd7b580697438",
-          "feedRank": 3,
-          "compactHeadline": "Indiana falls out of CFP field in latest rankings"
+          "id": "a3-33de72e8a2a6f075",
+          "feedRank": 4,
+          "compactHeadline": "Indiana falls out of CFP field as Texas, Tennessee rise"
         },
         {
           "rank": 2,
@@ -949,17 +933,17 @@
             "cand-4312d9b479de5ab0"
           ],
           "type": "COACHING",
-          "priority": 76,
-          "headline": "Eastern Michigan fired coach Chris Creighton after 13 seasons with the program.",
-          "text": "Eastern Michigan fired coach Chris Creighton after 13 seasons with the program.",
+          "priority": 79,
+          "headline": "Eastern Michigan fired Chris Creighton after 13 seasons as the Eagles' head coach.",
+          "text": "Eastern Michigan fired Chris Creighton after 13 seasons as the Eagles' head coach.",
           "entities": [
             "Eastern Michigan Eagles",
             "Chris Creighton"
           ],
           "occurredAt": "2026-11-25T19:05:05Z",
           "timePrecision": "exact",
-          "ageHours": 7.93,
-          "freshnessBasis": "Eastern Michigan announced that Chris Creighton is out as head coach after 13 seasons.",
+          "ageHours": 8.43,
+          "freshnessBasis": "Eastern Michigan announced Wednesday that Chris Creighton is out after 13 seasons.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50595706/creighton-coach-eastern-michigan-13-seasons"
@@ -972,26 +956,58 @@
             }
           ],
           "id": "a3-de501969879acdec",
-          "feedRank": 21,
+          "feedRank": 16,
           "compactHeadline": "Eastern Michigan parts with Chris Creighton"
         },
         {
           "rank": 3,
           "candidateIds": [
+            "cand-7b78b64ddc3f4e47"
+          ],
+          "type": "LEGAL",
+          "priority": 77,
+          "headline": "A federal judge denied the SEC's request for a temporary restraining order aimed at preventing LSU from interfering with a Dec. 3 conference vote.",
+          "text": "A federal judge denied the SEC's request for a temporary restraining order aimed at preventing LSU from interfering with a Dec. 3 conference vote.",
+          "entities": [
+            "SEC",
+            "LSU Tigers"
+          ],
+          "occurredAt": "2026-11-25T20:02:54Z",
+          "timePrecision": "exact",
+          "ageHours": 7.47,
+          "freshnessBasis": "A federal judge denied the SEC's request for a temporary restraining order against LSU Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-sports/story/_/id/50595702/judge-denies-sec-request-tro-lsu-dec-3-vote"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-sports/story/_/id/50595702/judge-denies-sec-request-tro-lsu-dec-3-vote"
+            }
+          ],
+          "id": "a3-a9336b4844a67aee",
+          "feedRank": 21,
+          "compactHeadline": "Judge denies SEC request to restrain LSU vote"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-f749d886c2e590d5"
           ],
           "type": "CONTRACT",
-          "priority": 76,
-          "headline": "Oklahoma State agreed to a six-year extension with coach Eric Morris that runs through the 2032 season.",
-          "text": "Oklahoma State agreed to a six-year extension with coach Eric Morris that runs through the 2032 season.",
+          "priority": 74,
+          "headline": "Oklahoma State agreed to a six-year extension with coach Eric Morris, keeping him under contract through the 2032 season.",
+          "text": "Oklahoma State agreed to a six-year extension with coach Eric Morris, keeping him under contract through the 2032 season.",
           "entities": [
-            "Eric Morris",
-            "Oklahoma State Cowboys"
+            "Oklahoma State Cowboys",
+            "Eric Morris"
           ],
           "occurredAt": "2026-11-25T17:00:56Z",
           "timePrecision": "exact",
-          "ageHours": 10.0,
-          "freshnessBasis": "Oklahoma State agreed to extend Eric Morris through the 2032 season on Nov. 25.",
+          "ageHours": 10.5,
+          "freshnessBasis": "Oklahoma State agreed to a six-year extension with Eric Morris through the 2032 season Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50594432/sources-oklahoma-state-extends-morris-new-six-year-deal"
@@ -1003,9 +1019,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/50594432/sources-oklahoma-state-extends-morris-new-six-year-deal"
             }
           ],
-          "id": "a3-2d786893f2cfba06",
-          "feedRank": 22,
-          "compactHeadline": "Oklahoma State extends Eric Morris through 2032 season"
+          "id": "a3-abc949b8ca39efb0",
+          "feedRank": 28,
+          "compactHeadline": "Oklahoma State extends Eric Morris through 2032"
         }
       ]
     }
@@ -1022,16 +1038,16 @@
           ],
           "type": "INJURY",
           "priority": 85,
-          "headline": "No. 2 Jannik Sinner will miss the 2027 Australian Open while he recovers from recent right knee surgery.",
-          "text": "No. 2 Jannik Sinner will miss the 2027 Australian Open while he recovers from recent right knee surgery.",
+          "headline": "No. 2 Jannik Sinner will miss the 2027 Australian Open while recovering from recent right knee surgery.",
+          "text": "No. 2 Jannik Sinner will miss the 2027 Australian Open while recovering from recent right knee surgery.",
           "entities": [
             "Jannik Sinner",
             "Australian Open"
           ],
           "occurredAt": "2026-11-26T01:55:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.08,
-          "freshnessBasis": "Jannik Sinner announced he will miss the 2027 Australian Open while recovering from right knee surgery.",
+          "ageHours": 1.58,
+          "freshnessBasis": "Jannik Sinner announced Wednesday that he will miss the 2027 Australian Open during recovery from right knee surgery.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/50599895/jannik-sinner-missing-2027-australian-open-rehab-knee"
@@ -1043,9 +1059,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/50599895/jannik-sinner-missing-2027-australian-open-rehab-knee"
             }
           ],
-          "id": "a3-special-331abfbb6dbbd93f",
-          "feedRank": 2,
-          "compactHeadline": "Sinner to miss Australian Open after knee surgery"
+          "id": "a3-special-f67fb61e3d343c25",
+          "feedRank": 1,
+          "compactHeadline": "Jannik Sinner to miss Australian Open after knee surgery"
         }
       ]
     },
@@ -1059,18 +1075,18 @@
             "cand-67295fb54f0335f7"
           ],
           "type": "DISCIPLINE",
-          "priority": 76,
-          "headline": "The FIA fined Williams and Alpine after finding a £627,000 Williams overspend and procedural breaches by both teams.",
-          "text": "The FIA fined Williams and Alpine after finding a £627,000 Williams overspend and procedural breaches by both teams.",
+          "priority": 78,
+          "headline": "The FIA fined Williams £627,000 for exceeding last year's cost cap and said Williams and Alpine also committed procedural breaches.",
+          "text": "The FIA fined Williams £627,000 for exceeding last year's cost cap and said Williams and Alpine also committed procedural breaches.",
           "entities": [
+            "FIA",
             "Williams",
-            "Alpine",
-            "FIA"
+            "Alpine"
           ],
           "occurredAt": "2026-11-25T17:29:22Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
-          "freshnessBasis": "The FIA announced fines after Williams exceeded the cost cap by £627,000 and both teams committed procedural breaches.",
+          "ageHours": 10.02,
+          "freshnessBasis": "The FIA announced Wednesday that Williams exceeded the cost cap by £627,000 and that both Williams and Alpine committed procedural breaches.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/50594939/williams-alpine-fined-627k-fia-f1-cap"
@@ -1082,9 +1098,9 @@
               "url": "https://www.espn.com/f1/story/_/id/50594939/williams-alpine-fined-627k-fia-f1-cap"
             }
           ],
-          "id": "a3-special-cdca04b0dc9c841f",
-          "feedRank": 28,
-          "compactHeadline": "Williams and Alpine fined for F1 cost-cap breaches"
+          "id": "a3-special-13ddefe3c1535f57",
+          "feedRank": 26,
+          "compactHeadline": "Williams, Alpine fined for F1 cost-cap breaches"
         }
       ]
     },
@@ -1102,13 +1118,13 @@
           "headline": "Former UFC light heavyweight Anthony Smith will not face criminal charges after felony charges tied to an alleged domestic violence incident were dropped.",
           "text": "Former UFC light heavyweight Anthony Smith will not face criminal charges after felony charges tied to an alleged domestic violence incident were dropped.",
           "entities": [
-            "Anthony Smith",
-            "UFC"
+            "UFC",
+            "Anthony Smith"
           ],
           "occurredAt": "2026-11-26T01:07:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.89,
-          "freshnessBasis": "Felony charges against former UFC fighter Anthony Smith were dropped on Nov. 26.",
+          "ageHours": 2.39,
+          "freshnessBasis": "Felony charges against former UFC fighter Anthony Smith were dropped Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mma/story/_/id/50599581/former-ufc-fighter-anthony-smith-felony-charges-dropped"
@@ -1121,7 +1137,7 @@
             }
           ],
           "id": "a3-special-f948de9afc78d29a",
-          "feedRank": 29,
+          "feedRank": 31,
           "compactHeadline": "Felony charges dropped against former UFC fighter Anthony Smith"
         }
       ]
