@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-11-27T04:01:21Z",
+  "generatedAt": "2026-11-27T04:31:29Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "454b2a14a500895f222428b0b54a7175e40760aa28d947d716726dad8d8af7c0",
+  "sourceCandidateHash": "7f691077739597b0a13b7705440172ae908b48935999d497ed5b8c2353622748",
   "leagues": [
     {
       "league": "MLB",
@@ -17,18 +17,18 @@
             "cand-b11c4abe28472868"
           ],
           "type": "SIGNING",
-          "priority": 77,
-          "headline": "Colorado agreed to two multi-year deals: two years and $32 million for David Peterson, and three years and $42 million for Patrick Sandoval.",
-          "text": "Colorado agreed to two multi-year deals: two years and $32 million for David Peterson, and three years and $42 million for Patrick Sandoval.",
+          "priority": 75,
+          "headline": "Colorado agreed to two-year, $32 million and three-year, $42 million deals with David Peterson and Patrick Sandoval.",
+          "text": "Colorado agreed to two-year, $32 million and three-year, $42 million deals with David Peterson and Patrick Sandoval.",
           "entities": [
+            "Colorado Rockies",
             "David Peterson",
-            "Patrick Sandoval",
-            "Colorado Rockies"
+            "Patrick Sandoval"
           ],
           "occurredAt": "2026-11-26T18:42:23Z",
           "timePrecision": "exact",
-          "ageHours": 9.32,
-          "freshnessBasis": "The Rockies agreed to contracts with David Peterson and Patrick Sandoval Thursday.",
+          "ageHours": 9.82,
+          "freshnessBasis": "Colorado agreed to contracts with David Peterson and Patrick Sandoval Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50599272/sources-rockies-agree-2-year-32m-deal-lhp-peterson"
@@ -41,7 +41,7 @@
             }
           ],
           "id": "a3-7a555a9d9e343b38",
-          "feedRank": 12,
+          "feedRank": 13,
           "compactHeadline": "Rockies add David Peterson and Patrick Sandoval"
         },
         {
@@ -49,8 +49,8 @@
           "candidateIds": [
             "cand-928529732d66ebbe"
           ],
-          "type": "SIGNING",
-          "priority": 76,
+          "type": "CONTRACT",
+          "priority": 75,
           "headline": "Foster Griffin agreed to a three-year, $48 million contract to remain with Cleveland.",
           "text": "Foster Griffin agreed to a three-year, $48 million contract to remain with Cleveland.",
           "entities": [
@@ -59,8 +59,8 @@
           ],
           "occurredAt": "2026-11-26T20:04:59Z",
           "timePrecision": "exact",
-          "ageHours": 7.94,
-          "freshnessBasis": "Foster Griffin agreed to a three-year, $48 million Guardians contract Thursday.",
+          "ageHours": 8.44,
+          "freshnessBasis": "Foster Griffin agreed to a three-year, $48 million contract with Cleveland Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians"
@@ -72,9 +72,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians"
             }
           ],
-          "id": "a3-2fdf71ac593f4a42",
-          "feedRank": 13,
-          "compactHeadline": "Guardians keep Foster Griffin on a three-year deal"
+          "id": "a3-dfcd3b8498c1c053",
+          "feedRank": 22,
+          "compactHeadline": "Guardians keep Foster Griffin on a three-year, $48M deal"
         },
         {
           "rank": 3,
@@ -82,17 +82,17 @@
             "cand-7176e4f70df81a67"
           ],
           "type": "CONTRACT",
-          "priority": 73,
+          "priority": 72,
           "headline": "Minnesota agreed to a two-year, $18 million contract with former Diamondbacks reliever Kevin Ginkel.",
           "text": "Minnesota agreed to a two-year, $18 million contract with former Diamondbacks reliever Kevin Ginkel.",
           "entities": [
-            "Kevin Ginkel",
-            "Minnesota Twins"
+            "Minnesota Twins",
+            "Kevin Ginkel"
           ],
           "occurredAt": "2026-11-26T15:36:04Z",
           "timePrecision": "exact",
-          "ageHours": 12.42,
-          "freshnessBasis": "The Twins agreed to a two-year, $18 million contract with Kevin Ginkel Thursday.",
+          "ageHours": 12.92,
+          "freshnessBasis": "Minnesota and Kevin Ginkel agreed to a two-year, $18 million contract Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50602024/twins-kevin-ginkel-agree-2-year-18-million-deal"
@@ -104,9 +104,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/50602024/twins-kevin-ginkel-agree-2-year-18-million-deal"
             }
           ],
-          "id": "a3-c832c1de0e13643e",
-          "feedRank": 28,
-          "compactHeadline": "Twins agree to two-year deal with reliever Kevin Ginkel"
+          "id": "a3-f691029d16b98db2",
+          "feedRank": 25,
+          "compactHeadline": "Twins agree to two-year, $18M deal with Kevin Ginkel"
         }
       ]
     },
@@ -117,20 +117,99 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9e00e5e3abcda63b",
+            "cand-ff8f6d618cc3756e",
+            "cand-e516ec0bf296456d"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Philadelphia overcame a 21-point deficit to beat Dallas 39-38, the largest Thanksgiving comeback in NFL history.",
+          "text": "Philadelphia overcame a 21-point deficit to beat Dallas 39-38, the largest Thanksgiving comeback in NFL history.",
+          "entities": [
+            "Philadelphia Eagles",
+            "Dallas Cowboys"
+          ],
+          "occurredAt": "2026-11-27T03:40:32Z",
+          "timePrecision": "exact",
+          "ageHours": 0.85,
+          "freshnessBasis": "Philadelphia beat Dallas 39-38 Thursday after overcoming a 21-point deficit.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50607960/eagles-cowboys-thanksgiving-social-reaction",
+            "https://www.espn.com/nfl/story/_/id/50605786/cowboys-eagles-thanksgiving-dak-prescott-saquon-barkley",
+            "http://www.espn.com/nfl/recap?gameId=401873080"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50607960/eagles-cowboys-thanksgiving-social-reaction"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50605786/cowboys-eagles-thanksgiving-dak-prescott-saquon-barkley"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401873080"
+            }
+          ],
+          "id": "a3-be50efac8b7f7509",
+          "feedRank": 1,
+          "compactHeadline": "Eagles erase 21-point deficit to stun Cowboys, 39-38"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c227b5dfae3fa6ed"
+          ],
+          "type": "INJURY",
+          "priority": 75,
+          "headline": "Bears tight end Colston Loveland was ruled out of Thursday’s win over Detroit after injuring his left knee in the first quarter.",
+          "text": "Bears tight end Colston Loveland was ruled out of Thursday’s win over Detroit after injuring his left knee in the first quarter.",
+          "entities": [
+            "Chicago Bears",
+            "Colston Loveland",
+            "Detroit Lions"
+          ],
+          "occurredAt": "2026-11-27T01:53:03Z",
+          "timePrecision": "exact",
+          "ageHours": 2.64,
+          "freshnessBasis": "Chicago ruled Colston Loveland out of Thursday’s game with a left-knee injury.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50605365/bears-colston-loveland-ruled-vs-lions-knee-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50605365/bears-colston-loveland-ruled-vs-lions-knee-injury"
+            }
+          ],
+          "id": "a3-5c48b84dda5a3359",
+          "feedRank": 2,
+          "compactHeadline": "Bears lose Colston Loveland to first-quarter knee injury"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-f6c80792106cac78"
           ],
           "type": "INJURY",
-          "priority": 76,
-          "headline": "Philadelphia ruled All-Pro defensive back Cooper DeJean out of Thursday's win over Dallas after he suffered a concussion.",
-          "text": "Philadelphia ruled All-Pro defensive back Cooper DeJean out of Thursday's win over Dallas after he suffered a concussion.",
+          "priority": 75,
+          "headline": "Philadelphia ruled All-Pro defensive back Cooper DeJean out of its win over Dallas after he sustained a concussion.",
+          "text": "Philadelphia ruled All-Pro defensive back Cooper DeJean out of its win over Dallas after he sustained a concussion.",
           "entities": [
-            "Cooper DeJean",
-            "Philadelphia Eagles"
+            "Philadelphia Eagles",
+            "Cooper DeJean"
           ],
           "occurredAt": "2026-11-27T01:37:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.39,
-          "freshnessBasis": "The Eagles ruled Cooper DeJean out of Thursday's game with a concussion.",
+          "ageHours": 2.9,
+          "freshnessBasis": "Philadelphia ruled Cooper DeJean out Thursday after he suffered a concussion against Dallas.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50606739/eagles-cooper-dejean-concussion-leaves-game-cowboys"
@@ -143,75 +222,28 @@
             }
           ],
           "id": "a3-08669c5c387bf19d",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Eagles lose All-Pro Cooper DeJean to concussion"
         },
         {
-          "rank": 2,
-          "candidateIds": [
-            "cand-e516ec0bf296456d",
-            "cand-ff8f6d618cc3756e",
-            "cand-9e00e5e3abcda63b"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Philadelphia erased a 21-point deficit and beat Dallas 39-38 on a 59-yard field goal, completing the largest Thanksgiving comeback in NFL history.",
-          "text": "Philadelphia erased a 21-point deficit and beat Dallas 39-38 on a 59-yard field goal, completing the largest Thanksgiving comeback in NFL history.",
-          "entities": [
-            "Philadelphia Eagles",
-            "Dallas Cowboys",
-            "Brian Schottenheimer"
-          ],
-          "occurredAt": "2026-11-27T03:40:32Z",
-          "timePrecision": "exact",
-          "ageHours": 0.35,
-          "freshnessBasis": "Philadelphia completed a 21-point comeback to beat Dallas 39-38 on a 59-yard field goal Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/recap?gameId=401873080",
-            "https://www.espn.com/nfl/story/_/id/50605786/cowboys-eagles-thanksgiving-dak-prescott-saquon-barkley",
-            "https://www.espn.com/nfl/story/_/id/50607960/eagles-cowboys-thanksgiving-social-reaction"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401873080"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50605786/cowboys-eagles-thanksgiving-dak-prescott-saquon-barkley"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50607960/eagles-cowboys-thanksgiving-social-reaction"
-            }
-          ],
-          "id": "a3-aee2e0890abf43e2",
-          "feedRank": 4,
-          "compactHeadline": "Eagles erase 21-point deficit in historic Thanksgiving comeback"
-        },
-        {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-751ca21bf6e57482"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Caleb Williams hit Rome Odunze for a touchdown with three seconds left, lifting Chicago to a 39-35 win over Detroit.",
-          "text": "Caleb Williams hit Rome Odunze for a touchdown with three seconds left, lifting Chicago to a 39-35 win over Detroit.",
+          "headline": "Caleb Williams threw a touchdown pass to Rome Odunze with three seconds left, giving Chicago a 39-35 win over Detroit.",
+          "text": "Caleb Williams threw a touchdown pass to Rome Odunze with three seconds left, giving Chicago a 39-35 win over Detroit.",
           "entities": [
-            "Caleb Williams",
-            "Rome Odunze",
             "Chicago Bears",
-            "Detroit Lions"
+            "Detroit Lions",
+            "Caleb Williams",
+            "Rome Odunze"
           ],
           "occurredAt": "2026-11-27T00:00:52Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "Caleb Williams threw the winning touchdown to Rome Odunze with three seconds left in Chicago's 39-35 win Thursday.",
+          "ageHours": 4.51,
+          "freshnessBasis": "Caleb Williams threw the winning touchdown with three seconds left in Chicago's 39-35 win Thursday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nfl/recap?gameId=401873081"
@@ -223,43 +255,9 @@
               "url": "http://www.espn.com/nfl/recap?gameId=401873081"
             }
           ],
-          "id": "a3-2bed1f8ba2cc32ab",
-          "feedRank": 6,
-          "compactHeadline": "Bears stun Lions on Williams-to-Odunze TD with 3 seconds left"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-ac08a63dcf61125a"
-          ],
-          "type": "INJURY",
-          "priority": 75,
-          "headline": "Packers receiver Christian Watson suffered a concussion after a sideline hit that led to Rams safety Kam Kinchens being ejected.",
-          "text": "Packers receiver Christian Watson suffered a concussion after a sideline hit that led to Rams safety Kam Kinchens being ejected.",
-          "entities": [
-            "Christian Watson",
-            "Kamren Kinchens",
-            "Green Bay Packers",
-            "Los Angeles Rams"
-          ],
-          "occurredAt": "2026-11-26T14:09:41Z",
-          "timePrecision": "exact",
-          "ageHours": 13.86,
-          "freshnessBasis": "Christian Watson suffered a concussion and Kam Kinchens was ejected after the sideline hit Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50600753/rams-kam-kinchens-ejected-hit-christian-watson"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50600753/rams-kam-kinchens-ejected-hit-christian-watson"
-            }
-          ],
-          "id": "a3-7a76948428cfc23c",
-          "feedRank": 7,
-          "compactHeadline": "Christian Watson concussed after hit that ejects Rams safety"
+          "id": "a3-03369dc7f40f3784",
+          "feedRank": 4,
+          "compactHeadline": "Caleb Williams' late TD lifts Bears past Lions, 39-35"
         },
         {
           "rank": 5,
@@ -267,16 +265,17 @@
             "cand-1a05984f19a6b334"
           ],
           "type": "ROSTER",
-          "priority": 74,
-          "headline": "Aaron Rodgers cleared waivers Thursday and became a free agent eligible to sign with any team.",
-          "text": "Aaron Rodgers cleared waivers Thursday and became a free agent eligible to sign with any team.",
+          "priority": 76,
+          "headline": "Aaron Rodgers cleared waivers Thursday and is now eligible to sign with any team as a free agent.",
+          "text": "Aaron Rodgers cleared waivers Thursday and is now eligible to sign with any team as a free agent.",
           "entities": [
-            "Aaron Rodgers"
+            "Aaron Rodgers",
+            "Pittsburgh Steelers"
           ],
           "occurredAt": "2026-11-26T23:30:54Z",
           "timePrecision": "exact",
-          "ageHours": 4.51,
-          "freshnessBasis": "Aaron Rodgers cleared waivers and became an unrestricted free agent Thursday.",
+          "ageHours": 5.01,
+          "freshnessBasis": "Aaron Rodgers cleared waivers Thursday and became an unrestricted free agent.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50606625/aaron-rodgers-officially-free-agent-clearing-waivers"
@@ -288,9 +287,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/50606625/aaron-rodgers-officially-free-agent-clearing-waivers"
             }
           ],
-          "id": "a3-c0a58db801083205",
-          "feedRank": 15,
-          "compactHeadline": "Aaron Rodgers becomes free agent after clearing waivers"
+          "id": "a3-d24b39b579ce40ed",
+          "feedRank": 10,
+          "compactHeadline": "Aaron Rodgers clears waivers and becomes a free agent"
         },
         {
           "rank": 6,
@@ -298,18 +297,18 @@
             "cand-5899dd24f5148437"
           ],
           "type": "RETURN",
-          "priority": 73,
-          "headline": "Pittsburgh activated Michael Pittman Jr. from injured reserve and signed Max Hurleman to its active roster from the practice squad.",
-          "text": "Pittsburgh activated Michael Pittman Jr. from injured reserve and signed Max Hurleman to its active roster from the practice squad.",
+          "priority": 74,
+          "headline": "Pittsburgh activated Michael Pittman Jr. from injured reserve and added Max Hurleman to the active roster.",
+          "text": "Pittsburgh activated Michael Pittman Jr. from injured reserve and added Max Hurleman to the active roster.",
           "entities": [
+            "Pittsburgh Steelers",
             "Michael Pittman Jr.",
-            "Max Hurleman",
-            "Pittsburgh Steelers"
+            "Max Hurleman"
           ],
           "occurredAt": "2026-11-26T22:36:50Z",
           "timePrecision": "exact",
-          "ageHours": 5.41,
-          "freshnessBasis": "The Steelers activated Michael Pittman Jr. from injured reserve Thursday.",
+          "ageHours": 5.91,
+          "freshnessBasis": "Pittsburgh activated Michael Pittman Jr. from injured reserve Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50606063/steelers-activate-michael-pittman-jr-ir-sign-max-hurleman-active-roster-practice-squad"
@@ -322,50 +321,18 @@
             }
           ],
           "id": "a3-b678c2bbef78dd01",
-          "feedRank": 16,
+          "feedRank": 14,
           "compactHeadline": "Steelers activate Michael Pittman Jr. from injured reserve"
         },
         {
           "rank": 7,
           "candidateIds": [
-            "cand-c227b5dfae3fa6ed"
-          ],
-          "type": "INJURY",
-          "priority": 65,
-          "headline": "Chicago ruled out tight end Colston Loveland after he injured his left knee in the first quarter of Thursday's win at Detroit.",
-          "text": "Chicago ruled out tight end Colston Loveland after he injured his left knee in the first quarter of Thursday's win at Detroit.",
-          "entities": [
-            "Colston Loveland",
-            "Chicago Bears"
-          ],
-          "occurredAt": "2026-11-27T01:53:03Z",
-          "timePrecision": "exact",
-          "ageHours": 2.14,
-          "freshnessBasis": "The Bears ruled Colston Loveland out of Thursday's game with a left knee injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50605365/bears-colston-loveland-ruled-vs-lions-knee-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50605365/bears-colston-loveland-ruled-vs-lions-knee-injury"
-            }
-          ],
-          "id": "a3-bdb74bb395cd830c",
-          "feedRank": 17,
-          "compactHeadline": "Bears rule out Colston Loveland with knee injury"
-        },
-        {
-          "rank": 8,
-          "candidateIds": [
             "cand-e4c166a750b496bb"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Blake Corum leads Rams' dominant rushing attack in their 5th straight win, 26-13 over Packers.",
-          "text": "Blake Corum leads Rams' dominant rushing attack in their 5th straight win, 26-13 over Packers.",
+          "type": "STREAK",
+          "priority": 73,
+          "headline": "Los Angeles beat Green Bay 26-13 for its fifth straight win behind a rushing attack led by Blake Corum.",
+          "text": "Los Angeles beat Green Bay 26-13 for its fifth straight win behind a rushing attack led by Blake Corum.",
           "entities": [
             "Los Angeles Rams",
             "Green Bay Packers",
@@ -373,8 +340,8 @@
           ],
           "occurredAt": "2026-11-26T05:49:32Z",
           "timePrecision": "exact",
-          "ageHours": 22.2,
-          "freshnessBasis": "The Rams beat the Packers 26-13 for their fifth consecutive win Thursday.",
+          "ageHours": 22.7,
+          "freshnessBasis": "Los Angeles beat Green Bay 26-13 Thursday for its fifth consecutive victory.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nfl/recap?gameId=401873079"
@@ -386,9 +353,9 @@
               "url": "http://www.espn.com/nfl/recap?gameId=401873079"
             }
           ],
-          "id": "a3-d2397b741347e6f3",
-          "feedRank": 23,
-          "compactHeadline": "Rams win fifth straight behind dominant rushing attack"
+          "id": "a3-ce313b95055e9e9d",
+          "feedRank": 19,
+          "compactHeadline": "Rams roll past Packers for fifth straight win"
         }
       ]
     },
@@ -399,53 +366,87 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0fb550718fff78c5"
+            "cand-3fc54b9b9f427ade"
           ],
-          "type": "MILESTONE",
-          "priority": 85,
-          "headline": "Kevin Durant reached 33,000 career points during Houston's 116-104 win over Phoenix Wednesday.",
-          "text": "Kevin Durant reached 33,000 career points during Houston's 116-104 win over Phoenix Wednesday.",
+          "type": "INJURY",
+          "priority": 75,
+          "headline": "LaMelo Ball limped off late in Minnesota’s win over Oklahoma City after injuring his left ankle; the Timberwolves had no immediate update.",
+          "text": "LaMelo Ball limped off late in Minnesota’s win over Oklahoma City after injuring his left ankle; the Timberwolves had no immediate update.",
           "entities": [
-            "Kevin Durant",
-            "Houston Rockets",
-            "Phoenix Suns"
+            "Minnesota Timberwolves",
+            "LaMelo Ball",
+            "Oklahoma City Thunder"
           ],
-          "occurredAt": "2026-11-26T04:20:32Z",
+          "occurredAt": "2026-11-26T18:13:44Z",
           "timePrecision": "exact",
-          "ageHours": 23.68,
-          "freshnessBasis": "Kevin Durant reached 33,000 career points during Houston's 116-104 win over Phoenix Wednesday.",
+          "ageHours": 10.3,
+          "freshnessBasis": "LaMelo Ball injured his left ankle and left Minnesota’s win over Oklahoma City late.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909323"
+            "https://www.espn.com/nba/story/_/id/50601570/timberwolves-lamelo-ball-limps-hurting-left-ankle"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909323"
+              "url": "https://www.espn.com/nba/story/_/id/50601570/timberwolves-lamelo-ball-limps-hurting-left-ankle"
             }
           ],
-          "id": "a3-730b328e4845d347",
-          "feedRank": 1,
-          "compactHeadline": "Kevin Durant becomes fifth player to reach 33,000 points"
+          "id": "a3-a2d3528964d3a76d",
+          "feedRank": 5,
+          "compactHeadline": "LaMelo Ball leaves Timberwolves win with ankle injury"
         },
         {
           "rank": 2,
           "candidateIds": [
+            "cand-0bc46a82aee132af"
+          ],
+          "type": "INJURY",
+          "priority": 74,
+          "headline": "Philadelphia ruled Jaylen Brown out for Friday's NBA Cup game against Indiana because of a hamstring issue; Joel Embiid is questionable with an illness.",
+          "text": "Philadelphia ruled Jaylen Brown out for Friday's NBA Cup game against Indiana because of a hamstring issue; Joel Embiid is questionable with an illness.",
+          "entities": [
+            "Philadelphia 76ers",
+            "Jaylen Brown",
+            "Joel Embiid",
+            "Indiana Pacers"
+          ],
+          "occurredAt": "2026-11-26T22:45:16Z",
+          "timePrecision": "exact",
+          "ageHours": 5.77,
+          "freshnessBasis": "Philadelphia ruled Jaylen Brown out Friday with a hamstring issue and listed Joel Embiid as questionable Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers"
+            }
+          ],
+          "id": "a3-70cbc2b49f8995d8",
+          "feedRank": 6,
+          "compactHeadline": "76ers rule Jaylen Brown out with hamstring issue"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-0da59c1ac5c48bf4"
           ],
           "type": "MILESTONE",
-          "priority": 78,
-          "headline": "LeBron James recorded a 25-point triple-double to lead Philadelphia past Miami in Wednesday's NBA Cup game.",
-          "text": "LeBron James recorded a 25-point triple-double to lead Philadelphia past Miami in Wednesday's NBA Cup game.",
+          "priority": 75,
+          "headline": "LeBron James posted a 25-point triple-double to lead Philadelphia past Miami in Wednesday's NBA Cup game.",
+          "text": "LeBron James posted a 25-point triple-double to lead Philadelphia past Miami in Wednesday's NBA Cup game.",
           "entities": [
-            "LeBron James",
             "Philadelphia 76ers",
+            "LeBron James",
             "Miami Heat"
           ],
           "occurredAt": "2026-11-26T14:27:36Z",
           "timePrecision": "exact",
-          "ageHours": 13.56,
+          "ageHours": 14.06,
           "freshnessBasis": "LeBron James recorded a 25-point triple-double in Philadelphia's NBA Cup win over Miami Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -458,134 +459,28 @@
               "url": "https://www.espn.com/nba/story/_/id/50601303/lebron-dusts-cape-save-76ers-triple-double"
             }
           ],
-          "id": "a3-ff173c69d1c36dfa",
-          "feedRank": 3,
-          "compactHeadline": "LeBron posts 25-point triple-double in 76ers win"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-3fc54b9b9f427ade"
-          ],
-          "type": "INJURY",
-          "priority": 76,
-          "headline": "LaMelo Ball left Minnesota's win over Oklahoma City after hurting his left ankle, and the Timberwolves had no status update.",
-          "text": "LaMelo Ball left Minnesota's win over Oklahoma City after hurting his left ankle, and the Timberwolves had no status update.",
-          "entities": [
-            "LaMelo Ball",
-            "Minnesota Timberwolves",
-            "Oklahoma City Thunder"
-          ],
-          "occurredAt": "2026-11-26T18:13:44Z",
-          "timePrecision": "exact",
-          "ageHours": 9.79,
-          "freshnessBasis": "LaMelo Ball left Minnesota's win over Oklahoma City after injuring his left ankle.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50601570/timberwolves-lamelo-ball-limps-hurting-left-ankle"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50601570/timberwolves-lamelo-ball-limps-hurting-left-ankle"
-            }
-          ],
-          "id": "a3-996b0b4a39d69f1d",
-          "feedRank": 5,
-          "compactHeadline": "LaMelo Ball exits Timberwolves win with left-ankle injury"
+          "id": "a3-e3add3531fc4a4e8",
+          "feedRank": 7,
+          "compactHeadline": "LeBron delivers 25-point triple-double for 76ers"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-243145d9e4e0c040",
-            "cand-0bc46a82aee132af"
-          ],
-          "type": "INJURY",
-          "priority": 73,
-          "headline": "Philadelphia's Jaylen Brown left with recurring left hamstring tightness and was later ruled out for Friday's game against Indiana.",
-          "text": "Philadelphia's Jaylen Brown left with recurring left hamstring tightness and was later ruled out for Friday's game against Indiana.",
-          "entities": [
-            "Jaylen Brown",
-            "Philadelphia 76ers"
-          ],
-          "occurredAt": "2026-11-26T22:45:16Z",
-          "timePrecision": "exact",
-          "ageHours": 5.27,
-          "freshnessBasis": "Jaylen Brown was ruled out for Philadelphia's Friday game after a recurrence of left hamstring tightness.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/50599296/76ers-jaylen-brown-exits-recurrence-hamstring-issue",
-            "https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50599296/76ers-jaylen-brown-exits-recurrence-hamstring-issue"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers"
-            }
-          ],
-          "id": "a3-f7259f04397a6892",
-          "feedRank": 9,
-          "compactHeadline": "76ers' Jaylen Brown sidelined by recurring hamstring issue"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-532aa59b9c4f2648"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Deni Avdija scored 33 points and Damian Lillard helped Portland defeat San Antonio 116-111 in NBA Cup play.",
-          "text": "Deni Avdija scored 33 points and Damian Lillard helped Portland defeat San Antonio 116-111 in NBA Cup play.",
-          "entities": [
-            "Deni Avdija",
-            "Damian Lillard",
-            "Portland Trail Blazers",
-            "San Antonio Spurs"
-          ],
-          "occurredAt": "2026-11-26T05:56:40Z",
-          "timePrecision": "exact",
-          "ageHours": 22.08,
-          "freshnessBasis": "Portland beat San Antonio 116-111 in NBA Cup play Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nba/recap?gameId=401909325"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "http://www.espn.com/nba/recap?gameId=401909325"
-            }
-          ],
-          "id": "a3-e81eed50299b5bbb",
-          "feedRank": 21,
-          "compactHeadline": "Avdija scores 33 as Portland beats San Antonio"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
             "cand-1b8492125482988b"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "De'Anthony Melton matched his career high with eight 3-pointers in Golden State's 129-110 win Wednesday.",
-          "text": "De'Anthony Melton matched his career high with eight 3-pointers in Golden State's 129-110 win Wednesday.",
+          "type": "RECORD",
+          "priority": 74,
+          "headline": "De'Anthony Melton scored 24 points and matched his career high with eight 3-pointers in Golden State's 129-110 win over Sacramento.",
+          "text": "De'Anthony Melton scored 24 points and matched his career high with eight 3-pointers in Golden State's 129-110 win over Sacramento.",
           "entities": [
-            "De'Anthony Melton",
             "Golden State Warriors",
-            "Sacramento Kings"
+            "Sacramento Kings",
+            "De'Anthony Melton"
           ],
           "occurredAt": "2026-11-26T05:33:42Z",
           "timePrecision": "exact",
-          "ageHours": 22.46,
-          "freshnessBasis": "De'Anthony Melton matched his career high with eight 3-pointers in Golden State's 129-110 win Wednesday.",
+          "ageHours": 22.96,
+          "freshnessBasis": "De'Anthony Melton matched his career high with eight 3-pointers Wednesday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nba/recap?gameId=401909324"
@@ -598,27 +493,27 @@
             }
           ],
           "id": "a3-fabae41668be884b",
-          "feedRank": 24,
+          "feedRank": 8,
           "compactHeadline": "Melton matches career high with eight 3-pointers"
         },
         {
-          "rank": 7,
+          "rank": 5,
           "candidateIds": [
             "cand-d5d52a218323e9d5"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Jaden McDaniels scored 32 points and grabbed 10 rebounds as Minnesota beat Oklahoma City 113-106 to reach 3-0 in NBA Cup play.",
-          "text": "Jaden McDaniels scored 32 points and grabbed 10 rebounds as Minnesota beat Oklahoma City 113-106 to reach 3-0 in NBA Cup play.",
+          "type": "STREAK",
+          "priority": 76,
+          "headline": "Minnesota beat Oklahoma City 113-106 to move to 3-0 in NBA Cup play, with Jaden McDaniels scoring 32 points and grabbing 10 rebounds.",
+          "text": "Minnesota beat Oklahoma City 113-106 to move to 3-0 in NBA Cup play, with Jaden McDaniels scoring 32 points and grabbing 10 rebounds.",
           "entities": [
-            "Jaden McDaniels",
             "Minnesota Timberwolves",
-            "Oklahoma City Thunder"
+            "Oklahoma City Thunder",
+            "Jaden McDaniels"
           ],
           "occurredAt": "2026-11-26T04:34:32Z",
           "timePrecision": "exact",
-          "ageHours": 23.45,
-          "freshnessBasis": "Minnesota improved to 3-0 in NBA Cup play with a 113-106 win over Oklahoma City Wednesday.",
+          "ageHours": 23.95,
+          "freshnessBasis": "Minnesota beat Oklahoma City 113-106 Wednesday to reach 3-0 in NBA Cup play.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nba/recap?gameId=401909320"
@@ -630,29 +525,61 @@
               "url": "http://www.espn.com/nba/recap?gameId=401909320"
             }
           ],
-          "id": "a3-16e3ca33d44c8502",
-          "feedRank": 25,
-          "compactHeadline": "Timberwolves reach 3-0 in NBA Cup behind McDaniels"
+          "id": "a3-dc1919def6a60fc6",
+          "feedRank": 16,
+          "compactHeadline": "Timberwolves reach 3-0 in NBA Cup with win over Thunder"
         },
         {
-          "rank": 8,
+          "rank": 6,
+          "candidateIds": [
+            "cand-532aa59b9c4f2648"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Deni Avdija scored 33 points to lead Portland to a 116-111 NBA Cup win over San Antonio.",
+          "text": "Deni Avdija scored 33 points to lead Portland to a 116-111 NBA Cup win over San Antonio.",
+          "entities": [
+            "Portland Trail Blazers",
+            "San Antonio Spurs",
+            "Deni Avdija"
+          ],
+          "occurredAt": "2026-11-26T05:56:40Z",
+          "timePrecision": "exact",
+          "ageHours": 22.58,
+          "freshnessBasis": "Portland beat San Antonio 116-111 Wednesday behind Deni Avdija's 33 points.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nba/recap?gameId=401909325"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "http://www.espn.com/nba/recap?gameId=401909325"
+            }
+          ],
+          "id": "a3-53eeee357230b1a1",
+          "feedRank": 21,
+          "compactHeadline": "Avdija's 33 points lead Blazers past Spurs, 116-111"
+        },
+        {
+          "rank": 7,
           "candidateIds": [
             "cand-ce7c5c44cc05bcfd"
           ],
           "type": "RETURN",
-          "priority": 64,
-          "headline": "Knicks assistant coach Chris Jent returned to New York's bench for the NBA Cup win over Cleveland after a monthlong absence.",
-          "text": "Knicks assistant coach Chris Jent returned to New York's bench for the NBA Cup win over Cleveland after a monthlong absence.",
+          "priority": 63,
+          "headline": "Knicks assistant coach Chris Jent returned to New York’s bench for Wednesday’s NBA Cup win over Cleveland after missing a month.",
+          "text": "Knicks assistant coach Chris Jent returned to New York’s bench for Wednesday’s NBA Cup win over Cleveland after missing a month.",
           "entities": [
-            "Chris Jent",
             "New York Knicks",
-            "Cleveland Cavaliers",
-            "NBA Cup"
+            "Chris Jent",
+            "Cleveland Cavaliers"
           ],
           "occurredAt": "2026-11-26T12:03:45Z",
           "timePrecision": "exact",
-          "ageHours": 15.96,
-          "freshnessBasis": "Chris Jent returned to the Knicks' bench for their NBA Cup win over Cleveland after a monthlong absence.",
+          "ageHours": 16.46,
+          "freshnessBasis": "Chris Jent returned to the Knicks’ bench Wednesday after a monthlong absence.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50600508/knicks-assistant-coach-chris-jent-returns-team"
@@ -665,7 +592,7 @@
             }
           ],
           "id": "a3-935b5d67e36577c3",
-          "feedRank": 30,
+          "feedRank": 26,
           "compactHeadline": "Knicks assistant Chris Jent returns after monthlong absence"
         }
       ]
@@ -677,122 +604,21 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-a826152a3d3bfc2b"
-          ],
-          "type": "STREAK",
-          "priority": 83,
-          "headline": "Utah beat Minnesota 4-3, handing the Wild their first regulation loss in 16 games and ending a franchise-best run.",
-          "text": "Utah beat Minnesota 4-3, handing the Wild their first regulation loss in 16 games and ending a franchise-best run.",
-          "entities": [
-            "Utah Mammoth",
-            "Minnesota Wild"
-          ],
-          "occurredAt": "2026-11-26T04:29:33Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Utah beat Minnesota 4-3 Wednesday, ending the Wild's franchise-best run with their first regulation loss in 16 games.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892791"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892791"
-            }
-          ],
-          "id": "a3-f5751cd8b9591fe4",
-          "feedRank": 8,
-          "compactHeadline": "Mammoth end Wild's franchise-best 16-game run"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-e6f7c26c873a428b"
-          ],
-          "type": "SUSPENSION",
-          "priority": 78,
-          "headline": "New Jersey defenseman Brenden Dillon received a four-game suspension for an illegal hit to the head of Columbus defenseman Denton Mateychuk.",
-          "text": "New Jersey defenseman Brenden Dillon received a four-game suspension for an illegal hit to the head of Columbus defenseman Denton Mateychuk.",
-          "entities": [
-            "Brenden Dillon",
-            "Denton Mateychuk",
-            "New Jersey Devils",
-            "Columbus Blue Jackets"
-          ],
-          "occurredAt": "2026-11-26T20:32:14Z",
-          "timePrecision": "exact",
-          "ageHours": 7.49,
-          "freshnessBasis": "The NHL suspended Brenden Dillon four games for an illegal hit to Denton Mateychuk Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/50605811/devils-brenden-dillon-suspended-4-games-illegal-hit"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/50605811/devils-brenden-dillon-suspended-4-games-illegal-hit"
-            }
-          ],
-          "id": "a3-172961d9bc0a3c62",
-          "feedRank": 11,
-          "compactHeadline": "Brenden Dillon suspended four games for illegal hit"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-a4daa0881575ba92"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Colorado beat Montreal 6-0 Wednesday as Devon Toews scored twice and Mackenzie Blackwood made 28 saves.",
-          "text": "Colorado beat Montreal 6-0 Wednesday as Devon Toews scored twice and Mackenzie Blackwood made 28 saves.",
-          "entities": [
-            "Devon Toews",
-            "Mackenzie Blackwood",
-            "Colorado Avalanche",
-            "Montreal Canadiens"
-          ],
-          "occurredAt": "2026-11-26T06:41:32Z",
-          "timePrecision": "exact",
-          "ageHours": 21.33,
-          "freshnessBasis": "Colorado beat Montreal 6-0 Wednesday as Devon Toews scored twice and Mackenzie Blackwood made 28 saves.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nhl/recap?gameId=401892792"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "http://www.espn.com/nhl/recap?gameId=401892792"
-            }
-          ],
-          "id": "a3-463ace1419dfa0ba",
-          "feedRank": 19,
-          "compactHeadline": "Avalanche roll past Canadiens behind Toews and Blackwood"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-6ec1b483006c784f"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Cutter Gauthier scored his 23rd goal in Anaheim's 7-0 win over San Jose Wednesday.",
-          "text": "Cutter Gauthier scored his 23rd goal in Anaheim's 7-0 win over San Jose Wednesday.",
+          "type": "STREAK",
+          "priority": 78,
+          "headline": "Cutter Gauthier scored his 23rd goal Wednesday as Anaheim beat San Jose 7-0.",
+          "text": "Cutter Gauthier scored his 23rd goal Wednesday as Anaheim beat San Jose 7-0.",
           "entities": [
-            "Cutter Gauthier",
-            "Laurent Brossoit",
             "Anaheim Ducks",
-            "San Jose Sharks"
+            "San Jose Sharks",
+            "Cutter Gauthier"
           ],
           "occurredAt": "2026-11-26T05:58:33Z",
           "timePrecision": "exact",
-          "ageHours": 22.05,
-          "freshnessBasis": "Cutter Gauthier scored his 23rd goal in Anaheim's 7-0 win over San Jose Wednesday.",
+          "ageHours": 22.55,
+          "freshnessBasis": "Cutter Gauthier scored his 23rd goal Wednesday as Anaheim beat San Jose 7-0.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nhl/recap?gameId=401892793"
@@ -804,28 +630,62 @@
               "url": "http://www.espn.com/nhl/recap?gameId=401892793"
             }
           ],
-          "id": "a3-9b305c8449ad11b7",
-          "feedRank": 20,
-          "compactHeadline": "Gauthier ties NHL goal lead as Ducks rout Sharks 7-0"
+          "id": "a3-daa98a0b0ae2e46c",
+          "feedRank": 11,
+          "compactHeadline": "Cutter Gauthier ties NHL goal lead in Ducks' 7-0 rout"
         },
         {
-          "rank": 5,
+          "rank": 2,
+          "candidateIds": [
+            "cand-e6f7c26c873a428b"
+          ],
+          "type": "SUSPENSION",
+          "priority": 76,
+          "headline": "The NHL suspended New Jersey defenseman Brenden Dillon four games for an illegal hit to the head of Columbus' Denton Mateychuk.",
+          "text": "The NHL suspended New Jersey defenseman Brenden Dillon four games for an illegal hit to the head of Columbus' Denton Mateychuk.",
+          "entities": [
+            "New Jersey Devils",
+            "Brenden Dillon",
+            "Denton Mateychuk",
+            "Columbus Blue Jackets"
+          ],
+          "occurredAt": "2026-11-26T20:32:14Z",
+          "timePrecision": "exact",
+          "ageHours": 7.99,
+          "freshnessBasis": "The NHL suspended Brenden Dillon four games Thursday for an illegal hit to the head.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50605811/devils-brenden-dillon-suspended-4-games-illegal-hit"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50605811/devils-brenden-dillon-suspended-4-games-illegal-hit"
+            }
+          ],
+          "id": "a3-e48ffe1253a13eca",
+          "feedRank": 12,
+          "compactHeadline": "Devils' Brenden Dillon suspended four games for illegal hit"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-9c48ce42d49477aa"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Chicago beat Seattle 3-1 Wednesday to sweep its road trip behind Roman Kantserov's two goals.",
-          "text": "Chicago beat Seattle 3-1 Wednesday to sweep its road trip behind Roman Kantserov's two goals.",
+          "type": "STREAK",
+          "priority": 73,
+          "headline": "Roman Kantserov scored twice as Chicago beat Seattle 3-1 to complete a road-trip sweep.",
+          "text": "Roman Kantserov scored twice as Chicago beat Seattle 3-1 to complete a road-trip sweep.",
           "entities": [
-            "Roman Kantserov",
             "Chicago Blackhawks",
-            "Seattle Kraken"
+            "Seattle Kraken",
+            "Roman Kantserov"
           ],
           "occurredAt": "2026-11-26T05:53:32Z",
           "timePrecision": "exact",
-          "ageHours": 22.13,
-          "freshnessBasis": "Chicago beat Seattle 3-1 Wednesday to sweep its road trip behind Roman Kantserov's two goals.",
+          "ageHours": 22.63,
+          "freshnessBasis": "Chicago beat Seattle 3-1 Wednesday to complete a road-trip sweep.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nhl/recap?gameId=401892794"
@@ -837,9 +697,77 @@
               "url": "http://www.espn.com/nhl/recap?gameId=401892794"
             }
           ],
-          "id": "a3-b4c7eb011271a545",
-          "feedRank": 22,
-          "compactHeadline": "Kantserov scores twice as Blackhawks sweep road trip"
+          "id": "a3-9793937c2a41549e",
+          "feedRank": 18,
+          "compactHeadline": "Blackhawks sweep road trip behind Kantserov's two goals"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-a4daa0881575ba92"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Colorado beat Montreal 6-0 Wednesday behind Devon Toews' two goals and Mackenzie Blackwood's 28-save shutout.",
+          "text": "Colorado beat Montreal 6-0 Wednesday behind Devon Toews' two goals and Mackenzie Blackwood's 28-save shutout.",
+          "entities": [
+            "Colorado Avalanche",
+            "Montreal Canadiens",
+            "Devon Toews",
+            "Mackenzie Blackwood"
+          ],
+          "occurredAt": "2026-11-26T06:41:32Z",
+          "timePrecision": "exact",
+          "ageHours": 21.83,
+          "freshnessBasis": "Colorado beat Montreal 6-0 Wednesday behind Devon Toews' two goals and Mackenzie Blackwood's 28-save shutout.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892792"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892792"
+            }
+          ],
+          "id": "a3-accd63b01b12948c",
+          "feedRank": 20,
+          "compactHeadline": "Toews scores twice as Avalanche shut out Canadiens, 6-0"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-21496f23c4e99635"
+          ],
+          "type": "OTHER",
+          "priority": 62,
+          "headline": "Boston’s Tanner Jeannot and Winnipeg’s Tyrel Bauer exchanged more than 40 punches in a lengthy fight during their game.",
+          "text": "Boston’s Tanner Jeannot and Winnipeg’s Tyrel Bauer exchanged more than 40 punches in a lengthy fight during their game.",
+          "entities": [
+            "Boston Bruins",
+            "Winnipeg Jets",
+            "Tanner Jeannot",
+            "Tyrel Bauer"
+          ],
+          "occurredAt": "2026-11-26T16:12:54Z",
+          "timePrecision": "exact",
+          "ageHours": 12.31,
+          "freshnessBasis": "Tanner Jeannot and Tyrel Bauer exchanged more than 40 punches during Boston’s game against Winnipeg.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50601479/bruins-tanner-jeannot-jets-tyrel-bauer-lengthy-fight"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50601479/bruins-tanner-jeannot-jets-tyrel-bauer-lengthy-fight"
+            }
+          ],
+          "id": "a3-3117595856d0f7e5",
+          "feedRank": 28,
+          "compactHeadline": "Bruins-Jets fight features more than 40 punches"
         }
       ]
     },
@@ -850,35 +778,35 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-d360e9a3a86aa37b"
+            "cand-058b81eadc6a0c5b"
           ],
-          "type": "DISCIPLINE",
+          "type": "CONTRACT",
           "priority": 73,
-          "headline": "An independent regulatory commission unanimously ruled that Manchester United defender Leny Yoro's red card against Liverpool was an obvious error.",
-          "text": "An independent regulatory commission unanimously ruled that Manchester United defender Leny Yoro's red card against Liverpool was an obvious error.",
+          "headline": "Leeds striker Dominic Calvert-Lewin signed a new two-and-a-half-year contract with the club amid reported Manchester United interest.",
+          "text": "Leeds striker Dominic Calvert-Lewin signed a new two-and-a-half-year contract with the club amid reported Manchester United interest.",
           "entities": [
-            "Leny Yoro",
-            "Manchester United",
-            "Liverpool"
+            "Leeds United",
+            "Dominic Calvert-Lewin",
+            "Manchester United"
           ],
-          "occurredAt": "2026-11-26T13:29:12Z",
+          "occurredAt": "2026-11-26T18:54:10Z",
           "timePrecision": "exact",
-          "ageHours": 14.54,
-          "freshnessBasis": "An independent commission ruled Thursday that Leny Yoro's red card against Liverpool was an obvious error.",
+          "ageHours": 9.62,
+          "freshnessBasis": "Leeds announced Dominic Calvert-Lewin's new two-and-a-half-year contract Thursday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/50604016/leny-yoro-manchester-united-red-card"
+            "https://www.espn.com/soccer/story/_/id/50605310/dominic-calvert-lewin-leeds-united-contract"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/50604016/leny-yoro-manchester-united-red-card"
+              "url": "https://www.espn.com/soccer/story/_/id/50605310/dominic-calvert-lewin-leeds-united-contract"
             }
           ],
-          "id": "a3-b3082a20ff51bb7d",
-          "feedRank": 18,
-          "compactHeadline": "Panel says Leny Yoro red card was an obvious error"
+          "id": "a3-26a5423ac7f6581d",
+          "feedRank": 17,
+          "compactHeadline": "Dominic Calvert-Lewin signs new Leeds contract"
         }
       ]
     },
@@ -897,9 +825,9 @@
             "cand-f59e69745cd1dc0d"
           ],
           "type": "ROSTER",
-          "priority": 75,
-          "headline": "D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State, reopening his recruitment among top contenders.",
-          "text": "D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State, reopening his recruitment among top contenders.",
+          "priority": 74,
+          "headline": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State and is again available to other programs.",
+          "text": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State and is again available to other programs.",
           "entities": [
             "D.J. Jacobs",
             "Ohio State Buckeyes",
@@ -909,8 +837,8 @@
           ],
           "occurredAt": "2026-11-26T21:21:16Z",
           "timePrecision": "exact",
-          "ageHours": 6.67,
-          "freshnessBasis": "D.J. Jacobs decommitted from Ohio State, making the No. 2 overall recruit available again.",
+          "ageHours": 7.17,
+          "freshnessBasis": "D.J. Jacobs decommitted from Ohio State, reopening the recruitment of the No. 2 overall 2027 recruit.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50606035/sources-de-dj-jacobs-decommits-ohio-state"
@@ -923,7 +851,7 @@
             }
           ],
           "id": "a3-616cdbdada97584b",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "No. 2 recruit D.J. Jacobs decommits from Ohio State"
         },
         {
@@ -933,17 +861,17 @@
           ],
           "type": "OTHER",
           "priority": 72,
-          "headline": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving Ohio State's class.",
-          "text": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving Ohio State's class.",
+          "headline": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving his Ohio State commitment.",
+          "text": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving his Ohio State commitment.",
           "entities": [
-            "D.J. Jacobs",
             "Miami Hurricanes",
-            "Ohio State Buckeyes"
+            "Ohio State Buckeyes",
+            "D.J. Jacobs"
           ],
           "occurredAt": "2026-11-26T22:58:35Z",
           "timePrecision": "exact",
-          "ageHours": 5.05,
-          "freshnessBasis": "D.J. Jacobs committed to Miami Thursday hours after withdrawing his commitment from Ohio State.",
+          "ageHours": 5.55,
+          "freshnessBasis": "D.J. Jacobs committed to Miami Thursday after decommitting from Ohio State.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state"
@@ -955,41 +883,41 @@
               "url": "https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state"
             }
           ],
-          "id": "a3-0d35bba7bfbe83c6",
-          "feedRank": 27,
-          "compactHeadline": "No. 2 recruit D.J. Jacobs flips commitment to Miami"
+          "id": "a3-3ea7010a2e7b4c42",
+          "feedRank": 24,
+          "compactHeadline": "No. 2 recruit D.J. Jacobs commits to Miami"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-7112949855478a66"
+            "cand-053a98c563d53f12"
           ],
-          "type": "DISCIPLINE",
-          "priority": 65,
-          "headline": "USC's marching band will not perform at Saturday's game against UCLA after members vandalized part of the UCLA campus.",
-          "text": "USC's marching band will not perform at Saturday's game against UCLA after members vandalized part of the UCLA campus.",
+          "type": "LEAGUE_NEWS",
+          "priority": 63,
+          "headline": "Michigan athletic director Warde Manuel will remain in the role until the school finds a new athletic director.",
+          "text": "Michigan athletic director Warde Manuel will remain in the role until the school finds a new athletic director.",
           "entities": [
-            "USC Trojans",
-            "UCLA Bruins"
+            "Michigan Wolverines",
+            "Warde Manuel"
           ],
-          "occurredAt": "2026-11-26T14:39:43Z",
+          "occurredAt": "2026-11-26T11:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 13.36,
-          "freshnessBasis": "USC announced its marching band would not perform at Saturday's UCLA game after campus vandalism.",
+          "ageHours": 16.6,
+          "freshnessBasis": "Warde Manuel agreed to remain Michigan’s athletic director until the school hires a successor.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50600615/usc-band-perform-members-vandalized-ucla-campus"
+            "https://www.espn.com/college-football/story/_/id/50592920/sources-manuel-stay-job-new-michigan-ad-hired"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50600615/usc-band-perform-members-vandalized-ucla-campus"
+              "url": "https://www.espn.com/college-football/story/_/id/50592920/sources-manuel-stay-job-new-michigan-ad-hired"
             }
           ],
-          "id": "a3-09459b115a687a81",
-          "feedRank": 29,
-          "compactHeadline": "USC band barred from UCLA rivalry game"
+          "id": "a3-e96e2b9e19b4dded",
+          "feedRank": 27,
+          "compactHeadline": "Michigan AD Warde Manuel stays through successor search"
         }
       ]
     }
@@ -1005,18 +933,19 @@
             "cand-5b95711b88c3ad92"
           ],
           "type": "ADVANCEMENT",
-          "priority": 77,
-          "headline": "Spain beat Austria 2-0 in the Davis Cup quarterfinals, advancing to a semifinal against Britain after Rafael Jodar completed a comeback win.",
-          "text": "Spain beat Austria 2-0 in the Davis Cup quarterfinals, advancing to a semifinal against Britain after Rafael Jodar completed a comeback win.",
+          "priority": 75,
+          "headline": "Spain beat Austria 2-0 in the Davis Cup quarterfinals, with Rafael Jodar completing the tie after a comeback win over Jurij Rodionov.",
+          "text": "Spain beat Austria 2-0 in the Davis Cup quarterfinals, with Rafael Jodar completing the tie after a comeback win over Jurij Rodionov.",
           "entities": [
             "Spain",
             "Austria",
             "Rafael Jodar",
+            "Jurij Rodionov",
             "Davis Cup"
           ],
           "occurredAt": "2026-11-26T21:46:17Z",
           "timePrecision": "exact",
-          "ageHours": 6.25,
+          "ageHours": 6.75,
           "freshnessBasis": "Spain beat Austria 2-0 Thursday to advance to the Davis Cup semifinal against Britain.",
           "status": "active",
           "sourceUrls": [
@@ -1029,9 +958,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/50606263/spain-beats-austria-set-davis-cup-semifinal-vs-britain"
             }
           ],
-          "id": "a3-special-0d811c066ce42bb6",
-          "feedRank": 10,
-          "compactHeadline": "Spain advances to Davis Cup semifinal against Britain"
+          "id": "a3-special-c4ab091e8f76067d",
+          "feedRank": 9,
+          "compactHeadline": "Spain advances to Davis Cup semifinal after beating Austria"
         }
       ]
     },
@@ -1046,17 +975,17 @@
           ],
           "type": "CONTRACT",
           "priority": 73,
-          "headline": "Haas confirmed Ollie Bearman will remain with the team as an F1 driver in 2027, ending speculation over his seat.",
-          "text": "Haas confirmed Ollie Bearman will remain with the team as an F1 driver in 2027, ending speculation over his seat.",
+          "headline": "Haas confirmed Ollie Bearman will remain with the team for the 2027 Formula 1 season, ending uncertainty over his seat.",
+          "text": "Haas confirmed Ollie Bearman will remain with the team for the 2027 Formula 1 season, ending uncertainty over his seat.",
           "entities": [
-            "Ollie Bearman",
             "Haas",
+            "Ollie Bearman",
             "Formula 1"
           ],
           "occurredAt": "2026-11-26T09:55:06Z",
           "timePrecision": "exact",
-          "ageHours": 18.1,
-          "freshnessBasis": "Haas confirmed Ollie Bearman will continue as a driver for the team in 2027.",
+          "ageHours": 18.61,
+          "freshnessBasis": "Haas confirmed Ollie Bearman will continue as a driver for the 2027 Formula 1 season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/50603078/ollie-bearman-haas-f1-2027"
@@ -1068,9 +997,9 @@
               "url": "https://www.espn.com/f1/story/_/id/50603078/ollie-bearman-haas-f1-2027"
             }
           ],
-          "id": "a3-special-41314634c19df3e1",
-          "feedRank": 26,
-          "compactHeadline": "Haas confirms Ollie Bearman will stay for F1 2027"
+          "id": "a3-special-a3da8d239eb60fc2",
+          "feedRank": 23,
+          "compactHeadline": "Haas confirms Ollie Bearman will return for F1 2027"
         }
       ]
     }
@@ -1083,10 +1012,10 @@
   "compactHeadlineRole": "compact-editorial-metadata",
   "browserWireCompat": {
     "version": "A4.14",
-    "changedCount": 30,
+    "changedCount": 28,
     "policy": "mirror text -> headline at JSON serialization only"
   },
-  "headlineCount": 30,
+  "headlineCount": 28,
   "headlineTargetChars": 80,
   "headlineMaxChars": 96
 }
