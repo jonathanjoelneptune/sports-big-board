@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-11-27T21:00:50Z",
+  "generatedAt": "2026-11-27T21:30:37Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "0ce557ac9f589713f16552af9630ed0afe41876b8fc6d7fd58757edd1e7fa48d",
+  "sourceCandidateHash": "b36c3f7b9ce5ce78a76a820248f5afa8196380e1393ab1ce046d90cae0de7e2e",
   "leagues": [
     {
       "league": "MLB",
@@ -17,9 +17,9 @@
             "cand-47ac265e61fb8824"
           ],
           "type": "TRADE",
-          "priority": 73,
-          "headline": "Pittsburgh traded catcher Henry Davis to Arizona for utility player Tim Tawa, according to the teams' reported deal.",
-          "text": "Pittsburgh traded catcher Henry Davis to Arizona for utility player Tim Tawa, according to the teams' reported deal.",
+          "priority": 74,
+          "headline": "Pittsburgh traded catcher Henry Davis, the former No. 1 overall pick, to Arizona for utility player Tim Tawa.",
+          "text": "Pittsburgh traded catcher Henry Davis, the former No. 1 overall pick, to Arizona for utility player Tim Tawa.",
           "entities": [
             "Pittsburgh Pirates",
             "Arizona Diamondbacks",
@@ -28,8 +28,8 @@
           ],
           "occurredAt": "2026-11-27T20:21:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.65,
-          "freshnessBasis": "The Pirates traded Henry Davis to the Diamondbacks for Tim Tawa Friday.",
+          "ageHours": 1.15,
+          "freshnessBasis": "Pittsburgh traded Henry Davis to Arizona for Tim Tawa Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50613350/pirates-trade-c-henry-davis-diamondbacks-sources-say"
@@ -42,7 +42,7 @@
             }
           ],
           "id": "a3-81a4c2c7cf4a07ce",
-          "feedRank": 12,
+          "feedRank": 13,
           "compactHeadline": "Pirates trade former No. 1 pick Henry Davis to Arizona"
         },
         {
@@ -50,18 +50,18 @@
           "candidateIds": [
             "cand-597acc5cc3f74a52"
           ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The Mets finalized an eight-year, $95 million contract with center fielder A.J. Ewing on Friday.",
-          "text": "The Mets finalized an eight-year, $95 million contract with center fielder A.J. Ewing on Friday.",
+          "type": "CONTRACT",
+          "priority": 78,
+          "headline": "The Mets finalized center fielder A.J. Ewing’s eight-year, $95 million contract Friday.",
+          "text": "The Mets finalized center fielder A.J. Ewing’s eight-year, $95 million contract Friday.",
           "entities": [
             "New York Mets",
             "A.J. Ewing"
           ],
           "occurredAt": "2026-11-27T18:37:54Z",
           "timePrecision": "exact",
-          "ageHours": 2.38,
-          "freshnessBasis": "The Mets finalized A.J. Ewing's eight-year, $95 million contract Friday.",
+          "ageHours": 2.88,
+          "freshnessBasis": "New York finalized A.J. Ewing’s eight-year, $95 million contract Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/50612781/aj-ewing-finalizes-8-year-95-million-deal-mets"
@@ -73,9 +73,42 @@
               "url": "https://www.espn.com/mlb/story/_/id/50612781/aj-ewing-finalizes-8-year-95-million-deal-mets"
             }
           ],
-          "id": "a3-b998b2b36fe230c9",
-          "feedRank": 13,
-          "compactHeadline": "Mets finalize eight-year, $95 million deal with A.J. Ewing"
+          "id": "a3-69ab434ec1d36dd4",
+          "feedRank": 20,
+          "compactHeadline": "Mets finalize A.J. Ewing’s eight-year, $95M contract"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-f6e10c836cc887e4"
+          ],
+          "type": "CONTRACT",
+          "priority": 70,
+          "headline": "Chicago finalized contracts with left-hander Trevor Rogers and Japanese outfielder Teruaki Sato.",
+          "text": "Chicago finalized contracts with left-hander Trevor Rogers and Japanese outfielder Teruaki Sato.",
+          "entities": [
+            "Chicago Cubs",
+            "Trevor Rogers",
+            "Teruaki Sato"
+          ],
+          "occurredAt": "2026-11-27T21:21:47Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "The Cubs finalized contracts with Trevor Rogers and Teruaki Sato Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/50614117/cubs-finalize-deals-p-trevor-rogers-teruaki-sato"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/50614117/cubs-finalize-deals-p-trevor-rogers-teruaki-sato"
+            }
+          ],
+          "id": "a3-25bf443f7d88e6a9",
+          "feedRank": 27,
+          "compactHeadline": "Cubs finalize deals with Trevor Rogers and Teruaki Sato"
         }
       ]
     },
@@ -86,44 +119,12 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-f5477d7d9d0a7854"
-          ],
-          "type": "INJURY",
-          "priority": 74,
-          "headline": "Bears tight end Colston Loveland is awaiting a second opinion on his left knee while Chicago holds off on placing him on injured reserve.",
-          "text": "Bears tight end Colston Loveland is awaiting a second opinion on his left knee while Chicago holds off on placing him on injured reserve.",
-          "entities": [
-            "Chicago Bears",
-            "Colston Loveland"
-          ],
-          "occurredAt": "2026-11-27T18:16:47Z",
-          "timePrecision": "exact",
-          "ageHours": 2.73,
-          "freshnessBasis": "Chicago is holding off on placing Colston Loveland on injured reserve while he seeks a second opinion on his left knee.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50612564/sources-bears-expected-place-te-colston-loveland-knee-ir"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50612564/sources-bears-expected-place-te-colston-loveland-knee-ir"
-            }
-          ],
-          "id": "a3-e6917c7a1899dca8",
-          "feedRank": 7,
-          "compactHeadline": "Bears hold off on IR move as Loveland seeks knee opinion"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-a1921a3f24680a85"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Buffalo beat Kansas City 13-10 when Tyler Bass hit a 57-yard field goal as time expired, giving the Bills their 10th win.",
-          "text": "Buffalo beat Kansas City 13-10 when Tyler Bass hit a 57-yard field goal as time expired, giving the Bills their 10th win.",
+          "headline": "Tyler Bass hit a 57-yard field goal as time expired to lift Buffalo past Kansas City 13-10.",
+          "text": "Tyler Bass hit a 57-yard field goal as time expired to lift Buffalo past Kansas City 13-10.",
           "entities": [
             "Buffalo Bills",
             "Kansas City Chiefs",
@@ -131,8 +132,8 @@
           ],
           "occurredAt": "2026-11-27T07:25:32Z",
           "timePrecision": "exact",
-          "ageHours": 13.59,
-          "freshnessBasis": "Tyler Bass made a 57-yard field goal as time expired to lift Buffalo past Kansas City 13-10.",
+          "ageHours": 14.08,
+          "freshnessBasis": "Tyler Bass made a 57-yard field goal as time expired in Buffalo’s 13-10 win over Kansas City.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nfl/recap?gameId=401873082"
@@ -144,19 +145,19 @@
               "url": "http://www.espn.com/nfl/recap?gameId=401873082"
             }
           ],
-          "id": "a3-5a84356e233d92b3",
+          "id": "a3-aec42294e9ecbf07",
           "feedRank": 8,
-          "compactHeadline": "Bills beat Chiefs 13-10 on Tyler Bass's 57-yard final kick"
+          "compactHeadline": "Tyler Bass wins Bills-Chiefs clash with 57-yard field goal"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-5d5b2bce9da694e7"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Philadelphia overcame a 21-point deficit to beat Dallas 39-38, with Joe Milton accounting for four touchdowns in the comeback.",
-          "text": "Philadelphia overcame a 21-point deficit to beat Dallas 39-38, with Joe Milton accounting for four touchdowns in the comeback.",
+          "headline": "Philadelphia erased a 21-point deficit as Joe Milton accounted for four touchdowns in a 39-38 comeback win over Dallas.",
+          "text": "Philadelphia erased a 21-point deficit as Joe Milton accounted for four touchdowns in a 39-38 comeback win over Dallas.",
           "entities": [
             "Philadelphia Eagles",
             "Dallas Cowboys",
@@ -164,8 +165,8 @@
           ],
           "occurredAt": "2026-11-27T06:10:08Z",
           "timePrecision": "exact",
-          "ageHours": 14.85,
-          "freshnessBasis": "Philadelphia overcame a 21-point deficit and defeated Dallas 39-38 Thursday.",
+          "ageHours": 15.34,
+          "freshnessBasis": "Philadelphia beat Dallas 39-38 after overcoming a 21-point deficit Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50609081/eagles-qb-joe-milton-wows-teammates-breakout-game-dallas"
@@ -177,53 +178,51 @@
               "url": "https://www.espn.com/nfl/story/_/id/50609081/eagles-qb-joe-milton-wows-teammates-breakout-game-dallas"
             }
           ],
-          "id": "a3-aeb607c0881a4764",
+          "id": "a3-a4cbd4428e344328",
           "feedRank": 9,
-          "compactHeadline": "Eagles erase 21-point deficit to stun Cowboys 39-38"
+          "compactHeadline": "Joe Milton leads Eagles’ historic 39-38 comeback over Dallas"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
-            "cand-02f93d922117b86d"
+            "cand-2d27bf982766a728"
           ],
-          "type": "INJURY",
-          "priority": 67,
-          "headline": "New Orleans ruled tight end Juwan Johnson out against Cincinnati with hamstring and wrist injuries, while Noah Fant is questionable with a calf injury.",
-          "text": "New Orleans ruled tight end Juwan Johnson out against Cincinnati with hamstring and wrist injuries, while Noah Fant is questionable with a calf injury.",
+          "type": "RETURN",
+          "priority": 74,
+          "headline": "Baltimore cornerback Marlon Humphrey will return Sunday against Houston after being benched the previous week.",
+          "text": "Baltimore cornerback Marlon Humphrey will return Sunday against Houston after being benched the previous week.",
           "entities": [
-            "New Orleans Saints",
-            "Juwan Johnson",
-            "Noah Fant",
-            "Cincinnati Bengals"
+            "Baltimore Ravens",
+            "Marlon Humphrey"
           ],
-          "occurredAt": "2026-11-27T20:53:23Z",
+          "occurredAt": "2026-11-27T21:21:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "The Saints ruled Juwan Johnson out and listed Noah Fant questionable Friday.",
+          "ageHours": 0.16,
+          "freshnessBasis": "Baltimore announced Marlon Humphrey will return to the lineup Sunday after a one-game benching.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/50613922/saints-rule-te-johnson-vs-bengals-te-fant-questionable"
+            "https://www.espn.com/nfl/story/_/id/50614218/ravens-marlon-humphrey-return-lineup-role-uncertain"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/50613922/saints-rule-te-johnson-vs-bengals-te-fant-questionable"
+              "url": "https://www.espn.com/nfl/story/_/id/50614218/ravens-marlon-humphrey-return-lineup-role-uncertain"
             }
           ],
-          "id": "a3-cdd4475abf375640",
+          "id": "a3-8acf8a1b2650790d",
           "feedRank": 16,
-          "compactHeadline": "Saints rule Juwan Johnson out; Noah Fant remains questionable"
+          "compactHeadline": "Ravens reinstate Marlon Humphrey for Sunday’s game"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-17bf6c412600fd75"
           ],
           "type": "DEPTH_CHART",
-          "priority": 73,
-          "headline": "Seattle is turning back to Sam Darnold at quarterback against San Francisco after Drew Lock filled in during Darnold's injury absence.",
-          "text": "Seattle is turning back to Sam Darnold at quarterback against San Francisco after Drew Lock filled in during Darnold's injury absence.",
+          "priority": 75,
+          "headline": "Seattle is turning back to Sam Darnold as its starting quarterback against 9-1 San Francisco, with Drew Lock returning to the backup role.",
+          "text": "Seattle is turning back to Sam Darnold as its starting quarterback against 9-1 San Francisco, with Drew Lock returning to the backup role.",
           "entities": [
             "Seattle Seahawks",
             "Sam Darnold",
@@ -232,8 +231,8 @@
           ],
           "occurredAt": "2026-11-27T12:02:29Z",
           "timePrecision": "exact",
-          "ageHours": 8.97,
-          "freshnessBasis": "Seattle announced it is turning back to Sam Darnold against San Francisco after Drew Lock's stint as the starter.",
+          "ageHours": 9.47,
+          "freshnessBasis": "Seattle is turning back to Sam Darnold as its starting quarterback against San Francisco.",
           "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50609180/why-seahawks-starting-qb-sam-darnold-49ers-week-12"
@@ -245,29 +244,62 @@
               "url": "https://www.espn.com/nfl/story/_/id/50609180/why-seahawks-starting-qb-sam-darnold-49ers-week-12"
             }
           ],
-          "id": "a3-a07031f373c7f2f6",
+          "id": "a3-be1d3789f8096ae4",
           "feedRank": 18,
-          "compactHeadline": "Seahawks turn back to Sam Darnold against 9-1 49ers"
+          "compactHeadline": "Seahawks turn back to Sam Darnold at quarterback"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-f5477d7d9d0a7854"
+          ],
+          "type": "INJURY",
+          "priority": 66,
+          "headline": "Chicago is holding off on placing tight end Colston Loveland on injured reserve while he seeks a second opinion on his left knee.",
+          "text": "Chicago is holding off on placing tight end Colston Loveland on injured reserve while he seeks a second opinion on his left knee.",
+          "entities": [
+            "Chicago Bears",
+            "Colston Loveland"
+          ],
+          "occurredAt": "2026-11-27T18:16:47Z",
+          "timePrecision": "exact",
+          "ageHours": 3.23,
+          "freshnessBasis": "Chicago is holding off on placing Colston Loveland on injured reserve pending a second opinion on his left knee.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50612564/sources-bears-expected-place-te-colston-loveland-knee-ir"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50612564/sources-bears-expected-place-te-colston-loveland-knee-ir"
+            }
+          ],
+          "id": "a3-c3087a65bb9c1beb",
+          "feedRank": 21,
+          "compactHeadline": "Bears await second opinion on Colston Loveland’s knee"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-f02b100b125f3201"
+            "cand-de318401c7de9680"
           ],
           "type": "INJURY",
           "priority": 65,
-          "headline": "Jacksonville wide receiver Parker Washington will miss Sunday's game against Tennessee and is considered week-to-week with a shoulder injury.",
-          "text": "Jacksonville wide receiver Parker Washington will miss Sunday's game against Tennessee and is considered week-to-week with a shoulder injury.",
+          "headline": "Jacksonville ruled out wide receiver Parker Washington with a shoulder injury and running back Bhayshul Tuten with foot and ankle injuries for Sunday against Tennessee.",
+          "text": "Jacksonville ruled out wide receiver Parker Washington with a shoulder injury and running back Bhayshul Tuten with foot and ankle injuries for Sunday against Tennessee.",
           "entities": [
             "Jacksonville Jaguars",
             "Parker Washington",
+            "Bhayshul Tuten",
             "Tennessee Titans"
           ],
-          "occurredAt": "2026-11-27T16:54:36Z",
+          "occurredAt": "2026-11-27T21:08:03Z",
           "timePrecision": "exact",
-          "ageHours": 4.1,
-          "freshnessBasis": "The Jaguars ruled Parker Washington out for Sunday and labeled him week-to-week with a shoulder injury.",
-          "status": "active",
+          "ageHours": 0.38,
+          "freshnessBasis": "Jacksonville ruled Parker Washington and Bhayshul Tuten out for Sunday’s game against Tennessee.",
+          "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50612050/jaguars-wr-parker-washington-shoulder-week-week"
           ],
@@ -278,29 +310,96 @@
               "url": "https://www.espn.com/nfl/story/_/id/50612050/jaguars-wr-parker-washington-shoulder-week-week"
             }
           ],
-          "id": "a3-fcc625a327ff3a41",
-          "feedRank": 19,
-          "compactHeadline": "Jaguars wideout Parker Washington is week-to-week"
+          "id": "a3-1910f726838d59bc",
+          "feedRank": 24,
+          "compactHeadline": "Jaguars lose Parker Washington and Bhayshul Tuten Sunday"
         },
         {
           "rank": 7,
           "candidateIds": [
+            "cand-02f93d922117b86d"
+          ],
+          "type": "INJURY",
+          "priority": 65,
+          "headline": "New Orleans ruled out tight end Juwan Johnson with hamstring and wrist injuries, while Noah Fant remains questionable with a calf injury.",
+          "text": "New Orleans ruled out tight end Juwan Johnson with hamstring and wrist injuries, while Noah Fant remains questionable with a calf injury.",
+          "entities": [
+            "New Orleans Saints",
+            "Juwan Johnson",
+            "Noah Fant",
+            "Cincinnati Bengals"
+          ],
+          "occurredAt": "2026-11-27T21:01:47Z",
+          "timePrecision": "exact",
+          "ageHours": 0.48,
+          "freshnessBasis": "New Orleans ruled Juwan Johnson out against Cincinnati and listed Noah Fant as questionable.",
+          "status": "next",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50613922/saints-rule-te-johnson-vs-bengals-te-fant-questionable"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50613922/saints-rule-te-johnson-vs-bengals-te-fant-questionable"
+            }
+          ],
+          "id": "a3-3db4545479251821",
+          "feedRank": 25,
+          "compactHeadline": "Saints rule out Juwan Johnson against Bengals"
+        },
+        {
+          "rank": 8,
+          "candidateIds": [
+            "cand-b05cb354d350accd"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Chicago stunned Detroit as Caleb Williams and Rome Odunze leaned on their chemistry to secure the Bears’ ninth win of the season.",
+          "text": "Chicago stunned Detroit as Caleb Williams and Rome Odunze leaned on their chemistry to secure the Bears’ ninth win of the season.",
+          "entities": [
+            "Chicago Bears",
+            "Detroit Lions",
+            "Caleb Williams",
+            "Rome Odunze"
+          ],
+          "occurredAt": "2026-11-27T03:58:07Z",
+          "timePrecision": "exact",
+          "ageHours": 17.54,
+          "freshnessBasis": "Chicago stunned Detroit as Caleb Williams and Rome Odunze helped secure the Bears’ ninth win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/50608495/qb-caleb-williams-wr-rome-odunze-chemistry-helps-bears-stun-lions"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/50608495/qb-caleb-williams-wr-rome-odunze-chemistry-helps-bears-stun-lions"
+            }
+          ],
+          "id": "a3-461bf4f5d4b7b0f2",
+          "feedRank": 26,
+          "compactHeadline": "Caleb Williams, Rome Odunze spark Bears’ upset of Lions"
+        },
+        {
+          "rank": 9,
+          "candidateIds": [
             "cand-74e5016b8c3097e5"
           ],
           "type": "DEPTH_CHART",
-          "priority": 65,
-          "headline": "Arizona will start Josh Johnson against Washington as rookie quarterback Carson Beck misses his second straight game with back spasms.",
-          "text": "Arizona will start Josh Johnson against Washington as rookie quarterback Carson Beck misses his second straight game with back spasms.",
+          "priority": 63,
+          "headline": "Arizona will start Josh Johnson against Washington because rookie quarterback Carson Beck remains out with back spasms.",
+          "text": "Arizona will start Josh Johnson against Washington because rookie quarterback Carson Beck remains out with back spasms.",
           "entities": [
             "Arizona Cardinals",
             "Josh Johnson",
-            "Carson Beck",
-            "Washington Commanders"
+            "Carson Beck"
           ],
           "occurredAt": "2026-11-27T20:50:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
-          "freshnessBasis": "The Cardinals named Josh Johnson their starter again after Carson Beck was ruled out Friday.",
+          "ageHours": 0.67,
+          "freshnessBasis": "Arizona named Josh Johnson its starter again after Carson Beck was ruled out for a second straight game.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/50612845/cardinals-start-qb-johnson-again-beck-back-spasms-out"
@@ -312,9 +411,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/50612845/cardinals-start-qb-johnson-again-beck-back-spasms-out"
             }
           ],
-          "id": "a3-3d5d26ef91dd517d",
-          "feedRank": 20,
-          "compactHeadline": "Cardinals turn to Josh Johnson again with Carson Beck out"
+          "id": "a3-037f63c24e3f6b5d",
+          "feedRank": 28,
+          "compactHeadline": "Cardinals turn again to Josh Johnson at quarterback"
         }
       ]
     },
@@ -328,9 +427,9 @@
             "cand-cd1b11790c669ab6"
           ],
           "type": "INJURY",
-          "priority": 76,
-          "headline": "Minnesota ruled star guard LaMelo Ball out of Friday's NBA Cup game against Memphis because of a left ankle sprain.",
-          "text": "Minnesota ruled star guard LaMelo Ball out of Friday's NBA Cup game against Memphis because of a left ankle sprain.",
+          "priority": 75,
+          "headline": "Minnesota ruled star guard LaMelo Ball out against Memphis because of a left ankle sprain.",
+          "text": "Minnesota ruled star guard LaMelo Ball out against Memphis because of a left ankle sprain.",
           "entities": [
             "Minnesota Timberwolves",
             "LaMelo Ball",
@@ -338,8 +437,8 @@
           ],
           "occurredAt": "2026-11-27T19:06:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.9,
-          "freshnessBasis": "The Timberwolves downgraded LaMelo Ball to out Friday because of a left ankle sprain.",
+          "ageHours": 2.4,
+          "freshnessBasis": "Minnesota downgraded LaMelo Ball to out Friday because of a left ankle sprain.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50613102/timberwolves-downgrade-lamelo-ball-ankle-sprain"
@@ -351,9 +450,9 @@
               "url": "https://www.espn.com/nba/story/_/id/50613102/timberwolves-downgrade-lamelo-ball-ankle-sprain"
             }
           ],
-          "id": "a3-7d55fcd173718770",
-          "feedRank": 5,
-          "compactHeadline": "Timberwolves rule LaMelo Ball out with ankle sprain"
+          "id": "a3-cccf6e6c9be9929f",
+          "feedRank": 7,
+          "compactHeadline": "LaMelo Ball ruled out with ankle sprain for NBA Cup game"
         },
         {
           "rank": 2,
@@ -362,8 +461,8 @@
           ],
           "type": "INJURY",
           "priority": 74,
-          "headline": "Philadelphia ruled Jaylen Brown out of Friday's NBA Cup game against Indiana with a hamstring injury, while Joel Embiid remains questionable with an illness.",
-          "text": "Philadelphia ruled Jaylen Brown out of Friday's NBA Cup game against Indiana with a hamstring injury, while Joel Embiid remains questionable with an illness.",
+          "headline": "Philadelphia ruled Jaylen Brown out against Indiana with a hamstring injury, while Joel Embiid remains questionable because of illness.",
+          "text": "Philadelphia ruled Jaylen Brown out against Indiana with a hamstring injury, while Joel Embiid remains questionable because of illness.",
           "entities": [
             "Philadelphia 76ers",
             "Jaylen Brown",
@@ -372,9 +471,9 @@
           ],
           "occurredAt": "2026-11-26T22:45:16Z",
           "timePrecision": "exact",
-          "ageHours": 22.26,
-          "freshnessBasis": "Philadelphia ruled Jaylen Brown out against Indiana and listed Joel Embiid as questionable for Friday's NBA Cup game.",
-          "status": "active",
+          "ageHours": 22.76,
+          "freshnessBasis": "Philadelphia ruled Jaylen Brown out against Indiana and listed Joel Embiid as questionable.",
+          "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers"
           ],
@@ -385,9 +484,9 @@
               "url": "https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers"
             }
           ],
-          "id": "a3-7e3be288970cf181",
-          "feedRank": 11,
-          "compactHeadline": "76ers rule Jaylen Brown out; Embiid remains questionable"
+          "id": "a3-0219d83a5696ef5c",
+          "feedRank": 12,
+          "compactHeadline": "Jaylen Brown out for 76ers’ NBA Cup game"
         },
         {
           "rank": 3,
@@ -396,8 +495,8 @@
           ],
           "type": "RETURN",
           "priority": 74,
-          "headline": "Lakers guard Austin Reaves is available against San Antonio after missing five games with a heel bruise.",
-          "text": "Lakers guard Austin Reaves is available against San Antonio after missing five games with a heel bruise.",
+          "headline": "Los Angeles guard Austin Reaves is available against San Antonio after missing five games with a heel bruise.",
+          "text": "Los Angeles guard Austin Reaves is available against San Antonio after missing five games with a heel bruise.",
           "entities": [
             "Los Angeles Lakers",
             "Austin Reaves",
@@ -405,7 +504,7 @@
           ],
           "occurredAt": "2026-11-27T20:25:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.58,
+          "ageHours": 1.08,
           "freshnessBasis": "Austin Reaves was cleared to play Friday after missing five games with a heel bruise.",
           "status": "active",
           "sourceUrls": [
@@ -418,9 +517,9 @@
               "url": "https://www.espn.com/nba/story/_/id/50613364/lakers-reaves-available-missing-5-games-heel-bruise"
             }
           ],
-          "id": "a3-772c38fd6f6e4da1",
+          "id": "a3-cbb87cb823b197f0",
           "feedRank": 17,
-          "compactHeadline": "Austin Reaves returns for Lakers after missing five games"
+          "compactHeadline": "Austin Reaves returns for Lakers after five-game absence"
         }
       ]
     },
@@ -435,16 +534,16 @@
           ],
           "type": "INJURY",
           "priority": 84,
-          "headline": "Islanders forward Kyle Palmieri will miss six to eight months after tearing the ACL and meniscus in his right knee.",
-          "text": "Islanders forward Kyle Palmieri will miss six to eight months after tearing the ACL and meniscus in his right knee.",
+          "headline": "New York Islanders forward Kyle Palmieri will miss six to eight months after tearing the ACL and meniscus in his right knee.",
+          "text": "New York Islanders forward Kyle Palmieri will miss six to eight months after tearing the ACL and meniscus in his right knee.",
           "entities": [
             "New York Islanders",
             "Kyle Palmieri"
           ],
           "occurredAt": "2026-11-27T17:38:42Z",
           "timePrecision": "exact",
-          "ageHours": 3.37,
-          "freshnessBasis": "The Islanders announced Kyle Palmieri's six-to-eight-month absence after his right-knee ACL and meniscus tears.",
+          "ageHours": 3.87,
+          "freshnessBasis": "The Islanders announced Kyle Palmieri suffered a torn ACL and meniscus and will miss six to eight months.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/50612273/islanders-kyle-palmieri-acl-meniscus-6-8-months"
@@ -456,9 +555,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/50612273/islanders-kyle-palmieri-acl-meniscus-6-8-months"
             }
           ],
-          "id": "a3-c4333a4c30c7e823",
-          "feedRank": 2,
-          "compactHeadline": "Kyle Palmieri out six to eight months with ACL, meniscus tears"
+          "id": "a3-90b1fcd054f2ea45",
+          "feedRank": 4,
+          "compactHeadline": "Kyle Palmieri out six to eight months with knee injury"
         },
         {
           "rank": 2,
@@ -466,9 +565,9 @@
             "cand-88e7742c5d1cbcbf"
           ],
           "type": "MILESTONE",
-          "priority": 78,
-          "headline": "Morgan Rielly scores twice as Maple Leafs defeat Bruins, who lose David Pastrnak to injury.",
-          "text": "Morgan Rielly scores twice as Maple Leafs defeat Bruins, who lose David Pastrnak to injury.",
+          "priority": 76,
+          "headline": "Morgan Rielly scored his 100th career goal during Toronto’s 3-1 win over Boston.",
+          "text": "Morgan Rielly scored his 100th career goal during Toronto’s 3-1 win over Boston.",
           "entities": [
             "Toronto Maple Leafs",
             "Boston Bruins",
@@ -476,8 +575,8 @@
           ],
           "occurredAt": "2026-11-27T20:58:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "Morgan Rielly scores twice as Maple Leafs defeat Bruins, who lose David Pastrnak to injury.",
+          "ageHours": 0.53,
+          "freshnessBasis": "Morgan Rielly scored his 100th career goal during Toronto’s 3-1 win over Boston.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/nhl/recap?gameId=401892795"
@@ -489,9 +588,107 @@
               "url": "http://www.espn.com/nhl/recap?gameId=401892795"
             }
           ],
-          "id": "a3-db60b662e710a371",
-          "feedRank": 4,
-          "compactHeadline": "Morgan Rielly scores twice, reaches 100 career goals in Leafs win"
+          "id": "a3-85e994513199e8c4",
+          "feedRank": 6,
+          "compactHeadline": "Morgan Rielly scores 100th career goal in Leafs’ win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-d197db2fc6f371c1"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Connor Brown scored the go-ahead goal off a scramble in front with 3:58 remaining to lead the New Jersey Devils to a come-from-behind 5-3 win over the Calgary Flames on Friday.",
+          "text": "Connor Brown scored the go-ahead goal off a scramble in front with 3:58 remaining to lead the New Jersey Devils to a come-from-behind 5-3 win over the Calgary Flames on Friday.",
+          "entities": [
+            "New Jersey Devils",
+            "Calgary Flames",
+            "Connor Brown"
+          ],
+          "occurredAt": "2026-11-27T21:18:32Z",
+          "timePrecision": "exact",
+          "ageHours": 0.2,
+          "freshnessBasis": "Connor Brown scored with 3:58 remaining in New Jersey’s 5-3 comeback win over Calgary.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892796"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892796"
+            }
+          ],
+          "id": "a3-29f93e64bfc34264",
+          "feedRank": 22,
+          "compactHeadline": "Connor Brown’s late goal completes Devils’ 5-3 comeback"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-b95e66633dd7b415"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Vincent Trocheck scored the only shootout goal as Utah defeated Nashville 6-5 after the teams traded five goals apiece.",
+          "text": "Vincent Trocheck scored the only shootout goal as Utah defeated Nashville 6-5 after the teams traded five goals apiece.",
+          "entities": [
+            "Utah Mammoth",
+            "Nashville Predators",
+            "Vincent Trocheck"
+          ],
+          "occurredAt": "2026-11-27T21:16:33Z",
+          "timePrecision": "exact",
+          "ageHours": 0.23,
+          "freshnessBasis": "Vincent Trocheck scored the decisive shootout goal in Utah’s 6-5 win over Nashville.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nhl/recap?gameId=401892797"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "http://www.espn.com/nhl/recap?gameId=401892797"
+            }
+          ],
+          "id": "a3-c94259e8036b6dd0",
+          "feedRank": 23,
+          "compactHeadline": "Vincent Trocheck’s shootout goal lifts Utah past Nashville"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-504d8e498f86ca66"
+          ],
+          "type": "ROSTER",
+          "priority": 62,
+          "headline": "Philadelphia scratched top scorer Matvei Michkov from Friday’s lineup because of an internal team matter, the club announced.",
+          "text": "Philadelphia scratched top scorer Matvei Michkov from Friday’s lineup because of an internal team matter, the club announced.",
+          "entities": [
+            "Philadelphia Flyers",
+            "Matvei Michkov"
+          ],
+          "occurredAt": "2026-11-27T21:22:52Z",
+          "timePrecision": "exact",
+          "ageHours": 0.13,
+          "freshnessBasis": "Philadelphia scratched Matvei Michkov from Friday’s lineup because of an internal team matter.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/50613799/flyers-sit-matvei-michkov-due-internal-team-matter"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/50613799/flyers-sit-matvei-michkov-due-internal-team-matter"
+            }
+          ],
+          "id": "a3-2809b080317a6acd",
+          "feedRank": 29,
+          "compactHeadline": "Flyers scratch Matvei Michkov over internal team matter"
         }
       ]
     },
@@ -505,17 +702,16 @@
             "cand-b181fec061b5a3aa"
           ],
           "type": "INJURY",
-          "priority": 84,
-          "headline": "Tottenham will be without Sávio for the rest of 2026 and beyond after the forward sustained a hamstring injury against Ipswich.",
-          "text": "Tottenham will be without Sávio for the rest of 2026 and beyond after the forward sustained a hamstring injury against Ipswich.",
+          "priority": 82,
+          "headline": "Tottenham will be without Sávio for the rest of 2026 and beyond after he sustained a hamstring injury against Ipswich.",
+          "text": "Tottenham will be without Sávio for the rest of 2026 and beyond after he sustained a hamstring injury against Ipswich.",
           "entities": [
             "Tottenham Hotspur",
-            "Sávio",
-            "Ipswich Town"
+            "Sávio"
           ],
           "occurredAt": "2026-11-27T17:19:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.69,
+          "ageHours": 4.19,
           "freshnessBasis": "Tottenham confirmed Sávio will miss the rest of 2026 and beyond with a hamstring injury.",
           "status": "active",
           "sourceUrls": [
@@ -528,28 +724,61 @@
               "url": "https://www.espn.com/soccer/story/_/id/50612479/tottenham-savio-roberto-de-zerbi"
             }
           ],
-          "id": "a3-70cee52259b00a91",
-          "feedRank": 3,
-          "compactHeadline": "Tottenham lose Sávio for rest of 2026 and beyond"
+          "id": "a3-52298d493a680e17",
+          "feedRank": 5,
+          "compactHeadline": "Tottenham lose Sávio for rest of 2026 with hamstring injury"
         },
         {
           "rank": 2,
           "candidateIds": [
+            "cand-3923283970b46d34"
+          ],
+          "type": "INJURY",
+          "priority": 73,
+          "headline": "Liverpool forward Víctor Muñoz avoided a serious knee injury, but Cody Gakpo remains sidelined for the Merseyside derby.",
+          "text": "Liverpool forward Víctor Muñoz avoided a serious knee injury, but Cody Gakpo remains sidelined for the Merseyside derby.",
+          "entities": [
+            "Liverpool",
+            "Víctor Muñoz",
+            "Cody Gakpo",
+            "Everton"
+          ],
+          "occurredAt": "2026-11-27T15:13:48Z",
+          "timePrecision": "exact",
+          "ageHours": 6.28,
+          "freshnessBasis": "Liverpool reported Víctor Muñoz avoided a serious knee injury while Cody Gakpo remained out for the derby.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/50611728/iraola-liverpool-everton-injury-update-munoz-gakpo"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/50611728/iraola-liverpool-everton-injury-update-munoz-gakpo"
+            }
+          ],
+          "id": "a3-4d0d68ea3a69e0ab",
+          "feedRank": 11,
+          "compactHeadline": "Liverpool’s Víctor Muñoz avoids serious knee injury"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-7445e02d13cb5ccc"
           ],
           "type": "CONTRACT",
-          "priority": 75,
-          "headline": "Manchester United triggered an extension in Bruno Fernandes' contract through 2028, although the midfielder remains a doubt against Brentford.",
-          "text": "Manchester United triggered an extension in Bruno Fernandes' contract through 2028, although the midfielder remains a doubt against Brentford.",
+          "priority": 77,
+          "headline": "Manchester United triggered an extension to keep midfielder Bruno Fernandes under contract through 2028.",
+          "text": "Manchester United triggered an extension to keep midfielder Bruno Fernandes under contract through 2028.",
           "entities": [
             "Manchester United",
-            "Bruno Fernandes",
-            "Brentford"
+            "Bruno Fernandes"
           ],
           "occurredAt": "2026-11-27T14:38:39Z",
           "timePrecision": "exact",
-          "ageHours": 6.37,
-          "freshnessBasis": "Manchester United triggered Bruno Fernandes' contract extension through 2028 Friday.",
+          "ageHours": 6.87,
+          "freshnessBasis": "Manchester United triggered Bruno Fernandes’ contract extension through 2028 Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/50610575/bruno-fernandes-man-united-brentford"
@@ -561,9 +790,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/50610575/bruno-fernandes-man-united-brentford"
             }
           ],
-          "id": "a3-b435f01c08a5279d",
-          "feedRank": 15,
-          "compactHeadline": "Manchester United extend Bruno Fernandes contract through 2028"
+          "id": "a3-6e961bd721b27ae7",
+          "feedRank": 14,
+          "compactHeadline": "Manchester United extend Bruno Fernandes contract to 2028"
         }
       ]
     },
@@ -581,20 +810,19 @@
           "candidateIds": [
             "cand-55baed624680aa8e"
           ],
-          "type": "ADVANCEMENT",
+          "type": "PLAYOFF",
           "priority": 87,
-          "headline": "No. 9 Texas Tech beat TCU 48-27 to secure a place against No. 2 Utah in the Big 12 championship game; Thomas Castellanos threw for 374 yards.",
-          "text": "No. 9 Texas Tech beat TCU 48-27 to secure a place against No. 2 Utah in the Big 12 championship game; Thomas Castellanos threw for 374 yards.",
+          "headline": "No. 9 Texas Tech beat TCU 48-27 to secure a place against No. 2 Utah in the Big 12 championship game.",
+          "text": "No. 9 Texas Tech beat TCU 48-27 to secure a place against No. 2 Utah in the Big 12 championship game.",
           "entities": [
             "Texas Tech Red Raiders",
             "TCU Horned Frogs",
-            "Utah Utes",
-            "Thomas Castellanos"
+            "Utah Utes"
           ],
           "occurredAt": "2026-11-27T06:01:41Z",
           "timePrecision": "exact",
-          "ageHours": 14.99,
-          "freshnessBasis": "Texas Tech defeated TCU 48-27 Thursday to clinch its spot in the Big 12 title game.",
+          "ageHours": 15.48,
+          "freshnessBasis": "Texas Tech secured its Big 12 championship-game berth with a 48-27 win over TCU.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/ncf/recap?gameId=401856879"
@@ -606,19 +834,52 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401856879"
             }
           ],
-          "id": "a3-14778fb471b3bac0",
+          "id": "a3-0e620c1c0dcc3113",
           "feedRank": 1,
-          "compactHeadline": "Texas Tech clinches Big 12 title-game berth with 48-27 win"
+          "compactHeadline": "No. 9 Texas Tech clinches Big 12 title-game spot"
         },
         {
           "rank": 2,
           "candidateIds": [
+            "cand-2bcc2c1a58d43b39"
+          ],
+          "type": "PLAYOFF",
+          "priority": 80,
+          "headline": "Owen McCown threw for 353 yards and two touchdowns as UTSA beat Tulsa 28-22 to clinch home field for the American championship.",
+          "text": "Owen McCown threw for 353 yards and two touchdowns as UTSA beat Tulsa 28-22 to clinch home field for the American championship.",
+          "entities": [
+            "UTSA Roadrunners",
+            "Tulsa Golden Hurricane",
+            "Owen McCown"
+          ],
+          "occurredAt": "2026-11-27T21:09:32Z",
+          "timePrecision": "exact",
+          "ageHours": 0.35,
+          "freshnessBasis": "UTSA clinched home field for the American Conference championship game with a 28-22 win over Tulsa.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401862840"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401862840"
+            }
+          ],
+          "id": "a3-db318fe0438c7801",
+          "feedRank": 2,
+          "compactHeadline": "UTSA earns American title-game home field with Tulsa win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-e8ae4cacb8977480"
           ],
-          "type": "ADVANCEMENT",
-          "priority": 75,
-          "headline": "Buffalo beat Akron 17-9 to clinch a berth in the MAC championship game; Messiah Burch rushed for 130 yards and a touchdown.",
-          "text": "Buffalo beat Akron 17-9 to clinch a berth in the MAC championship game; Messiah Burch rushed for 130 yards and a touchdown.",
+          "type": "PLAYOFF",
+          "priority": 80,
+          "headline": "Buffalo beat Akron 17-9 as Messiah Burch rushed for 130 yards and a touchdown to secure a MAC championship berth.",
+          "text": "Buffalo beat Akron 17-9 as Messiah Burch rushed for 130 yards and a touchdown to secure a MAC championship berth.",
           "entities": [
             "Buffalo Bulls",
             "Akron Zips",
@@ -626,8 +887,8 @@
           ],
           "occurredAt": "2026-11-27T20:45:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "Buffalo defeated Akron 17-9 Friday to clinch a place in the MAC championship game.",
+          "ageHours": 0.75,
+          "freshnessBasis": "Buffalo clinched a MAC championship-game berth with a 17-9 win over Akron.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/ncf/recap?gameId=401866472"
@@ -639,19 +900,19 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401866472"
             }
           ],
-          "id": "a3-19a802742aba3486",
-          "feedRank": 6,
-          "compactHeadline": "Buffalo clinches MAC title-game berth with 17-9 win at Akron"
+          "id": "a3-6ac5fa1fc4fdb141",
+          "feedRank": 3,
+          "compactHeadline": "Buffalo clinches MAC title-game berth with Akron win"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-9871fa02b59bffb3"
           ],
           "type": "SIGNING",
           "priority": 74,
-          "headline": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in 2027, committed to Miami hours after leaving his Ohio State commitment.",
-          "text": "Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in 2027, committed to Miami hours after leaving his Ohio State commitment.",
+          "headline": "Five-star defensive end D.J. Jacobs, the No. 2 recruit in the 2027 class, committed to Miami after withdrawing his Ohio State commitment.",
+          "text": "Five-star defensive end D.J. Jacobs, the No. 2 recruit in the 2027 class, committed to Miami after withdrawing his Ohio State commitment.",
           "entities": [
             "Miami Hurricanes",
             "Ohio State Buckeyes",
@@ -659,8 +920,8 @@
           ],
           "occurredAt": "2026-11-27T17:00:19Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "D.J. Jacobs committed to Miami Thursday after pulling his Ohio State commitment.",
+          "ageHours": 4.5,
+          "freshnessBasis": "D.J. Jacobs committed to Miami Thursday after decommitting from Ohio State.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state"
@@ -672,41 +933,41 @@
               "url": "https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state"
             }
           ],
-          "id": "a3-ce79c47882f16aad",
+          "id": "a3-3ea7010a2e7b4c42",
           "feedRank": 10,
-          "compactHeadline": "No. 2 recruit D.J. Jacobs commits to Miami after Ohio State exit"
+          "compactHeadline": "No. 2 recruit D.J. Jacobs commits to Miami"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
-            "cand-47444b2a7e7b55d0"
+            "cand-d9f6b7ec86a13939"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 61,
-          "headline": "The Pac-12 has finalized its first flex-week football schedule, a decision designed to give Boise State a stronger CFP path.",
-          "text": "The Pac-12 has finalized its first flex-week football schedule, a decision designed to give Boise State a stronger CFP path.",
+          "type": "COACHING",
+          "priority": 73,
+          "headline": "Joe Moorhead resigned as Akron’s head coach after five seasons, saying he is pursuing other opportunities.",
+          "text": "Joe Moorhead resigned as Akron’s head coach after five seasons, saying he is pursuing other opportunities.",
           "entities": [
-            "Pac-12",
-            "Boise State Broncos"
+            "Akron Zips",
+            "Joe Moorhead"
           ],
-          "occurredAt": "2026-11-27T12:30:08Z",
+          "occurredAt": "2026-11-27T21:03:06Z",
           "timePrecision": "exact",
-          "ageHours": 8.51,
-          "freshnessBasis": "The Pac-12 finalized its first flex-week football schedule after working through a plan intended to boost Boise State.",
+          "ageHours": 0.46,
+          "freshnessBasis": "Joe Moorhead announced his resignation as Akron’s coach after five seasons Friday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/50592934/pac-12-flex-schedule-boise-state-cfp"
+            "https://www.espn.com/college-football/story/_/id/50614041/akron-coach-joe-moorhead-resigns-pursue-other-opportunities"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/50592934/pac-12-flex-schedule-boise-state-cfp"
+              "url": "https://www.espn.com/college-football/story/_/id/50614041/akron-coach-joe-moorhead-resigns-pursue-other-opportunities"
             }
           ],
-          "id": "a3-62249793c059480b",
-          "feedRank": 22,
-          "compactHeadline": "Pac-12 finalizes flex schedule aimed at boosting Boise State"
+          "id": "a3-7167320e7820490a",
+          "feedRank": 19,
+          "compactHeadline": "Akron coach Joe Moorhead resigns after five seasons"
         }
       ]
     }
@@ -722,20 +983,19 @@
             "cand-5b95711b88c3ad92"
           ],
           "type": "ADVANCEMENT",
-          "priority": 75,
-          "headline": "Spain defeated Austria 2-0 in the Davis Cup quarterfinal, with Rafael Jodar completing the sweep after rallying from a set down.",
-          "text": "Spain defeated Austria 2-0 in the Davis Cup quarterfinal, with Rafael Jodar completing the sweep after rallying from a set down.",
+          "priority": 74,
+          "headline": "Spain beat Austria 2-0 in the Davis Cup quarterfinals, advancing to a semifinal against Britain.",
+          "text": "Spain beat Austria 2-0 in the Davis Cup quarterfinals, advancing to a semifinal against Britain.",
           "entities": [
             "Spain",
             "Austria",
-            "Davis Cup",
-            "Rafael Jodar",
-            "Daniel Merida"
+            "Britain",
+            "Davis Cup"
           ],
           "occurredAt": "2026-11-26T21:46:17Z",
           "timePrecision": "exact",
-          "ageHours": 23.24,
-          "freshnessBasis": "Spain defeated Austria 2-0 on Thursday to advance to the Davis Cup semifinal against Britain.",
+          "ageHours": 23.74,
+          "freshnessBasis": "Spain defeated Austria 2-0 to reach the Davis Cup semifinal against Britain.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/50606263/spain-beats-austria-set-davis-cup-semifinal-vs-britain"
@@ -747,9 +1007,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/50606263/spain-beats-austria-set-davis-cup-semifinal-vs-britain"
             }
           ],
-          "id": "a3-special-19daf8e83d70188d",
-          "feedRank": 14,
-          "compactHeadline": "Spain sweeps Austria to reach Davis Cup semifinal"
+          "id": "a3-special-0d811c066ce42bb6",
+          "feedRank": 15,
+          "compactHeadline": "Spain advances to Davis Cup semifinal against Britain"
         }
       ]
     },
@@ -763,9 +1023,9 @@
             "cand-623830cb92dabe7c"
           ],
           "type": "PRACTICE",
-          "priority": 65,
-          "headline": "Mercedes' Kimi Antonelli led the second practice session at the Qatar Grand Prix, topping consecutive Friday sessions.",
-          "text": "Mercedes' Kimi Antonelli led the second practice session at the Qatar Grand Prix, topping consecutive Friday sessions.",
+          "priority": 64,
+          "headline": "Mercedes’ Kimi Antonelli led the second practice session at the Qatar Grand Prix after also topping the opening session.",
+          "text": "Mercedes’ Kimi Antonelli led the second practice session at the Qatar Grand Prix after also topping the opening session.",
           "entities": [
             "Qatar Grand Prix",
             "Kimi Antonelli",
@@ -773,8 +1033,8 @@
           ],
           "occurredAt": "2026-11-27T20:44:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
-          "freshnessBasis": "Kimi Antonelli topped the disrupted second practice session at the Qatar Grand Prix Friday.",
+          "ageHours": 0.76,
+          "freshnessBasis": "Kimi Antonelli topped second practice at the Qatar Grand Prix after leading first practice.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/50603962/kimi-antonelli-second-practice-qatar-grand-prix-formula-1"
@@ -786,43 +1046,9 @@
               "url": "https://www.espn.com/f1/story/_/id/50603962/kimi-antonelli-second-practice-qatar-grand-prix-formula-1"
             }
           ],
-          "id": "a3-special-fe6c53d0ef85314a",
-          "feedRank": 21,
-          "compactHeadline": "Kimi Antonelli tops disrupted second practice in Qatar"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-4b784b5fdbdf1a37"
-          ],
-          "type": "PRACTICE",
-          "priority": 62,
-          "headline": "Kimi Antonelli led teammate George Russell as Mercedes posted a one-two in first practice for the Qatar Grand Prix.",
-          "text": "Kimi Antonelli led teammate George Russell as Mercedes posted a one-two in first practice for the Qatar Grand Prix.",
-          "entities": [
-            "Qatar Grand Prix",
-            "Kimi Antonelli",
-            "George Russell",
-            "Mercedes"
-          ],
-          "occurredAt": "2026-11-27T17:49:52Z",
-          "timePrecision": "exact",
-          "ageHours": 3.18,
-          "freshnessBasis": "Kimi Antonelli led George Russell in a Mercedes one-two during first practice at the Qatar Grand Prix.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/f1/story/_/id/50603958/kimi-antonelli-george-russell-qatar-grand-prix-formula-1"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-f1",
-              "url": "https://www.espn.com/f1/story/_/id/50603958/kimi-antonelli-george-russell-qatar-grand-prix-formula-1"
-            }
-          ],
-          "id": "a3-special-74b2556bb7f291b6",
-          "feedRank": 23,
-          "compactHeadline": "Antonelli leads Russell in Qatar GP first practice"
+          "id": "a3-special-01009eeed93d89aa",
+          "feedRank": 30,
+          "compactHeadline": "Kimi Antonelli tops both Qatar GP practice sessions"
         }
       ]
     }
@@ -835,10 +1061,10 @@
   "compactHeadlineRole": "compact-editorial-metadata",
   "browserWireCompat": {
     "version": "A4.14",
-    "changedCount": 23,
+    "changedCount": 30,
     "policy": "mirror text -> headline at JSON serialization only"
   },
-  "headlineCount": 23,
+  "headlineCount": 30,
   "headlineTargetChars": 80,
   "headlineMaxChars": 96
 }
