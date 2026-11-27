@@ -1,29 +1,37 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-11-27T19:30:50Z
-Global headline budget: 20/30-35 total
+Updated: 2026-11-27T20:00:53Z
+Global headline budget: 25/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: af5db2798d78cac99c6aa462368db3418c2d5cb5e690ae9887070f80e549fddd
+Candidate hash: 21b180c2db6971855c754f29ab8c5a983d6d0c7cea75eedd2ed6569c5117d3a9
 
 ============================================================================
 MLB  [OFFSEASON]
 ============================================================================
 
- 1. [SIGNING] The Mets finalized an eight-year, $95 million contract with center fielder A.J. Ewing. (priority 79, age 0.88h)
-    Compact headline: Mets finalize eight-year, $95 million deal with A.J. Ewing
+ 1. [SIGNING] The Mets finalized an eight-year, $95 million contract with center fielder A.J. Ewing. (priority 83, age 1.38h)
+    Compact headline: Mets finalize eight-year, $95 million A.J. Ewing deal
     Occurred: 2026-11-27T18:37:54Z | Precision: exact | Status: active
-    Freshness basis: The Mets finalized A.J. Ewing's eight-year, $95 million contract Friday.
+    Freshness basis: New York finalized A.J. Ewing’s eight-year, $95 million contract Friday.
     Entities: New York Mets, A.J. Ewing
     Candidate IDs: cand-597acc5cc3f74a52
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50612781/aj-ewing-finalizes-8-year-95-million-deal-mets
 
- 2. [SIGNING] Pitcher Foster Griffin agreed to a three-year, $48 million contract to remain with Cleveland. (priority 68, age 23.43h)
+ 2. [TRADE] The Pirates are sending catcher Henry Davis, a former No. 1 overall pick, to the Diamondbacks for utility player Tim Tawa. (priority 76, age 0.16h)
+    Compact headline: Pirates trade former No. 1 pick Henry Davis to Arizona
+    Occurred: 2026-11-27T19:51:19Z | Precision: exact | Status: active
+    Freshness basis: Pittsburgh agreed to trade Henry Davis to Arizona for Tim Tawa Friday.
+    Entities: Pittsburgh Pirates, Arizona Diamondbacks, Henry Davis, Tim Tawa
+    Candidate IDs: cand-47ac265e61fb8824
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50613350/pirates-trade-c-henry-davis-diamondbacks-sources-say
+
+ 3. [SIGNING] Pitcher Foster Griffin agreed to a three-year, $48 million contract to remain with Cleveland. (priority 74, age 23.93h)
     Compact headline: Foster Griffin agrees to three-year, $48 million Guardians deal
     Occurred: 2026-11-26T20:04:59Z | Precision: exact | Status: active
-    Freshness basis: Foster Griffin agreed to a three-year, $48 million contract with the Guardians.
+    Freshness basis: Foster Griffin agreed to a three-year, $48 million deal with Cleveland Thursday.
     Entities: Cleveland Guardians, Foster Griffin
     Candidate IDs: cand-928529732d66ebbe
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians
@@ -32,86 +40,116 @@ MLB  [OFFSEASON]
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Tyler Bass hit a 57-yard field goal as time expired to lift Buffalo past Kansas City 13-10, giving the Bills their seventh straight win. (priority 82, age 12.09h)
-    Compact headline: Bass hits 57-yard field goal as Bills edge Chiefs 13-10
-    Occurred: 2026-11-27T07:25:32Z | Precision: exact | Status: active
-    Freshness basis: Buffalo beat Kansas City 13-10 on Tyler Bass's 57-yard field goal as time expired.
-    Entities: Buffalo Bills, Kansas City Chiefs, Tyler Bass
-    Candidate IDs: cand-a1921a3f24680a85, cand-016488eb0a474fc5
-    Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401873082
+ 1. [STREAK] Buffalo beat Kansas City on a last-second field goal for its seventh consecutive win, ending the Chiefs’ three-game winning streak. (priority 84, age 14.02h)
+    Compact headline: Bills win seventh straight on last-second field goal
+    Occurred: 2026-11-27T05:59:59Z | Precision: exact | Status: active
+    Freshness basis: Buffalo extended its winning streak to seven with a last-second field goal against Kansas City.
+    Entities: Buffalo Bills, Kansas City Chiefs
+    Candidate IDs: cand-016488eb0a474fc5
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50582828/2026-nfl-buffalo-bills-kansas-city-chiefs-thanksgiving
 
- 2. [RESULT] Joe Milton accounted for four touchdowns as Philadelphia rallied from 21 points down to beat Dallas 39-38 in the largest Thanksgiving comeback in NFL history. (priority 82, age 13.35h)
-    Compact headline: Eagles erase 21-point deficit in record Thanksgiving comeback
+ 2. [RESULT] Tyler Bass hit a 57-yard field goal as time expired to give Buffalo a 13-10 win over Kansas City and its seventh straight victory. (priority 82, age 12.59h)
+    Compact headline: Tyler Bass hits 57-yard buzzer-beater to lift Bills past Chiefs
+    Occurred: 2026-11-27T07:25:32Z | Precision: exact | Status: active
+    Freshness basis: Buffalo beat Kansas City 13-10 on Tyler Bass’s 57-yard field goal as time expired Thursday.
+    Entities: Buffalo Bills, Kansas City Chiefs, Tyler Bass
+    Candidate IDs: cand-a1921a3f24680a85
+    Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401873082
+
+ 3. [RESULT] Joe Milton accounted for four touchdowns as Philadelphia erased a 21-point deficit to beat Dallas 39-38 in the largest Thanksgiving comeback in NFL history. (priority 82, age 13.85h)
+    Compact headline: Joe Milton leads Eagles to historic 39-38 comeback in Dallas
     Occurred: 2026-11-27T06:10:08Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia beat Dallas 39-38 after erasing a 21-point deficit in the largest Thanksgiving comeback in NFL history.
+    Freshness basis: Philadelphia beat Dallas 39-38 Thursday after erasing a 21-point deficit in the largest Thanksgiving comeback in NFL history.
     Entities: Philadelphia Eagles, Dallas Cowboys, Joe Milton
     Candidate IDs: cand-5d5b2bce9da694e7, cand-9e00e5e3abcda63b
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50609081/eagles-qb-joe-milton-wows-teammates-breakout-game-dallas
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50607960/eagles-cowboys-thanksgiving-social-reaction
 
- 3. [DEPTH_CHART] Seattle will start Sam Darnold against 9-1 San Francisco, replacing Drew Lock after Lock filled in during Darnold's injury absence. (priority 76, age 7.47h)
+ 4. [DEPTH_CHART] Seattle is turning back to Sam Darnold at quarterback against San Francisco after Drew Lock filled in during Darnold’s injury absence. (priority 75, age 7.97h)
     Compact headline: Seahawks turn back to Sam Darnold against 9-1 49ers
-    Occurred: 2026-11-27T12:02:29Z | Precision: exact | Status: active
-    Freshness basis: Seattle named Sam Darnold its starter against San Francisco after his return from injury.
+    Occurred: 2026-11-27T12:02:29Z | Precision: exact | Status: next
+    Freshness basis: Seattle announced Sam Darnold is on track to start against San Francisco after his injury absence.
     Entities: Seattle Seahawks, Sam Darnold, Drew Lock, San Francisco 49ers
     Candidate IDs: cand-17bf6c412600fd75
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50609180/why-seahawks-starting-qb-sam-darnold-49ers-week-12
 
- 4. [INJURY] Chicago is holding off on placing tight end Colston Loveland on injured reserve while he seeks a second opinion on his left knee. (priority 66, age 1.23h)
+ 5. [INJURY] Chicago is delaying a decision on placing tight end Colston Loveland on injured reserve while he gets a second opinion on his left knee. (priority 65, age 1.74h)
     Compact headline: Bears hold off on IR move as Loveland seeks knee opinion
     Occurred: 2026-11-27T18:16:47Z | Precision: exact | Status: active
-    Freshness basis: The Bears delayed placing Colston Loveland on injured reserve while he obtains a second opinion on his left knee.
+    Freshness basis: Chicago held off on placing Colston Loveland on injured reserve while he sought a second opinion on his left knee Friday.
     Entities: Chicago Bears, Colston Loveland
     Candidate IDs: cand-f5477d7d9d0a7854
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50612564/sources-bears-expected-place-te-colston-loveland-knee-ir
 
- 5. [DEPTH_CHART] Arizona will start veteran Josh Johnson against Washington as rookie Carson Beck misses his second straight game with back spasms. (priority 64, age 0.44h)
-    Compact headline: Cardinals turn again to Josh Johnson with Carson Beck out
+ 6. [INJURY] Jacksonville wide receiver Parker Washington will miss Sunday’s game against Tennessee and could miss additional time with a shoulder injury. (priority 65, age 3.10h)
+    Compact headline: Jaguars WR Parker Washington week-to-week with shoulder injury
+    Occurred: 2026-11-27T16:54:36Z | Precision: exact | Status: watch
+    Freshness basis: Jacksonville ruled Parker Washington week-to-week with a shoulder injury Friday.
+    Entities: Jacksonville Jaguars, Parker Washington, Tennessee Titans
+    Candidate IDs: cand-f02b100b125f3201
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50612050/jaguars-wr-parker-washington-shoulder-week-week
+
+ 7. [DEPTH_CHART] Carson Beck will miss a second straight game with back spasms, leaving Josh Johnson to start again for Arizona against Washington. (priority 64, age 0.94h)
+    Compact headline: Carson Beck out again as Cardinals turn back to Josh Johnson
     Occurred: 2026-11-27T19:04:32Z | Precision: exact | Status: active
-    Freshness basis: Arizona named Josh Johnson its starter after Carson Beck was ruled out for a second consecutive game.
-    Entities: Arizona Cardinals, Josh Johnson, Carson Beck, Washington Commanders
+    Freshness basis: Arizona ruled Carson Beck out for a second straight game and named Josh Johnson the starter Friday.
+    Entities: Arizona Cardinals, Carson Beck, Josh Johnson
     Candidate IDs: cand-74e5016b8c3097e5
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50612845/cardinals-start-qb-johnson-again-beck-back-spasms-out
+
+ 8. [RESULT] Chicago stunned Detroit for its ninth win as Caleb Williams and Rome Odunze leaned on their chemistry to lead the Bears. (priority 65, age 16.05h)
+    Compact headline: Caleb Williams, Rome Odunze connection lifts Bears past Lions
+    Occurred: 2026-11-27T03:58:07Z | Precision: exact | Status: active
+    Freshness basis: Chicago defeated Detroit for its ninth win with Caleb Williams and Rome Odunze driving the offense.
+    Entities: Chicago Bears, Detroit Lions, Caleb Williams, Rome Odunze
+    Candidate IDs: cand-b05cb354d350accd
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50608495/qb-caleb-williams-wr-rome-odunze-chemistry-helps-bears-stun-lions
 
 ============================================================================
 NBA  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] The Minnesota Timberwolves downgraded star guard LaMelo Ball to out for Friday's NBA Cup game against Memphis because of a left ankle sprain. (priority 76, age 0.40h)
+ 1. [INJURY] Minnesota downgraded star guard LaMelo Ball to out for Friday’s NBA Cup game against Memphis because of a left ankle sprain. (priority 76, age 0.91h)
     Compact headline: Timberwolves rule LaMelo Ball out with ankle sprain
     Occurred: 2026-11-27T19:06:33Z | Precision: exact | Status: active
-    Freshness basis: Minnesota ruled LaMelo Ball out of Friday's NBA Cup game against Memphis because of a left ankle sprain.
+    Freshness basis: Minnesota ruled LaMelo Ball out Friday because of a left ankle sprain.
     Entities: Minnesota Timberwolves, LaMelo Ball, Memphis Grizzlies
     Candidate IDs: cand-cd1b11790c669ab6
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50613102/timberwolves-downgrade-lamelo-ball-ankle-sprain
 
- 2. [INJURY] Philadelphia ruled Jaylen Brown out against Indiana after he exited with a recurrence of left hamstring tightness; Joel Embiid remained questionable with an illness. (priority 74, age 20.76h)
-    Compact headline: 76ers rule Jaylen Brown out with recurring hamstring issue
+ 2. [INJURY] Philadelphia ruled Jaylen Brown out against Indiana with a hamstring issue, while Joel Embiid remained questionable because of an illness. (priority 73, age 21.26h)
+    Compact headline: Jaylen Brown ruled out; Joel Embiid remains questionable
     Occurred: 2026-11-26T22:45:16Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia ruled Jaylen Brown out for Friday's game after his hamstring issue recurred.
+    Freshness basis: Philadelphia ruled Jaylen Brown out Friday and listed Joel Embiid as questionable.
     Entities: Philadelphia 76ers, Jaylen Brown, Joel Embiid, Indiana Pacers
-    Candidate IDs: cand-0bc46a82aee132af, cand-243145d9e4e0c040
+    Candidate IDs: cand-0bc46a82aee132af
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50599296/76ers-jaylen-brown-exits-recurrence-hamstring-issue
+
+ 3. [RETURN] Austin Reaves is available for the Lakers’ NBA Cup matchup with San Antonio after missing five games with a heel bruise. (priority 74, age 0.01h)
+    Compact headline: Austin Reaves returns for Lakers after five-game absence
+    Occurred: 2026-11-27T20:00:34Z | Precision: exact | Status: active
+    Freshness basis: The Lakers cleared Austin Reaves to play Friday after he missed five games with a heel bruise.
+    Entities: Los Angeles Lakers, Austin Reaves, San Antonio Spurs
+    Candidate IDs: cand-d37a3ef118446965
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50613364/lakers-reaves-available-missing-5-games-heel-bruise
 
 ============================================================================
 NHL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Islanders forward Kyle Palmieri will miss six to eight months after suffering a torn ACL and meniscus in his right knee. (priority 84, age 1.87h)
-    Compact headline: Kyle Palmieri out six to eight months with knee injuries
+ 1. [INJURY] Islanders forward Kyle Palmieri will miss six to eight months after tearing the ACL and meniscus in his right knee. (priority 85, age 2.37h)
+    Compact headline: Kyle Palmieri out six to eight months with ACL, meniscus tears
     Occurred: 2026-11-27T17:38:42Z | Precision: exact | Status: active
-    Freshness basis: The Islanders announced Kyle Palmieri will miss six to eight months with a torn ACL and meniscus.
+    Freshness basis: New York announced Friday that Kyle Palmieri suffered torn ACL and meniscus in his right knee.
     Entities: New York Islanders, Kyle Palmieri
     Candidate IDs: cand-b12caf966edb3e29
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/50612273/islanders-kyle-palmieri-acl-meniscus-6-8-months
 
- 2. [SUSPENSION] New Jersey defenseman Brenden Dillon received a four-game suspension for an illegal hit to the head of Columbus defenseman Denton Mateychuk. (priority 76, age 22.98h)
-    Compact headline: Devils' Brenden Dillon suspended four games for illegal hit
+ 2. [SUSPENSION] New Jersey defenseman Brenden Dillon was suspended four games for an illegal hit to the head of Columbus defenseman Denton Mateychuk. (priority 75, age 23.48h)
+    Compact headline: Devils’ Brenden Dillon suspended four games for illegal hit
     Occurred: 2026-11-26T20:32:14Z | Precision: exact | Status: active
-    Freshness basis: The NHL suspended Brenden Dillon four games for an illegal hit to Denton Mateychuk's head.
-    Entities: New Jersey Devils, Brenden Dillon, Denton Mateychuk, Columbus Blue Jackets
+    Freshness basis: The NHL suspended Brenden Dillon for four games Friday for an illegal hit to Denton Mateychuk’s head.
+    Entities: New Jersey Devils, Brenden Dillon, Columbus Blue Jackets, Denton Mateychuk
     Candidate IDs: cand-e6f7c26c873a428b
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/50605811/devils-brenden-dillon-suspended-4-games-illegal-hit
 
@@ -119,27 +157,27 @@ NHL  [ACTIVE]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Tottenham will be without Sávio for the rest of 2026 and beyond after he sustained a hamstring injury against Ipswich. (priority 78, age 2.19h)
-    Compact headline: Tottenham's Sávio out for rest of 2026 and beyond
+ 1. [INJURY] Tottenham will be without Sávio for the rest of 2026 and beyond after he suffered a hamstring injury late against Ipswich. (priority 84, age 2.69h)
+    Compact headline: Tottenham lose Sávio for rest of 2026 and beyond
     Occurred: 2026-11-27T17:19:28Z | Precision: exact | Status: active
-    Freshness basis: Tottenham confirmed Sávio will miss the rest of 2026 and beyond because of a hamstring injury.
-    Entities: Tottenham Hotspur, Sávio, Ipswich
+    Freshness basis: Tottenham confirmed Sávio will miss the rest of 2026 and beyond with a hamstring injury.
+    Entities: Tottenham Hotspur, Sávio, Ipswich Town
     Candidate IDs: cand-b181fec061b5a3aa
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50612479/tottenham-savio-roberto-de-zerbi
 
- 2. [INJURY] Liverpool forward Víctor Muñoz avoided a serious knee injury, but Cody Gakpo remains sidelined for Sunday's Merseyside derby against Everton. (priority 76, age 4.28h)
-    Compact headline: Liverpool's Gakpo out for derby; Muñoz avoids serious knee injury
+ 2. [INJURY] Liverpool forward Víctor Muñoz avoided a serious knee injury, but Cody Gakpo remains sidelined for this weekend’s Merseyside derby. (priority 73, age 4.78h)
+    Compact headline: Liverpool’s Muñoz avoids serious injury; Gakpo remains out
     Occurred: 2026-11-27T15:13:48Z | Precision: exact | Status: active
-    Freshness basis: Liverpool reported that Víctor Muñoz avoided serious knee damage while Cody Gakpo remains out for the Everton derby.
-    Entities: Liverpool, Cody Gakpo, Víctor Muñoz, Everton
+    Freshness basis: Liverpool reported Víctor Muñoz avoided serious injury while Cody Gakpo remained out Friday.
+    Entities: Liverpool, Víctor Muñoz, Cody Gakpo, Everton
     Candidate IDs: cand-3923283970b46d34
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50611728/iraola-liverpool-everton-injury-update-munoz-gakpo
 
- 3. [CONTRACT] Manchester United triggered an extension in Bruno Fernandes' contract through 2028, though he remains doubtful against Brentford. (priority 74, age 4.87h)
+ 3. [CONTRACT] Manchester United triggered an extension in Bruno Fernandes’ contract that keeps the midfielder tied to the club through 2028. (priority 77, age 5.37h)
     Compact headline: Manchester United extend Bruno Fernandes contract through 2028
     Occurred: 2026-11-27T14:38:39Z | Precision: exact | Status: active
-    Freshness basis: Manchester United triggered Bruno Fernandes' contract extension through 2028.
-    Entities: Manchester United, Bruno Fernandes, Brentford
+    Freshness basis: Manchester United triggered Bruno Fernandes’ contract extension through 2028 Friday.
+    Entities: Manchester United, Bruno Fernandes
     Candidate IDs: cand-7445e02d13cb5ccc
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50610575/bruno-fernandes-man-united-brentford
 
@@ -153,26 +191,26 @@ MLS  [POSTSEASON]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [ADVANCEMENT] No. 9 Texas Tech beat TCU 48-27 to secure a Big 12 championship game matchup with No. 2 Utah; Thomas Castellanos threw for 374 yards and three touchdowns. (priority 87, age 13.49h)
-    Compact headline: Texas Tech clinches Big 12 title berth with 48-27 win
+ 1. [PLAYOFF] No. 9 Texas Tech beat TCU 48-27 to secure a place against No. 2 Utah in the Big 12 championship game; Thomas Castellanos threw for 374 yards. (priority 86, age 13.99h)
+    Compact headline: Texas Tech clinches Big 12 title-game berth with 48-27 win
     Occurred: 2026-11-27T06:01:41Z | Precision: exact | Status: active
-    Freshness basis: No. 9 Texas Tech beat TCU 48-27 and clinched a place in the Big 12 championship game against No. 2 Utah.
+    Freshness basis: No. 9 Texas Tech beat TCU 48-27 Thursday to clinch a spot in the Big 12 title game.
     Entities: Texas Tech Red Raiders, TCU Horned Frogs, Utah Utes, Thomas Castellanos
     Candidate IDs: cand-55baed624680aa8e
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856879
 
- 2. [SIGNING] Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving his Ohio State commitment. (priority 75, age 2.51h)
-    Compact headline: No. 2 overall recruit D.J. Jacobs commits to Miami
+ 2. [SIGNING] Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in 2027, committed to Miami hours after leaving his Ohio State commitment. (priority 78, age 3.01h)
+    Compact headline: No. 2 recruit D.J. Jacobs commits to Miami after Ohio State exit
     Occurred: 2026-11-27T17:00:19Z | Precision: exact | Status: active
-    Freshness basis: D.J. Jacobs committed to Miami hours after withdrawing his commitment from Ohio State.
+    Freshness basis: D.J. Jacobs committed to Miami Thursday after decommitting from Ohio State.
     Entities: Miami Hurricanes, Ohio State Buckeyes, D.J. Jacobs
     Candidate IDs: cand-9871fa02b59bffb3
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state
 
- 3. [ROSTER] Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State with Tennessee, Georgia and Miami among the contenders. (priority 75, age 22.16h)
-    Compact headline: No. 2 recruit D.J. Jacobs decommits from Ohio State
+ 3. [ROSTER] D.J. Jacobs, the No. 2 recruit in the 2027 class, decommitted from Ohio State, reopening his recruitment with Tennessee, Georgia and Miami among the contenders. (priority 75, age 22.66h)
+    Compact headline: No. 2 recruit D.J. Jacobs reopens commitment after Ohio State exit
     Occurred: 2026-11-26T21:21:16Z | Precision: exact | Status: active
-    Freshness basis: D.J. Jacobs decommitted from Ohio State, reopening the recruitment of the No. 2 overall player in the 2027 class.
+    Freshness basis: D.J. Jacobs decommitted from Ohio State on Friday, making the No. 2 recruit available again.
     Entities: D.J. Jacobs, Ohio State Buckeyes, Tennessee Volunteers, Georgia Bulldogs, Miami Hurricanes
     Candidate IDs: cand-f59e69745cd1dc0d
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50606035/sources-de-dj-jacobs-decommits-ohio-state
@@ -181,26 +219,26 @@ NCAAF  [ACTIVE]
 SPECIAL EVENTS
 ############################################################################
 
-Davis Cup (tennis)
+Davis Cup (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Spain beat Austria 2-0 in the Davis Cup quarterfinals, with Daniel Merida and Rafael Jodar winning the singles matches to set up a semifinal against Britain. (priority 74, age 21.74h)
-    Compact headline: Spain sweeps Austria to reach Davis Cup semifinals
-    Freshness basis: Spain beat Austria 2-0 to advance to the Davis Cup semifinals against Britain.
+ 1. [ADVANCEMENT] Spain defeated Austria 2-0 in the Davis Cup quarterfinal, with Rafael Jodar rallying from a set down to clinch the tie. (priority 75, age 22.24h)
+    Compact headline: Spain advances to Davis Cup semifinal after beating Austria
+    Freshness basis: Spain beat Austria 2-0 Thursday to advance to the Davis Cup semifinal against Britain.
     Candidate IDs: cand-5b95711b88c3ad92
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/50606263/spain-beats-austria-set-davis-cup-semifinal-vs-britain
 
 Qatar Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [PRACTICE] Mercedes' Kimi Antonelli led a disrupted second practice at the Qatar Grand Prix, topping the session for the second straight time. (priority 63, age 0.55h)
-    Compact headline: Kimi Antonelli tops second practice at Qatar Grand Prix
-    Freshness basis: Kimi Antonelli topped second practice at the Qatar Grand Prix for his second straight practice-session win.
+ 1. [PRACTICE] Mercedes driver Kimi Antonelli led the second practice session at the Qatar Grand Prix, topping both Friday sessions. (priority 68, age 1.05h)
+    Compact headline: Kimi Antonelli tops both Qatar GP practice sessions
+    Freshness basis: Kimi Antonelli led second practice Friday and topped both Qatar Grand Prix practice sessions.
     Candidate IDs: cand-623830cb92dabe7c
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/50603962/kimi-antonelli-second-practice-qatar-grand-prix-formula-1
 
- 2. [PRACTICE] Kimi Antonelli led teammate George Russell in a Mercedes one-two during first practice for the Qatar Grand Prix. (priority 62, age 1.68h)
-    Compact headline: Antonelli leads Mercedes one-two in Qatar GP practice
-    Freshness basis: Kimi Antonelli led George Russell in first practice at the Qatar Grand Prix.
-    Candidate IDs: cand-4b784b5fdbdf1a37
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/50603958/kimi-antonelli-george-russell-qatar-grand-prix-formula-1
+ 2. [EVENT_UPDATE] Qatar’s Formula 1 Grand Prix is scheduled to go ahead as planned this weekend while organizers address safety concerns surrounding the event. (priority 63, age 4.86h)
+    Compact headline: Qatar Grand Prix set to proceed amid safety concerns
+    Freshness basis: Qatar Grand Prix organizers said Friday that the race will proceed as planned this weekend.
+    Candidate IDs: cand-a5739157d4240567
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/50603960/qatar-grand-prix-organisers-formula-1
