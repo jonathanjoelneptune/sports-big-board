@@ -1,38 +1,38 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-11-27T03:31:24Z
+Updated: 2026-11-27T04:01:21Z
 Global headline budget: 30/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: cd041d871d59211e056276333d693d3cb1a14ee983e59a6e090b3792a7658473
+Candidate hash: 454b2a14a500895f222428b0b54a7175e40760aa28d947d716726dad8d8af7c0
 
 ============================================================================
 MLB  [OFFSEASON]
 ============================================================================
 
- 1. [SIGNING] Foster Griffin agreed to a three-year, $48 million contract to remain with Cleveland, according to multiple reports. (priority 76, age 7.44h)
-    Compact headline: Guardians retain Foster Griffin on three-year deal
-    Occurred: 2026-11-26T20:04:59Z | Precision: exact | Status: active
-    Freshness basis: Foster Griffin agreed to a three-year, $48 million contract with Cleveland Thursday.
-    Entities: Cleveland Guardians, Foster Griffin
-    Candidate IDs: cand-928529732d66ebbe
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians
-
- 2. [SIGNING] Colorado agreed to two-year, $32 million and three-year, $42 million deals with David Peterson and Patrick Sandoval, respectively. (priority 75, age 8.82h)
-    Compact headline: Rockies add Peterson and Sandoval on $74 million
+ 1. [SIGNING] Colorado agreed to two multi-year deals: two years and $32 million for David Peterson, and three years and $42 million for Patrick Sandoval. (priority 77, age 9.32h)
+    Compact headline: Rockies add David Peterson and Patrick Sandoval
     Occurred: 2026-11-26T18:42:23Z | Precision: exact | Status: active
-    Freshness basis: Colorado agreed to contracts with David Peterson and Patrick Sandoval Thursday.
-    Entities: Colorado Rockies, David Peterson, Patrick Sandoval
+    Freshness basis: The Rockies agreed to contracts with David Peterson and Patrick Sandoval Thursday.
+    Entities: David Peterson, Patrick Sandoval, Colorado Rockies
     Candidate IDs: cand-b11c4abe28472868
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50599272/sources-rockies-agree-2-year-32m-deal-lhp-peterson
 
- 3. [CONTRACT] The Twins agreed to a two-year, $18 million contract with former Diamondbacks reliever Kevin Ginkel. (priority 74, age 11.92h)
-    Compact headline: Twins give reliever Kevin Ginkel a two-year, $18M deal
+ 2. [SIGNING] Foster Griffin agreed to a three-year, $48 million contract to remain with Cleveland. (priority 76, age 7.94h)
+    Compact headline: Guardians keep Foster Griffin on a three-year deal
+    Occurred: 2026-11-26T20:04:59Z | Precision: exact | Status: active
+    Freshness basis: Foster Griffin agreed to a three-year, $48 million Guardians contract Thursday.
+    Entities: Foster Griffin, Cleveland Guardians
+    Candidate IDs: cand-928529732d66ebbe
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50600391/foster-griffin-agrees-3-year-48-million-deal-stay-guardians
+
+ 3. [CONTRACT] Minnesota agreed to a two-year, $18 million contract with former Diamondbacks reliever Kevin Ginkel. (priority 73, age 12.42h)
+    Compact headline: Twins agree to two-year deal with reliever Kevin Ginkel
     Occurred: 2026-11-26T15:36:04Z | Precision: exact | Status: active
-    Freshness basis: Minnesota agreed to a two-year, $18 million deal with Kevin Ginkel on Nov. 26.
-    Entities: Minnesota Twins, Kevin Ginkel
+    Freshness basis: The Twins agreed to a two-year, $18 million contract with Kevin Ginkel Thursday.
+    Entities: Kevin Ginkel, Minnesota Twins
     Candidate IDs: cand-7176e4f70df81a67
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/50602024/twins-kevin-ginkel-agree-2-year-18-million-deal
 
@@ -40,200 +40,194 @@ MLB  [OFFSEASON]
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Packers receiver Christian Watson suffered a concussion after Rams safety Kam Kinchens was ejected for the sideline hit. (priority 78, age 13.36h)
-    Compact headline: Christian Watson concussed after Rams safety ejected
-    Occurred: 2026-11-26T14:09:41Z | Precision: exact | Status: active
-    Freshness basis: Christian Watson was diagnosed with a concussion and Kam Kinchens was ejected Thursday.
-    Entities: Green Bay Packers, Los Angeles Rams, Christian Watson, Kam Kinchens
-    Candidate IDs: cand-ac08a63dcf61125a
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50600753/rams-kam-kinchens-ejected-hit-christian-watson
-
- 2. [INJURY] Philadelphia ruled All-Pro defensive back Cooper DeJean out of its win over Dallas after he suffered a concussion. (priority 76, age 1.90h)
+ 1. [INJURY] Philadelphia ruled All-Pro defensive back Cooper DeJean out of Thursday's win over Dallas after he suffered a concussion. (priority 76, age 2.39h)
     Compact headline: Eagles lose All-Pro Cooper DeJean to concussion
     Occurred: 2026-11-27T01:37:41Z | Precision: exact | Status: active
-    Freshness basis: Cooper DeJean was ruled out with a concussion during Philadelphia’s Thursday win over Dallas.
-    Entities: Philadelphia Eagles, Cooper DeJean
+    Freshness basis: The Eagles ruled Cooper DeJean out of Thursday's game with a concussion.
+    Entities: Cooper DeJean, Philadelphia Eagles
     Candidate IDs: cand-f6c80792106cac78
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50606739/eagles-cooper-dejean-concussion-leaves-game-cowboys
 
- 3. [RESULT] Philadelphia overcame a 21-point deficit to beat Dallas 39-38, the largest Thanksgiving Day comeback in NFL history. (priority 82, age 0.38h)
-    Compact headline: Eagles erase 21-point deficit to stun Cowboys 39-38
-    Occurred: 2026-11-27T03:08:42Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia erased a 21-point deficit in a 39-38 Thanksgiving win over Dallas Thursday.
-    Entities: Philadelphia Eagles, Dallas Cowboys
-    Candidate IDs: cand-e516ec0bf296456d, cand-9e00e5e3abcda63b
+ 2. [RESULT] Philadelphia erased a 21-point deficit and beat Dallas 39-38 on a 59-yard field goal, completing the largest Thanksgiving comeback in NFL history. (priority 82, age 0.35h)
+    Compact headline: Eagles erase 21-point deficit in historic Thanksgiving comeback
+    Occurred: 2026-11-27T03:40:32Z | Precision: exact | Status: active
+    Freshness basis: Philadelphia completed a 21-point comeback to beat Dallas 39-38 on a 59-yard field goal Thursday.
+    Entities: Philadelphia Eagles, Dallas Cowboys, Brian Schottenheimer
+    Candidate IDs: cand-e516ec0bf296456d, cand-ff8f6d618cc3756e, cand-9e00e5e3abcda63b
     Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401873080
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50605786/cowboys-eagles-thanksgiving-dak-prescott-saquon-barkley
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50607960/eagles-cowboys-thanksgiving-social-reaction
 
- 4. [RESULT] Philadelphia erased a 21-point deficit to stun Dallas, with Joe Milton leading the Eagles in the Thanksgiving comeback. (priority 82, age 0.80h)
-    Compact headline: Eagles erase 21-point deficit to stun Cowboys
-    Occurred: 2026-11-27T02:43:27Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia erased a 21-point deficit to beat Dallas on Nov. 26.
-    Entities: Philadelphia Eagles, Dallas Cowboys, Joe Milton
-    Candidate IDs: cand-ff8f6d618cc3756e
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50605786/cowboys-eagles-thanksgiving-dak-prescott-saquon-barkley
+ 3. [RESULT] Caleb Williams hit Rome Odunze for a touchdown with three seconds left, lifting Chicago to a 39-35 win over Detroit. (priority 82, age 4.01h)
+    Compact headline: Bears stun Lions on Williams-to-Odunze TD with 3 seconds left
+    Occurred: 2026-11-27T00:00:52Z | Precision: exact | Status: active
+    Freshness basis: Caleb Williams threw the winning touchdown to Rome Odunze with three seconds left in Chicago's 39-35 win Thursday.
+    Entities: Caleb Williams, Rome Odunze, Chicago Bears, Detroit Lions
+    Candidate IDs: cand-751ca21bf6e57482
+    Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401873081
 
- 5. [RESULT] Caleb Williams threw a late touchdown to Rome Odunze in Chicago's win over Detroit on Nov. 27. (priority 82, age 2.49h)
-    Compact headline: Caleb Williams, Rome Odunze deliver late Bears win
-    Occurred: 2026-11-27T01:01:44Z | Precision: exact | Status: active
-    Freshness basis: Caleb Williams threw a late touchdown to Rome Odunze in Chicago's win over Detroit on Nov. 27.
-    Entities: Chicago Bears, Detroit Lions, Caleb Williams, Rome Odunze
-    Candidate IDs: cand-e1b71613dd92c729
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50605750/jahmyr-gibbs-lions-caleb-williams-bears-thanksgiving-game
+ 4. [INJURY] Packers receiver Christian Watson suffered a concussion after a sideline hit that led to Rams safety Kam Kinchens being ejected. (priority 75, age 13.86h)
+    Compact headline: Christian Watson concussed after hit that ejects Rams safety
+    Occurred: 2026-11-26T14:09:41Z | Precision: exact | Status: active
+    Freshness basis: Christian Watson suffered a concussion and Kam Kinchens was ejected after the sideline hit Thursday.
+    Entities: Christian Watson, Kamren Kinchens, Green Bay Packers, Los Angeles Rams
+    Candidate IDs: cand-ac08a63dcf61125a
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50600753/rams-kam-kinchens-ejected-hit-christian-watson
 
- 6. [INJURY] Chicago tight end Colston Loveland was ruled out of Thursday’s win over Detroit after injuring his left knee in the first quarter. (priority 68, age 1.64h)
-    Compact headline: Bears rule Colston Loveland out with knee injury
-    Occurred: 2026-11-27T01:53:03Z | Precision: exact | Status: active
-    Freshness basis: Chicago ruled Colston Loveland out with a left-knee injury during Thursday’s game.
-    Entities: Chicago Bears, Colston Loveland
-    Candidate IDs: cand-c227b5dfae3fa6ed
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50605365/bears-colston-loveland-ruled-vs-lions-knee-injury
-
- 7. [CONTRACT] Aaron Rodgers cleared waivers Thursday and is now eligible to sign with any team as a free agent. (priority 75, age 4.01h)
-    Compact headline: Aaron Rodgers becomes a free agent after waivers
+ 5. [ROSTER] Aaron Rodgers cleared waivers Thursday and became a free agent eligible to sign with any team. (priority 74, age 4.51h)
+    Compact headline: Aaron Rodgers becomes free agent after clearing waivers
     Occurred: 2026-11-26T23:30:54Z | Precision: exact | Status: active
-    Freshness basis: Aaron Rodgers cleared waivers and became a free agent Thursday.
-    Entities: Aaron Rodgers, Pittsburgh Steelers
+    Freshness basis: Aaron Rodgers cleared waivers and became an unrestricted free agent Thursday.
+    Entities: Aaron Rodgers
     Candidate IDs: cand-1a05984f19a6b334
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50606625/aaron-rodgers-officially-free-agent-clearing-waivers
 
- 8. [RETURN] Pittsburgh activated wide receiver Michael Pittman Jr. from injured reserve and added Max Hurleman to the active roster. (priority 75, age 4.91h)
-    Compact headline: Steelers activate Michael Pittman Jr. from IR
+ 6. [RETURN] Pittsburgh activated Michael Pittman Jr. from injured reserve and signed Max Hurleman to its active roster from the practice squad. (priority 73, age 5.41h)
+    Compact headline: Steelers activate Michael Pittman Jr. from injured reserve
     Occurred: 2026-11-26T22:36:50Z | Precision: exact | Status: active
-    Freshness basis: Pittsburgh activated Michael Pittman Jr. from injured reserve Thursday.
-    Entities: Pittsburgh Steelers, Michael Pittman Jr., Max Hurleman
+    Freshness basis: The Steelers activated Michael Pittman Jr. from injured reserve Thursday.
+    Entities: Michael Pittman Jr., Max Hurleman, Pittsburgh Steelers
     Candidate IDs: cand-5899dd24f5148437
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50606063/steelers-activate-michael-pittman-jr-ir-sign-max-hurleman-active-roster-practice-squad
+
+ 7. [INJURY] Chicago ruled out tight end Colston Loveland after he injured his left knee in the first quarter of Thursday's win at Detroit. (priority 65, age 2.14h)
+    Compact headline: Bears rule out Colston Loveland with knee injury
+    Occurred: 2026-11-27T01:53:03Z | Precision: exact | Status: active
+    Freshness basis: The Bears ruled Colston Loveland out of Thursday's game with a left knee injury.
+    Entities: Colston Loveland, Chicago Bears
+    Candidate IDs: cand-c227b5dfae3fa6ed
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50605365/bears-colston-loveland-ruled-vs-lions-knee-injury
+
+ 8. [RESULT] Blake Corum leads Rams' dominant rushing attack in their 5th straight win, 26-13 over Packers. (priority 72, age 22.20h)
+    Compact headline: Rams win fifth straight behind dominant rushing attack
+    Occurred: 2026-11-26T05:49:32Z | Precision: exact | Status: active
+    Freshness basis: The Rams beat the Packers 26-13 for their fifth consecutive win Thursday.
+    Entities: Los Angeles Rams, Green Bay Packers, Blake Corum
+    Candidate IDs: cand-e4c166a750b496bb
+    Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401873079
 
 ============================================================================
 NBA  [ACTIVE]
 ============================================================================
 
- 1. [MILESTONE] Kevin Durant reached 33,000 career points during Houston’s 116-104 win over Phoenix Wednesday. (priority 88, age 23.18h)
-    Compact headline: Kevin Durant reaches 33,000 points in Rockets win
+ 1. [MILESTONE] Kevin Durant reached 33,000 career points during Houston's 116-104 win over Phoenix Wednesday. (priority 85, age 23.68h)
+    Compact headline: Kevin Durant becomes fifth player to reach 33,000 points
     Occurred: 2026-11-26T04:20:32Z | Precision: exact | Status: active
-    Freshness basis: Kevin Durant reached 33,000 career points during Houston’s 116-104 win over Phoenix Wednesday.
-    Entities: Houston Rockets, Phoenix Suns, Kevin Durant
+    Freshness basis: Kevin Durant reached 33,000 career points during Houston's 116-104 win over Phoenix Wednesday.
+    Entities: Kevin Durant, Houston Rockets, Phoenix Suns
     Candidate IDs: cand-0fb550718fff78c5
     Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909323
 
- 2. [RECORD] De’Anthony Melton scored 24 points and matched his career high with eight 3-pointers in Golden State’s 129-110 win over Sacramento. (priority 77, age 21.96h)
-    Compact headline: De’Anthony Melton matches career high with eight 3s
-    Occurred: 2026-11-26T05:33:42Z | Precision: exact | Status: active
-    Freshness basis: De’Anthony Melton matched his career high with eight 3-pointers in Golden State’s Wednesday win.
-    Entities: Golden State Warriors, Sacramento Kings, De’Anthony Melton
-    Candidate IDs: cand-1b8492125482988b
-    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909324
-
- 3. [INJURY] LaMelo Ball limped off after hurting his left ankle late in Minnesota’s 113-106 win over Oklahoma City; no status update was available. (priority 75, age 9.29h)
-    Compact headline: LaMelo Ball leaves Timberwolves win with ankle injury
-    Occurred: 2026-11-26T18:13:44Z | Precision: exact | Status: active
-    Freshness basis: LaMelo Ball left Minnesota’s Wednesday win after injuring his left ankle.
-    Entities: Minnesota Timberwolves, LaMelo Ball
-    Candidate IDs: cand-3fc54b9b9f427ade
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50601570/timberwolves-lamelo-ball-limps-hurting-left-ankle
-
- 4. [MILESTONE] LeBron James recorded a 25-point triple-double to lead Philadelphia past Miami in Wednesday’s NBA Cup game. (priority 76, age 13.06h)
-    Compact headline: LeBron posts triple-double in 76ers’ NBA Cup win
+ 2. [MILESTONE] LeBron James recorded a 25-point triple-double to lead Philadelphia past Miami in Wednesday's NBA Cup game. (priority 78, age 13.56h)
+    Compact headline: LeBron posts 25-point triple-double in 76ers win
     Occurred: 2026-11-26T14:27:36Z | Precision: exact | Status: active
-    Freshness basis: LeBron James recorded a 25-point triple-double in Philadelphia’s Wednesday NBA Cup victory.
-    Entities: Philadelphia 76ers, Miami Heat, LeBron James
+    Freshness basis: LeBron James recorded a 25-point triple-double in Philadelphia's NBA Cup win over Miami Wednesday.
+    Entities: LeBron James, Philadelphia 76ers, Miami Heat
     Candidate IDs: cand-0da59c1ac5c48bf4
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50601303/lebron-dusts-cape-save-76ers-triple-double
 
- 5. [STREAK] Minnesota beat Oklahoma City 113-106 to reach 3-0 in NBA Cup play, led by Jaden McDaniels’ 32 points and 10 rebounds. (priority 78, age 22.95h)
-    Compact headline: Timberwolves move to 3-0 in NBA Cup play
-    Occurred: 2026-11-26T04:34:32Z | Precision: exact | Status: active
-    Freshness basis: Minnesota improved to 3-0 in NBA Cup play with a 113-106 win over Oklahoma City Wednesday.
-    Entities: Minnesota Timberwolves, Oklahoma City Thunder, Jaden McDaniels
-    Candidate IDs: cand-d5d52a218323e9d5
-    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909320
+ 3. [INJURY] LaMelo Ball left Minnesota's win over Oklahoma City after hurting his left ankle, and the Timberwolves had no status update. (priority 76, age 9.79h)
+    Compact headline: LaMelo Ball exits Timberwolves win with left-ankle injury
+    Occurred: 2026-11-26T18:13:44Z | Precision: exact | Status: active
+    Freshness basis: LaMelo Ball left Minnesota's win over Oklahoma City after injuring his left ankle.
+    Entities: LaMelo Ball, Minnesota Timberwolves, Oklahoma City Thunder
+    Candidate IDs: cand-3fc54b9b9f427ade
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50601570/timberwolves-lamelo-ball-limps-hurting-left-ankle
 
- 6. [RESULT] Deni Avdija scored 33 points to lead Portland past San Antonio 116-111 in NBA Cup group play. (priority 72, age 21.58h)
-    Compact headline: Deni Avdija scores 33 as Blazers beat Spurs in NBA Cup
+ 4. [INJURY] Philadelphia's Jaylen Brown left with recurring left hamstring tightness and was later ruled out for Friday's game against Indiana. (priority 73, age 5.27h)
+    Compact headline: 76ers' Jaylen Brown sidelined by recurring hamstring issue
+    Occurred: 2026-11-26T22:45:16Z | Precision: exact | Status: active
+    Freshness basis: Jaylen Brown was ruled out for Philadelphia's Friday game after a recurrence of left hamstring tightness.
+    Entities: Jaylen Brown, Philadelphia 76ers
+    Candidate IDs: cand-243145d9e4e0c040, cand-0bc46a82aee132af
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50599296/76ers-jaylen-brown-exits-recurrence-hamstring-issue
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50606614/76ers-jaylen-brown-hamstring-friday-pacers
+
+ 5. [RESULT] Deni Avdija scored 33 points and Damian Lillard helped Portland defeat San Antonio 116-111 in NBA Cup play. (priority 72, age 22.08h)
+    Compact headline: Avdija scores 33 as Portland beats San Antonio
     Occurred: 2026-11-26T05:56:40Z | Precision: exact | Status: active
-    Freshness basis: Portland beat San Antonio 116-111 behind Deni Avdija's 33 points on Nov. 26.
-    Entities: Portland Trail Blazers, San Antonio Spurs, Deni Avdija, Damian Lillard
+    Freshness basis: Portland beat San Antonio 116-111 in NBA Cup play Wednesday.
+    Entities: Deni Avdija, Damian Lillard, Portland Trail Blazers, San Antonio Spurs
     Candidate IDs: cand-532aa59b9c4f2648
     Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909325
 
- 7. [STREAK] Brooklyn beat Milwaukee 104-97 in NBA Cup play, ending a five-game losing streak behind Julius Randle’s 28 points. (priority 72, age 23.76h)
-    Compact headline: Nets snap five-game skid with NBA Cup win
-    Occurred: 2026-11-26T03:45:32Z | Precision: exact | Status: active
-    Freshness basis: Brooklyn ended its five-game losing streak with a 104-97 win over Milwaukee Wednesday.
-    Entities: Brooklyn Nets, Milwaukee Bucks, Julius Randle
-    Candidate IDs: cand-67a9957f49fb8f61
-    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909322
+ 6. [RESULT] De'Anthony Melton matched his career high with eight 3-pointers in Golden State's 129-110 win Wednesday. (priority 72, age 22.46h)
+    Compact headline: Melton matches career high with eight 3-pointers
+    Occurred: 2026-11-26T05:33:42Z | Precision: exact | Status: active
+    Freshness basis: De'Anthony Melton matched his career high with eight 3-pointers in Golden State's 129-110 win Wednesday.
+    Entities: De'Anthony Melton, Golden State Warriors, Sacramento Kings
+    Candidate IDs: cand-1b8492125482988b
+    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909324
+
+ 7. [RESULT] Jaden McDaniels scored 32 points and grabbed 10 rebounds as Minnesota beat Oklahoma City 113-106 to reach 3-0 in NBA Cup play. (priority 72, age 23.45h)
+    Compact headline: Timberwolves reach 3-0 in NBA Cup behind McDaniels
+    Occurred: 2026-11-26T04:34:32Z | Precision: exact | Status: active
+    Freshness basis: Minnesota improved to 3-0 in NBA Cup play with a 113-106 win over Oklahoma City Wednesday.
+    Entities: Jaden McDaniels, Minnesota Timberwolves, Oklahoma City Thunder
+    Candidate IDs: cand-d5d52a218323e9d5
+    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909320
+
+ 8. [RETURN] Knicks assistant coach Chris Jent returned to New York's bench for the NBA Cup win over Cleveland after a monthlong absence. (priority 64, age 15.96h)
+    Compact headline: Knicks assistant Chris Jent returns after monthlong absence
+    Occurred: 2026-11-26T12:03:45Z | Precision: exact | Status: active
+    Freshness basis: Chris Jent returned to the Knicks' bench for their NBA Cup win over Cleveland after a monthlong absence.
+    Entities: Chris Jent, New York Knicks, Cleveland Cavaliers, NBA Cup
+    Candidate IDs: cand-ce7c5c44cc05bcfd
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50600508/knicks-assistant-coach-chris-jent-returns-team
 
 ============================================================================
 NHL  [ACTIVE]
 ============================================================================
 
- 1. [MILESTONE] Cutter Gauthier scored his 23rd goal in Anaheim’s 7-0 win over San Jose Wednesday. (priority 79, age 21.55h)
-    Compact headline: Cutter Gauthier ties NHL goal lead in Ducks’ rout
-    Occurred: 2026-11-26T05:58:33Z | Precision: exact | Status: active
-    Freshness basis: Cutter Gauthier scored his 23rd goal in Anaheim’s 7-0 win over San Jose Wednesday.
-    Entities: Anaheim Ducks, San Jose Sharks, Cutter Gauthier
-    Candidate IDs: cand-6ec1b483006c784f
-    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892793
-
- 2. [STREAK] Utah beat Minnesota 4-3 to hand the Wild their first regulation loss in 16 games, ending a franchise-best unbeaten run. (priority 84, age 23.03h)
-    Compact headline: Mammoth end Wild’s franchise-best 16-game run
+ 1. [STREAK] Utah beat Minnesota 4-3, handing the Wild their first regulation loss in 16 games and ending a franchise-best run. (priority 83, age 23.53h)
+    Compact headline: Mammoth end Wild's franchise-best 16-game run
     Occurred: 2026-11-26T04:29:33Z | Precision: exact | Status: active
-    Freshness basis: Utah ended Minnesota’s franchise-best 16-game run with a 4-3 win Wednesday.
+    Freshness basis: Utah beat Minnesota 4-3 Wednesday, ending the Wild's franchise-best run with their first regulation loss in 16 games.
     Entities: Utah Mammoth, Minnesota Wild
     Candidate IDs: cand-a826152a3d3bfc2b
     Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892791
 
- 3. [MILESTONE] Mavrik Bourque returns to Dallas and scores his first goal for Nashville in 3-1 win. (priority 75, age 23.80h)
-    Compact headline: Mavrik Bourque scores first Predators goal against Dallas
-    Occurred: 2026-11-26T03:43:33Z | Precision: exact | Status: active
-    Freshness basis: Mavrik Bourque scored his first Nashville goal in a 3-1 win over former team Dallas Wednesday.
-    Entities: Nashville Predators, Dallas Stars, Mavrik Bourque
-    Candidate IDs: cand-c75a8e8483e33f27
-    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892790
-
- 4. [SUSPENSION] New Jersey defenseman Brenden Dillon received a four-game suspension for an illegal hit to the head of Columbus defenseman Denton Mateychuk. (priority 78, age 6.99h)
-    Compact headline: Devils’ Brenden Dillon suspended four games
+ 2. [SUSPENSION] New Jersey defenseman Brenden Dillon received a four-game suspension for an illegal hit to the head of Columbus defenseman Denton Mateychuk. (priority 78, age 7.49h)
+    Compact headline: Brenden Dillon suspended four games for illegal hit
     Occurred: 2026-11-26T20:32:14Z | Precision: exact | Status: active
-    Freshness basis: The NHL suspended Brenden Dillon for four games Thursday over an illegal hit to Denton Mateychuk’s head.
-    Entities: New Jersey Devils, Brenden Dillon, Denton Mateychuk
+    Freshness basis: The NHL suspended Brenden Dillon four games for an illegal hit to Denton Mateychuk Thursday.
+    Entities: Brenden Dillon, Denton Mateychuk, New Jersey Devils, Columbus Blue Jackets
     Candidate IDs: cand-e6f7c26c873a428b
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/50605811/devils-brenden-dillon-suspended-4-games-illegal-hit
 
- 5. [STREAK] Chicago completed its road-trip sweep with a 3-1 win over Seattle Wednesday. (priority 73, age 21.63h)
-    Compact headline: Blackhawks sweep road trip behind Kantserov’s two goals
-    Occurred: 2026-11-26T05:53:32Z | Precision: exact | Status: active
-    Freshness basis: Chicago completed its road-trip sweep with a 3-1 win over Seattle Wednesday.
-    Entities: Chicago Blackhawks, Seattle Kraken, Roman Kantserov
-    Candidate IDs: cand-9c48ce42d49477aa
-    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892794
-
- 6. [RESULT] Colorado defeated Montreal 6-0 behind two goals from Devon Toews and 28 saves by Mackenzie Blackwood Wednesday. (priority 72, age 20.83h)
+ 3. [RESULT] Colorado beat Montreal 6-0 Wednesday as Devon Toews scored twice and Mackenzie Blackwood made 28 saves. (priority 72, age 21.33h)
     Compact headline: Avalanche roll past Canadiens behind Toews and Blackwood
     Occurred: 2026-11-26T06:41:32Z | Precision: exact | Status: active
-    Freshness basis: Colorado defeated Montreal 6-0 behind two goals from Devon Toews and 28 saves by Mackenzie Blackwood Wednesday.
-    Entities: Colorado Avalanche, Montreal Canadiens, Devon Toews, Mackenzie Blackwood
+    Freshness basis: Colorado beat Montreal 6-0 Wednesday as Devon Toews scored twice and Mackenzie Blackwood made 28 saves.
+    Entities: Devon Toews, Mackenzie Blackwood, Colorado Avalanche, Montreal Canadiens
     Candidate IDs: cand-a4daa0881575ba92
     Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892792
+
+ 4. [RESULT] Cutter Gauthier scored his 23rd goal in Anaheim's 7-0 win over San Jose Wednesday. (priority 72, age 22.05h)
+    Compact headline: Gauthier ties NHL goal lead as Ducks rout Sharks 7-0
+    Occurred: 2026-11-26T05:58:33Z | Precision: exact | Status: active
+    Freshness basis: Cutter Gauthier scored his 23rd goal in Anaheim's 7-0 win over San Jose Wednesday.
+    Entities: Cutter Gauthier, Laurent Brossoit, Anaheim Ducks, San Jose Sharks
+    Candidate IDs: cand-6ec1b483006c784f
+    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892793
+
+ 5. [RESULT] Chicago beat Seattle 3-1 Wednesday to sweep its road trip behind Roman Kantserov's two goals. (priority 72, age 22.13h)
+    Compact headline: Kantserov scores twice as Blackhawks sweep road trip
+    Occurred: 2026-11-26T05:53:32Z | Precision: exact | Status: active
+    Freshness basis: Chicago beat Seattle 3-1 Wednesday to sweep its road trip behind Roman Kantserov's two goals.
+    Entities: Roman Kantserov, Chicago Blackhawks, Seattle Kraken
+    Candidate IDs: cand-9c48ce42d49477aa
+    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892794
 
 ============================================================================
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [SIGNING] Leeds announced that striker Dominic Calvert-Lewin signed a new two-and-a-half-year contract with the club. (priority 74, age 8.62h)
-    Compact headline: Leeds extend Dominic Calvert-Lewin through two more seasons
-    Occurred: 2026-11-26T18:54:10Z | Precision: exact | Status: active
-    Freshness basis: Leeds announced Dominic Calvert-Lewin's two-and-a-half-year contract extension on Nov. 26.
-    Entities: Leeds United, Dominic Calvert-Lewin
-    Candidate IDs: cand-058b81eadc6a0c5b
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50605310/dominic-calvert-lewin-leeds-united-contract
-
- 2. [DISCIPLINE] An independent regulatory commission unanimously ruled referee Sam Barrott made an obvious error in sending off Manchester United’s Leny Yoro against Liverpool. (priority 74, age 14.04h)
-    Compact headline: Panel rules Leny Yoro red card an obvious error
+ 1. [DISCIPLINE] An independent regulatory commission unanimously ruled that Manchester United defender Leny Yoro's red card against Liverpool was an obvious error. (priority 73, age 14.54h)
+    Compact headline: Panel says Leny Yoro red card was an obvious error
     Occurred: 2026-11-26T13:29:12Z | Precision: exact | Status: active
-    Freshness basis: An independent commission ruled Thursday that Leny Yoro’s red card against Liverpool resulted from an obvious error.
-    Entities: Manchester United, Liverpool, Leny Yoro
+    Freshness basis: An independent commission ruled Thursday that Leny Yoro's red card against Liverpool was an obvious error.
+    Entities: Leny Yoro, Manchester United, Liverpool
     Candidate IDs: cand-d360e9a3a86aa37b
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50604016/leny-yoro-manchester-united-red-card
 
@@ -247,29 +241,29 @@ MLS  [POSTSEASON]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [SIGNING] Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving his Ohio State pledge. (priority 78, age 4.55h)
-    Compact headline: No. 2 recruit D.J. Jacobs commits to Miami
-    Occurred: 2026-11-26T22:58:35Z | Precision: exact | Status: active
-    Freshness basis: D.J. Jacobs committed to Miami Thursday after withdrawing his Ohio State commitment.
-    Entities: Miami Hurricanes, Ohio State Buckeyes, D.J. Jacobs
-    Candidate IDs: cand-9871fa02b59bffb3
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state
-
- 2. [ROSTER] Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State. (priority 78, age 6.17h)
-    Compact headline: No. 2 recruit D.J. Jacobs reopens 2027 recruitment
+ 1. [ROSTER] D.J. Jacobs, the No. 2 overall recruit in the 2027 class, decommitted from Ohio State, reopening his recruitment among top contenders. (priority 75, age 6.67h)
+    Compact headline: No. 2 recruit D.J. Jacobs decommits from Ohio State
     Occurred: 2026-11-26T21:21:16Z | Precision: exact | Status: active
-    Freshness basis: D.J. Jacobs decommitted from Ohio State on Nov. 26, reopening his recruitment.
+    Freshness basis: D.J. Jacobs decommitted from Ohio State, making the No. 2 overall recruit available again.
     Entities: D.J. Jacobs, Ohio State Buckeyes, Tennessee Volunteers, Georgia Bulldogs, Miami Hurricanes
     Candidate IDs: cand-f59e69745cd1dc0d
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50606035/sources-de-dj-jacobs-decommits-ohio-state
 
- 3. [COACHING] Michigan athletic director Warde Manuel agreed to remain in the job until the school finds a new athletic director. (priority 65, age 15.60h)
-    Compact headline: Michigan AD Warde Manuel to remain until successor found
-    Occurred: 2026-11-26T11:55:20Z | Precision: exact | Status: active
-    Freshness basis: Warde Manuel agreed Wednesday to stay as Michigan athletic director until a successor is found.
-    Entities: Michigan Wolverines, Warde Manuel
-    Candidate IDs: cand-053a98c563d53f12
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50592920/sources-manuel-stay-job-new-michigan-ad-hired
+ 2. [OTHER] Five-star defensive end D.J. Jacobs, the No. 2 overall recruit in the 2027 class, committed to Miami after leaving Ohio State's class. (priority 72, age 5.05h)
+    Compact headline: No. 2 recruit D.J. Jacobs flips commitment to Miami
+    Occurred: 2026-11-26T22:58:35Z | Precision: exact | Status: active
+    Freshness basis: D.J. Jacobs committed to Miami Thursday hours after withdrawing his commitment from Ohio State.
+    Entities: D.J. Jacobs, Miami Hurricanes, Ohio State Buckeyes
+    Candidate IDs: cand-9871fa02b59bffb3
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50606746/top-de-recruit-dj-jacobs-commits-miami-hours-decommitting-ohio-state
+
+ 3. [DISCIPLINE] USC's marching band will not perform at Saturday's game against UCLA after members vandalized part of the UCLA campus. (priority 65, age 13.36h)
+    Compact headline: USC band barred from UCLA rivalry game
+    Occurred: 2026-11-26T14:39:43Z | Precision: exact | Status: active
+    Freshness basis: USC announced its marching band would not perform at Saturday's UCLA game after campus vandalism.
+    Entities: USC Trojans, UCLA Bruins
+    Candidate IDs: cand-7112949855478a66
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50600615/usc-band-perform-members-vandalized-ucla-campus
 
 ############################################################################
 SPECIAL EVENTS
@@ -278,8 +272,17 @@ SPECIAL EVENTS
 Davis Cup (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Spain beat Austria 2-0 in the Davis Cup quarterfinals, with Rafael Jodar rallying past Jurij Rodionov to clinch the semifinal berth. (priority 75, age 5.75h)
+ 1. [ADVANCEMENT] Spain beat Austria 2-0 in the Davis Cup quarterfinals, advancing to a semifinal against Britain after Rafael Jodar completed a comeback win. (priority 77, age 6.25h)
     Compact headline: Spain advances to Davis Cup semifinal against Britain
-    Freshness basis: Spain defeated Austria 2-0 to reach the Davis Cup semifinal against Britain Thursday.
+    Freshness basis: Spain beat Austria 2-0 Thursday to advance to the Davis Cup semifinal against Britain.
     Candidate IDs: cand-5b95711b88c3ad92
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/50606263/spain-beats-austria-set-davis-cup-semifinal-vs-britain
+
+F1 2027 driver lineups (Formula 1)
+----------------------------------------------------------------------------
+
+ 1. [CONTRACT] Haas confirmed Ollie Bearman will remain with the team as an F1 driver in 2027, ending speculation over his seat. (priority 73, age 18.10h)
+    Compact headline: Haas confirms Ollie Bearman will stay for F1 2027
+    Freshness basis: Haas confirmed Ollie Bearman will continue as a driver for the team in 2027.
+    Candidate IDs: cand-2d6dfab53738be4b
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/50603078/ollie-bearman-haas-f1-2027
