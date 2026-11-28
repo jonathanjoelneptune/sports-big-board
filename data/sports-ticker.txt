@@ -1,18 +1,18 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-11-28T05:00:40Z
+Updated: 2026-11-28T05:30:34Z
 Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: 68565224af238aaad95afb4f55d4f84a7d5e87433b0bdb5a78599fde65e6c2e0
+Candidate hash: 6e8bcd98a4b6412cd0e079f0515a964b0abb926f40efb0deaf9c5ce3562b432c
 
 ============================================================================
 MLB  [OFFSEASON]
 ============================================================================
 
- 1. [TRADE] Pittsburgh traded catcher Henry Davis, the former No. 1 overall pick, to Arizona for utility player Tim Tawa. (priority 74, age 4.06h)
+ 1. [TRADE] The Pirates traded catcher Henry Davis, a former No. 1 overall pick, to the Diamondbacks for utility player Tim Tawa. (priority 71, age 4.56h)
     Compact headline: Pirates trade former No. 1 pick Henry Davis to Arizona
     Occurred: 2026-11-28T00:56:59Z | Precision: exact | Status: active
     Freshness basis: Pittsburgh traded Henry Davis to Arizona for Tim Tawa Friday.
@@ -24,42 +24,34 @@ MLB  [OFFSEASON]
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Justin Herbert will miss Sunday while remaining in concussion protocol, with DJ Uiagalelei set to start for the Chargers against New England. (priority 81, age 4.79h)
-    Compact headline: Justin Herbert ruled out; DJ Uiagalelei to start for Chargers
+ 1. [INJURY] Justin Herbert was ruled out while remaining in concussion protocol, and DJ Uiagalelei will start for the Chargers against New England. (priority 78, age 5.29h)
+    Compact headline: Justin Herbert out, DJ Uiagalelei to start for Chargers
     Occurred: 2026-11-28T00:13:16Z | Precision: exact | Status: active
-    Freshness basis: The Chargers ruled Justin Herbert out Sunday and named DJ Uiagalelei the starter Friday.
-    Entities: Los Angeles Chargers, Justin Herbert, DJ Uiagalelei
+    Freshness basis: The Chargers ruled Justin Herbert out Friday and named DJ Uiagalelei their starter.
+    Entities: Los Angeles Chargers, Justin Herbert, DJ Uiagalelei, New England Patriots
     Candidate IDs: cand-048e27e7ea1fd154
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50615818/qb-dj-uiagalelei-start-chargers-justin-herbert-concussion-protocol
 
- 2. [INJURY] San Francisco ruled Brock Purdy out with an ankle injury for Sunday’s game against Seattle, clearing the way for Mac Jones to start. (priority 80, age 3.33h)
-    Compact headline: Brock Purdy out as 49ers turn to Mac Jones
+ 2. [INJURY] Brock Purdy will miss San Francisco's game against Seattle with an ankle injury, sending Mac Jones into the starting lineup. (priority 77, age 3.83h)
+    Compact headline: Brock Purdy ruled out; Mac Jones starts for 49ers
     Occurred: 2026-11-28T01:40:50Z | Precision: exact | Status: active
-    Freshness basis: The 49ers ruled Brock Purdy out and named Mac Jones the starter Friday.
-    Entities: San Francisco 49ers, Brock Purdy, Mac Jones
+    Freshness basis: San Francisco ruled Brock Purdy out Friday because of an ankle injury.
+    Entities: San Francisco 49ers, Brock Purdy, Mac Jones, Seattle Seahawks
     Candidate IDs: cand-6e6dfaca9ac9adb0
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50615653/49ers-rule-qb-purdy-ankle-start-jones-vs-seahawks
 
- 3. [INJURY] Las Vegas listed tight end Brock Bowers as questionable for Sunday night against Cleveland because of an ankle injury. (priority 73, age 5.56h)
-    Compact headline: Brock Bowers questionable for Raiders-Browns game
-    Occurred: 2026-11-27T23:27:19Z | Precision: exact | Status: active
-    Freshness basis: The Raiders listed Brock Bowers as questionable Friday because of an ankle injury.
+ 3. [INJURY] Las Vegas tight end Brock Bowers is questionable against Cleveland after missing Friday's practice with an ankle injury. (priority 73, age 6.05h)
+    Compact headline: Brock Bowers questionable for Raiders-Browns with ankle injury
+    Occurred: 2026-11-27T23:27:19Z | Precision: exact | Status: next
+    Freshness basis: Brock Bowers missed Las Vegas' Friday practice and is questionable with an ankle injury.
     Entities: Las Vegas Raiders, Brock Bowers, Cleveland Browns
     Candidate IDs: cand-4e8d51054331dea8
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50615482/raiders-brock-bowers-questionable-snf-vs-browns-ankle-injury
 
- 4. [INJURY] The Bears are awaiting a second opinion on tight end Colston Loveland's left knee before deciding whether to place him on injured reserve. (priority 72, age 6.14h)
-    Compact headline: Bears hold off on IR move for Colston Loveland
-    Occurred: 2026-11-27T22:52:30Z | Precision: exact | Status: active
-    Freshness basis: Chicago is seeking a second opinion on Colston Loveland's injured left knee.
-    Entities: Chicago Bears, Colston Loveland
-    Candidate IDs: cand-f5477d7d9d0a7854
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50612564/sources-bears-expected-place-te-colston-loveland-knee-ir
-
- 5. [RETURN] Sam Darnold will return from a two-game absence caused by a quad injury to start Seattle’s pivotal NFC West matchup with San Francisco. (priority 78, age 3.39h)
-    Compact headline: Sam Darnold returns to start pivotal Seahawks-49ers game
-    Occurred: 2026-11-28T01:37:28Z | Precision: exact | Status: active
-    Freshness basis: Seattle announced Sam Darnold will return from a two-game absence to start Sunday.
+ 4. [RETURN] Sam Darnold will return from a two-game absence with a quad injury to start for Seattle against San Francisco in a pivotal NFC West matchup. (priority 78, age 0.37h)
+    Compact headline: Sam Darnold returns to start Seahawks' pivotal 49ers clash
+    Occurred: 2026-11-28T05:08:22Z | Precision: exact | Status: active
+    Freshness basis: Seattle announced Sam Darnold will return to start after missing two games with a quad injury.
     Entities: Seattle Seahawks, Sam Darnold, San Francisco 49ers
     Candidate IDs: cand-035545859b9c8b30
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/50616624/seahawks-sam-darnold-return-vs-49ers-2-game-absence
@@ -68,107 +60,83 @@ NFL  [ACTIVE]
 NBA  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Golden State ruled Steph Curry out for the next three games as he continues to recover from a torn oblique suffered earlier this month. (priority 81, age 3.41h)
-    Compact headline: Warriors rule Steph Curry out for three more games
-    Occurred: 2026-11-28T01:35:56Z | Precision: exact | Status: active
-    Freshness basis: Golden State ruled Steph Curry out for the next three games Friday.
-    Entities: Golden State Warriors, Stephen Curry
-    Candidate IDs: cand-f4538c4883af7004
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50616740/golden-state-warriors-rule-steph-curry-next-3-games
-
- 2. [ADVANCEMENT] Philadelphia beat Indiana 111-87 behind LeBron James’ 21 points, seven rebounds and six assists to win East Group B and advance. (priority 78, age 1.40h)
-    Compact headline: LeBron, 76ers advance to NBA Cup knockout round
+ 1. [ADVANCEMENT] Philadelphia beat Indiana 111-87 behind LeBron James' 21 points, seven rebounds and six assists to win East Group B and advance. (priority 85, age 1.90h)
+    Compact headline: LeBron leads 76ers into NBA Cup knockout round
     Occurred: 2026-11-28T03:36:44Z | Precision: exact | Status: active
     Freshness basis: Philadelphia beat Indiana 111-87 Friday to win East Group B and advance.
     Entities: Philadelphia 76ers, Indiana Pacers, LeBron James
     Candidate IDs: cand-4768cd9ddc88f67c
     Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909328
 
- 3. [ADVANCEMENT] Memphis beat Minnesota 114-109 to win NBA Cup West Group B, led by Cedric Coward’s 22 points and Javon Small’s 19 off the bench. (priority 76, age 0.74h)
-    Compact headline: Grizzlies win NBA Cup West Group B
+ 2. [STANDINGS] Memphis defeated Minnesota 114-109 to win NBA Cup West Group B, led by Cedric Coward's 22 points and Javon Small's 19 off the bench. (priority 81, age 1.23h)
+    Compact headline: Grizzlies win NBA Cup West Group B with 114-109 victory
     Occurred: 2026-11-28T04:16:33Z | Precision: exact | Status: active
     Freshness basis: Memphis beat Minnesota 114-109 Friday to win NBA Cup West Group B.
     Entities: Memphis Grizzlies, Minnesota Timberwolves, Cedric Coward, Javon Small
     Candidate IDs: cand-3ee4e4b7a36797c9
     Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909331
 
- 4. [INJURY] An MRI showed no aggravation or new injury in 76ers forward Jaylen Brown's left hamstring. (priority 74, age 4.48h)
-    Compact headline: MRI shows no new injury for 76ers star Jaylen Brown
-    Occurred: 2026-11-28T00:31:40Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia announced Friday that Jaylen Brown's MRI showed no new hamstring injury.
-    Entities: Philadelphia 76ers, Jaylen Brown
-    Candidate IDs: cand-b4216774cf008b75
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50616033/mri-76ers-star-brown-hamstring-showed-no-new-injury
+ 3. [INJURY] The Warriors ruled Steph Curry out for their next three games as he continues to recover from a torn oblique suffered earlier this month. (priority 79, age 3.91h)
+    Compact headline: Steph Curry ruled out for three more games with oblique injury
+    Occurred: 2026-11-28T01:35:56Z | Precision: exact | Status: active
+    Freshness basis: Golden State ruled Stephen Curry out for three additional games Friday.
+    Entities: Golden State Warriors, Stephen Curry
+    Candidate IDs: cand-f4538c4883af7004
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50616740/golden-state-warriors-rule-steph-curry-next-3-games
 
- 5. [STREAK] Miami beat New York 108-105 as Giannis Antetokounmpo posted 22 points and a career-high 23 rebounds, ending the Knicks’ six-game run. (priority 80, age 1.39h)
-    Compact headline: Giannis, Heat end Knicks’ six-game winning streak
-    Occurred: 2026-11-28T03:37:32Z | Precision: exact | Status: active
-    Freshness basis: Miami beat New York 108-105 Friday and ended the Knicks’ six-game winning streak.
-    Entities: Miami Heat, New York Knicks, Giannis Antetokounmpo
-    Candidate IDs: cand-e592e2b8a7f422c0
-    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909326
-
- 6. [STREAK] Cooper Flagg leads Mavericks' rally to beat Suns, finish 4-0 in NBA Cup group play. (priority 79, age 0.25h)
-    Compact headline: Cooper Flagg leads Mavericks to perfect NBA Cup group stage
+ 4. [ADVANCEMENT] Cooper Flagg leads Mavericks' rally to beat Suns, finish 4-0 in NBA Cup group play. (priority 77, age 0.75h)
+    Compact headline: Cooper Flagg leads Dallas to perfect NBA Cup group stage
     Occurred: 2026-11-28T04:45:32Z | Precision: exact | Status: active
     Freshness basis: Dallas beat Phoenix 113-109 Friday to finish 4-0 in NBA Cup group play.
     Entities: Dallas Mavericks, Phoenix Suns, Cooper Flagg
     Candidate IDs: cand-b51eb0895ce6cd11
     Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909332
 
- 7. [INJURY] The Timberwolves downgraded star guard LaMelo Ball to out for Friday's NBA Cup game against Memphis because of a left ankle sprain. (priority 73, age 9.90h)
-    Compact headline: LaMelo Ball ruled out with left ankle sprain
-    Occurred: 2026-11-27T19:06:33Z | Precision: exact | Status: active
-    Freshness basis: Minnesota ruled LaMelo Ball out Friday because of a left ankle sprain.
-    Entities: Minnesota Timberwolves, LaMelo Ball, Memphis Grizzlies
-    Candidate IDs: cand-cd1b11790c669ab6
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/50613102/timberwolves-downgrade-lamelo-ball-ankle-sprain
+ 5. [ADVANCEMENT] Portland beat Golden State 116-94 to reach the NBA Cup quarterfinals, led by Deni Avdija's 26 points and eight rebounds. (priority 76, age 0.05h)
+    Compact headline: Portland advances after 116-94 NBA Cup win over Golden State
+    Occurred: 2026-11-28T05:27:32Z | Precision: exact | Status: active
+    Freshness basis: Portland defeated Golden State 116-94 Friday and advanced to the NBA Cup quarterfinals.
+    Entities: Portland Trail Blazers, Golden State Warriors, Deni Avdija
+    Candidate IDs: cand-ef731abe3e215d44
+    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909336
+
+ 6. [STREAK] Miami beat New York 108-105 as Giannis Antetokounmpo posted 22 points and a career-high 23 rebounds, ending the Knicks' six-game winning streak and NBA Cup title reign. (priority 78, age 1.88h)
+    Compact headline: Giannis, Heat end Knicks' six-game streak in NBA Cup upset
+    Occurred: 2026-11-28T03:37:32Z | Precision: exact | Status: active
+    Freshness basis: Miami defeated New York 108-105 Friday and ended the Knicks' six-game winning streak.
+    Entities: Miami Heat, New York Knicks, Giannis Antetokounmpo, Bam Adebayo
+    Candidate IDs: cand-e592e2b8a7f422c0
+    Source [ESPN/espn-nba]: http://www.espn.com/nba/recap?gameId=401909326
 
 ============================================================================
 NHL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] New York Islanders forward Kyle Palmieri will miss six to eight months after suffering tears to his right ACL and meniscus. (priority 86, age 11.37h)
-    Compact headline: Kyle Palmieri out six to eight months with torn ACL
+ 1. [INJURY] Islanders forward Kyle Palmieri will miss six to eight months after suffering tears to the ACL and meniscus in his right knee. (priority 84, age 11.86h)
+    Compact headline: Kyle Palmieri out six to eight months with torn ACL, meniscus
     Occurred: 2026-11-27T17:38:42Z | Precision: exact | Status: active
-    Freshness basis: The Islanders announced Kyle Palmieri will miss six to eight months with torn ACL and meniscus injuries Friday.
+    Freshness basis: The Islanders announced Friday that Kyle Palmieri suffered a torn ACL and meniscus.
     Entities: New York Islanders, Kyle Palmieri
     Candidate IDs: cand-b12caf966edb3e29
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/50612273/islanders-kyle-palmieri-acl-meniscus-6-8-months
 
- 2. [MILESTONE] Sam Bennett scored his 200th career goal with 24 seconds left in Florida’s 3-2 win Friday. (priority 81, age 5.50h)
+ 2. [MILESTONE] Sam Bennett scored his 200th career goal with 24 seconds left Friday. (priority 79, age 6.00h)
     Compact headline: Sam Bennett scores 200th career goal with 24 seconds left
     Occurred: 2026-11-27T23:30:32Z | Precision: exact | Status: active
-    Freshness basis: Sam Bennett scored his 200th career goal with 24 seconds left in Florida’s 3-2 win Friday.
+    Freshness basis: Sam Bennett scored his 200th career goal with 24 seconds left Friday.
     Entities: Florida Panthers, Washington Capitals, Sam Bennett
     Candidate IDs: cand-32963e82956075ca
     Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892801
 
- 3. [INJURY] Chicago placed forward Patrick Kane on injured reserve with a lower-body injury and recalled Landon Slaggert from Rockford. (priority 75, age 4.25h)
-    Compact headline: Blackhawks place Patrick Kane on injured reserve
-    Occurred: 2026-11-28T00:45:35Z | Precision: exact | Status: active
-    Freshness basis: Chicago placed Patrick Kane on injured reserve before Friday's game.
-    Entities: Chicago Blackhawks, Patrick Kane, Landon Slaggert
-    Candidate IDs: cand-0e0643dbcc1f1e4f
-    Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/50615550/chicago-blackhawks-place-patrick-kane-injured-reserve
-
- 4. [MILESTONE] John Gibson stopped 18 shots for his 29th career shutout as Detroit beat Columbus 2-0, sending the Blue Jackets to a fifth straight home loss. (priority 75, age 6.22h)
-    Compact headline: John Gibson earns 29th career shutout in Red Wings win
+ 3. [MILESTONE] Detroit beat Columbus 2-0 as John Gibson made 18 saves for his 29th career shutout, while the Blue Jackets lost their fifth straight at home. (priority 79, age 6.72h)
+    Compact headline: John Gibson records 29th career shutout in Red Wings win
     Occurred: 2026-11-27T22:47:34Z | Precision: exact | Status: active
-    Freshness basis: John Gibson recorded his 29th career shutout in Detroit’s 2-0 win Friday.
+    Freshness basis: John Gibson made 18 saves for his 29th career shutout in Detroit's 2-0 win Friday.
     Entities: Detroit Red Wings, Columbus Blue Jackets, John Gibson
     Candidate IDs: cand-5bdda0bd82f1deba
     Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892802
 
- 5. [MILESTONE] San Jose beat Vegas 4-1 for the franchise's first regulation victory over the Golden Knights at SAP Center; Yaroslav Askarov made 27 saves. (priority 74, age 4.95h)
-    Compact headline: Sharks earn first regulation home win over Golden Knights
-    Occurred: 2026-11-28T00:03:34Z | Precision: exact | Status: active
-    Freshness basis: San Jose beat Vegas 4-1 Friday for its first regulation home win over the Golden Knights.
-    Entities: San Jose Sharks, Vegas Golden Knights, Yaroslav Askarov
-    Candidate IDs: cand-d7692f583ee10669
-    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892805
-
- 6. [MILESTONE] Morgan Rielly scored his 100th career goal during Toronto's 3-1 win over Boston Friday. (priority 74, age 8.03h)
+ 4. [MILESTONE] Morgan Rielly scored his 100th career goal during Toronto's 3-1 win over Boston Friday. (priority 76, age 8.53h)
     Compact headline: Morgan Rielly scores 100th career goal in Leafs win
     Occurred: 2026-11-27T20:58:36Z | Precision: exact | Status: active
     Freshness basis: Morgan Rielly scored his 100th career goal during Toronto's 3-1 win over Boston Friday.
@@ -176,10 +144,26 @@ NHL  [ACTIVE]
     Candidate IDs: cand-88e7742c5d1cbcbf
     Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892795
 
- 7. [STREAK] Andrew Mangiapane scored twice and Spencer Knight made 30 saves as Chicago beat the Rangers 2-1 for its fourth straight win. (priority 78, age 3.60h)
-    Compact headline: Blackhawks extend winning streak to four with 2-1 victory
+ 5. [INJURY] Chicago placed forward Patrick Kane on injured reserve with a lower-body injury and recalled Landon Slaggert from Rockford. (priority 74, age 4.75h)
+    Compact headline: Blackhawks place Patrick Kane on injured reserve
+    Occurred: 2026-11-28T00:45:35Z | Precision: exact | Status: active
+    Freshness basis: Chicago placed Patrick Kane on injured reserve with a lower-body injury before Friday's game.
+    Entities: Chicago Blackhawks, Patrick Kane, Landon Slaggert
+    Candidate IDs: cand-0e0643dbcc1f1e4f
+    Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/50615550/chicago-blackhawks-place-patrick-kane-injured-reserve
+
+ 6. [MILESTONE] San Jose beat Vegas 4-1 for the franchise's first regulation victory over the Golden Knights at SAP Center. (priority 73, age 5.45h)
+    Compact headline: Sharks earn first regulation home win over Golden Knights
+    Occurred: 2026-11-28T00:03:34Z | Precision: exact | Status: active
+    Freshness basis: San Jose defeated Vegas 4-1 Friday for its first regulation home win over the Golden Knights.
+    Entities: San Jose Sharks, Vegas Golden Knights
+    Candidate IDs: cand-d7692f583ee10669
+    Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892805
+
+ 7. [STREAK] Andrew Mangiapane scored twice and Spencer Knight made 30 saves as Chicago beat the Rangers 2-1 for its fourth consecutive victory. (priority 77, age 4.10h)
+    Compact headline: Blackhawks win fourth straight behind Mangiapane, Knight
     Occurred: 2026-11-28T01:24:32Z | Precision: exact | Status: active
-    Freshness basis: Chicago beat New York 2-1 Friday for its fourth consecutive victory.
+    Freshness basis: Chicago defeated New York 2-1 Friday for its fourth straight win.
     Entities: Chicago Blackhawks, New York Rangers, Andrew Mangiapane, Spencer Knight
     Candidate IDs: cand-d06e75c984500685
     Source [ESPN/espn-nhl]: http://www.espn.com/nhl/recap?gameId=401892806
@@ -188,31 +172,47 @@ NHL  [ACTIVE]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Tottenham will be without Sávio for the rest of 2026 and beyond after the forward sustained a hamstring injury against Ipswich. (priority 80, age 11.69h)
+ 1. [INJURY] Tottenham will be without Sávio for the rest of 2026 and beyond after the forward suffered a hamstring injury late against Ipswich. (priority 80, age 12.19h)
     Compact headline: Tottenham lose Sávio for rest of 2026 and beyond
     Occurred: 2026-11-27T17:19:28Z | Precision: exact | Status: active
-    Freshness basis: Tottenham confirmed Sávio will miss the rest of 2026 and beyond with a hamstring injury Friday.
+    Freshness basis: Tottenham confirmed Friday that Sávio will miss the rest of 2026 and beyond with a hamstring injury.
     Entities: Tottenham Hotspur, Sávio
     Candidate IDs: cand-b181fec061b5a3aa
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50612479/tottenham-savio-roberto-de-zerbi
+
+ 2. [INJURY] Liverpool forward Víctor Muñoz avoided a serious knee injury, while Cody Gakpo remains sidelined ahead of the Merseyside derby. (priority 73, age 14.28h)
+    Compact headline: Liverpool avoid serious Víctor Muñoz knee injury scare
+    Occurred: 2026-11-27T15:13:48Z | Precision: exact | Status: active
+    Freshness basis: Liverpool said Víctor Muñoz avoided a serious knee injury while Cody Gakpo remained sidelined Friday.
+    Entities: Liverpool, Víctor Muñoz, Cody Gakpo, Everton
+    Candidate IDs: cand-3923283970b46d34
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50611728/iraola-liverpool-everton-injury-update-munoz-gakpo
+
+ 3. [SLUMP] Chelsea lost 3-2 to Nottingham Forest for their third consecutive Premier League defeat, extending the club's difficult run. (priority 75, age 4.42h)
+    Compact headline: Chelsea suffer third straight Premier League defeat
+    Occurred: 2026-11-28T01:05:32Z | Precision: exact | Status: active
+    Freshness basis: Chelsea fell 3-2 to Nottingham Forest Friday, its third straight Premier League loss.
+    Entities: Chelsea, Nottingham Forest
+    Candidate IDs: cand-85671090ed6852e7
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/50615700/alonso-chelsea-stick-together-run-three-losses
 
 ============================================================================
 MLS  [POSTSEASON]
 ============================================================================
 
- 1. [PLAYOFF] Columbus eliminated defending champion Inter Miami and Lionel Messi from the MLS playoffs with a 1-0 win in the second Round 1 match. (priority 88, age 0.29h)
-    Compact headline: Columbus eliminates defending champion Miami and Messi
-    Occurred: 2026-11-28T04:43:20Z | Precision: exact | Status: active
-    Freshness basis: Columbus beat Inter Miami 1-0 Friday to eliminate Miami and Messi from the MLS playoffs.
+ 1. [PLAYOFF] Columbus eliminated defending champion Inter Miami and Lionel Messi with a 1-0 stoppage-time win in Game 2 of their Round 1 series. (priority 91, age 0.13h)
+    Compact headline: Columbus eliminate Messi and Miami from MLS playoffs
+    Occurred: 2026-11-28T05:22:52Z | Precision: exact | Status: active
+    Freshness basis: Columbus beat Inter Miami 1-0 Friday to eliminate Miami and Lionel Messi from the MLS playoffs.
     Entities: Columbus Crew, Inter Miami, Lionel Messi
     Candidate IDs: cand-b1aa7711dfd61129
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/50617897/columbus-eliminates-inter-miami-messi-mls-playoffs
 
- 2. [PLAYOFF] Santiago Rodríguez scored two minutes into stoppage time and Patrick Schulte kept a clean sheet as Columbus beat Miami 1-0 to end its title defense. (priority 88, age 0.96h)
-    Compact headline: Columbus eliminates defending champion Miami and Messi
+ 2. [PLAYOFF] Santiago Rodríguez scored two minutes into stoppage time and Patrick Schulte kept a clean sheet as Columbus beat defending champion Miami 1-0 to end its playoff run. (priority 91, age 1.46h)
+    Compact headline: Columbus eliminates Miami and Messi with stoppage-time winner
     Occurred: 2026-11-28T04:03:00Z | Precision: exact | Status: active
-    Freshness basis: Columbus beat Inter Miami 1-0 Friday to eliminate the defending champions from the MLS playoffs.
-    Entities: Columbus Crew, Inter Miami, Lionel Messi, Santiago Rodríguez, Patrick Schulte
+    Freshness basis: Columbus defeated Inter Miami 1-0 Friday to eliminate the defending champions and Lionel Messi from the playoffs.
+    Entities: Columbus Crew, Inter Miami CF, Lionel Messi, Santiago Rodríguez, Patrick Schulte
     Candidate IDs: cand-f29a6225e752ae33
     Source [ESPN/espn-mls]: http://www.espn.com/soccer/report/_/gameId/401933727
 
@@ -220,61 +220,61 @@ MLS  [POSTSEASON]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [PLAYOFF] No. 5 Texas beat Texas A&M 16-6 as Arch Manning threw an early touchdown pass and Gianni Spetic added two second-half field goals. (priority 88, age 0.14h)
-    Compact headline: No. 5 Texas beats Texas A&M to clinch SEC title berth
+ 1. [PLAYOFF] No. 5 Texas beat Texas A&M 16-6 as Arch Manning threw an early touchdown pass, clinching a spot in the SEC championship game. (priority 88, age 0.63h)
+    Compact headline: No. 5 Texas clinches SEC title berth by beating Texas A&M
     Occurred: 2026-11-28T04:52:32Z | Precision: exact | Status: active
-    Freshness basis: Texas beat Texas A&M 16-6 Friday to clinch a spot in the SEC championship game.
-    Entities: Texas Longhorns, Texas A&M Aggies, Arch Manning, Gianni Spetic
+    Freshness basis: No. 5 Texas defeated Texas A&M 16-6 Friday and clinched an SEC championship-game berth.
+    Entities: Texas Longhorns, Texas A&M Aggies, Arch Manning
     Candidate IDs: cand-cde5d187291f4490
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856756
 
- 2. [PLAYOFF] UTSA beat Tulsa 28-22 behind Owen McCown’s 353 passing yards and two touchdowns, clinching home field for the American Conference championship. (priority 84, age 7.87h)
-    Compact headline: UTSA clinches home field for American title game
+ 2. [PLAYOFF] UTSA beat Tulsa 28-22 as Owen McCown threw for 353 yards and two touchdowns, clinching home field for the American Conference championship game. (priority 80, age 8.37h)
+    Compact headline: UTSA clinches home field for AAC title game
     Occurred: 2026-11-27T21:08:32Z | Precision: exact | Status: active
-    Freshness basis: UTSA beat Tulsa 28-22 Friday to clinch home field for the American Conference championship game.
+    Freshness basis: UTSA defeated Tulsa 28-22 Friday and clinched home field for the American Conference championship game.
     Entities: UTSA Roadrunners, Tulsa Golden Hurricane, Owen McCown
     Candidate IDs: cand-2bca587596659771
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401866473
 
- 3. [PLAYOFF] New Mexico beat Air Force 42-19 behind Kiefer Sibley's 115 rushing yards and two touchdowns to clinch home field in the Mountain West championship game. (priority 81, age 3.95h)
+ 3. [ADVANCEMENT] New Mexico beat Air Force 42-19 as Kiefer Sibley rushed for 115 yards and two touchdowns to clinch home field in the Mountain West championship game. (priority 78, age 4.45h)
     Compact headline: New Mexico clinches home field in Mountain West title game
     Occurred: 2026-11-28T01:03:34Z | Precision: exact | Status: active
-    Freshness basis: New Mexico beat Air Force 42-19 Friday to clinch home field in the Mountain West title game.
+    Freshness basis: New Mexico defeated Air Force 42-19 Friday to clinch home field in the Mountain West title game.
     Entities: New Mexico Lobos, Air Force Falcons, Kiefer Sibley
     Candidate IDs: cand-12a8f6f787eec427
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864546
 
- 4. [PLAYOFF] Buffalo beat Akron 17-9 as Messiah Burch ran for 130 yards and a touchdown, clinching a berth in the Mid-American Conference championship game. (priority 80, age 7.25h)
-    Compact headline: Buffalo clinches MAC title berth with 17-9 win
-    Occurred: 2026-11-27T21:45:32Z | Precision: exact | Status: active
-    Freshness basis: Buffalo beat Akron 17-9 Friday to clinch a berth in the MAC championship game.
-    Entities: Buffalo Bulls, Akron Zips, Messiah Burch
-    Candidate IDs: cand-e8ae4cacb8977480
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401866472
-
- 5. [MILESTONE] Jadan Baugh recorded his second straight 1,000-yard season in Florida’s 26-10 win Friday. (priority 78, age 3.04h)
-    Compact headline: Florida’s Jadan Baugh makes history in rivalry win
+ 4. [MILESTONE] No. 20 Florida defeated Florida State 26-10 Friday for its third straight rivalry win. (priority 77, age 3.53h)
+    Compact headline: Florida beats Florida State for third straight time
     Occurred: 2026-11-28T01:58:32Z | Precision: exact | Status: active
-    Freshness basis: Jadan Baugh recorded his second straight 1,000-yard season in Florida’s 26-10 win Friday.
+    Freshness basis: No. 20 Florida defeated Florida State 26-10 Friday for its third straight rivalry win.
     Entities: Florida Gators, Florida State Seminoles, Jadan Baugh
     Candidate IDs: cand-fedb66279e94bc9e
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856759
 
- 6. [MILESTONE] North Dakota State beat San Jose State 38-31 as first-time starter Preston Brown threw and ran for a touchdown, giving the FBS newcomer 10 wins. (priority 78, age 4.15h)
+ 5. [ADVANCEMENT] Buffalo beat Akron 17-9 as Messiah Burch rushed for 130 yards and a touchdown to clinch a berth in the Mid-American Conference championship game. (priority 77, age 7.75h)
+    Compact headline: Buffalo clinches MAC title-game berth with win at Akron
+    Occurred: 2026-11-27T21:45:32Z | Precision: exact | Status: active
+    Freshness basis: Buffalo defeated Akron 17-9 Friday to clinch a berth in the MAC championship game.
+    Entities: Buffalo Bulls, Akron Zips, Messiah Burch
+    Candidate IDs: cand-e8ae4cacb8977480
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401866472
+
+ 6. [MILESTONE] North Dakota State beat San Jose State 38-31 as first-time starter Preston Brown threw and ran for a touchdown, giving the Bison 10 wins in their first FBS season. (priority 76, age 4.65h)
     Compact headline: North Dakota State reaches 10 wins in first FBS season
     Occurred: 2026-11-28T00:51:34Z | Precision: exact | Status: active
-    Freshness basis: North Dakota State beat San Jose State 38-31 Friday to reach 10 wins in its first FBS season.
+    Freshness basis: North Dakota State defeated San Jose State 38-31 Friday to reach 10 wins in its first FBS season.
     Entities: North Dakota State Bison, San Jose State Spartans, Preston Brown
     Candidate IDs: cand-fb4668799fa154cd
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864549
 
- 7. [COACHING] Baylor is expected to hire UTSA coach Jeff Traylor after his Roadrunners improved to 10-2 with a 28-22 win over Tulsa. (priority 82, age 0.74h)
-    Compact headline: Baylor expected to hire UTSA's Jeff Traylor
-    Occurred: 2026-11-28T04:16:18Z | Precision: exact | Status: active
-    Freshness basis: Baylor was reported Friday to be targeting Jeff Traylor as its next coach.
-    Entities: Baylor Bears, Jeff Traylor, UTSA Roadrunners
-    Candidate IDs: cand-ea1aad32de6f3ff0
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50617811/baylor-expected-hire-utsa-coach-jeff-traylor
+ 7. [COACHING] Joe Moorhead resigned as Akron's head coach after five seasons, saying he will pursue other opportunities. (priority 77, age 8.46h)
+    Compact headline: Akron coach Joe Moorhead resigns after five seasons
+    Occurred: 2026-11-27T21:03:06Z | Precision: exact | Status: active
+    Freshness basis: Joe Moorhead announced his resignation as Akron's coach Friday after five seasons.
+    Entities: Akron Zips, Joe Moorhead
+    Candidate IDs: cand-d9f6b7ec86a13939
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/50614041/akron-coach-joe-moorhead-resigns-pursue-other-opportunities
 
 ############################################################################
 SPECIAL EVENTS
@@ -283,17 +283,17 @@ SPECIAL EVENTS
 Davis Cup (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Italy beat the Czech Republic 2-1 Friday to advance to the Davis Cup final. (priority 80, age 0.41h)
+ 1. [ADVANCEMENT] Defending champion Italy advanced to the Davis Cup final after Lorenzo Musetti and Andrea Vavassori won the deciding doubles match in a 2-1 victory over Czech Republic. (priority 82, age 0.91h)
     Compact headline: Italy reaches Davis Cup final after deciding doubles win
-    Freshness basis: Italy beat the Czech Republic 2-1 Friday to advance to the Davis Cup final.
+    Freshness basis: Italy defeated Czech Republic 2-1 Friday to advance to the Davis Cup final.
     Candidate IDs: cand-a4fc260c5dfcbb64
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/50618699/italy-advances-davis-cup-final-win-czech-republic
 
 Qatar Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [PRACTICE] Mercedes' Kimi Antonelli topped a disrupted second practice at the Qatar Grand Prix, leading the session for the second time Friday. (priority 63, age 8.26h)
-    Compact headline: Kimi Antonelli fastest again in Qatar GP practice
-    Freshness basis: Kimi Antonelli topped second practice at the Qatar Grand Prix Friday.
+ 1. [PRACTICE] Mercedes driver Kimi Antonelli was quickest in a disrupted second practice session at the Qatar Grand Prix, topping both Friday sessions. (priority 64, age 8.76h)
+    Compact headline: Kimi Antonelli tops disrupted second practice at Qatar GP
+    Freshness basis: Kimi Antonelli led second practice at the Qatar Grand Prix on Friday.
     Candidate IDs: cand-623830cb92dabe7c
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/50603962/kimi-antonelli-second-practice-qatar-grand-prix-formula-1
